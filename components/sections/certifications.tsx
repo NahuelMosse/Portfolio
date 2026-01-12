@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { certifications as certificationsContent } from "@/lib/content"
+import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 
 export function Certifications() {
   const [isVisible, setIsVisible] = useState(false)
@@ -81,6 +82,10 @@ export function Certifications() {
           {certificationsContent.conclusion.map((paragraph, index) => (
             <p key={index} className="text-pretty">{paragraph}</p>
           ))}
+        </div>
+
+        <div className="pt-48 flex justify-center">
+          <ScrollIndicator />
         </div>
       </div>
     </section>

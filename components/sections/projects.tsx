@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { projects as projectsContent } from "@/lib/content"
+import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 
 export function Projects() {
   const [isVisible, setIsVisible] = useState(false)
@@ -90,6 +91,10 @@ export function Projects() {
               </div>
             </Card>
           ))}
+        </div>
+
+        <div className="pt-48 flex justify-center">
+          <ScrollIndicator />
         </div>
       </div>
     </section>

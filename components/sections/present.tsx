@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { present } from "@/lib/content"
+import { ScrollIndicator } from "../ui/scroll-indicator"
 
 export function Present() {
   const [isVisible, setIsVisible] = useState(false)
@@ -78,6 +79,10 @@ export function Present() {
           {present.conclusion.map((paragraph, index) => (
             <p key={index} className="text-pretty pt-4">{paragraph}</p>
           ))}
+        </div>
+
+        <div className="pt-48 flex justify-center">
+          <ScrollIndicator />
         </div>
       </div>
     </section>
