@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { education } from "@/lib/content"
+import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 
 export function Education() {
   const [isVisible, setIsVisible] = useState(false)
@@ -76,6 +77,10 @@ export function Education() {
             {education.conclusion.map((paragraph, index) => (
               <p key={index} className="text-pretty">{paragraph}</p>
             ))}
+          </div>
+
+          <div className="pt-48 flex justify-center">
+            <ScrollIndicator />
           </div>
         </div>
       </div>

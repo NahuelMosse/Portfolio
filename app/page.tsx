@@ -5,10 +5,11 @@ import { Projects } from "@/components/sections/projects"
 import { Certifications } from "@/components/sections/certifications"
 import { Present } from "@/components/sections/present"
 import { Contact } from "@/components/sections/contact"
+import { ScrollSnapContainer } from "@/components/scroll-snap-container"
 
 export default function Home() {
   return (
-    <main className="relative">
+    <ScrollSnapContainer>
       <Hero />
       <Origins />
       <Education />
@@ -16,6 +17,6 @@ export default function Home() {
       <Certifications />
       <Present />
       <Contact />
-    </main>
+    </ScrollSnapContainer>
   )
 }
