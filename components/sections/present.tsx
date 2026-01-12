@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { present } from "@/lib/content"
 
 export function Present() {
   const [isVisible, setIsVisible] = useState(false)
@@ -29,50 +30,54 @@ export function Present() {
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24"
     >
       <div
-        className={`max-w-4xl mx-auto space-y-12 transition-all duration-1000 delay-200 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className="max-w-4xl mx-auto space-y-14"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(32px)",
+          transition: "opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+        }}
       >
-        <div className="space-y-4">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
-            Present & Direction
+        <div className="space-y-6">
+          <h2 
+            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
+            style={{ letterSpacing: "-0.02em" }}
+          >
+            {present.title}
           </h2>
           <div className="w-24 h-1 bg-primary/40 rounded-full" />
         </div>
 
-        <div className="space-y-8 text-lg md:text-xl leading-relaxed text-foreground/80">
-          <p className="text-pretty">
-            Today, I'm focused on building software that scales—not just technically, but in terms of impact. I'm drawn
-            to projects that require deep technical thinking, thoughtful architecture, and attention to both the
-            engineering and the end-user experience.
-          </p>
+        <div className="space-y-10 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80">
+          {present.paragraphs.map((paragraph, index) => (
+            <p key={index} className="text-pretty">{paragraph}</p>
+          ))}
 
-          <p className="text-pretty">I'm particularly interested in:</p>
+          <div className="pt-2">
+            <p className="text-pretty font-medium text-foreground/90">{present.interests.title}</p>
+          </div>
 
-          <ul className="space-y-4 pl-6 border-l-2 border-primary/30">
-            <li className="text-pretty">
-              <strong className="text-foreground">Distributed systems</strong> that solve complex coordination and
-              scalability challenges
-            </li>
-            <li className="text-pretty">
-              <strong className="text-foreground">Developer tooling</strong> that improves workflows and empowers other
-              engineers
-            </li>
-            <li className="text-pretty">
-              <strong className="text-foreground">Performance optimization</strong> where milliseconds matter and user
-              experience is paramount
-            </li>
-            <li className="text-pretty">
-              <strong className="text-foreground">Systems architecture</strong> that balances technical excellence with
-              pragmatic delivery
-            </li>
+          <ul className="space-y-6 pl-6 border-l-2 border-primary/30">
+            {present.interests.items.map((interest, index) => (
+              <li 
+                key={index} 
+                className="text-pretty group"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? "translateX(0)" : "translateX(-16px)",
+                  transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.1}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.1}s`,
+                }}
+              >
+                <strong className="text-foreground transition-colors duration-300 group-hover:text-primary">
+                  {interest.title}
+                </strong>{" "}
+                {interest.description}
+              </li>
+            ))}
           </ul>
 
-          <p className="text-pretty pt-4">
-            I'm looking for opportunities to work with teams that value craftsmanship, continuous improvement, and
-            building products that stand the test of time. I want to contribute to meaningful work, collaborate with
-            talented engineers, and continue growing as a professional.
-          </p>
+          {present.conclusion.map((paragraph, index) => (
+            <p key={index} className="text-pretty pt-4">{paragraph}</p>
+          ))}
         </div>
       </div>
     </section>

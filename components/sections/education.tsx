@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
+import { education } from "@/lib/content"
 
 export function Education() {
   const [isVisible, setIsVisible] = useState(false)
@@ -30,49 +31,51 @@ export function Education() {
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24"
     >
       <div
-        className={`max-w-4xl mx-auto space-y-12 transition-all duration-1000 delay-200 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className="max-w-4xl mx-auto space-y-14"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(32px)",
+          transition: "opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+        }}
       >
-        <div className="space-y-4">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
-            Education & Foundations
+        <div className="space-y-6">
+          <h2 
+            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
+            style={{ letterSpacing: "-0.02em" }}
+          >
+            {education.title}
           </h2>
           <div className="w-24 h-1 bg-primary/40 rounded-full" />
         </div>
 
-        <div className="space-y-8">
-          <div className="space-y-6 text-lg md:text-xl leading-relaxed text-foreground/80">
-            <p className="text-pretty">
-              My formal education provided the theoretical foundation—data structures, algorithms, software
-              architecture, and systems thinking. But more importantly, it taught me how to learn, how to approach
-              problems methodically, and how to think like an engineer.
-            </p>
+        <div className="space-y-10">
+          <div className="space-y-8 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80">
+            {education.intro.map((paragraph, index) => (
+              <p key={index} className="text-pretty">{paragraph}</p>
+            ))}
           </div>
 
-          <Card className="bg-card/50 backdrop-blur border-border/50 p-8 space-y-4">
+          <Card className="bg-card/50 backdrop-blur border-border/50 p-8 md:p-10 space-y-6 transition-all duration-500 hover:bg-card/60 hover:border-border/70 hover:shadow-lg hover:shadow-primary/5 group">
             <div className="flex items-start justify-between flex-wrap gap-4">
-              <div className="space-y-2">
-                <h3 className="text-2xl font-semibold text-foreground">Bachelor of Science in Computer Science</h3>
-                <p className="text-lg text-muted-foreground">University Name</p>
+              <div className="space-y-3">
+                <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-foreground transition-colors duration-300">
+                  {education.degree.title}
+                </h3>
+                <p className="text-lg md:text-xl text-muted-foreground">{education.degree.institution}</p>
               </div>
               <div className="text-right">
-                <p className="text-lg text-muted-foreground">20XX - 20XX</p>
+                <p className="text-lg text-muted-foreground">{education.degree.period}</p>
               </div>
             </div>
-            <p className="text-foreground/70 leading-relaxed">
-              Completed comprehensive coursework in software engineering, systems design, database management, and
-              computational theory. Graduated with honors, focusing on building scalable and maintainable software
-              solutions.
+            <p className="text-foreground/70 leading-relaxed text-base md:text-lg">
+              {education.degree.description}
             </p>
           </Card>
 
-          <div className="space-y-6 text-lg md:text-xl leading-relaxed text-foreground/80 pt-4">
-            <p className="text-pretty">
-              Now, I'm deliberately building a professional career in software engineering—not as a side pursuit, but as
-              a focused, long-term commitment. I'm investing in expertise, craftsmanship, and the continuous refinement
-              of my technical skills.
-            </p>
+          <div className="space-y-8 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 pt-4">
+            {education.conclusion.map((paragraph, index) => (
+              <p key={index} className="text-pretty">{paragraph}</p>
+            ))}
           </div>
         </div>
       </div>
