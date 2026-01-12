@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { personalInfo, contact } from "@/lib/content"
 
 export function Contact() {
   const [isVisible, setIsVisible] = useState(false)
@@ -30,55 +31,53 @@ export function Contact() {
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24"
     >
       <div
-        className={`max-w-3xl mx-auto text-center space-y-12 transition-all duration-1000 delay-200 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className="max-w-3xl mx-auto text-center space-y-14"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? "translateY(0)" : "translateY(32px)",
+          transition: "opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+        }}
       >
-        <div className="space-y-4">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-balance">Let's Connect</h2>
+        <div className="space-y-6">
+          <h2 
+            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
+            style={{ letterSpacing: "-0.02em" }}
+          >
+            {contact.title}
+          </h2>
           <div className="w-24 h-1 bg-primary/40 rounded-full mx-auto" />
         </div>
 
-        <p className="text-lg md:text-xl leading-relaxed text-foreground/80 text-pretty">
-          I'm always interested in discussing new opportunities, technical challenges, or simply connecting with fellow
-          engineers. If you're building something meaningful or looking for someone who approaches software with
-          intention and care, let's talk.
+        <p className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 text-pretty">
+          {contact.description}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
           <Button
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg transition-all duration-300 hover:scale-105"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-medium transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
             asChild
           >
-            <a href="mailto:your.email@example.com">Send an Email</a>
+            <a href={contact.cta.primary.href}>{contact.cta.primary.text}</a>
           </Button>
 
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-border/50 hover:bg-card/50 px-8 py-6 text-lg transition-all duration-300 hover:scale-105 bg-transparent"
-            asChild
-          >
-            <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">
-              LinkedIn
-            </a>
-          </Button>
-
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-border/50 hover:bg-card/50 px-8 py-6 text-lg transition-all duration-300 hover:scale-105 bg-transparent"
-            asChild
-          >
-            <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
-          </Button>
+          {contact.cta.secondary.map((link, index) => (
+            <Button
+              key={index}
+              size="lg"
+              variant="outline"
+              className="border-border/50 hover:bg-card/50 hover:border-border/70 px-8 py-6 text-lg font-medium transition-all duration-500 hover:scale-105 bg-transparent"
+              asChild
+            >
+              <a href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.text}
+              </a>
+            </Button>
+          ))}
         </div>
 
         <div className="pt-16 text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Your Name. Built with intention.</p>
+          <p>© {new Date().getFullYear()} {personalInfo.name}. {personalInfo.footer.tagline}</p>
         </div>
       </div>
     </section>
