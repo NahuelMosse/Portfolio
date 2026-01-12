@@ -45,7 +45,7 @@ export function Contact() {
           >
             {contact.title}
           </h2>
-          <div className="w-24 h-1 bg-primary/40 rounded-full mx-auto" />
+          <div className="w-20 h-0.5 bg-accent/60 rounded-full mx-auto" />
         </div>
 
         <p className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 text-pretty">
@@ -55,7 +55,7 @@ export function Contact() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
           <Button
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-medium transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
+            className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8 py-6 text-lg font-medium transition-all duration-300 hover:scale-[1.02] border border-secondary/40"
             asChild
           >
             <a href={contact.cta.primary.href}>{contact.cta.primary.text}</a>
@@ -66,7 +66,7 @@ export function Contact() {
               key={index}
               size="lg"
               variant="outline"
-              className="border-border/50 hover:bg-card/50 hover:border-border/70 px-8 py-6 text-lg font-medium transition-all duration-500 hover:scale-105 bg-transparent"
+              className="border border-border/60 hover:bg-muted/30 hover:border-border px-8 py-6 text-lg font-medium transition-all duration-300 hover:scale-[1.02] bg-transparent"
               asChild
             >
               <a href={link.href} target="_blank" rel="noopener noreferrer">

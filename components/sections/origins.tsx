@@ -44,7 +44,7 @@ export function Origins() {
           >
             {origins.title}
           </h2>
-          <div className="w-24 h-1 bg-primary/40 rounded-full" />
+          <div className="w-20 h-0.5 bg-accent/60 rounded-full" />
         </div>
 
         <div className="space-y-8 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80">

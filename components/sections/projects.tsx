@@ -46,7 +46,7 @@ export function Projects() {
           >
             {projectsContent.title}
           </h2>
-          <div className="w-24 h-1 bg-primary/40 rounded-full" />
+          <div className="w-20 h-0.5 bg-accent/60 rounded-full" />
         </div>
 
         <p className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 max-w-3xl text-pretty">
@@ -57,37 +57,40 @@ export function Projects() {
           {projectsContent.items.map((project, index) => (
             <Card
               key={index}
-              className="bg-card/50 backdrop-blur border-border/50 p-6 md:p-8 space-y-5 group transition-all duration-500 hover:bg-card/60 hover:border-border/70 hover:shadow-lg hover:shadow-primary/5"
+              className="bg-card/60 backdrop-blur-sm border border-border/60 p-6 md:p-8 space-y-5 group transition-all duration-500 hover:border-border hover:bg-card/70 relative"
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s`,
               }}
             >
-              <div className="flex items-start justify-between flex-wrap gap-4">
+              {/* Minimal ambient glow */}
+              <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
+              
+              <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
                 <div className="space-y-2">
-                  <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-foreground transition-colors duration-300">
+                  <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300">
                     {project.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground">{project.period}</p>
+                  <p className="text-sm text-secondary font-medium">{project.period}</p>
                 </div>
               </div>
 
-              <p className="text-foreground/70 leading-relaxed text-base md:text-lg">{project.description}</p>
+              <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">{project.description}</p>
 
-              <div className="flex flex-wrap gap-2 pt-2">
+              <div className="flex flex-wrap gap-2 pt-2 relative z-10">
                 {project.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="px-3 py-1.5 text-sm bg-primary/10 text-primary-foreground/80 rounded-full border border-primary/20 transition-all duration-300 hover:bg-primary/20 hover:border-primary/30"
+                    className="px-3 py-1.5 text-sm bg-muted/40 text-foreground/80 rounded-full border border-border/50 transition-all duration-300 hover:bg-muted/60 hover:border-border"
                   >
                     {tech}
                   </span>
                 ))}
               </div>
 
-              <div className="pt-4 border-t border-border/50">
-                <p className="text-sm md:text-base text-accent-foreground/90 italic leading-relaxed">{project.impact}</p>
+              <div className="pt-4 border-t border-border/40 relative z-10">
+                <p className="text-sm md:text-base text-accent/90 italic leading-relaxed">{project.impact}</p>
               </div>
             </Card>
           ))}

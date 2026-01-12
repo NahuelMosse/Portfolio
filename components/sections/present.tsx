@@ -45,7 +45,7 @@ export function Present() {
           >
             {present.title}
           </h2>
-          <div className="w-24 h-1 bg-primary/40 rounded-full" />
+          <div className="w-20 h-0.5 bg-accent/60 rounded-full" />
         </div>
 
         <div className="space-y-10 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80">
@@ -57,18 +57,19 @@ export function Present() {
             <p className="text-pretty font-medium text-foreground/90">{present.interests.title}</p>
           </div>
 
-          <ul className="space-y-6 pl-6 border-l-2 border-primary/30">
+          <ul className="space-y-6 pl-6 border-l border-border/60 relative">
             {present.interests.items.map((interest, index) => (
               <li 
                 key={index} 
-                className="text-pretty group"
+                className="text-pretty group relative"
                 style={{
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? "translateX(0)" : "translateX(-16px)",
                   transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.1}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + index * 0.1}s`,
                 }}
               >
-                <strong className="text-foreground transition-colors duration-300 group-hover:text-primary">
+                <span className="absolute -left-[1.68rem] top-2 w-1.5 h-1.5 bg-accent rounded-full transition-all duration-300 group-hover:bg-secondary group-hover:scale-125" />
+                <strong className="text-foreground transition-colors duration-300 group-hover:text-accent">
                   {interest.title}
                 </strong>{" "}
                 {interest.description}
