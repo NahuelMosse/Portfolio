@@ -4,75 +4,75 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Nature-inspired dark palette for portfolio */
-  --background: oklch(0.12 0.02 120); /* Deep forest dark */
-  --foreground: oklch(0.95 0.01 80); /* Soft off-white */
-  --card: oklch(0.16 0.02 110);
-  --card-foreground: oklch(0.92 0.01 80);
-  --popover: oklch(0.16 0.02 110);
-  --popover-foreground: oklch(0.92 0.01 80);
-  --primary: oklch(0.42 0.08 140); /* Muted forest green */
+  /* Interior design inspired: Dark forest green walls with cognac leather accents */
+  --background: oklch(0.18 0.04 165); /* Dark forest green base - like painted walls */
+  --foreground: oklch(0.95 0.01 80); /* Warm off-white cream */
+  --card: oklch(0.22 0.035 165); /* Slightly lighter forest green cards */
+  --card-foreground: oklch(0.93 0.01 75);
+  --popover: oklch(0.22 0.04 165);
+  --popover-foreground: oklch(0.93 0.01 75);
+  --primary: oklch(0.42 0.08 165); /* Subtle sage green - not vibrant */
   --primary-foreground: oklch(0.95 0.01 80);
-  --secondary: oklch(0.22 0.03 50); /* Deep brown */
-  --secondary-foreground: oklch(0.92 0.01 80);
-  --muted: oklch(0.2 0.02 100);
-  --muted-foreground: oklch(0.65 0.01 80);
-  --accent: oklch(0.35 0.06 80); /* Subtle warm highlight */
-  --accent-foreground: oklch(0.95 0.01 80);
-  --destructive: oklch(0.45 0.12 30);
+  --secondary: oklch(0.45 0.08 55); /* Cognac/warm brown leather */
+  --secondary-foreground: oklch(0.95 0.01 80);
+  --muted: oklch(0.28 0.03 165);
+  --muted-foreground: oklch(0.65 0.02 80);
+  --accent: oklch(0.72 0.06 75); /* Warm beige/gold - like pampas grass */
+  --accent-foreground: oklch(0.20 0.04 165);
+  --destructive: oklch(0.50 0.15 35);
   --destructive-foreground: oklch(0.95 0.01 80);
-  --border: oklch(0.25 0.02 100);
-  --input: oklch(0.25 0.02 100);
-  --ring: oklch(0.42 0.08 140);
-  --chart-1: oklch(0.42 0.08 140);
-  --chart-2: oklch(0.38 0.06 180);
-  --chart-3: oklch(0.35 0.06 80);
-  --chart-4: oklch(0.4 0.07 60);
-  --chart-5: oklch(0.45 0.08 100);
-  --radius: 0.75rem;
-  --sidebar: oklch(0.16 0.02 110);
-  --sidebar-foreground: oklch(0.92 0.01 80);
-  --sidebar-primary: oklch(0.42 0.08 140);
+  --border: oklch(0.30 0.04 165); /* Subtle green borders */
+  --input: oklch(0.26 0.03 165);
+  --ring: oklch(0.42 0.08 165);
+  --chart-1: oklch(0.42 0.08 165);
+  --chart-2: oklch(0.45 0.08 55);
+  --chart-3: oklch(0.72 0.06 75);
+  --chart-4: oklch(0.40 0.06 180);
+  --chart-5: oklch(0.48 0.07 150);
+  --radius: 0.875rem;
+  --sidebar: oklch(0.22 0.035 165);
+  --sidebar-foreground: oklch(0.93 0.01 75);
+  --sidebar-primary: oklch(0.42 0.08 165);
   --sidebar-primary-foreground: oklch(0.95 0.01 80);
-  --sidebar-accent: oklch(0.22 0.03 50);
-  --sidebar-accent-foreground: oklch(0.92 0.01 80);
-  --sidebar-border: oklch(0.25 0.02 100);
-  --sidebar-ring: oklch(0.42 0.08 140);
+  --sidebar-accent: oklch(0.45 0.08 55);
+  --sidebar-accent-foreground: oklch(0.95 0.01 80);
+  --sidebar-border: oklch(0.30 0.04 165);
+  --sidebar-ring: oklch(0.42 0.08 165);
 }
 
 .dark {
-  --background: oklch(0.12 0.02 120);
+  --background: oklch(0.18 0.04 165);
   --foreground: oklch(0.95 0.01 80);
-  --card: oklch(0.16 0.02 110);
-  --card-foreground: oklch(0.92 0.01 80);
-  --popover: oklch(0.16 0.02 110);
-  --popover-foreground: oklch(0.92 0.01 80);
-  --primary: oklch(0.42 0.08 140);
+  --card: oklch(0.22 0.035 165);
+  --card-foreground: oklch(0.93 0.01 75);
+  --popover: oklch(0.22 0.04 165);
+  --popover-foreground: oklch(0.93 0.01 75);
+  --primary: oklch(0.42 0.08 165);
   --primary-foreground: oklch(0.95 0.01 80);
-  --secondary: oklch(0.22 0.03 50);
-  --secondary-foreground: oklch(0.92 0.01 80);
-  --muted: oklch(0.2 0.02 100);
-  --muted-foreground: oklch(0.65 0.01 80);
-  --accent: oklch(0.35 0.06 80);
-  --accent-foreground: oklch(0.95 0.01 80);
-  --destructive: oklch(0.45 0.12 30);
+  --secondary: oklch(0.45 0.08 55);
+  --secondary-foreground: oklch(0.95 0.01 80);
+  --muted: oklch(0.28 0.03 165);
+  --muted-foreground: oklch(0.65 0.02 80);
+  --accent: oklch(0.72 0.06 75);
+  --accent-foreground: oklch(0.20 0.04 165);
+  --destructive: oklch(0.50 0.15 35);
   --destructive-foreground: oklch(0.95 0.01 80);
-  --border: oklch(0.25 0.02 100);
-  --input: oklch(0.25 0.02 100);
-  --ring: oklch(0.42 0.08 140);
-  --chart-1: oklch(0.42 0.08 140);
-  --chart-2: oklch(0.38 0.06 180);
-  --chart-3: oklch(0.35 0.06 80);
-  --chart-4: oklch(0.4 0.07 60);
-  --chart-5: oklch(0.45 0.08 100);
-  --sidebar: oklch(0.16 0.02 110);
-  --sidebar-foreground: oklch(0.92 0.01 80);
-  --sidebar-primary: oklch(0.42 0.08 140);
+  --border: oklch(0.30 0.04 165);
+  --input: oklch(0.26 0.03 165);
+  --ring: oklch(0.42 0.08 165);
+  --chart-1: oklch(0.42 0.08 165);
+  --chart-2: oklch(0.45 0.08 55);
+  --chart-3: oklch(0.72 0.06 75);
+  --chart-4: oklch(0.40 0.06 180);
+  --chart-5: oklch(0.48 0.07 150);
+  --sidebar: oklch(0.22 0.035 165);
+  --sidebar-foreground: oklch(0.93 0.01 75);
+  --sidebar-primary: oklch(0.42 0.08 165);
   --sidebar-primary-foreground: oklch(0.95 0.01 80);
-  --sidebar-accent: oklch(0.22 0.03 50);
-  --sidebar-accent-foreground: oklch(0.92 0.01 80);
-  --sidebar-border: oklch(0.25 0.02 100);
-  --sidebar-ring: oklch(0.42 0.08 140);
+  --sidebar-accent: oklch(0.45 0.08 55);
+  --sidebar-accent-foreground: oklch(0.95 0.01 80);
+  --sidebar-border: oklch(0.30 0.04 165);
+  --sidebar-ring: oklch(0.42 0.08 165);
 }
 
 @theme inline {
@@ -123,5 +123,27 @@
   
   body {
     @apply bg-background text-foreground;
+    /* Subtle texture like a painted wall - minimal */
+    background-image: 
+      radial-gradient(circle at 20% 80%, oklch(0.20 0.04 165) 0px, transparent 50%),
+      radial-gradient(circle at 80% 20%, oklch(0.19 0.035 170) 0px, transparent 45%);
+    background-attachment: fixed;
   }
+}
+
+/* Organic animations for more life */
+@keyframes organic-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  33% { transform: translateY(-20px) translateX(10px); }
+  66% { transform: translateY(-10px) translateX(-10px); }
+}
+
+@keyframes leaf-sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
 }

@@ -46,7 +46,7 @@ export function Certifications() {
           >
             {certificationsContent.title}
           </h2>
-          <div className="w-24 h-1 bg-primary/40 rounded-full" />
+          <div className="w-20 h-0.5 bg-accent/60 rounded-full" />
         </div>
 
         <p className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 text-pretty">
@@ -57,23 +57,26 @@ export function Certifications() {
           {certificationsContent.items.map((cert, index) => (
             <Card
               key={index}
-              className="bg-card/50 backdrop-blur border-border/50 p-6 md:p-7 space-y-4 group transition-all duration-500 hover:bg-card/60 hover:border-border/70 hover:shadow-lg hover:shadow-primary/5"
+              className="bg-card/60 backdrop-blur-sm border border-border/60 p-6 md:p-7 space-y-4 group transition-all duration-500 hover:border-border hover:bg-card/70 relative"
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s`,
               }}
             >
-              <div className="space-y-3">
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground group-hover:text-foreground transition-colors duration-300">
+              {/* Subtle glow on hover */}
+              <div className="absolute -top-10 -right-10 w-24 h-24 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
+              
+              <div className="space-y-3 relative z-10">
+                <h3 className="text-xl md:text-2xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300">
                   {cert.title}
                 </h3>
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>{cert.issuer}</span>
-                  <span className="font-medium">{cert.year}</span>
+                  <span className="font-medium text-secondary">{cert.issuer}</span>
+                  <span className="px-2.5 py-1 bg-muted/30 text-foreground/80 rounded-full border border-border/40 text-xs">{cert.year}</span>
                 </div>
               </div>
-              <p className="text-sm md:text-base text-foreground/70 leading-relaxed">{cert.description}</p>
+              <p className="text-sm md:text-base text-foreground/70 leading-relaxed relative z-10">{cert.description}</p>
             </Card>
           ))}
         </div>

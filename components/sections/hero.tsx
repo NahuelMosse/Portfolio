@@ -21,9 +21,25 @@ export function Hero() {
 
   return (
     <section className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 relative overflow-hidden">
-      {/* Subtle background pattern with parallax */}
+      {/* Subtle ambient lighting - like warm interior lighting */}
+      <div className="absolute inset-0 opacity-20">
+        <div
+          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-secondary/30 rounded-full blur-[120px]"
+          style={{
+            animation: "float 30s ease-in-out infinite",
+          }}
+        />
+        <div
+          className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent/20 rounded-full blur-[100px]"
+          style={{
+            animation: "float 35s ease-in-out infinite reverse",
+          }}
+        />
+      </div>
+
+      {/* Minimal pattern with parallax */}
       <div 
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0 opacity-[0.03]"
         style={{
           transform: `translateY(${scrollY * 0.3}px)`,
           transition: "transform 0.1s ease-out",
@@ -32,14 +48,15 @@ export function Hero() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.15) 1px, transparent 0)`,
-            backgroundSize: "48px 48px",
+            backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
+            backgroundSize: "60px 60px",
+            color: "oklch(0.72 0.06 75)",
           }}
         />
       </div>
 
       <div
-        className="max-w-5xl mx-auto text-center space-y-10 md:space-y-12"
+        className="max-w-5xl mx-auto text-center space-y-10 md:space-y-12 relative z-10"
         style={{
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? "translateY(0)" : "translateY(32px)",
@@ -58,6 +75,10 @@ export function Hero() {
           <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground font-light tracking-wide">
             {personalInfo.role}
           </p>
+          {/* Subtle accent line - like a simple design element */}
+          <div className="flex justify-center pt-2">
+            <div className="w-24 h-0.5 bg-accent/60 rounded-full" />
+          </div>
         </div>
 
         <div className="max-w-2xl mx-auto pt-4">
@@ -68,9 +89,9 @@ export function Hero() {
 
         <div className="pt-8">
           <div className="inline-flex items-center gap-2 text-sm text-muted-foreground group cursor-default">
-            <span className="transition-colors duration-300 group-hover:text-foreground/60">Scroll to explore</span>
+            <span className="transition-colors duration-300 group-hover:text-accent">Scroll to explore</span>
             <svg 
-              className="w-4 h-4 transition-transform duration-700 ease-in-out" 
+              className="w-4 h-4 text-accent/70 transition-transform duration-700 ease-in-out"
               fill="none" 
               viewBox="0 0 24 24" 
               stroke="currentColor"

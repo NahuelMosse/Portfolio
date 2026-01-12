@@ -46,7 +46,7 @@ export function Education() {
           >
             {education.title}
           </h2>
-          <div className="w-24 h-1 bg-primary/40 rounded-full" />
+          <div className="w-20 h-0.5 bg-accent/60 rounded-full" />
         </div>
 
         <div className="space-y-10">
@@ -56,19 +56,22 @@ export function Education() {
             ))}
           </div>
 
-          <Card className="bg-card/50 backdrop-blur border-border/50 p-8 md:p-10 space-y-6 transition-all duration-500 hover:bg-card/60 hover:border-border/70 hover:shadow-lg hover:shadow-primary/5 group">
-            <div className="flex items-start justify-between flex-wrap gap-4">
+          <Card className="bg-card/60 backdrop-blur-sm border border-border/60 p-8 md:p-10 space-y-6 transition-all duration-500 hover:border-border hover:bg-card/70 group relative">
+            {/* Subtle ambient glow - minimal */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
+            
+            <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
               <div className="space-y-3">
-                <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-foreground transition-colors duration-300">
+                <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300">
                   {education.degree.title}
                 </h3>
-                <p className="text-lg md:text-xl text-muted-foreground">{education.degree.institution}</p>
+                <p className="text-lg md:text-xl text-secondary font-medium">{education.degree.institution}</p>
               </div>
               <div className="text-right">
-                <p className="text-lg text-muted-foreground">{education.degree.period}</p>
+                <p className="text-sm text-muted-foreground px-3 py-1.5 bg-muted/30 rounded-full border border-border/40">{education.degree.period}</p>
               </div>
             </div>
-            <p className="text-foreground/70 leading-relaxed text-base md:text-lg">
+            <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">
               {education.degree.description}
             </p>
           </Card>
