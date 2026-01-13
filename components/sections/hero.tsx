@@ -55,6 +55,25 @@ export function Hero() {
         />
       </div>
 
+      {/* Subtle code symbols floating - tech meets nature */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[20%] left-[12%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "code-flow 24s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+          {'</>'}
+        </div>
+        <div className="absolute top-[35%] right-[15%] text-secondary/[0.28] text-5xl font-mono" style={{ animation: "float 28s ease-in-out infinite 6s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
+          {'{}'}
+        </div>
+        <div className="absolute top-[55%] left-[18%] text-primary/[0.25] text-5xl" style={{ animation: "float 32s ease-in-out infinite 12s" }}>
+          λ
+        </div>
+        <div className="absolute bottom-[25%] right-[20%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "code-flow 30s ease-in-out infinite 18s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+          {'[]'}
+        </div>
+        <div className="absolute bottom-[40%] left-[10%] text-secondary/[0.25] text-4xl" style={{ animation: "float 26s ease-in-out infinite 24s" }}>
+          →
+        </div>
+      </div>
+
       <div
         className="max-w-5xl mx-auto text-center space-y-10 md:space-y-12 relative z-10"
         style={{

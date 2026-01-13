@@ -28,10 +28,29 @@ export function Contact() {
   return (
     <section
       ref={sectionRef}
-      className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24"
+      className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
+      {/* Subtle tech elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[28%] left-[14%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 44s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+          @
+        </div>
+        <div className="absolute top-[46%] right-[16%] text-secondary/[0.28] text-5xl font-mono" style={{ animation: "float 40s ease-in-out infinite 8s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
+          {'//'}
+        </div>
+        <div className="absolute top-[64%] left-[18%] text-primary/[0.25] text-5xl" style={{ animation: "float 46s ease-in-out infinite 16s" }}>
+          →
+        </div>
+        <div className="absolute bottom-[34%] right-[12%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 42s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+          {'{ }'}
+        </div>
+        <div className="absolute bottom-[50%] left-[10%] text-secondary/[0.25] text-4xl" style={{ animation: "float 48s ease-in-out infinite 32s" }}>
+          λ
+        </div>
+      </div>
+
       <div
-        className="max-w-3xl mx-auto text-center space-y-14"
+        className="max-w-3xl mx-auto text-center space-y-14 relative z-10"
         style={{
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? "translateY(0)" : "translateY(32px)",

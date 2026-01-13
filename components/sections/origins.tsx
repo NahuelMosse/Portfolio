@@ -27,10 +27,29 @@ export function Origins() {
   return (
     <section
       ref={sectionRef}
-      className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24"
+      className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
+      {/* Subtle floating tech symbols */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[25%] right-[14%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 46s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+          ∞
+        </div>
+        <div className="absolute top-[42%] left-[16%] text-secondary/[0.28] text-5xl font-mono" style={{ animation: "float 42s ease-in-out infinite 8s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
+          {'{ }'}
+        </div>
+        <div className="absolute top-[62%] right-[18%] text-primary/[0.25] text-5xl" style={{ animation: "float 48s ease-in-out infinite 16s" }}>
+          λ
+        </div>
+        <div className="absolute bottom-[28%] left-[20%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 44s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+          {'</>'}
+        </div>
+        <div className="absolute bottom-[45%] right-[14%] text-secondary/[0.25] text-4xl" style={{ animation: "float 50s ease-in-out infinite 32s" }}>
+          ƒ
+        </div>
+      </div>
+      
       <div
-        className="max-w-4xl mx-auto space-y-14"
+        className="max-w-4xl mx-auto space-y-14 relative z-10"
         style={{
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? "translateY(0)" : "translateY(32px)",

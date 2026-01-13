@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { projects as projectsContent } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
+import { TechDecorator } from "@/components/ui/tech-decorators"
 
 export function Projects() {
   const [isVisible, setIsVisible] = useState(false)
@@ -29,10 +30,41 @@ export function Projects() {
   return (
     <section
       ref={sectionRef}
-      className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24"
+      className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
+      {/* Subtle tech elements in background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[12%] right-[12%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 38s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+          {'{ }'}
+        </div>
+        <div className="absolute top-[24%] left-[10%] text-secondary/[0.28] text-5xl" style={{ animation: "float 34s ease-in-out infinite 8s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
+          →
+        </div>
+        <div className="absolute top-[38%] right-[16%] text-primary/[0.25] text-5xl font-mono" style={{ animation: "float 40s ease-in-out infinite 16s" }}>
+          {'</>'}
+        </div>
+        <div className="absolute top-[52%] left-[14%] text-accent/[0.30] text-6xl" style={{ animation: "float 36s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+          λ
+        </div>
+        <div className="absolute top-[66%] right-[18%] text-secondary/[0.25] text-4xl font-mono" style={{ animation: "float 42s ease-in-out infinite 32s" }}>
+          ƒ
+        </div>
+        <div className="absolute top-[78%] left-[22%] text-accent/[0.28] text-5xl font-mono" style={{ animation: "float 44s ease-in-out infinite 40s", textShadow: '0 0 28px oklch(0.72 0.06 75 / 0.35)' }}>
+          {'[]'}
+        </div>
+        <div className="absolute top-[88%] right-[12%] text-primary/[0.26] text-4xl" style={{ animation: "float 46s ease-in-out infinite 48s" }}>
+          ∞
+        </div>
+        <div className="absolute bottom-[15%] left-[10%] text-secondary/[0.27] text-5xl font-mono" style={{ animation: "float 48s ease-in-out infinite 56s", textShadow: '0 0 26px oklch(0.45 0.08 55 / 0.32)' }}>
+          {'()'}
+        </div>
+        <div className="absolute bottom-[5%] right-[24%] text-accent/[0.29] text-4xl" style={{ animation: "float 50s ease-in-out infinite 64s", textShadow: '0 0 27px oklch(0.72 0.06 75 / 0.38)' }}>
+          @
+        </div>
+      </div>
+
       <div
-        className="max-w-5xl mx-auto space-y-14"
+        className="max-w-5xl mx-auto space-y-14 relative z-10"
         style={{
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? "translateY(0)" : "translateY(32px)",
@@ -66,6 +98,11 @@ export function Projects() {
             >
               {/* Minimal ambient glow */}
               <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
+              
+              {/* Tech decorator in top-right corner only */}
+              <div className="absolute top-6 right-6 opacity-40 group-hover:opacity-70 transition-opacity duration-500">
+                <TechDecorator variant="git" size="lg" />
+              </div>
               
               <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
                 <div className="space-y-2">
