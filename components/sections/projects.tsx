@@ -29,6 +29,7 @@ export function Projects() {
 
   return (
     <section
+      id="projects"
       ref={sectionRef}
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
@@ -133,7 +134,7 @@ export function Projects() {
           ))}
         </div>
 
-        <div className="pt-48 flex justify-center">
+        <div className="pt-36 pb-12 flex justify-center">
           <ScrollIndicator />
         </div>
       </div>

@@ -20,7 +20,7 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 relative overflow-hidden">
+    <section id="hero" className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 relative overflow-hidden">
       {/* Subtle ambient lighting - like warm interior lighting */}
       <div className="absolute inset-0 opacity-20">
         <div

@@ -27,6 +27,7 @@ export function Contact() {
 
   return (
     <section
+      id="contact"
       ref={sectionRef}
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
