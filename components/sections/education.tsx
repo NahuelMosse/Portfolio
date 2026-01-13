@@ -29,6 +29,7 @@ export function Education() {
 
   return (
     <section
+      id="education"
       ref={sectionRef}
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
@@ -82,30 +83,44 @@ export function Education() {
             ))}
           </div>
 
-          <Card className="bg-card/60 backdrop-blur-sm border border-border/60 p-8 md:p-10 space-y-6 transition-all duration-500 hover:border-border hover:bg-card/70 group relative">
-            {/* Subtle ambient glow - minimal */}
-            <div className="absolute -top-10 -right-10 w-32 h-32 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
-            
-            {/* Tech decorator in top-right corner only */}
-            <div className="absolute top-6 right-6 opacity-50 group-hover:opacity-80 transition-opacity duration-500">
-              <TechDecorator variant="function" size="lg" />
-            </div>
-            
-            <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
-              <div className="space-y-3">
-                <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300 flex items-center gap-2">
-                  {education.degree.title}
-                </h3>
-                <p className="text-lg md:text-xl text-secondary font-medium">{education.degree.institution}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-muted-foreground px-3 py-1.5 bg-muted/30 rounded-full border border-border/40">{education.degree.period}</p>
-              </div>
-            </div>
-            <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">
-              {education.degree.description}
-            </p>
-          </Card>
+          {/* Render all degrees */}
+          <div className="space-y-6">
+            {education.degrees.map((degree, index) => (
+              <Card 
+                key={index}
+                className="bg-card/60 backdrop-blur-sm border border-border/60 p-8 md:p-10 space-y-6 transition-all duration-500 hover:border-border hover:bg-card/70 group relative"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? "translateY(0)" : "translateY(24px)",
+                  transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s`,
+                }}
+              >
+                {/* Subtle ambient glow - minimal */}
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
+                
+                {/* Tech decorator in top-right corner only */}
+                <div className="absolute top-6 right-6 opacity-50 group-hover:opacity-80 transition-opacity duration-500">
+                  <TechDecorator variant={index === 0 ? "function" : index === 1 ? "brackets" : "lambda"} size="lg" />
+                </div>
+                
+                <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
+                  <div className="space-y-3">
+                    <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300 flex items-center gap-2">
+                      {degree.title}
+                    </h3>
+                    <p className="text-lg md:text-xl text-secondary font-medium">{degree.institution}</p>
+                  </div>
+                  <div className="text-right space-y-2">
+                    <p className="text-sm text-muted-foreground px-3 py-1.5 bg-muted/30 rounded-full border border-border/40">{degree.period}</p>
+                    <p className="text-xs text-accent/90 font-medium px-3 py-1.5 bg-accent/10 rounded-full border border-accent/30">{degree.status}</p>
+                  </div>
+                </div>
+                <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">
+                  {degree.description}
+                </p>
+              </Card>
+            ))}
+          </div>
 
           <div className="space-y-8 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 pt-4">
             {education.conclusion.map((paragraph, index) => (
@@ -113,7 +128,7 @@ export function Education() {
             ))}
           </div>
 
-          <div className="pt-48 flex justify-center">
+          <div className="pt-36 pb-12 flex justify-center">
             <ScrollIndicator />
           </div>
         </div>
