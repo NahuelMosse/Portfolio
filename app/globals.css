@@ -147,3 +147,24 @@
   0%, 100% { transform: rotate(-2deg); }
   50% { transform: rotate(2deg); }
 }
+
+@keyframes code-flow {
+  0% { transform: translateY(0px); opacity: 0.3; }
+  50% { opacity: 0.5; }
+  100% { transform: translateY(-20px); opacity: 0; }
+}
+
+@keyframes binary-pulse {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes tech-glow {
+  0%, 100% { opacity: 0.2; filter: blur(20px); }
+  50% { opacity: 0.4; filter: blur(25px); }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
