@@ -64,6 +64,13 @@ export const education = {
       description: "Currently pursuing advanced coursework in software architecture, distributed systems, and computational theory. Maintaining a GPA above 8.5 with a merit-based scholarship. Leading study groups and collaborating on complex engineering challenges.",
     },
     {
+      title: "Advanced English",
+      institution: "Liceo Cultural Británico",
+      period: "March 2025 – November 2027",
+      status: "In Progress",
+      description: "English language studies and English literature. Currently completing the highest level in 2026 and preparing for the First Certificate in 2027.",
+    },
+    {
       title: "Computer Systems Analyst",
       institution: "University of Morón",
       period: "Completed December 2025",
@@ -85,36 +92,106 @@ export const education = {
 }
 
 // ============================================================================
-// PROJECTS - Professional work
+// PROJECTS - Professional and Personal work
 // ============================================================================
 
 export const projects = {
-  title: "Professional Projects",
-  intro: "Each project represents growth, responsibility, and the evolution of my technical expertise. Working at Kovix Consulting for over 3 years, I've contributed to large-scale B2C platforms serving millions of users, focusing on performance, scalability, and business impact.",
+  title: "Projects",
+  intro: "A collection of my professional and personal work. Each project represents growth, learning, and the practical application of my technical skills.",
   
-  items: [
-    {
-      title: "Frávega B2C – Large-Scale E-Commerce Platform",
-      period: "Jun 2022 – Present",
-      description: "Full Stack Developer working on a major Argentine e-commerce platform. Designed and maintained API contracts across multiple teams, optimized critical database queries, and planned high-impact production releases. Implemented complete Backend-for-Frontend (BFF) architecture for the Sellers module, actively mentored teammates, and improved code quality through comprehensive unit testing.",
-      technologies: ["Node.js", "NestJS", "Angular", "React", "TypeScript", "PostgreSQL", "Jest", "Vitest", "Tailwind CSS", "Webhooks"],
-      impact: "Simplified business processes by ~80%, reduced average processing time from several hours to under one hour (1026% improvement in receiving operations: from 7:48h to 46m average), implemented BFF supporting 40,000+ daily requests (1.2M monthly), and maintained system stability during peak traffic periods.",
-    },
-    {
-      title: "Jüsto B2C – Grocery Delivery Platform",
-      period: "2022 – 2023",
-      description: "Collaborated on technical design decisions and API contracts for core business workflows at a fast-growing grocery delivery startup. Estimated development efforts, coordinated task execution within the team, and supported multiple successful production deployments with a strong focus on stability and performance. Helped scale systems to handle massive growth without downtime.",
-      technologies: ["Node.js", "NestJS", "Angular", "React", "TypeScript", "PostgreSQL", "Jest", "Webhooks"],
-      impact: "Delivered 10+ production releases without major incidents, reduced end-to-end preparation time for key workflows by ~50%, and helped scale systems processing tens of millions of product operations during peak demand periods—turning historical sales peaks into normal operational days.",
-    },
-    {
-      title: "NASA Calendar – Personal Project",
-      period: "2023",
-      description: "A dynamic calendar-based web application that consumes NASA's Astronomy Picture of the Day API to render an interactive UI. Built with modern frontend technologies focusing on server-side rendering, responsive design, and seamless user experience. This personal project showcases my ability to work with external APIs and create polished, production-ready applications.",
-      technologies: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Server-Side Rendering"],
-      impact: "Demonstrates proficiency in modern frontend development, API integration, and creating intuitive user interfaces. Open source project available on GitHub.",
-    },
-  ],
+  professional: {
+    title: "Professional Experience",
+    intro: "Working at Kovix Consulting for over 3 years, I've contributed to large-scale B2C platforms serving millions of users. Each project taught me that great software isn't just about writing code—it's about understanding business needs, collaborating across teams, and delivering measurable results that matter.",
+
+    items: [
+      {
+        title: "Visma",
+        period: "Present",
+        description: "Currently working on Visma's enterprise solutions, focusing on scalable architecture and system integration for Nordic market operations.",
+        technologies: ["Node.js", "NestJS", "TypeScript", "PostgreSQL"],
+        impact: "Contributing to enterprise-grade software serving thousands of businesses across Scandinavia.",
+      },
+      {
+        title: "Frávega B2C – Large-Scale E-Commerce Platform",
+        period: "Jun 2022 – Present",
+        description: "Full Stack Developer working on a major Argentine e-commerce platform. Designed and maintained API contracts across multiple teams, optimized critical database queries, and planned high-impact production releases. Implemented complete Backend-for-Frontend (BFF) architecture for the Sellers module, actively mentored teammates, and improved code quality through comprehensive unit testing.",
+        technologies: ["Node.js", "NestJS", "Angular", "React", "TypeScript", "PostgreSQL", "Jest", "Vitest", "Tailwind CSS", "Webhooks"],
+        impact: "Simplified business processes by ~80%, reduced average processing time from several hours to under one hour (1026% improvement in receiving operations: from 7:48h to 46m average), implemented BFF supporting 40,000+ daily requests (1.2M monthly), and maintained system stability during peak traffic periods.",
+      },
+      {
+        title: "Jüsto B2C – Grocery Delivery Platform",
+        period: "2022 – 2023",
+        description: "Collaborated on technical design decisions and API contracts for core business workflows at a fast-growing grocery delivery startup. Estimated development efforts, coordinated task execution within the team, and supported multiple successful production deployments with a strong focus on stability and performance.",
+        technologies: ["Node.js", "NestJS", "Angular", "React", "TypeScript", "PostgreSQL", "Jest", "Webhooks"],
+        impact: "Delivered 10+ production releases without major incidents, reduced end-to-end preparation time for key workflows by ~50%, and helped scale systems processing tens of millions of product operations during peak demand periods.",
+      },
+      {
+        title: "Kovix Marketplace",
+        period: "2022",
+        description: "Internal marketplace platform development at Kovix Consulting, building core features and infrastructure for multi-vendor operations.",
+        technologies: ["Node.js", "NestJS", "React", "TypeScript", "PostgreSQL"],
+        impact: "Contributed to building foundational marketplace features and establishing development standards for the project.",
+      },
+    ],
+
+    conclusion: [
+      "These professional experiences shaped my understanding of software at scale. From database optimization to system architecture, from mentoring teammates to coordinating releases—I've learned to balance technical excellence with business impact, always focusing on solutions that deliver real value.",
+    ],
+  },
+  
+  personal: {
+    title: "Personal Projects",
+    intro: "Beyond professional work, I experiment with new technologies and build tools I find interesting. From fitness tracking to financial calculators, each project represents curiosity and continuous learning.",
+    
+    items: [
+      {
+        title: "Gym App",
+        period: "2024",
+        description: "Fitness tracking application designed to help users log workouts, track progress, and visualize their fitness journey over time.",
+        technologies: ["React", "TypeScript", "Next.js", "Tailwind CSS"],
+        impact: "Personal tool for tracking strength training progression with clean UI and data visualization.",
+      },
+      {
+        title: "Portfolio Website",
+        period: "2026",
+        description: "This website—a modern, nature-inspired portfolio built with Next.js, featuring smooth animations, glassmorphism effects, and responsive design.",
+        technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+        impact: "Showcases my work and technical skills with a unique design aesthetic and excellent user experience.",
+      },
+      {
+        title: "NASA Calendar",
+        period: "2023",
+        description: "A dynamic calendar-based web application that consumes NASA's Astronomy Picture of the Day API to render an interactive UI with server-side rendering.",
+        technologies: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Server-Side Rendering"],
+        impact: "Demonstrates proficiency in modern frontend development and API integration. Open source on GitHub.",
+      },
+      {
+        title: "Compound Interest Calculator",
+        period: "2024",
+        description: "Financial calculator for computing compound interest with customizable parameters, featuring interactive charts and detailed breakdown of calculations.",
+        technologies: ["React", "TypeScript", "Chart.js", "Tailwind CSS"],
+        impact: "Useful tool for financial planning and understanding the power of compound returns over time.",
+      },
+      {
+        title: "Git Tutorial",
+        period: "2023",
+        description: "Interactive Git tutorial and reference guide covering essential commands, workflows, and best practices for version control.",
+        technologies: ["HTML", "CSS", "JavaScript", "Markdown"],
+        impact: "Educational resource for developers learning Git fundamentals and advanced techniques.",
+      },
+      {
+        title: "Login WinAPI",
+        period: "2022",
+        description: "Windows desktop login application built using Windows API in C++, demonstrating low-level system programming and GUI development.",
+        technologies: ["C++", "Windows API", "Win32"],
+        impact: "Deep dive into Windows system programming and understanding OS-level authentication mechanisms.",
+      },
+    ],
+
+    conclusion: [
+      "What professional work taught me about scale and reliability, personal projects taught me about creativity and exploration. Together, they represent my commitment to growth—not just as an engineer building features, but as a craftsman refining my skills.",
+    ],
+  },
 }
 
 // ============================================================================
@@ -130,13 +207,139 @@ export const certifications = {
       title: "EF SET English Certificate – C2 Proficient",
       issuer: "EF Education First",
       year: "2026",
-      description: "Achieved C2 level proficiency (highest level on CEFR scale), demonstrating advanced English communication skills essential for international collaboration and technical documentation in global software teams.",
+      description: "C2 level proficiency (highest CEFR level).",
     },
     {
-      title: "National Mathematics & Physics Olympiad Finalist",
-      issuer: "OMA / OAF – Argentina",
-      year: "2017 – 2019",
-      description: "National runner-up in Mateclubes 2018, national finalist in Physics Olympiad (Games category, 2019), and finalist in Literature and Mathematics Olympiad 2018. Also competed at metropolitan level (2018, 2019) and achieved champion/runner-up positions in multiple Ematemática competitions at Colegio Emaús (2017-2019). These achievements demonstrate strong analytical thinking, problem-solving abilities, and competitive excellence.",
+      title: "Applied Software Architecture Course",
+      issuer: "Platzi",
+      year: "2026",
+      description: "Advanced architecture patterns and system design.",
+    },
+    {
+      title: "Software Architecture Fundamentals Course",
+      issuer: "Platzi",
+      year: "2026",
+      description: "Architecture principles and best practices.",
+    },
+    {
+      title: "Liceo Cultural Británico – Level 7",
+      issuer: "Liceo Cultural Británico",
+      year: "2025",
+      description: "Advanced English language and literature.",
+    },
+    {
+      title: "Liceo Cultural Británico – Level 6",
+      issuer: "Liceo Cultural Británico",
+      year: "2025",
+      description: "English studies towards First Certificate.",
+    },
+    {
+      title: "Software Architecture Fundamentals",
+      issuer: "Platzi",
+      year: "2023",
+      description: "Core architectural concepts and patterns.",
+    },
+    {
+      title: "Software Engineering Fundamentals",
+      issuer: "Platzi",
+      year: "2023",
+      description: "Engineering principles and methodologies.",
+    },
+    {
+      title: "Responsive Web Design",
+      issuer: "freeCodeCamp",
+      year: "2022",
+      description: "HTML5, CSS3, Flexbox, and CSS Grid.",
+    },
+    {
+      title: "National Physics Olympiad Finalist – Games Category",
+      issuer: "OAF (Olimpiada Argentina de Física)",
+      year: "2019",
+      description: "National finalist in Games category.",
+    },
+    {
+      title: "Metropolitan Mathematics Olympiad Participant",
+      issuer: "OMA (Olimpiada Matemática Argentina)",
+      year: "2019",
+      description: "Metropolitan level competition.",
+    },
+    {
+      title: "Ematematica Champion – Scientific Challenges",
+      issuer: "Colegio Emaús",
+      year: "2019",
+      description: "First place in scientific challenges.",
+    },
+    {
+      title: "Ematematica Champion – Third Round",
+      issuer: "Colegio Emaús",
+      year: "2019",
+      description: "Champion in third round.",
+    },
+    {
+      title: "Ematematica Champion – Second Round",
+      issuer: "Colegio Emaús",
+      year: "2019",
+      description: "Champion in second round.",
+    },
+    {
+      title: "Ematematica Runner-Up – First Round",
+      issuer: "Colegio Emaús",
+      year: "2019",
+      description: "Second place in first round.",
+    },
+    {
+      title: "National Runner-Up – Mateclubes Olympiad",
+      issuer: "OMA (Olimpiada Matemática Argentina)",
+      year: "2018",
+      description: "National second runner-up.",
+    },
+    {
+      title: "National Literature & Mathematics Olympiad Finalist",
+      issuer: "OMA (Olimpiada Matemática Argentina)",
+      year: "2018",
+      description: "National finalist.",
+    },
+    {
+      title: "Metropolitan Mathematics Olympiad Participant",
+      issuer: "OMA (Olimpiada Matemática Argentina)",
+      year: "2018",
+      description: "Metropolitan level competition.",
+    },
+    {
+      title: "Ematematica Champion – Scientific Challenges",
+      issuer: "Colegio Emaús",
+      year: "2018",
+      description: "First place in scientific challenges.",
+    },
+    {
+      title: "Ematematica Second Runner-Up – Third Round",
+      issuer: "Colegio Emaús",
+      year: "2018",
+      description: "Third place in third round.",
+    },
+    {
+      title: "Ematematica Champion – Second Round",
+      issuer: "Colegio Emaús",
+      year: "2018",
+      description: "Champion in second round.",
+    },
+    {
+      title: "Ematematica Second Runner-Up – First Round",
+      issuer: "Colegio Emaús",
+      year: "2018",
+      description: "Third place in first round.",
+    },
+    {
+      title: "National Mateclubes Olympiad Finalist",
+      issuer: "OMA (Olimpiada Matemática Argentina)",
+      year: "2017",
+      description: "National finalist.",
+    },
+    {
+      title: "Ematematica Champion",
+      issuer: "Colegio Emaús",
+      year: "2017",
+      description: "Champion.",
     },
   ],
   

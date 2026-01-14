@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { education } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
-import { TechDecorator } from "@/components/ui/tech-decorators"
 
 export function Education() {
   const [isVisible, setIsVisible] = useState(false)
@@ -98,11 +97,6 @@ export function Education() {
                 {/* Subtle ambient glow - minimal */}
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
                 
-                {/* Tech decorator in top-right corner only */}
-                <div className="absolute top-6 right-6 opacity-50 group-hover:opacity-80 transition-opacity duration-500">
-                  <TechDecorator variant={index === 0 ? "function" : index === 1 ? "brackets" : "lambda"} size="lg" />
-                </div>
-                
                 <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
                   <div className="space-y-3">
                     <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300 flex items-center gap-2">
@@ -110,9 +104,9 @@ export function Education() {
                     </h3>
                     <p className="text-lg md:text-xl text-secondary font-medium">{degree.institution}</p>
                   </div>
-                  <div className="text-right space-y-2">
-                    <p className="text-sm text-muted-foreground px-3 py-1.5 bg-muted/30 rounded-full border border-border/40">{degree.period}</p>
-                    <p className="text-xs text-accent/90 font-medium px-3 py-1.5 bg-accent/10 rounded-full border border-accent/30">{degree.status}</p>
+                  <div className="flex flex-col items-end gap-2">
+                    <p className="text-sm text-muted-foreground px-3 py-1.5 bg-muted/30 rounded-full border border-border/40 w-fit">{degree.period}</p>
+                    <p className="text-xs text-accent/90 font-medium px-3 py-1.5 bg-accent/10 rounded-full border border-accent/30 w-fit">{degree.status}</p>
                   </div>
                 </div>
                 <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">
