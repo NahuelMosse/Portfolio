@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { certifications as certificationsContent } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
-import { TechDecorator } from "@/components/ui/tech-decorators"
 
 export function Certifications() {
   const [isVisible, setIsVisible] = useState(false)
@@ -83,35 +82,30 @@ export function Certifications() {
           {certificationsContent.intro}
         </p>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-4">
           {certificationsContent.items.map((cert, index) => (
             <Card
               key={index}
-              className="bg-card/60 backdrop-blur-sm border border-border/60 p-6 md:p-7 space-y-4 group transition-all duration-500 hover:border-border hover:bg-card/70 relative"
+              className="bg-card/60 backdrop-blur-sm border border-border/60 p-3 space-y-1.5 group transition-all duration-500 hover:border-border hover:bg-card/70 relative"
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s`,
+                transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.05}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.05}s`,
               }}
             >
               {/* Subtle glow on hover */}
               <div className="absolute -top-10 -right-10 w-24 h-24 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
               
-              {/* Tech decorator in top-right corner only */}
-              <div className="absolute top-4 right-4 opacity-50 group-hover:opacity-80 transition-opacity duration-500">
-                <TechDecorator variant={index % 2 === 0 ? 'brackets' : 'lambda'} size="lg" />
-              </div>
-              
-              <div className="space-y-3 relative z-10">
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300 flex items-center gap-2">
-                  {cert.title}
-                </h3>
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span className="font-medium text-secondary">{cert.issuer}</span>
-                  <span className="px-2.5 py-1 bg-muted/30 text-foreground/80 rounded-full border border-border/40 text-xs">{cert.year}</span>
+              <div className="space-y-1.5 relative z-10">
+                <div className="flex items-start justify-between gap-1.5">
+                  <h3 className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors duration-300 leading-tight flex-1">
+                    {cert.title}
+                  </h3>
+                  <span className="px-1.5 py-0.5 bg-muted/30 text-foreground/80 rounded-full border border-border/40 text-[10px] shrink-0 font-medium">{cert.year}</span>
                 </div>
+                <p className="text-[11px] text-secondary/80 font-medium truncate">{cert.issuer}</p>
               </div>
-              <p className="text-sm md:text-base text-foreground/70 leading-relaxed relative z-10">{cert.description}</p>
+              <p className="text-[11px] text-foreground/60 leading-relaxed relative z-10 line-clamp-2">{cert.description}</p>
             </Card>
           ))}
         </div>

@@ -3,10 +3,18 @@
 import { useEffect, useRef, useState } from "react"
 import { present } from "@/lib/content"
 import { ScrollIndicator } from "../ui/scroll-indicator"
+import { PhotoGallery } from "../ui/photo-gallery"
 
 export function Present() {
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
+
+  const images = [
+    { src: "/present-photo-1.jpeg", alt: "Current workspace" },
+    { src: "/present-photo-2.jpeg", alt: "Development setup" },
+    { src: "/present-photo-3.jpeg", alt: "Coding environment" },
+    { src: "/present-photo-4.jpeg", alt: "Tech stack" },
+  ]
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -73,6 +81,9 @@ export function Present() {
           </h2>
           <div className="w-20 h-0.5 bg-accent/60 rounded-full" />
         </div>
+
+        {/* Photo gallery */}
+        <PhotoGallery images={images} isVisible={isVisible} />
 
         <div className="space-y-10 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80">
           {present.paragraphs.map((paragraph, index) => (

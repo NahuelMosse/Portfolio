@@ -1,7 +1,8 @@
 import { Hero } from "@/components/sections/hero"
 import { Origins } from "@/components/sections/origins"
 import { Education } from "@/components/sections/education"
-import { Projects } from "@/components/sections/projects"
+import { ProfessionalProjects } from "@/components/sections/professional-projects"
+import { PersonalProjects } from "@/components/sections/personal-projects"
 import { Certifications } from "@/components/sections/certifications"
 import { Present } from "@/components/sections/present"
 import { Contact } from "@/components/sections/contact"
@@ -15,7 +16,8 @@ export default function Home() {
         <Hero />
         <Origins />
         <Education />
-        <Projects />
+        <ProfessionalProjects />
+        <PersonalProjects />
         <Certifications />
         <Present />
         <Contact />
