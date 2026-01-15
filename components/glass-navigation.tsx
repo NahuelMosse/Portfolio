@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { INTERSECTION_CONFIG, SCROLL_CONFIG, Z_INDEX } from "@/lib/constants"
 
 const sections = [
   { id: "hero", label: "Home", icon: "◆" },
@@ -49,14 +50,14 @@ export function GlassNavigation() {
           const bestSection = intersecting.reduce((prev, current) => {
             // Section that's higher in viewport (closer to 0) wins
             // But only if it has reasonable visibility
-            if (current.top < 200 && current.top > -100) {
-              if (prev.top < 200 && prev.top > -100) {
+            if (current.top < SCROLL_CONFIG.SECTION_TOP_MAX && current.top > SCROLL_CONFIG.SECTION_TOP_MIN) {
+              if (prev.top < SCROLL_CONFIG.SECTION_TOP_MAX && prev.top > SCROLL_CONFIG.SECTION_TOP_MIN) {
                 // Both near top, choose the one higher up
                 return current.top > prev.top ? current : prev
               }
               return current
             }
-            if (prev.top < 200 && prev.top > -100) {
+            if (prev.top < SCROLL_CONFIG.SECTION_TOP_MAX && prev.top > SCROLL_CONFIG.SECTION_TOP_MIN) {
               return prev
             }
             // Neither near ideal range, choose based on intersection ratio
@@ -66,8 +67,8 @@ export function GlassNavigation() {
         }
       },
       { 
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        rootMargin: "-100px 0px -50% 0px"
+        threshold: INTERSECTION_CONFIG.NAVIGATION_THRESHOLDS,
+        rootMargin: INTERSECTION_CONFIG.ROOT_MARGIN
       }
     )
 
@@ -87,7 +88,12 @@ export function GlassNavigation() {
   }
 
   return (
-    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+    <nav 
+      className="fixed bottom-6 left-1/2 -translate-x-1/2" 
+      style={{ zIndex: Z_INDEX.NAVIGATION }}
+      role="navigation"
+      aria-label="Page sections navigation"
+    >
       <div 
         className={`flex items-center gap-0.5 lg:gap-1 px-2 lg:px-3 py-1.5 lg:py-2 rounded-full bg-background/30 backdrop-blur-2xl border border-border/20 shadow-2xl transition-all duration-500 ${
           showNav ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-4 pointer-events-none"

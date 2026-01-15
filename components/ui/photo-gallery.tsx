@@ -1,45 +1,32 @@
 "use client"
 
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import { createPortal } from "react-dom"
+import { Z_INDEX } from "@/lib/constants"
+import { useGalleryState, useKeyboardNavigation, useImageNavigation } from "@/hooks/use-gallery-navigation"
 
 interface PhotoGalleryProps {
   images: Array<{ src: string; alt: string }>
   isVisible: boolean
 }
 
+/**
+ * Photo Gallery Component
+ * 
+ * Refactored following Single Responsibility Principle
+ * - State management delegated to useGalleryState
+ * - Keyboard handling delegated to useKeyboardNavigation
+ * - Navigation logic delegated to useImageNavigation
+ */
 export function PhotoGallery({ images, isVisible }: PhotoGalleryProps) {
-  const [selectedImage, setSelectedImage] = useState<number | null>(null)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (selectedImage === null) return
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        setSelectedImage((prev) => (prev! > 0 ? prev! - 1 : images.length - 1))
-      } else if (e.key === "ArrowRight") {
-        setSelectedImage((prev) => (prev! < images.length - 1 ? prev! + 1 : 0))
-      } else if (e.key === "Escape") {
-        setSelectedImage(null)
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [selectedImage, images.length])
-
-  const goToPrevImage = () => {
-    setSelectedImage((prev) => (prev! > 0 ? prev! - 1 : images.length - 1))
-  }
-
-  const goToNextImage = () => {
-    setSelectedImage((prev) => (prev! < images.length - 1 ? prev! + 1 : 0))
-  }
+  const { selectedImage, setSelectedImage, mounted, openImage, closeImage } = useGalleryState()
+  const { goToPrevious, goToNext } = useImageNavigation(selectedImage, images.length, setSelectedImage)
+  
+  useKeyboardNavigation(
+    selectedImage !== null,
+    goToPrevious,
+    goToNext,
+    closeImage
+  )
 
   return (
     <>
@@ -54,13 +41,15 @@ export function PhotoGallery({ images, isVisible }: PhotoGalleryProps) {
       >
         {images.map((image, index) => (
           <button
-            key={index}
-            onClick={() => setSelectedImage(index)}
+            key={image.src}
+            onClick={() => openImage(index)}
             className="relative group aspect-[4/3] rounded-lg overflow-hidden border border-border/40 bg-card/30 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:border-accent/60"
+            aria-label={`View ${image.alt} in full size`}
           >
             <img 
               src={image.src} 
               alt={image.alt}
+              loading="lazy"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent opacity-50 group-hover:opacity-30 transition-opacity" />
@@ -76,12 +65,17 @@ export function PhotoGallery({ images, isVisible }: PhotoGalleryProps) {
       {/* Image Modal */}
       {mounted && selectedImage !== null && createPortal(
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-background/30 backdrop-blur-2xl"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 flex items-center justify-center bg-background/30 backdrop-blur-2xl"
+          onClick={closeImage}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image gallery"
+          style={{ zIndex: Z_INDEX.MODAL }}
         >
           <button
             className="absolute top-4 right-4 text-foreground/60 hover:text-foreground text-4xl font-light leading-none w-12 h-12 flex items-center justify-center transition-colors z-10"
-            onClick={() => setSelectedImage(null)}
+            onClick={closeImage}
+            aria-label="Close image gallery"
           >
             ×
           </button>
@@ -90,7 +84,7 @@ export function PhotoGallery({ images, isVisible }: PhotoGalleryProps) {
           <button
             onClick={(e) => {
               e.stopPropagation()
-              goToPrevImage()
+              goToPrevious()
             }}
             className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/60 hover:text-foreground text-5xl font-light leading-none w-14 h-14 flex items-center justify-center transition-all hover:scale-110 z-10"
             aria-label="Previous image"
@@ -102,7 +96,7 @@ export function PhotoGallery({ images, isVisible }: PhotoGalleryProps) {
           <button
             onClick={(e) => {
               e.stopPropagation()
-              goToNextImage()
+              goToNext()
             }}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/60 hover:text-foreground text-5xl font-light leading-none w-14 h-14 flex items-center justify-center transition-all hover:scale-110 z-10"
             aria-label="Next image"
@@ -118,6 +112,7 @@ export function PhotoGallery({ images, isVisible }: PhotoGalleryProps) {
           <img 
             src={images[selectedImage].src}
             alt={images[selectedImage].alt}
+            loading="lazy"
             className="max-w-[90vw] max-h-[75vh] object-contain rounded-lg"
             onClick={(e) => e.stopPropagation()}
           />

@@ -1,29 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { personalInfo, contact } from "@/lib/content"
+import { useSectionVisibility } from "@/hooks/use-section-visibility"
 
 export function Contact() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.3 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
+  const { isVisible, sectionRef } = useSectionVisibility()
 
   return (
     <section
@@ -32,7 +14,7 @@ export function Contact() {
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
       {/* Subtle tech elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-[28%] left-[14%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 44s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           @
         </div>
@@ -78,18 +60,18 @@ export function Contact() {
             className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8 py-6 text-lg font-medium transition-all duration-300 hover:scale-[1.02] border border-secondary/40"
             asChild
           >
-            <a href={contact.cta.primary.href}>{contact.cta.primary.text}</a>
+            <a href={contact.cta.primary.href} aria-label={`${contact.cta.primary.text} - Opens email client`}>{contact.cta.primary.text}</a>
           </Button>
 
-          {contact.cta.secondary.map((link, index) => (
+          {contact.cta.secondary.map((link) => (
             <Button
-              key={index}
+              key={link.href}
               size="lg"
               variant="outline"
               className="border border-border/60 hover:bg-muted/30 hover:border-border px-8 py-6 text-lg font-medium transition-all duration-300 hover:scale-[1.02] bg-transparent"
               asChild
             >
-              <a href={link.href} target="_blank" rel="noopener noreferrer">
+              <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`${link.text} - Opens in new tab`}>
                 {link.text}
               </a>
             </Button>

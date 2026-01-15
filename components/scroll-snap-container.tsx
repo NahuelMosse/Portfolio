@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { ANIMATION_TIMING, SCROLL_CONFIG } from "@/lib/constants"
 
 interface ScrollSnapContainerProps {
   children: React.ReactNode
@@ -16,8 +17,16 @@ export function ScrollSnapContainer({ children }: ScrollSnapContainerProps) {
     const container = containerRef.current
     if (!container) return
 
-    // Get all sections
-    sectionsRef.current = Array.from(container.querySelectorAll("section"))
+    // Get all sections - usar requestIdleCallback para no bloquear
+    const initSections = () => {
+      sectionsRef.current = Array.from(container.querySelectorAll("section"))
+    }
+    
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(initSections)
+    } else {
+      setTimeout(initSections, 1)
+    }
 
     const snapToSection = (index: number) => {
       if (index < 0 || index >= sectionsRef.current.length) return
@@ -37,7 +46,7 @@ export function ScrollSnapContainer({ children }: ScrollSnapContainerProps) {
       // Reset scrolling flag after animation
       setTimeout(() => {
         isSnapScrollingRef.current = false
-      }, 1000)
+      }, ANIMATION_TIMING.SNAP_TIMEOUT)
     }
 
     const getCurrentVisibleSection = (): number => {
@@ -68,7 +77,7 @@ export function ScrollSnapContainer({ children }: ScrollSnapContainerProps) {
       const sectionBottom = rect.bottom
       
       // Considera que está al final si queda menos de 50px
-      return sectionBottom - windowHeight < 50
+      return sectionBottom - windowHeight < SCROLL_CONFIG.SECTION_BOTTOM_THRESHOLD
     }
 
     const isAtSectionTop = (sectionIndex: number): boolean => {
@@ -78,7 +87,7 @@ export function ScrollSnapContainer({ children }: ScrollSnapContainerProps) {
       const rect = section.getBoundingClientRect()
       
       // Considera que está al inicio si está a menos de 50px del top
-      return rect.top > -50 && rect.top < 50
+      return rect.top > -SCROLL_CONFIG.SECTION_TOP_THRESHOLD && rect.top < SCROLL_CONFIG.SECTION_TOP_THRESHOLD
     }
 
     const handleWheel = (e: WheelEvent) => {
@@ -133,11 +142,9 @@ export function ScrollSnapContainer({ children }: ScrollSnapContainerProps) {
 
     // Handle touch for mobile
     let touchStartY = 0
-    let touchStartTime = 0
 
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY
-      touchStartTime = Date.now()
     }
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -155,14 +162,14 @@ export function ScrollSnapContainer({ children }: ScrollSnapContainerProps) {
 
       // Si hace swipe hacia abajo y está al final
       if (swipingDown && isAtSectionBottom(visibleSection)) {
-        if (visibleSection < sectionsRef.current.length - 1 && Math.abs(deltaY) > 50) {
+        if (visibleSection < sectionsRef.current.length - 1 && Math.abs(deltaY) > SCROLL_CONFIG.SECTION_TOP_THRESHOLD) {
           e.preventDefault()
           snapToSection(visibleSection + 1)
         }
       }
       // Si hace swipe hacia arriba y está al inicio
       else if (swipingUp && isAtSectionTop(visibleSection)) {
-        if (visibleSection > 0 && Math.abs(deltaY) > 50) {
+        if (visibleSection > 0 && Math.abs(deltaY) > SCROLL_CONFIG.SECTION_TOP_THRESHOLD) {
           e.preventDefault()
           snapToSection(visibleSection - 1)
         }
