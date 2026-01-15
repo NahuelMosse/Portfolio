@@ -129,6 +129,29 @@
       radial-gradient(circle at 80% 20%, oklch(0.19 0.035 170) 0px, transparent 45%);
     background-attachment: fixed;
   }
+  
+  /* Optimizar animaciones para mejor rendimiento */
+  section {
+    will-change: opacity, transform;
+    contain: layout style paint;
+  }
+  
+  /* Optimizar scroll suave */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Ocultar scrollbar en todos los navegadores */
+  html,
+  body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
 }
 
 /* Organic animations for more life */
@@ -167,4 +190,16 @@
 @keyframes blink {
   0%, 50% { opacity: 1; }
   51%, 100% { opacity: 0; }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

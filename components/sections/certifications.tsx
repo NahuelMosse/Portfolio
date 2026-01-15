@@ -1,30 +1,12 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { certifications as certificationsContent } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
+import { useSectionVisibility } from "@/hooks/use-section-visibility"
 
 export function Certifications() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.3 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
+  const { isVisible, sectionRef } = useSectionVisibility()
 
   return (
     <section
@@ -33,7 +15,7 @@ export function Certifications() {
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
       {/* Floating tech symbols in background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-[15%] right-[14%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 40s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'</>'}
         </div>
@@ -85,7 +67,7 @@ export function Certifications() {
         <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-4">
           {certificationsContent.items.map((cert, index) => (
             <Card
-              key={index}
+              key={cert.id}
               className="bg-card/60 backdrop-blur-sm border border-border/60 p-3 space-y-1.5 group transition-all duration-500 hover:border-border hover:bg-card/70 relative"
               style={{
                 opacity: isVisible ? 1 : 0,
@@ -111,8 +93,8 @@ export function Certifications() {
         </div>
 
         <div className="pt-8 space-y-8 text-lg md:text-xl leading-relaxed text-foreground/80">
-          {certificationsContent.conclusion.map((paragraph, index) => (
-            <p key={index} className="text-pretty">{paragraph}</p>
+          {certificationsContent.conclusion.map((paragraph) => (
+            <p key={paragraph.slice(0, 50)} className="text-pretty">{paragraph}</p>
           ))}
         </div>
 

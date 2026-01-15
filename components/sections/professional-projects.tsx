@@ -1,31 +1,14 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
-import { projects as projectsContent } from "@/lib/content"
+import { projects as projectsContent, type Project } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import { TechDecorator } from "@/components/ui/tech-decorators"
+import { useSectionVisibility } from "@/hooks/use-section-visibility"
+import { INTERSECTION_CONFIG } from "@/lib/constants"
 
 export function ProfessionalProjects() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.2 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
+  const { isVisible, sectionRef } = useSectionVisibility(INTERSECTION_CONFIG.PROJECTS_THRESHOLD)
 
   return (
     <section
@@ -34,7 +17,7 @@ export function ProfessionalProjects() {
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
       {/* Subtle tech elements in background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-[15%] right-[12%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 38s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'{ }'}
         </div>
@@ -75,9 +58,9 @@ export function ProfessionalProjects() {
         </p>
 
         <div className="grid gap-6 md:gap-8">
-          {projectsContent.professional.items.map((project, index) => (
+          {projectsContent.professional.items.map((project: Project, index: number) => (
             <Card
-              key={index}
+              key={project.id}
               className="bg-card/60 backdrop-blur-sm border border-border/60 p-6 md:p-8 space-y-5 group transition-all duration-500 hover:border-border hover:bg-card/70 relative"
               style={{
                 opacity: isVisible ? 1 : 0,
@@ -121,8 +104,8 @@ export function ProfessionalProjects() {
         </div>
 
         <div className="space-y-8 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 pt-4">
-          {projectsContent.professional.conclusion.map((paragraph, index) => (
-            <p key={index} className="text-pretty">
+          {projectsContent.professional.conclusion.map((paragraph) => (
+            <p key={paragraph.slice(0, 50)} className="text-pretty">
               {paragraph}
             </p>
           ))}

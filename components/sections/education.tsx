@@ -1,30 +1,12 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { education } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
+import { useSectionVisibility } from "@/hooks/use-section-visibility"
 
 export function Education() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.3 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
+  const { isVisible, sectionRef } = useSectionVisibility()
 
   return (
     <section
@@ -33,7 +15,7 @@ export function Education() {
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
       {/* Floating tech symbols in background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-[18%] right-[12%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 40s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'()'}
         </div>
@@ -77,8 +59,8 @@ export function Education() {
 
         <div className="space-y-10">
           <div className="space-y-8 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80">
-            {education.intro.map((paragraph, index) => (
-              <p key={index} className="text-pretty">{paragraph}</p>
+            {education.intro.map((paragraph) => (
+              <p key={paragraph.slice(0, 50)} className="text-pretty">{paragraph}</p>
             ))}
           </div>
 
@@ -86,7 +68,7 @@ export function Education() {
           <div className="space-y-6">
             {education.degrees.map((degree, index) => (
               <Card 
-                key={index}
+                key={degree.id}
                 className="bg-card/60 backdrop-blur-sm border border-border/60 p-8 md:p-10 space-y-6 transition-all duration-500 hover:border-border hover:bg-card/70 group relative"
                 style={{
                   opacity: isVisible ? 1 : 0,
@@ -117,8 +99,8 @@ export function Education() {
           </div>
 
           <div className="space-y-8 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 pt-4">
-            {education.conclusion.map((paragraph, index) => (
-              <p key={index} className="text-pretty">{paragraph}</p>
+            {education.conclusion.map((paragraph) => (
+              <p key={paragraph.slice(0, 50)} className="text-pretty">{paragraph}</p>
             ))}
           </div>
 

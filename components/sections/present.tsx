@@ -1,37 +1,19 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { present } from "@/lib/content"
 import { ScrollIndicator } from "../ui/scroll-indicator"
 import { PhotoGallery } from "../ui/photo-gallery"
+import { useSectionVisibility } from "@/hooks/use-section-visibility"
 
 export function Present() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
+  const { isVisible, sectionRef } = useSectionVisibility()
 
   const images = [
-    { src: "/present-photo-1.jpeg", alt: "Current workspace" },
-    { src: "/present-photo-2.jpeg", alt: "Development setup" },
-    { src: "/present-photo-3.jpeg", alt: "Coding environment" },
-    { src: "/present-photo-4.jpeg", alt: "Tech stack" },
+    { src: "/present-photo-1.webp", alt: "Current workspace" },
+    { src: "/present-photo-2.webp", alt: "Development setup" },
+    { src: "/present-photo-3.webp", alt: "Coding environment" },
+    { src: "/present-photo-4.webp", alt: "Tech stack" },
   ]
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.3 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section
@@ -40,7 +22,7 @@ export function Present() {
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
       {/* Floating tech symbols in background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-[18%] right-[16%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 42s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'{ }'}
         </div>
@@ -86,8 +68,8 @@ export function Present() {
         <PhotoGallery images={images} isVisible={isVisible} />
 
         <div className="space-y-10 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80">
-          {present.paragraphs.map((paragraph, index) => (
-            <p key={index} className="text-pretty">{paragraph}</p>
+          {present.paragraphs.map((paragraph) => (
+            <p key={paragraph.slice(0, 50)} className="text-pretty">{paragraph}</p>
           ))}
 
           <div className="pt-2">
@@ -97,7 +79,7 @@ export function Present() {
           <ul className="space-y-6 pl-6 border-l border-border/60 relative">
             {present.interests.items.map((interest, index) => (
               <li 
-                key={index} 
+                key={interest.id} 
                 className="text-pretty group relative"
                 style={{
                   opacity: isVisible ? 1 : 0,

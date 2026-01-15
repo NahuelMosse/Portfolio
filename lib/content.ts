@@ -6,6 +6,27 @@
  */
 
 // ============================================================================
+// TYPE DEFINITIONS
+// ============================================================================
+
+export interface Project {
+  id: string
+  title: string
+  period: string
+  description: string
+  technologies: string[]
+  impact: string
+}
+
+export interface Certification {
+  id: string
+  title: string
+  issuer: string
+  year: string
+  description: string
+}
+
+// ============================================================================
 // PERSONAL INFORMATION
 // ============================================================================
 
@@ -57,6 +78,7 @@ export const education = {
   
   degrees: [
     {
+      id: "degree-computer-engineering",
       title: "Computer Engineering",
       institution: "University of Morón",
       period: "March 2022 – Present",
@@ -64,6 +86,7 @@ export const education = {
       description: "Currently pursuing advanced coursework in software architecture, distributed systems, and computational theory. Maintaining a GPA above 8.5 with a merit-based scholarship. Leading study groups and collaborating on complex engineering challenges.",
     },
     {
+      id: "degree-advanced-english",
       title: "Advanced English",
       institution: "Liceo Cultural Británico",
       period: "March 2025 – November 2027",
@@ -71,6 +94,7 @@ export const education = {
       description: "English language studies and English literature. Currently completing the highest level in 2026 and preparing for the First Certificate in 2027.",
     },
     {
+      id: "degree-systems-analyst",
       title: "Computer Systems Analyst",
       institution: "University of Morón",
       period: "Completed December 2025",
@@ -78,6 +102,7 @@ export const education = {
       description: "Completed comprehensive studies in systems analysis, software development, database design, and project management. Graduated with a merit-based scholarship for academic excellence (GPA above 8.5). Developed strong foundations in full-stack development and system architecture.",
     },
     {
+      id: "degree-electromechanical",
       title: "Electromechanical Technician",
       institution: "Colegio Emaús",
       period: "2015 – 2021",
@@ -105,6 +130,7 @@ export const projects = {
 
     items: [
       {
+        id: "project-visma",
         title: "Visma",
         period: "Present",
         description: "Currently working on Visma's enterprise solutions, focusing on scalable architecture and system integration for Nordic market operations.",
@@ -112,6 +138,7 @@ export const projects = {
         impact: "Contributing to enterprise-grade software serving thousands of businesses across Scandinavia.",
       },
       {
+        id: "project-fravega",
         title: "Frávega B2C – Large-Scale E-Commerce Platform",
         period: "Jun 2022 – Present",
         description: "Full Stack Developer working on a major Argentine e-commerce platform. Designed and maintained API contracts across multiple teams, optimized critical database queries, and planned high-impact production releases. Implemented complete Backend-for-Frontend (BFF) architecture for the Sellers module, actively mentored teammates, and improved code quality through comprehensive unit testing.",
@@ -119,6 +146,7 @@ export const projects = {
         impact: "Simplified business processes by ~80%, reduced average processing time from several hours to under one hour (1026% improvement in receiving operations: from 7:48h to 46m average), implemented BFF supporting 40,000+ daily requests (1.2M monthly), and maintained system stability during peak traffic periods.",
       },
       {
+        id: "project-justo",
         title: "Jüsto B2C – Grocery Delivery Platform",
         period: "2022 – 2023",
         description: "Collaborated on technical design decisions and API contracts for core business workflows at a fast-growing grocery delivery startup. Estimated development efforts, coordinated task execution within the team, and supported multiple successful production deployments with a strong focus on stability and performance.",
@@ -126,6 +154,7 @@ export const projects = {
         impact: "Delivered 10+ production releases without major incidents, reduced end-to-end preparation time for key workflows by ~50%, and helped scale systems processing tens of millions of product operations during peak demand periods.",
       },
       {
+        id: "project-kovix",
         title: "Kovix Marketplace",
         period: "2022",
         description: "Internal marketplace platform development at Kovix Consulting, building core features and infrastructure for multi-vendor operations.",
@@ -145,6 +174,7 @@ export const projects = {
     
     items: [
       {
+        id: "personal-gym-app",
         title: "Gym App",
         period: "2024",
         description: "Fitness tracking application designed to help users log workouts, track progress, and visualize their fitness journey over time.",
@@ -152,6 +182,7 @@ export const projects = {
         impact: "Personal tool for tracking strength training progression with clean UI and data visualization.",
       },
       {
+        id: "personal-portfolio",
         title: "Portfolio Website",
         period: "2026",
         description: "This website—a modern, nature-inspired portfolio built with Next.js, featuring smooth animations, glassmorphism effects, and responsive design.",
@@ -159,6 +190,7 @@ export const projects = {
         impact: "Showcases my work and technical skills with a unique design aesthetic and excellent user experience.",
       },
       {
+        id: "personal-nasa-calendar",
         title: "NASA Calendar",
         period: "2023",
         description: "A dynamic calendar-based web application that consumes NASA's Astronomy Picture of the Day API to render an interactive UI with server-side rendering.",
@@ -166,6 +198,7 @@ export const projects = {
         impact: "Demonstrates proficiency in modern frontend development and API integration. Open source on GitHub.",
       },
       {
+        id: "personal-interest-calculator",
         title: "Compound Interest Calculator",
         period: "2024",
         description: "Financial calculator for computing compound interest with customizable parameters, featuring interactive charts and detailed breakdown of calculations.",
@@ -173,6 +206,7 @@ export const projects = {
         impact: "Useful tool for financial planning and understanding the power of compound returns over time.",
       },
       {
+        id: "personal-git-tutorial",
         title: "Git Tutorial",
         period: "2023",
         description: "Interactive Git tutorial and reference guide covering essential commands, workflows, and best practices for version control.",
@@ -180,6 +214,7 @@ export const projects = {
         impact: "Educational resource for developers learning Git fundamentals and advanced techniques.",
       },
       {
+        id: "personal-winapi-login",
         title: "Login WinAPI",
         period: "2022",
         description: "Windows desktop login application built using Windows API in C++, demonstrating low-level system programming and GUI development.",
@@ -204,138 +239,161 @@ export const certifications = {
   
   items: [
     {
+      id: "cert-efset-c2",
       title: "EF SET English Certificate – C2 Proficient",
       issuer: "EF Education First",
       year: "2026",
       description: "C2 level proficiency (highest CEFR level).",
     },
     {
+      id: "cert-applied-architecture",
       title: "Applied Software Architecture Course",
       issuer: "Platzi",
       year: "2026",
       description: "Advanced architecture patterns and system design.",
     },
     {
+      id: "cert-architecture-fundamentals-2026",
       title: "Software Architecture Fundamentals Course",
       issuer: "Platzi",
       year: "2026",
       description: "Architecture principles and best practices.",
     },
     {
+      id: "cert-liceo-level-7",
       title: "Liceo Cultural Británico – Level 7",
       issuer: "Liceo Cultural Británico",
       year: "2025",
       description: "Advanced English language and literature.",
     },
     {
+      id: "cert-liceo-level-6",
       title: "Liceo Cultural Británico – Level 6",
       issuer: "Liceo Cultural Británico",
       year: "2025",
       description: "English studies towards First Certificate.",
     },
     {
+      id: "cert-architecture-fundamentals-2023",
       title: "Software Architecture Fundamentals",
       issuer: "Platzi",
       year: "2023",
       description: "Core architectural concepts and patterns.",
     },
     {
+      id: "cert-engineering-fundamentals",
       title: "Software Engineering Fundamentals",
       issuer: "Platzi",
       year: "2023",
       description: "Engineering principles and methodologies.",
     },
     {
+      id: "cert-freecodecamp-responsive",
       title: "Responsive Web Design",
       issuer: "freeCodeCamp",
       year: "2022",
       description: "HTML5, CSS3, Flexbox, and CSS Grid.",
     },
     {
+      id: "award-physics-olympiad-2019",
       title: "National Physics Olympiad Finalist – Games Category",
       issuer: "OAF (Olimpiada Argentina de Física)",
       year: "2019",
       description: "National finalist in Games category.",
     },
     {
+      id: "award-metro-math-2019",
       title: "Metropolitan Mathematics Olympiad Participant",
       issuer: "OMA (Olimpiada Matemática Argentina)",
       year: "2019",
       description: "Metropolitan level competition.",
     },
     {
+      id: "award-ematematica-scientific-2019",
       title: "Ematematica Champion – Scientific Challenges",
       issuer: "Colegio Emaús",
       year: "2019",
       description: "First place in scientific challenges.",
     },
     {
+      id: "award-ematematica-third-2019",
       title: "Ematematica Champion – Third Round",
       issuer: "Colegio Emaús",
       year: "2019",
       description: "Champion in third round.",
     },
     {
+      id: "award-ematematica-second-2019",
       title: "Ematematica Champion – Second Round",
       issuer: "Colegio Emaús",
       year: "2019",
       description: "Champion in second round.",
     },
     {
+      id: "award-ematematica-first-2019",
       title: "Ematematica Runner-Up – First Round",
       issuer: "Colegio Emaús",
       year: "2019",
       description: "Second place in first round.",
     },
     {
+      id: "award-mateclubes-2018",
       title: "National Runner-Up – Mateclubes Olympiad",
       issuer: "OMA (Olimpiada Matemática Argentina)",
       year: "2018",
       description: "National second runner-up.",
     },
     {
+      id: "award-literature-math-2018",
       title: "National Literature & Mathematics Olympiad Finalist",
       issuer: "OMA (Olimpiada Matemática Argentina)",
       year: "2018",
       description: "National finalist.",
     },
     {
+      id: "award-metro-math-2018",
       title: "Metropolitan Mathematics Olympiad Participant",
       issuer: "OMA (Olimpiada Matemática Argentina)",
       year: "2018",
       description: "Metropolitan level competition.",
     },
     {
+      id: "award-ematematica-scientific-2018",
       title: "Ematematica Champion – Scientific Challenges",
       issuer: "Colegio Emaús",
       year: "2018",
       description: "First place in scientific challenges.",
     },
     {
+      id: "award-ematematica-third-runner-2018",
       title: "Ematematica Second Runner-Up – Third Round",
       issuer: "Colegio Emaús",
       year: "2018",
       description: "Third place in third round.",
     },
     {
+      id: "award-ematematica-second-champ-2018",
       title: "Ematematica Champion – Second Round",
       issuer: "Colegio Emaús",
       year: "2018",
       description: "Champion in second round.",
     },
     {
+      id: "award-ematematica-first-runner-2018",
       title: "Ematematica Second Runner-Up – First Round",
       issuer: "Colegio Emaús",
       year: "2018",
       description: "Third place in first round.",
     },
     {
+      id: "award-mateclubes-finalist-2017",
       title: "National Mateclubes Olympiad Finalist",
       issuer: "OMA (Olimpiada Matemática Argentina)",
       year: "2017",
       description: "National finalist.",
     },
     {
+      id: "award-ematematica-champion-2017",
       title: "Ematematica Champion",
       issuer: "Colegio Emaús",
       year: "2017",
@@ -362,22 +420,27 @@ export const present = {
     title: "I'm particularly interested in:",
     items: [
       {
+        id: "interest-backend",
         title: "Backend architecture & APIs",
         description: "designing scalable Node.js/NestJS systems, BFF patterns, and reliable API contracts that serve millions of requests",
       },
       {
+        id: "interest-frontend",
         title: "Frontend engineering",
         description: "building responsive, performant UIs with React, Angular, and Next.js that deliver exceptional user experiences",
       },
       {
+        id: "interest-database",
         title: "Database optimization",
         description: "writing efficient SQL queries, designing schemas, and working with PostgreSQL at scale",
       },
       {
+        id: "interest-performance",
         title: "Performance & scalability",
         description: "optimizing critical business flows, reducing processing times, and ensuring system stability under high traffic",
       },
       {
+        id: "interest-quality",
         title: "Code quality & testing",
         description: "implementing unit tests with Jest/Vitest, conducting code reviews, and mentoring teammates to maintain high standards",
       },

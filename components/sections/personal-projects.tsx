@@ -1,31 +1,14 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { projects as projectsContent } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import { TechDecorator } from "@/components/ui/tech-decorators"
+import { useSectionVisibility } from "@/hooks/use-section-visibility"
+import { INTERSECTION_CONFIG } from "@/lib/constants"
 
 export function PersonalProjects() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.2 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
+  const { isVisible, sectionRef } = useSectionVisibility(INTERSECTION_CONFIG.PROJECTS_THRESHOLD)
 
   return (
     <section
@@ -34,7 +17,7 @@ export function PersonalProjects() {
       className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
       {/* Subtle tech elements in background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-[18%] left-[14%] text-primary/[0.28] text-6xl font-mono" style={{ animation: "float 40s ease-in-out infinite", textShadow: '0 0 28px oklch(0.42 0.08 165 / 0.35)' }}>
           {'<>'}
         </div>
@@ -77,7 +60,7 @@ export function PersonalProjects() {
         <div className="grid gap-6 md:gap-8">
           {projectsContent.personal.items.map((project, index) => (
             <Card
-              key={index}
+              key={project.id}
               className="bg-card/60 backdrop-blur-sm border border-border/60 p-6 md:p-8 space-y-5 group transition-all duration-500 hover:border-border hover:bg-card/70 relative"
               style={{
                 opacity: isVisible ? 1 : 0,
@@ -88,7 +71,7 @@ export function PersonalProjects() {
               <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
               
               <div className="absolute top-6 right-6 opacity-40 group-hover:opacity-70 transition-opacity duration-500">
-                <TechDecorator variant="code" size="lg" />
+                <TechDecorator variant="lambda" size="lg" />
               </div>
               
               <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
@@ -121,8 +104,8 @@ export function PersonalProjects() {
         </div>
 
         <div className="space-y-8 text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 pt-4">
-          {projectsContent.personal.conclusion.map((paragraph, index) => (
-            <p key={index} className="text-pretty">
+          {projectsContent.personal.conclusion.map((paragraph) => (
+            <p key={paragraph.slice(0, 50)} className="text-pretty">
               {paragraph}
             </p>
           ))}
