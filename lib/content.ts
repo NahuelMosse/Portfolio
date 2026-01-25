@@ -16,6 +16,7 @@ export interface Project {
   description: string
   technologies: string[]
   impact: string
+  url?: string
 }
 
 export interface Certification {
@@ -84,6 +85,7 @@ export const education = {
       period: "March 2022 – Present",
       status: "In Progress – 4th Year",
       description: "Currently pursuing advanced coursework in software architecture, distributed systems, and computational theory. Maintaining a GPA above 8.5 with a merit-based scholarship. Leading study groups and collaborating on complex engineering challenges.",
+      url: "https://venialaum.unimoron.edu.ar/carreras/escuela-superior-de-ingenieria-informatica-y-cs-agroalimentarias/de-grado/ingenieria-en-informatica/2013?e=3&c=30",
     },
     {
       id: "degree-advanced-english",
@@ -92,6 +94,7 @@ export const education = {
       period: "March 2025 – November 2027",
       status: "In Progress",
       description: "English language studies and English literature. Currently completing the highest level in 2026 and preparing for the First Certificate in 2027.",
+      url: "https://www.liceobritanico.com/",
     },
     {
       id: "degree-systems-analyst",
@@ -100,6 +103,7 @@ export const education = {
       period: "Completed December 2025",
       status: "Completed",
       description: "Completed comprehensive studies in systems analysis, software development, database design, and project management. Graduated with a merit-based scholarship for academic excellence (GPA above 8.5). Developed strong foundations in full-stack development and system architecture.",
+      url: "https://venialaum.unimoron.edu.ar/carreras/escuela-superior-de-ingenieria-informatica-y-cs-agroalimentarias/de-grado/ingenieria-en-informatica/2013?e=3&c=30",
     },
     {
       id: "degree-electromechanical",
@@ -108,6 +112,7 @@ export const education = {
       period: "2015 – 2021",
       status: "Completed",
       description: "Technical foundation in electromechanics, electronics, and systems. This early technical training developed my problem-solving mindset and hands-on approach to understanding how systems work—skills that later translated naturally into software engineering.",
+      url: "https://www.colegioemaus.edu.ar/tecnica.html",
     },
   ],
   
@@ -136,6 +141,7 @@ export const projects = {
         description: "Currently working on Visma's enterprise solutions, focusing on scalable architecture and system integration for Nordic market operations.",
         technologies: ["Node.js", "NestJS", "TypeScript", "PostgreSQL"],
         impact: "Contributing to enterprise-grade software serving thousands of businesses across Scandinavia.",
+        url: "https://www.visma.com/",
       },
       {
         id: "project-fravega",
@@ -144,6 +150,7 @@ export const projects = {
         description: "Full Stack Developer working on a major Argentine e-commerce platform. Designed and maintained API contracts across multiple teams, optimized critical database queries, and planned high-impact production releases. Implemented complete Backend-for-Frontend (BFF) architecture for the Sellers module, actively mentored teammates, and improved code quality through comprehensive unit testing.",
         technologies: ["Node.js", "NestJS", "Angular", "React", "TypeScript", "PostgreSQL", "Jest", "Vitest", "Tailwind CSS", "Webhooks"],
         impact: "Simplified business processes by ~80%, reduced average processing time from several hours to under one hour (1026% improvement in receiving operations: from 7:48h to 46m average), implemented BFF supporting 40,000+ daily requests (1.2M monthly), and maintained system stability during peak traffic periods.",
+        url: "https://www.fravega.com/",
       },
       {
         id: "project-justo",
