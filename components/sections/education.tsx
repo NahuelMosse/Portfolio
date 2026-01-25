@@ -81,9 +81,33 @@ export function Education() {
                 
                 <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
                   <div className="space-y-3">
-                    <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300 flex items-center gap-2">
-                      {degree.title}
-                    </h3>
+                    {degree.url ? (
+                      <a
+                        href={degree.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300 flex items-center gap-2"
+                      >
+                        {degree.title}
+                        <svg
+                          className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </svg>
+                      </a>
+                    ) : (
+                      <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300 flex items-center gap-2">
+                        {degree.title}
+                      </h3>
+                    )}
                     <p className="text-lg md:text-xl text-secondary font-medium">{degree.institution}</p>
                   </div>
                   <div className="flex flex-col items-end gap-2">
