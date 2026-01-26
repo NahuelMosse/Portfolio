@@ -86,6 +86,7 @@ export const education = {
       status: "In Progress – 4th Year",
       description: "Currently pursuing advanced coursework in software architecture, distributed systems, and computational theory. Maintaining a GPA above 8.5 with a merit-based scholarship. Leading study groups and collaborating on complex engineering challenges.",
       url: "https://venialaum.unimoron.edu.ar/carreras/escuela-superior-de-ingenieria-informatica-y-cs-agroalimentarias/de-grado/ingenieria-en-informatica/2013?e=3&c=30",
+      logo: "/logo-UM.webp"
     },
     {
       id: "degree-advanced-english",
@@ -95,6 +96,7 @@ export const education = {
       status: "In Progress",
       description: "English language studies and English literature. Currently completing the highest level in 2026 and preparing for the First Certificate in 2027.",
       url: "https://www.liceobritanico.com/",
+      logo: "/logo-liceo-cultural-britanico.webp"
     },
     {
       id: "degree-systems-analyst",
@@ -104,6 +106,7 @@ export const education = {
       status: "Completed",
       description: "Completed comprehensive studies in systems analysis, software development, database design, and project management. Graduated with a merit-based scholarship for academic excellence (GPA above 8.5). Developed strong foundations in full-stack development and system architecture.",
       url: "https://venialaum.unimoron.edu.ar/carreras/escuela-superior-de-ingenieria-informatica-y-cs-agroalimentarias/de-grado/ingenieria-en-informatica/2013?e=3&c=30",
+      logo: "/logo-UM.webp"
     },
     {
       id: "degree-electromechanical",
@@ -113,6 +116,7 @@ export const education = {
       status: "Completed",
       description: "Technical foundation in electromechanics, electronics, and systems. This early technical training developed my problem-solving mindset and hands-on approach to understanding how systems work—skills that later translated naturally into software engineering.",
       url: "https://www.colegioemaus.edu.ar/tecnica.html",
+      logo: "/logo-emaus.webp"
     },
   ],
   

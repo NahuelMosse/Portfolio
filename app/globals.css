@@ -14,7 +14,7 @@
   --popover-foreground: oklch(0.93 0.01 75);
   --primary: oklch(0.42 0.08 165); /* Subtle sage green - not vibrant */
   --primary-foreground: oklch(0.95 0.01 80);
-  --secondary: oklch(0.45 0.08 55); /* Cognac/warm brown leather */
+  --secondary: oklch(0.55 0.10 55); /* Lighter cognac/warm brown leather */
   --secondary-foreground: oklch(0.95 0.01 80);
   --muted: oklch(0.28 0.03 165);
   --muted-foreground: oklch(0.65 0.02 80);
@@ -50,7 +50,7 @@
   --popover-foreground: oklch(0.93 0.01 75);
   --primary: oklch(0.42 0.08 165);
   --primary-foreground: oklch(0.95 0.01 80);
-  --secondary: oklch(0.45 0.08 55);
+  --secondary: oklch(0.55 0.10 55);
   --secondary-foreground: oklch(0.95 0.01 80);
   --muted: oklch(0.28 0.03 165);
   --muted-foreground: oklch(0.65 0.02 80);
