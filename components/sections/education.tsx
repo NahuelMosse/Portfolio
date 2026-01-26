@@ -4,9 +4,11 @@ import { Card } from "@/components/ui/card"
 import { education } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import { useSectionVisibility } from "@/hooks/use-section-visibility"
+import { useState } from "react"
 
 export function Education() {
   const { isVisible, sectionRef } = useSectionVisibility()
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
 
   return (
     <section
@@ -64,61 +66,223 @@ export function Education() {
             ))}
           </div>
 
-          {/* Render all degrees */}
-          <div className="space-y-6">
+          {/* Render all degrees in a timeline */}
+          <div className="relative">
+            {/* Vertical timeline line with animation */}
+            <div 
+              className="absolute left-8 w-0.5 rounded-full transition-all duration-1000 ease-out"
+              style={{
+                backgroundColor: '#57543e',
+                top: '56px',
+                height: isVisible ? 'calc(100% - 345px)' : '0px',
+                transitionDelay: '0.5s'
+              }}
+            ></div>
+            
             {education.degrees.map((degree, index) => (
-              <Card 
-                key={degree.id}
-                className="bg-card/60 backdrop-blur-sm border border-border/60 p-8 md:p-10 space-y-6 transition-all duration-500 hover:border-border hover:bg-card/70 group relative"
-                style={{
-                  opacity: isVisible ? 1 : 0,
-                  transform: isVisible ? "translateY(0)" : "translateY(24px)",
-                  transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s`,
-                }}
-              >
-                {/* Subtle ambient glow - minimal */}
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
-                
-                <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
-                  <div className="space-y-3">
-                    {degree.url ? (
-                      <a
-                        href={degree.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300 flex items-center gap-2"
-                      >
-                        {degree.title}
-                        <svg
-                          className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          />
-                        </svg>
-                      </a>
-                    ) : (
-                      <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300 flex items-center gap-2">
-                        {degree.title}
-                      </h3>
-                    )}
-                    <p className="text-lg md:text-xl text-secondary font-medium">{degree.institution}</p>
+              degree.url ? (
+                <div
+                  key={degree.id}
+                  className="relative flex items-start mb-12"
+                  style={{
+                    opacity: isVisible ? 1 : 0,
+                    transform: isVisible ? "translateY(0)" : "translateY(24px)",
+                    transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s`,
+                  }}
+                >
+                  {/* Timeline dot with icon */}
+                  <a
+                    href={degree.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`absolute flex items-center justify-center w-12 h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 ${hoveredId === degree.id ? 'scale-110 bg-accent/20' : ''}`}
+                    style={{ left: '9px', top: '32px', borderColor: '#57543e' }}
+                    onMouseEnter={() => setHoveredId(degree.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                  >
+                    <div className="absolute inset-0 bg-background rounded-full"></div>
+                    <svg
+                      className="w-6 h-6 text-accent transition-transform duration-300 group-hover:scale-110 relative z-10"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 14l9-5-9-5-9 5 9 5z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                      />
+                    </svg>
+                  </a>
+                  
+                  {/* Degree card */}
+                  <a
+                    href={degree.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-20 flex-1 text-foreground"
+                    onMouseEnter={() => setHoveredId(degree.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                  >
+                    <Card 
+                      className={`bg-card/60 backdrop-blur-sm border border-border/60 p-8 md:p-10 space-y-6 transition-all duration-500 relative overflow-hidden cursor-pointer ${hoveredId === degree.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
+                    >
+                      {/* Subtle ambient glow */}
+                      <div className={`absolute -top-10 -right-10 w-32 h-32 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 ${hoveredId === degree.id ? 'opacity-100' : 'opacity-0'}`} />
+                      
+                      {/* Decorative accent line */}
+                      <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-accent/0 via-accent/30 to-accent/0 transition-opacity duration-500 ${hoveredId === degree.id ? 'opacity-100' : 'opacity-0'}`}></div>
+                      
+                      <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
+                        <div className="space-y-3">
+                          <h3 className={`text-2xl md:text-3xl font-semibold transition-colors duration-300 flex items-center gap-2 ${hoveredId === degree.id ? 'text-accent' : ''}`}>
+                            {degree.title}
+                            <svg
+                              className={`w-5 h-5 transition-opacity ${hoveredId === degree.id ? 'opacity-100' : 'opacity-0'}`}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                              />
+                            </svg>
+                          </h3>
+                          <div className="flex items-center gap-2">
+                            {degree.logo && (
+                              <img
+                                src={degree.logo}
+                                alt={`${degree.institution} logo`}
+                                className="w-8 h-8 object-contain"
+                              />
+                            )}
+                            <p className="text-lg md:text-xl text-secondary font-medium">{degree.institution}</p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end gap-2">
+                          <p className="text-sm text-muted-foreground px-3 py-1.5 bg-muted/30 rounded-full border border-border/40 w-fit">{degree.period}</p>
+                          <p className="text-xs text-accent/90 font-medium px-3 py-1.5 bg-accent/10 rounded-full border border-accent/30 w-fit">{degree.status}</p>
+                        </div>
+                      </div>
+                      <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">
+                        {degree.description}
+                      </p>
+                      
+                      {/* Interactive hint */}
+                      <div className={`absolute bottom-4 right-4 transition-opacity duration-300 ${hoveredId === degree.id ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className="flex items-center gap-1 text-xs text-accent/70">
+                          <span>Click to explore</span>
+                          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </Card>
+                  </a>
+                </div>
+              ) : (
+                <div 
+                  key={degree.id}
+                  className="relative flex items-start mb-12"
+                  style={{
+                    opacity: isVisible ? 1 : 0,
+                    transform: isVisible ? "translateY(0)" : "translateY(24px)",
+                    transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s`,
+                  }}
+                >
+                  {/* Timeline dot with icon */}
+                  <div className={`absolute flex items-center justify-center w-12 h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 ${hoveredId === degree.id ? 'scale-110 bg-accent/20' : ''}`} style={{ left: '9px', top: '32px', borderColor: '#57543e' }} onMouseEnter={() => setHoveredId(degree.id)} onMouseLeave={() => setHoveredId(null)}>
+                    <div className="absolute inset-0 bg-background rounded-full"></div>
+                    <svg
+                      className="w-6 h-6 text-accent transition-transform duration-300 group-hover:scale-110 relative z-10"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 14l9-5-9-5-9 5 9 5z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                      />
+                    </svg>
                   </div>
-                  <div className="flex flex-col items-end gap-2">
-                    <p className="text-sm text-muted-foreground px-3 py-1.5 bg-muted/30 rounded-full border border-border/40 w-fit">{degree.period}</p>
-                    <p className="text-xs text-accent/90 font-medium px-3 py-1.5 bg-accent/10 rounded-full border border-accent/30 w-fit">{degree.status}</p>
+                  
+                  {/* Degree card */}
+                  <div className="ml-20 flex-1">
+                    <Card 
+                    className={`bg-card/60 backdrop-blur-sm border border-border/60 p-8 md:p-10 space-y-6 transition-all duration-500 relative overflow-hidden cursor-pointer text-foreground ${hoveredId === degree.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
+                    onMouseEnter={() => setHoveredId(degree.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                    >
+                      {/* Subtle ambient glow */}
+                      <div className={`absolute -top-10 -right-10 w-32 h-32 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 ${hoveredId === degree.id ? 'opacity-100' : 'opacity-0'}`} />
+                      
+                      {/* Decorative accent line */}
+                      <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-accent/0 via-accent/30 to-accent/0 transition-opacity duration-500 ${hoveredId === degree.id ? 'opacity-100' : 'opacity-0'}`}></div>
+                      
+                      <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
+                        <div className="space-y-3">
+                          <h3 className={`text-2xl md:text-3xl font-semibold transition-colors duration-300 flex items-center gap-2 ${hoveredId === degree.id ? 'text-accent' : ''}`}>
+                            {degree.title}
+                          </h3>
+                          <div className="flex items-center gap-2">
+                            {degree.logo && (
+                              <img
+                                src={degree.logo}
+                                alt={`${degree.institution} logo`}
+                                className="w-8 h-8 object-contain"
+                              />
+                            )}
+                            <p className="text-lg md:text-xl text-secondary font-medium">{degree.institution}</p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end gap-2">
+                          <p className="text-sm text-muted-foreground px-3 py-1.5 bg-muted/30 rounded-full border border-border/40 w-fit">{degree.period}</p>
+                          <p className="text-xs text-accent/90 font-medium px-3 py-1.5 bg-accent/10 rounded-full border border-accent/30 w-fit">{degree.status}</p>
+                        </div>
+                      </div>
+                      <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">
+                        {degree.description}
+                      </p>
+                      
+                      {/* Interactive hint */}
+                      <div className={`absolute bottom-4 right-4 transition-opacity duration-300 ${hoveredId === degree.id ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className="flex items-center gap-1 text-xs text-accent/70">
+                          <span>Click to explore</span>
+                          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </Card>
                   </div>
                 </div>
-                <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">
-                  {degree.description}
-                </p>
-              </Card>
+              )
             ))}
           </div>
 
