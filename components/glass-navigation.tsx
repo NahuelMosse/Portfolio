@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { INTERSECTION_CONFIG, SCROLL_CONFIG, Z_INDEX } from "@/lib/constants"
+import { Z_INDEX } from "@/lib/constants"
 
 const sections = [
   { id: "hero", label: "Home", icon: "◆" },
@@ -17,19 +17,7 @@ const sections = [
 export function GlassNavigation() {
   const [activeSection, setActiveSection] = useState("hero")
   const [showNav, setShowNav] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const hasShownRef = useRef(false)
-
-  // Detect mobile on mount and resize
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
-    return () => window.removeEventListener("resize", checkMobile)
-  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,79 +32,46 @@ export function GlassNavigation() {
   }, [])
 
   useEffect(() => {
-    if (isMobile) {
-      // Mobile: Use scroll-based detection (more reliable)
-      const handleScroll = () => {
-        const scrollPosition = window.scrollY + window.innerHeight / 3
+    // Unified scroll-based detection for both mobile and desktop
+    const handleScroll = () => {
+      // Use center of viewport as reference point
+      const scrollCenter = window.scrollY + window.innerHeight / 2
 
-        // Find which section we're in based on scroll position
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const section = document.getElementById(sections[i].id)
-          if (section) {
-            const rect = section.getBoundingClientRect()
-            const sectionTop = window.scrollY + rect.top
+      let closestSection = sections[0].id
+      let closestDistance = Infinity
 
-            if (scrollPosition >= sectionTop) {
-              setActiveSection(sections[i].id)
-              break
-            }
-          }
-        }
-      }
-
-      handleScroll() // Initial call
-      window.addEventListener("scroll", handleScroll, { passive: true })
-
-      return () => {
-        window.removeEventListener("scroll", handleScroll)
-      }
-    } else {
-      // Desktop: Use IntersectionObserver
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const intersecting = entries
-            .filter(entry => entry.isIntersecting && entry.intersectionRatio > 0)
-            .map(entry => ({
-              id: entry.target.id,
-              top: entry.boundingClientRect.top,
-              bottom: entry.boundingClientRect.bottom,
-              ratio: entry.intersectionRatio
-            }))
-
-          if (intersecting.length > 0) {
-            const visibleSections = intersecting.filter(section => section.ratio > 0.05)
-
-            if (visibleSections.length > 0) {
-              const bestSection = visibleSections.reduce((prev, current) => {
-                const prevDistance = Math.abs(prev.top)
-                const currentDistance = Math.abs(current.top)
-
-                if (currentDistance < prevDistance) {
-                  return current
-                }
-                if (currentDistance === prevDistance && current.ratio > prev.ratio) {
-                  return current
-                }
-                return prev
-              })
-              setActiveSection(bestSection.id)
-            }
-          }
-        },
-        {
-          threshold: INTERSECTION_CONFIG.NAVIGATION_THRESHOLDS,
-          rootMargin: INTERSECTION_CONFIG.ROOT_MARGIN
-        }
-      )
-
+      // Find the section closest to the center of the viewport
       sections.forEach(({ id }) => {
         const element = document.getElementById(id)
-        if (element) observer.observe(element)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const sectionTop = window.scrollY + rect.top
+          const sectionBottom = sectionTop + rect.height
+          const sectionCenter = (sectionTop + sectionBottom) / 2
+
+          // Calculate distance from viewport center to section center
+          const distance = Math.abs(scrollCenter - sectionCenter)
+
+          // Also check if the section is actually visible
+          const isVisible = rect.top < window.innerHeight && rect.bottom > 0
+
+          if (isVisible && distance < closestDistance) {
+            closestDistance = distance
+            closestSection = id
+          }
+        }
       })
 
-      return () => observer.disconnect()
+      setActiveSection(closestSection)
     }
-  }, [isMobile])
+
+    handleScroll() // Initial call
+    window.addEventListener("scroll", handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
