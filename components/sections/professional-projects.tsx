@@ -3,12 +3,14 @@
 import { Card } from "@/components/ui/card"
 import { projects as projectsContent, type Project } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
-import { TechDecorator } from "@/components/ui/tech-decorators"
+import { PhotoGallery } from "@/components/ui/photo-gallery"
 import { useSectionVisibility } from "@/hooks/use-section-visibility"
 import { INTERSECTION_CONFIG } from "@/lib/constants"
+import { useState } from "react"
 
 export function ProfessionalProjects() {
   const { isVisible, sectionRef } = useSectionVisibility(INTERSECTION_CONFIG.PROJECTS_THRESHOLD)
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
 
   return (
     <section
@@ -57,73 +59,229 @@ export function ProfessionalProjects() {
           {projectsContent.professional.intro}
         </p>
 
-        <div className="grid gap-6 md:gap-8">
+        <div className="relative">
+          {/* Vertical timeline line with animation */}
+          <div 
+            className="absolute left-8 w-0.5 rounded-full transition-all duration-1000 ease-out"
+            style={{
+              backgroundColor: '#57543e',
+              top: '56px',
+              height: isVisible ? 'calc(100% - 400px)' : '0px',
+              transitionDelay: '0.5s'
+            }}
+          ></div>
+          
           {projectsContent.professional.items.map((project: Project, index: number) => (
-            <Card
-              key={project.id}
-              className="bg-card/60 backdrop-blur-sm border border-border/60 p-6 md:p-8 space-y-5 group transition-all duration-500 hover:border-border hover:bg-card/70 relative"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s`,
-              }}
-            >
-              <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
-              
-              <div className="absolute top-6 right-6 opacity-40 group-hover:opacity-70 transition-opacity duration-500">
-                <TechDecorator variant="git" size="lg" />
-              </div>
-              
-              <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
-                <div className="space-y-2">
-                  {project.url ? (
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300 flex items-center gap-2"
-                    >
-                      {project.title}
-                      <svg
-                        className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  ) : (
-                    <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300">
-                      {project.title}
-                    </h3>
-                  )}
-                  <p className="text-sm text-secondary font-medium">{project.period}</p>
+            project.url ? (
+              <div
+                key={project.id}
+                className="relative flex items-start mb-12"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? "translateY(0)" : "translateY(24px)",
+                  transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s`,
+                }}
+              >
+                {/* Timeline dot with icon */}
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`absolute flex items-center justify-center w-12 h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 ${hoveredId === project.id ? 'scale-110 bg-accent/20' : ''}`}
+                  style={{ left: '9px', top: '28px', borderColor: '#57543e' }}
+                  onMouseEnter={() => setHoveredId(project.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                >
+                  <div className="absolute inset-0 bg-background rounded-full"></div>
+                  {/* Briefcase icon */}
+                  <svg
+                    className="w-9 h-8 text-accent transition-transform duration-300 group-hover:scale-110 relative z-10"
+                    fill="none"
+                    viewBox="0 0 25 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    style={{ position: "relative", top: "1px" }}
+                  >
+                    <rect x="5" y="8" width="15" height="10" rx="2" />
+                    {/* Manija cuadrada más alta, desplazada 1px arriba */}
+                    <rect x="8.5" y="3.2" width="8" height="4.2" rx="0.7" />
+                  </svg>
+                </a>
+                
+                {/* Project card */}
+                <div
+                  className="ml-20 flex-1 text-foreground"
+                  onMouseEnter={() => setHoveredId(project.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  onClick={() => project.url && window.open(project.url, '_blank')}
+                  onKeyDown={(e) => {
+                    if ((e.key === 'Enter' || e.key === ' ') && project.url) {
+                      e.preventDefault()
+                      window.open(project.url, '_blank')
+                    }
+                  }}
+                  role={project.url ? "link" : undefined}
+                  tabIndex={project.url ? 0 : undefined}
+                  style={{ cursor: project.url ? 'pointer' : 'default' }}
+                >
+                  <Card 
+                    className={`bg-card/60 backdrop-blur-sm border border-border/60 p-6 md:p-8 space-y-5 transition-all duration-500 relative overflow-hidden cursor-pointer ${hoveredId === project.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
+                  >
+                    <div className={`absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 ${hoveredId === project.id ? 'opacity-100' : 'opacity-0'}`} />
+                    
+                    <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-accent/0 via-accent/30 to-accent/0 transition-opacity duration-500 ${hoveredId === project.id ? 'opacity-100' : 'opacity-0'}`}></div>
+                    
+                    <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
+                      <div className="space-y-2">
+                        <h3 className={`text-2xl md:text-3xl font-semibold transition-colors duration-300 flex items-center gap-2 ${hoveredId === project.id ? 'text-accent' : ''}`}>
+                          {project.logo && (
+                            <img
+                              src={project.logo}
+                              alt={`${project.title} logo`}
+                              className="w-8 h-8 object-contain"
+                            />
+                          )}
+                          {project.title}
+                          <svg
+                            className={`w-5 h-5 transition-opacity ${hoveredId === project.id ? 'opacity-100' : 'opacity-0'}`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                            />
+                          </svg>
+                        </h3>
+                      </div>
+                      <div className="flex flex-col items-end gap-2">
+                        <p className="text-sm text-muted-foreground px-3 py-1.5 bg-muted/30 rounded-full border border-border/40 w-fit">{project.period}</p>
+                      </div>
+                    </div>
+
+                    <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">{project.description}</p>
+
+                    <div className="flex flex-wrap gap-2 pt-2 relative z-10">
+                      {project.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-3 py-1.5 text-sm bg-muted/40 text-foreground/80 rounded-full border border-border/50 transition-all duration-300 hover:bg-accent/20 hover:border-accent/60 hover:text-accent hover:scale-105 cursor-pointer"
+                          title={`Technology: ${tech}`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="pt-4 border-t border-border/40 relative z-10">
+                      <p className="text-sm md:text-base text-accent/90 italic leading-relaxed">{project.impact}</p>
+                    </div>
+
+                    {project.images && project.images.length > 0 && (
+                      <div className="pt-4 relative z-10">
+                        <PhotoGallery images={project.images} isVisible={isVisible} />
+                      </div>
+                    )}
+
+                    {/* Interactive hint */}
+                    <div className={`absolute bottom-4 right-4 transition-opacity duration-300 ${hoveredId === project.id ? 'opacity-100' : 'opacity-0'}`}>
+                      <div className="flex items-center gap-1 text-xs text-accent/70">
+                        <span>Click to explore</span>
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </Card>
                 </div>
               </div>
-
-              <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">{project.description}</p>
-
-              <div className="flex flex-wrap gap-2 pt-2 relative z-10">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-3 py-1.5 text-sm bg-muted/40 text-foreground/80 rounded-full border border-border/50 transition-all duration-300 hover:bg-muted/60 hover:border-border"
+            ) : (
+              <div 
+                key={project.id}
+                className="relative flex items-start mb-12"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? "translateY(0)" : "translateY(24px)",
+                  transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s`,
+                }}
+              >
+                {/* Timeline dot with icon */}
+                <div className={`absolute flex items-center justify-center w-12 h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 ${hoveredId === project.id ? 'scale-110 bg-accent/20' : ''}`} style={{ left: '9px', top: '28px', borderColor: '#57543e' }} onMouseEnter={() => setHoveredId(project.id)} onMouseLeave={() => setHoveredId(null)}>
+                  <div className="absolute inset-0 bg-background rounded-full"></div>
+                  {/* Briefcase icon */}
+                  <svg
+                    className="w-9 h-8 text-accent transition-transform duration-300 group-hover:scale-110 relative z-10"
+                    fill="none"
+                    viewBox="0 0 25 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    style={{ position: "relative", top: "1px" }}
                   >
-                    {tech}
-                  </span>
-                ))}
-              </div>
+                    <rect x="5" y="8" width="15" height="10" rx="2" />
+                    {/* Manija cuadrada más alta, desplazada 1px arriba */}
+                    <rect x="8.5" y="3.2" width="8" height="4.2" rx="0.7" />
+                  </svg>
+                </div>
+                
+                {/* Project card */}
+                <div className="ml-20 flex-1">
+                  <Card 
+                    className={`bg-card/60 backdrop-blur-sm border border-border/60 p-6 md:p-8 space-y-5 transition-all duration-500 relative overflow-hidden cursor-pointer text-foreground ${hoveredId === project.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
+                    onMouseEnter={() => setHoveredId(project.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                  >
+                    <div className={`absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 ${hoveredId === project.id ? 'opacity-100' : 'opacity-0'}`} />
+                    
+                    <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-accent/0 via-accent/30 to-accent/0 transition-opacity duration-500 ${hoveredId === project.id ? 'opacity-100' : 'opacity-0'}`}></div>
+                    
+                    <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
+                      <div className="space-y-2">
+                        <h3 className={`text-2xl md:text-3xl font-semibold transition-colors duration-300 flex items-center gap-2 ${hoveredId === project.id ? 'text-accent' : ''}`}>
+                          {project.logo && (
+                            <img
+                              src={project.logo}
+                              alt={`${project.title} logo`}
+                              className="w-8 h-8 object-contain"
+                            />
+                          )}
+                          {project.title}
+                        </h3>
+                      </div>
+                      <div className="flex flex-col items-end gap-2">
+                        <p className="text-sm text-muted-foreground px-3 py-1.5 bg-muted/30 rounded-full border border-border/40 w-fit">{project.period}</p>
+                      </div>
+                    </div>
 
-              <div className="pt-4 border-t border-border/40 relative z-10">
-                <p className="text-sm md:text-base text-accent/90 italic leading-relaxed">{project.impact}</p>
+                    <p className="text-foreground/70 leading-relaxed text-base md:text-lg relative z-10">{project.description}</p>
+
+                    <div className="flex flex-wrap gap-2 pt-2 relative z-10">
+                      {project.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-3 py-1.5 text-sm bg-muted/40 text-foreground/80 rounded-full border border-border/50 transition-all duration-300 hover:bg-accent/20 hover:border-accent/60 hover:text-accent hover:scale-105 cursor-pointer"
+                          title={`Technology: ${tech}`}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="pt-4 border-t border-border/40 relative z-10">
+                      <p className="text-sm md:text-base text-accent/90 italic leading-relaxed">{project.impact}</p>
+                    </div>
+
+                    {project.images && project.images.length > 0 && (
+                      <div className="pt-4 relative z-10">
+                        <PhotoGallery images={project.images} isVisible={isVisible} />
+                      </div>
+                    )}
+                  </Card>
+                </div>
               </div>
-            </Card>
+            )
           ))}
         </div>
 

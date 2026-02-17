@@ -42,7 +42,7 @@ export function PhotoGallery({ images, isVisible }: PhotoGalleryProps) {
         {images.map((image, index) => (
           <button
             key={image.src}
-            onClick={() => openImage(index)}
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); openImage(index); }}
             className="relative group aspect-[4/3] rounded-lg overflow-hidden border border-border/40 bg-card/30 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:border-accent/60"
             aria-label={`View ${image.alt} in full size`}
           >
@@ -66,7 +66,7 @@ export function PhotoGallery({ images, isVisible }: PhotoGalleryProps) {
       {mounted && selectedImage !== null && createPortal(
         <div 
           className="fixed inset-0 flex items-center justify-center bg-background/30 backdrop-blur-2xl"
-          onClick={closeImage}
+          onClick={(e) => { e.stopPropagation(); closeImage(); }}
           role="dialog"
           aria-modal="true"
           aria-label="Image gallery"
@@ -74,7 +74,7 @@ export function PhotoGallery({ images, isVisible }: PhotoGalleryProps) {
         >
           <button
             className="absolute top-4 right-4 text-foreground/60 hover:text-foreground text-4xl font-light leading-none w-12 h-12 flex items-center justify-center transition-colors z-10"
-            onClick={closeImage}
+            onClick={(e) => { e.stopPropagation(); closeImage(); }}
             aria-label="Close image gallery"
           >
             ×
