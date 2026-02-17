@@ -14,29 +14,29 @@ export function Education() {
     <section
       id="education"
       ref={sectionRef}
-      className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
+      className="snap-section min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
       {/* Floating tech symbols in background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div className="absolute top-[18%] right-[12%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 40s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+        <div className="hidden sm:block absolute top-[18%] right-[12%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "float 40s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'()'}
         </div>
-        <div className="absolute top-[32%] left-[14%] text-secondary/[0.28] text-5xl" style={{ animation: "float 36s ease-in-out infinite 8s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
+        <div className="hidden sm:block absolute top-[32%] left-[14%] text-secondary/[0.28] text-3xl sm:text-5xl" style={{ animation: "float 36s ease-in-out infinite 8s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
           ƒ
         </div>
-        <div className="absolute top-[50%] right-[16%] text-primary/[0.25] text-5xl font-mono" style={{ animation: "float 42s ease-in-out infinite 16s" }}>
+        <div className="hidden sm:block absolute top-[50%] right-[16%] text-primary/[0.25] text-3xl sm:text-5xl font-mono" style={{ animation: "float 42s ease-in-out infinite 16s" }}>
           λ
         </div>
-        <div className="absolute top-[66%] left-[22%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 38s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+        <div className="hidden sm:block absolute top-[66%] left-[22%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "float 38s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'<>'}
         </div>
-        <div className="absolute top-[80%] right-[12%] text-secondary/[0.25] text-4xl" style={{ animation: "float 44s ease-in-out infinite 32s" }}>
+        <div className="hidden sm:block absolute top-[80%] right-[12%] text-secondary/[0.25] text-2xl sm:text-4xl" style={{ animation: "float 44s ease-in-out infinite 32s" }}>
           ≈
         </div>
-        <div className="absolute bottom-[26%] left-[12%] text-accent/[0.28] text-5xl font-mono" style={{ animation: "float 46s ease-in-out infinite 40s", textShadow: '0 0 28px oklch(0.72 0.06 75 / 0.35)' }}>
+        <div className="hidden sm:block absolute bottom-[26%] left-[12%] text-accent/[0.28] text-3xl sm:text-5xl font-mono" style={{ animation: "float 46s ease-in-out infinite 40s", textShadow: '0 0 28px oklch(0.72 0.06 75 / 0.35)' }}>
           {'{}'}
         </div>
-        <div className="absolute bottom-[10%] right-[24%] text-primary/[0.26] text-4xl" style={{ animation: "float 48s ease-in-out infinite 48s" }}>
+        <div className="hidden sm:block absolute bottom-[10%] right-[24%] text-primary/[0.26] text-2xl sm:text-4xl" style={{ animation: "float 48s ease-in-out infinite 48s" }}>
           →
         </div>
       </div>
@@ -50,8 +50,8 @@ export function Education() {
         }}
       >
         <div className="space-y-6">
-          <h2 
-            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
+          <h2
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
             style={{ letterSpacing: "-0.02em" }}
           >
             {education.title}
@@ -69,10 +69,10 @@ export function Education() {
           {/* Render all degrees in a timeline */}
           <div className="relative">
             {/* Vertical timeline line with animation */}
-            <div 
-              className="absolute left-8 w-0.5 rounded-full transition-all duration-1000 ease-out"
+            <div
+              className="absolute left-2 sm:left-3 md:left-8 w-0.5 rounded-full transition-all duration-1000 ease-out border-primary/50"
               style={{
-                backgroundColor: '#57543e',
+                backgroundColor: 'hsl(var(--primary) / 0.5)',
                 top: '56px',
                 height: isVisible ? 'calc(100% - 345px)' : '0px',
                 transitionDelay: '0.5s'
@@ -95,8 +95,8 @@ export function Education() {
                     href={degree.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`absolute flex items-center justify-center w-12 h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 ${hoveredId === degree.id ? 'scale-110 bg-accent/20' : ''}`}
-                    style={{ left: '9px', top: '32px', borderColor: '#57543e' }}
+                    className={`absolute flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 border-primary/50 ${hoveredId === degree.id ? 'scale-110 bg-accent/20' : ''}`}
+                    style={{ left: '2px', top: '32px' }}
                     onMouseEnter={() => setHoveredId(degree.id)}
                     onMouseLeave={() => setHoveredId(null)}
                   >
@@ -131,12 +131,12 @@ export function Education() {
                     href={degree.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-20 flex-1 text-foreground"
+                    className="ml-12 sm:ml-16 md:ml-20 flex-1 text-foreground"
                     onMouseEnter={() => setHoveredId(degree.id)}
                     onMouseLeave={() => setHoveredId(null)}
                   >
-                    <Card 
-                      className={`bg-card/60 backdrop-blur-sm border border-border/60 p-8 md:p-10 space-y-6 transition-all duration-500 relative overflow-hidden cursor-pointer ${hoveredId === degree.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
+                    <Card
+                      className={`bg-card/60 backdrop-blur-sm border border-border/60 p-6 sm:p-8 md:p-10 space-y-6 transition-all duration-500 relative overflow-hidden cursor-pointer ${hoveredId === degree.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
                     >
                       {/* Subtle ambient glow */}
                       <div className={`absolute -top-10 -right-10 w-32 h-32 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 ${hoveredId === degree.id ? 'opacity-100' : 'opacity-0'}`} />
@@ -205,7 +205,7 @@ export function Education() {
                   }}
                 >
                   {/* Timeline dot with icon */}
-                  <div className={`absolute flex items-center justify-center w-12 h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 ${hoveredId === degree.id ? 'scale-110 bg-accent/20' : ''}`} style={{ left: '9px', top: '32px', borderColor: '#57543e' }} onMouseEnter={() => setHoveredId(degree.id)} onMouseLeave={() => setHoveredId(null)}>
+                  <div className={`absolute flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 border-primary/50 ${hoveredId === degree.id ? 'scale-110 bg-accent/20' : ''}`} style={{ left: '2px', top: '32px' }} onMouseEnter={() => setHoveredId(degree.id)} onMouseLeave={() => setHoveredId(null)}>
                     <div className="absolute inset-0 bg-background rounded-full"></div>
                     <svg
                       className="w-6 h-6 text-accent transition-transform duration-300 group-hover:scale-110 relative z-10"
@@ -233,9 +233,9 @@ export function Education() {
                   </div>
                   
                   {/* Degree card */}
-                  <div className="ml-20 flex-1">
-                    <Card 
-                    className={`bg-card/60 backdrop-blur-sm border border-border/60 p-8 md:p-10 space-y-6 transition-all duration-500 relative overflow-hidden cursor-pointer text-foreground ${hoveredId === degree.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
+                  <div className="ml-12 sm:ml-16 md:ml-20 flex-1">
+                    <Card
+                    className={`bg-card/60 backdrop-blur-sm border border-border/60 p-6 sm:p-8 md:p-10 space-y-6 transition-all duration-500 relative overflow-hidden cursor-pointer text-foreground ${hoveredId === degree.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
                     onMouseEnter={() => setHoveredId(degree.id)}
                     onMouseLeave={() => setHoveredId(null)}
                     >
