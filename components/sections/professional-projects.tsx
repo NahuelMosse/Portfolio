@@ -62,12 +62,12 @@ export function ProfessionalProjects() {
         <div className="relative">
           {/* Vertical timeline line with animation */}
           <div
-            className="absolute left-2 sm:left-3 md:left-8 w-0.5 rounded-full transition-all duration-1000 ease-out border-primary/50"
+            className="absolute left-5 sm:left-4 md:left-6 w-[2px] rounded-full transition-all duration-1000 ease-out bg-accent/50"
             style={{
-              backgroundColor: 'hsl(var(--primary) / 0.5)',
               top: '56px',
               height: isVisible ? 'calc(100% - 400px)' : '0px',
-              transitionDelay: '0.5s'
+              transitionDelay: '0.5s',
+              zIndex: 0
             }}
           ></div>
           
@@ -87,8 +87,8 @@ export function ProfessionalProjects() {
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`absolute flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 border-primary/50 ${hoveredId === project.id ? 'scale-110 bg-accent/20' : ''}`}
-                  style={{ left: '2px', top: '28px' }}
+                  className={`absolute flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 border-accent/50 ${hoveredId === project.id ? 'scale-110 bg-accent/20' : ''}`}
+                  style={{ left: '2px', top: '28px', zIndex: 10 }}
                   onMouseEnter={() => setHoveredId(project.id)}
                   onMouseLeave={() => setHoveredId(null)}
                 >
@@ -209,7 +209,7 @@ export function ProfessionalProjects() {
                 }}
               >
                 {/* Timeline dot with icon */}
-                <div className={`absolute flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 border-primary/50 ${hoveredId === project.id ? 'scale-110 bg-accent/20' : ''}`} style={{ left: '2px', top: '28px' }} onMouseEnter={() => setHoveredId(project.id)} onMouseLeave={() => setHoveredId(null)}>
+                <div className={`absolute flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 border-accent/50 ${hoveredId === project.id ? 'scale-110 bg-accent/20' : ''}`} style={{ left: '2px', top: '28px', zIndex: 10 }} onMouseEnter={() => setHoveredId(project.id)} onMouseLeave={() => setHoveredId(null)}>
                   <div className="absolute inset-0 bg-background rounded-full"></div>
                   {/* Briefcase icon */}
                   <svg
