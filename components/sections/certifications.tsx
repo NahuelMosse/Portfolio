@@ -12,32 +12,32 @@ export function Certifications() {
     <section
       id="certifications"
       ref={sectionRef}
-      className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
+      className="snap-section min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
       {/* Floating tech symbols in background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div className="absolute top-[15%] right-[14%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 40s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+        <div className="hidden sm:block absolute top-[15%] right-[14%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "float 40s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'</>'}
         </div>
-        <div className="absolute top-[28%] left-[12%] text-secondary/[0.28] text-5xl font-mono" style={{ animation: "float 36s ease-in-out infinite 8s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
+        <div className="hidden sm:block absolute top-[28%] left-[12%] text-secondary/[0.28] text-3xl sm:text-5xl font-mono" style={{ animation: "float 36s ease-in-out infinite 8s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
           {'{}'}
         </div>
-        <div className="absolute top-[42%] right-[18%] text-primary/[0.25] text-5xl" style={{ animation: "float 42s ease-in-out infinite 16s" }}>
+        <div className="hidden sm:block absolute top-[42%] right-[18%] text-primary/[0.25] text-3xl sm:text-5xl" style={{ animation: "float 42s ease-in-out infinite 16s" }}>
           λ
         </div>
-        <div className="absolute top-[58%] left-[16%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 38s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+        <div className="hidden sm:block absolute top-[58%] left-[16%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "float 38s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'[]'}
         </div>
-        <div className="absolute top-[72%] right-[22%] text-secondary/[0.25] text-4xl" style={{ animation: "float 44s ease-in-out infinite 32s" }}>
+        <div className="hidden sm:block absolute top-[72%] right-[22%] text-secondary/[0.25] text-2xl sm:text-4xl" style={{ animation: "float 44s ease-in-out infinite 32s" }}>
           →
         </div>
-        <div className="absolute top-[85%] left-[24%] text-accent/[0.28] text-5xl" style={{ animation: "float 46s ease-in-out infinite 40s", textShadow: '0 0 28px oklch(0.72 0.06 75 / 0.35)' }}>
+        <div className="hidden sm:block absolute top-[85%] left-[24%] text-accent/[0.28] text-3xl sm:text-5xl" style={{ animation: "float 46s ease-in-out infinite 40s", textShadow: '0 0 28px oklch(0.72 0.06 75 / 0.35)' }}>
           ƒ
         </div>
-        <div className="absolute bottom-[18%] right-[12%] text-primary/[0.26] text-4xl font-mono" style={{ animation: "float 48s ease-in-out infinite 48s" }}>
+        <div className="hidden sm:block absolute bottom-[18%] right-[12%] text-primary/[0.26] text-2xl sm:text-4xl font-mono" style={{ animation: "float 48s ease-in-out infinite 48s" }}>
           {'()'}
         </div>
-        <div className="absolute bottom-[6%] left-[10%] text-secondary/[0.27] text-5xl" style={{ animation: "float 50s ease-in-out infinite 56s", textShadow: '0 0 26px oklch(0.45 0.08 55 / 0.32)' }}>
+        <div className="hidden sm:block absolute bottom-[6%] left-[10%] text-secondary/[0.27] text-3xl sm:text-5xl" style={{ animation: "float 50s ease-in-out infinite 56s", textShadow: '0 0 26px oklch(0.45 0.08 55 / 0.32)' }}>
           ∞
         </div>
       </div>
@@ -51,8 +51,8 @@ export function Certifications() {
         }}
       >
         <div className="space-y-6">
-          <h2 
-            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
+          <h2
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
             style={{ letterSpacing: "-0.02em" }}
           >
             {certificationsContent.title}
@@ -68,7 +68,7 @@ export function Certifications() {
           {certificationsContent.items.map((cert, index) => (
             <Card
               key={cert.id}
-              className="bg-card/60 backdrop-blur-sm border border-border/60 p-3 space-y-1.5 group transition-all duration-500 hover:border-border hover:bg-card/70 relative"
+              className="bg-card/60 backdrop-blur-sm border border-border/60 p-2.5 sm:p-3 space-y-1.5 group transition-all duration-500 hover:border-border hover:bg-card/70 relative"
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? "translateY(0)" : "translateY(24px)",

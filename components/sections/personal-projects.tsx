@@ -14,23 +14,23 @@ export function PersonalProjects() {
     <section
       id="personal-projects"
       ref={sectionRef}
-      className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
+      className="snap-section min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
       {/* Subtle tech elements in background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div className="absolute top-[18%] left-[14%] text-primary/[0.28] text-6xl font-mono" style={{ animation: "float 40s ease-in-out infinite", textShadow: '0 0 28px oklch(0.42 0.08 165 / 0.35)' }}>
+        <div className="hidden sm:block absolute top-[18%] left-[14%] text-primary/[0.28] text-4xl sm:text-6xl font-mono" style={{ animation: "float 40s ease-in-out infinite", textShadow: '0 0 28px oklch(0.42 0.08 165 / 0.35)' }}>
           {'<>'}
         </div>
-        <div className="absolute top-[38%] right-[12%] text-accent/[0.26] text-5xl" style={{ animation: "float 36s ease-in-out infinite 8s", textShadow: '0 0 26px oklch(0.72 0.06 75 / 0.32)' }}>
+        <div className="hidden sm:block absolute top-[38%] right-[12%] text-accent/[0.26] text-3xl sm:text-5xl" style={{ animation: "float 36s ease-in-out infinite 8s", textShadow: '0 0 26px oklch(0.72 0.06 75 / 0.32)' }}>
           ∞
         </div>
-        <div className="absolute top-[58%] left-[16%] text-secondary/[0.27] text-5xl font-mono" style={{ animation: "float 42s ease-in-out infinite 16s" }}>
+        <div className="hidden sm:block absolute top-[58%] left-[16%] text-secondary/[0.27] text-3xl sm:text-5xl font-mono" style={{ animation: "float 42s ease-in-out infinite 16s" }}>
           {'{}'}
         </div>
-        <div className="absolute bottom-[30%] right-[14%] text-primary/[0.30] text-6xl" style={{ animation: "float 38s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.42 0.08 165 / 0.38)' }}>
+        <div className="hidden sm:block absolute bottom-[30%] right-[14%] text-primary/[0.30] text-4xl sm:text-6xl" style={{ animation: "float 38s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.42 0.08 165 / 0.38)' }}>
           λ
         </div>
-        <div className="absolute bottom-[12%] left-[18%] text-accent/[0.25] text-4xl font-mono" style={{ animation: "float 44s ease-in-out infinite 32s" }}>
+        <div className="hidden sm:block absolute bottom-[12%] left-[18%] text-accent/[0.25] text-2xl sm:text-4xl font-mono" style={{ animation: "float 44s ease-in-out infinite 32s" }}>
           ƒ
         </div>
       </div>
@@ -44,8 +44,8 @@ export function PersonalProjects() {
         }}
       >
         <div className="space-y-6">
-          <h2 
-            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
+          <h2
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
             style={{ letterSpacing: "-0.02em" }}
           >
             {projectsContent.personal.title}

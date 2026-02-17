@@ -99,11 +99,30 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Suppress known React 19 + Next.js 16 Performance.measure error in development */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && '${process.env.NODE_ENV}' === 'development') {
+                const originalError = console.error;
+                console.error = (...args) => {
+                  if (
+                    typeof args[0] === 'string' &&
+                    args[0].includes("Failed to execute 'measure' on 'Performance'")
+                  ) {
+                    return;
+                  }
+                  originalError.apply(console, args);
+                };
+              }
+            `,
+          }}
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
         {children}

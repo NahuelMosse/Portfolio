@@ -6,9 +6,11 @@ import { personalInfo } from "@/lib/content"
 export function Hero() {
   const [isVisible, setIsVisible] = useState(false)
   const [scrollY, setScrollY] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setIsVisible(true)
+    setIsMobile(window.innerWidth < 768)
   }, [])
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export function Hero() {
   }, [])
 
   return (
-    <section id="hero" className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 relative overflow-hidden">
+    <section id="hero" className="snap-section min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-12 lg:px-24 relative overflow-hidden">
       {/* Subtle ambient lighting - like warm interior lighting */}
       <div className="absolute inset-0 opacity-20" aria-hidden="true">
         <div
@@ -47,11 +49,11 @@ export function Hero() {
       </div>
 
       {/* Minimal pattern with parallax */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.03]"
         aria-hidden="true"
         style={{
-          transform: `translateY(${scrollY * 0.3}px)`,
+          transform: !isMobile ? `translateY(${scrollY * 0.3}px)` : 'none',
           transition: "transform 0.1s ease-out",
         }}
       >
@@ -67,19 +69,19 @@ export function Hero() {
 
       {/* Subtle code symbols floating - tech meets nature */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div className="absolute top-[20%] left-[12%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "code-flow 24s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+        <div className="hidden sm:block absolute top-[20%] left-[12%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "code-flow 24s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'</>'}
         </div>
-        <div className="absolute top-[35%] right-[15%] text-secondary/[0.28] text-5xl font-mono" style={{ animation: "float 28s ease-in-out infinite 6s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
+        <div className="hidden sm:block absolute top-[35%] right-[15%] text-secondary/[0.28] text-3xl sm:text-5xl font-mono" style={{ animation: "float 28s ease-in-out infinite 6s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
           {'{}'}
         </div>
-        <div className="absolute top-[55%] left-[18%] text-primary/[0.25] text-5xl" style={{ animation: "float 32s ease-in-out infinite 12s" }}>
+        <div className="hidden sm:block absolute top-[55%] left-[18%] text-primary/[0.25] text-3xl sm:text-5xl" style={{ animation: "float 32s ease-in-out infinite 12s" }}>
           λ
         </div>
-        <div className="absolute bottom-[25%] right-[20%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "code-flow 30s ease-in-out infinite 18s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+        <div className="hidden sm:block absolute bottom-[25%] right-[20%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "code-flow 30s ease-in-out infinite 18s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'[]'}
         </div>
-        <div className="absolute bottom-[40%] left-[10%] text-secondary/[0.25] text-4xl" style={{ animation: "float 26s ease-in-out infinite 24s" }}>
+        <div className="hidden sm:block absolute bottom-[40%] left-[10%] text-secondary/[0.25] text-2xl sm:text-4xl" style={{ animation: "float 26s ease-in-out infinite 24s" }}>
           →
         </div>
       </div>
@@ -93,8 +95,8 @@ export function Hero() {
         }}
       >
         <div className="space-y-6">
-          <h1 
-            className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-balance leading-[0.95]"
+          <h1
+            className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold tracking-tight text-balance leading-[0.95]"
             style={{
               letterSpacing: "-0.02em",
             }}

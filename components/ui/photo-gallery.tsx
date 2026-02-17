@@ -32,7 +32,7 @@ export function PhotoGallery({ images, isVisible }: PhotoGalleryProps) {
     <>
       {/* Photo gallery grid */}
       <div 
-        className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-w-5xl mx-auto"
         style={{
           opacity: isVisible ? 1 : 0,
           transform: isVisible ? "translateY(0)" : "translateY(24px)",

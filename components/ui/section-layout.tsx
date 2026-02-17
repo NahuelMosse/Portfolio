@@ -43,7 +43,7 @@ export function SectionLayout({
     <section
       id={id}
       ref={sectionRef}
-      className={`snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden ${className}`}
+      className={`snap-section min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden ${className}`}
     >
       {/* Floating tech symbols - optional composition */}
       {floatingSymbols}
@@ -54,8 +54,8 @@ export function SectionLayout({
       >
         {/* Section header */}
         <div className="space-y-6">
-          <h2 
-            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
+          <h2
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
             style={{ letterSpacing: "-0.02em" }}
           >
             {title}

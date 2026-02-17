@@ -16,23 +16,23 @@ export function ProfessionalProjects() {
     <section
       id="professional-projects"
       ref={sectionRef}
-      className="snap-section min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
+      className="snap-section min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
     >
       {/* Subtle tech elements in background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div className="absolute top-[15%] right-[12%] text-accent/[0.30] text-6xl font-mono" style={{ animation: "float 38s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+        <div className="hidden sm:block absolute top-[15%] right-[12%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "float 38s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           {'{ }'}
         </div>
-        <div className="absolute top-[35%] left-[10%] text-secondary/[0.28] text-5xl" style={{ animation: "float 34s ease-in-out infinite 8s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
+        <div className="hidden sm:block absolute top-[35%] left-[10%] text-secondary/[0.28] text-3xl sm:text-5xl" style={{ animation: "float 34s ease-in-out infinite 8s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
           →
         </div>
-        <div className="absolute top-[55%] right-[16%] text-primary/[0.25] text-5xl font-mono" style={{ animation: "float 40s ease-in-out infinite 16s" }}>
+        <div className="hidden sm:block absolute top-[55%] right-[16%] text-primary/[0.25] text-3xl sm:text-5xl font-mono" style={{ animation: "float 40s ease-in-out infinite 16s" }}>
           {'</>'}
         </div>
-        <div className="absolute bottom-[25%] left-[14%] text-accent/[0.30] text-6xl" style={{ animation: "float 36s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
+        <div className="hidden sm:block absolute bottom-[25%] left-[14%] text-accent/[0.30] text-4xl sm:text-6xl" style={{ animation: "float 36s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
           λ
         </div>
-        <div className="absolute bottom-[10%] right-[18%] text-secondary/[0.25] text-4xl font-mono" style={{ animation: "float 42s ease-in-out infinite 32s" }}>
+        <div className="hidden sm:block absolute bottom-[10%] right-[18%] text-secondary/[0.25] text-2xl sm:text-4xl font-mono" style={{ animation: "float 42s ease-in-out infinite 32s" }}>
           ƒ
         </div>
       </div>
@@ -46,8 +46,8 @@ export function ProfessionalProjects() {
         }}
       >
         <div className="space-y-6">
-          <h2 
-            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
+          <h2
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
             style={{ letterSpacing: "-0.02em" }}
           >
             {projectsContent.professional.title}
@@ -61,10 +61,10 @@ export function ProfessionalProjects() {
 
         <div className="relative">
           {/* Vertical timeline line with animation */}
-          <div 
-            className="absolute left-8 w-0.5 rounded-full transition-all duration-1000 ease-out"
+          <div
+            className="absolute left-2 sm:left-3 md:left-8 w-0.5 rounded-full transition-all duration-1000 ease-out border-primary/50"
             style={{
-              backgroundColor: '#57543e',
+              backgroundColor: 'hsl(var(--primary) / 0.5)',
               top: '56px',
               height: isVisible ? 'calc(100% - 400px)' : '0px',
               transitionDelay: '0.5s'
@@ -87,8 +87,8 @@ export function ProfessionalProjects() {
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`absolute flex items-center justify-center w-12 h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 ${hoveredId === project.id ? 'scale-110 bg-accent/20' : ''}`}
-                  style={{ left: '9px', top: '28px', borderColor: '#57543e' }}
+                  className={`absolute flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 border-primary/50 ${hoveredId === project.id ? 'scale-110 bg-accent/20' : ''}`}
+                  style={{ left: '2px', top: '28px' }}
                   onMouseEnter={() => setHoveredId(project.id)}
                   onMouseLeave={() => setHoveredId(null)}
                 >
@@ -110,7 +110,7 @@ export function ProfessionalProjects() {
                 
                 {/* Project card */}
                 <div
-                  className="ml-20 flex-1 text-foreground"
+                  className="ml-12 sm:ml-16 md:ml-20 flex-1 text-foreground"
                   onMouseEnter={() => setHoveredId(project.id)}
                   onMouseLeave={() => setHoveredId(null)}
                   onClick={() => project.url && window.open(project.url, '_blank')}
@@ -124,8 +124,8 @@ export function ProfessionalProjects() {
                   tabIndex={project.url ? 0 : undefined}
                   style={{ cursor: project.url ? 'pointer' : 'default' }}
                 >
-                  <Card 
-                    className={`bg-card/60 backdrop-blur-sm border border-border/60 p-6 md:p-8 space-y-5 transition-all duration-500 relative overflow-hidden cursor-pointer ${hoveredId === project.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
+                  <Card
+                    className={`bg-card/60 backdrop-blur-sm border border-border/60 p-4 sm:p-6 md:p-8 space-y-5 transition-all duration-500 relative overflow-hidden cursor-pointer ${hoveredId === project.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
                   >
                     <div className={`absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 ${hoveredId === project.id ? 'opacity-100' : 'opacity-0'}`} />
                     
@@ -209,7 +209,7 @@ export function ProfessionalProjects() {
                 }}
               >
                 {/* Timeline dot with icon */}
-                <div className={`absolute flex items-center justify-center w-12 h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 ${hoveredId === project.id ? 'scale-110 bg-accent/20' : ''}`} style={{ left: '9px', top: '28px', borderColor: '#57543e' }} onMouseEnter={() => setHoveredId(project.id)} onMouseLeave={() => setHoveredId(null)}>
+                <div className={`absolute flex items-center justify-center w-10 sm:w-12 h-10 sm:h-12 bg-accent/10 border-2 rounded-full shadow-lg transition-all duration-300 border-primary/50 ${hoveredId === project.id ? 'scale-110 bg-accent/20' : ''}`} style={{ left: '2px', top: '28px' }} onMouseEnter={() => setHoveredId(project.id)} onMouseLeave={() => setHoveredId(null)}>
                   <div className="absolute inset-0 bg-background rounded-full"></div>
                   {/* Briefcase icon */}
                   <svg
@@ -227,9 +227,9 @@ export function ProfessionalProjects() {
                 </div>
                 
                 {/* Project card */}
-                <div className="ml-20 flex-1">
-                  <Card 
-                    className={`bg-card/60 backdrop-blur-sm border border-border/60 p-6 md:p-8 space-y-5 transition-all duration-500 relative overflow-hidden cursor-pointer text-foreground ${hoveredId === project.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
+                <div className="ml-12 sm:ml-16 md:ml-20 flex-1">
+                  <Card
+                    className={`bg-card/60 backdrop-blur-sm border border-border/60 p-4 sm:p-6 md:p-8 space-y-5 transition-all duration-500 relative overflow-hidden cursor-pointer text-foreground ${hoveredId === project.id ? 'border-accent/50 bg-card/70 shadow-xl shadow-accent/10' : ''}`}
                     onMouseEnter={() => setHoveredId(project.id)}
                     onMouseLeave={() => setHoveredId(null)}
                   >
