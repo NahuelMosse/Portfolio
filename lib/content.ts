@@ -17,6 +17,8 @@ export interface Project {
   technologies: string[]
   impact: string
   url?: string
+  images?: { src: string; alt: string }[]
+  logo?: string
 }
 
 export interface Certification {
@@ -92,7 +94,7 @@ export const education = {
       id: "degree-advanced-english",
       title: "Advanced English",
       institution: "Liceo Cultural Británico",
-      period: "March 2025 – November 2027",
+      period: "March 2025 – Present",
       status: "In Progress",
       description: "English language studies and English literature. Currently completing the highest level in 2026 and preparing for the First Certificate in 2027.",
       url: "https://www.liceobritanico.com/",
@@ -102,7 +104,7 @@ export const education = {
       id: "degree-systems-analyst",
       title: "Computer Systems Analyst",
       institution: "University of Morón",
-      period: "Completed December 2025",
+      period: "March 2022 – December 2025",
       status: "Completed",
       description: "Completed comprehensive studies in systems analysis, software development, database design, and project management. Graduated with a merit-based scholarship for academic excellence (GPA above 8.5). Developed strong foundations in full-stack development and system architecture.",
       url: "https://venialaum.unimoron.edu.ar/carreras/escuela-superior-de-ingenieria-informatica-y-cs-agroalimentarias/de-grado/ingenieria-en-informatica/2013?e=3&c=30",
@@ -112,7 +114,7 @@ export const education = {
       id: "degree-electromechanical",
       title: "Electromechanical Technician",
       institution: "Colegio Emaús",
-      period: "2015 – 2021",
+      period: "March 2015 – December 2021",
       status: "Completed",
       description: "Technical foundation in electromechanics, electronics, and systems. This early technical training developed my problem-solving mindset and hands-on approach to understanding how systems work—skills that later translated naturally into software engineering.",
       url: "https://www.colegioemaus.edu.ar/tecnica.html",
@@ -135,42 +137,56 @@ export const projects = {
   
   professional: {
     title: "Professional Experience",
-    intro: "Working at Kovix Consulting for over 3 years, I've contributed to large-scale B2C platforms serving millions of users. Each project taught me that great software isn't just about writing code—it's about understanding business needs, collaborating across teams, and delivering measurable results that matter.",
+    intro: "Working at Kovix Consulting for over 4 years, I've contributed to large-scale B2C platforms serving millions of users. Each project taught me that great software isn't just about writing code—it's about understanding business needs, collaborating across teams, and delivering measurable results that matter.",
 
     items: [
       {
         id: "project-visma",
-        title: "Visma",
-        period: "Present",
+        title: "Visma Enterprise Solutions",
+        period: "Feb 2026 - Present",
         description: "Currently working on Visma's enterprise solutions, focusing on scalable architecture and system integration for Nordic market operations.",
         technologies: ["Node.js", "NestJS", "TypeScript", "PostgreSQL"],
         impact: "Contributing to enterprise-grade software serving thousands of businesses across Scandinavia.",
         url: "https://www.visma.com/",
+        logo: "/logo-visma.webp"
       },
       {
         id: "project-fravega",
-        title: "Frávega B2C – Large-Scale E-Commerce Platform",
-        period: "Jun 2022 – Present",
+        title: "Frávega E-Commerce Platform",
+        period: "Jun 2023 – Jan 2026",
         description: "Full Stack Developer working on a major Argentine e-commerce platform. Designed and maintained API contracts across multiple teams, optimized critical database queries, and planned high-impact production releases. Implemented complete Backend-for-Frontend (BFF) architecture for the Sellers module, actively mentored teammates, and improved code quality through comprehensive unit testing.",
         technologies: ["Node.js", "NestJS", "Angular", "React", "TypeScript", "PostgreSQL", "Jest", "Vitest", "Tailwind CSS", "Webhooks"],
         impact: "Simplified business processes by ~80%, reduced average processing time from several hours to under one hour (1026% improvement in receiving operations: from 7:48h to 46m average), implemented BFF supporting 40,000+ daily requests (1.2M monthly), and maintained system stability during peak traffic periods.",
         url: "https://www.fravega.com/",
+        logo: "/logo-fravega.webp",
+        images: [
+          { src: "/fravega-1.webp", alt: "Frávega WMS Backoffice" },
+          { src: "/fravega-2.webp", alt: "Frávega WMS Backoffice" },
+          { src: "/fravega-3.webp", alt: "Frávega WMS Mobile Web App" },
+          { src: "/fravega-4.webp", alt: "Frávega WMS Microservices Design" },
+        ],
       },
       {
         id: "project-justo",
-        title: "Jüsto B2C – Grocery Delivery Platform",
-        period: "2022 – 2023",
+        title: "Jüsto Grocery Delivery Platform",
+        period: "Nov 2022 – Dic 2023",
         description: "Collaborated on technical design decisions and API contracts for core business workflows at a fast-growing grocery delivery startup. Estimated development efforts, coordinated task execution within the team, and supported multiple successful production deployments with a strong focus on stability and performance.",
         technologies: ["Node.js", "NestJS", "Angular", "React", "TypeScript", "PostgreSQL", "Jest", "Webhooks"],
         impact: "Delivered 10+ production releases without major incidents, reduced end-to-end preparation time for key workflows by ~50%, and helped scale systems processing tens of millions of product operations during peak demand periods.",
+        logo: "/logo-justo.webp",
+        images: [
+          { src: "/justo-1.webp", alt: "Jüsto WMS Backoffice" },
+          { src: "/justo-2.webp", alt: "Jüsto WMS Mobile App" },
+        ],
       },
       {
         id: "project-kovix",
         title: "Kovix Marketplace",
-        period: "2022",
+        period: "Jul 2022 – Nov 2022",
         description: "Internal marketplace platform development at Kovix Consulting, building core features and infrastructure for multi-vendor operations.",
         technologies: ["Node.js", "NestJS", "React", "TypeScript", "PostgreSQL"],
         impact: "Contributed to building foundational marketplace features and establishing development standards for the project.",
+        logo: "/logo-kovix.webp"
       },
     ],
 
