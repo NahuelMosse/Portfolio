@@ -6,11 +6,42 @@ import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import { PhotoGallery } from "@/components/ui/photo-gallery"
 import { useSectionVisibility } from "@/hooks/use-section-visibility"
 import { INTERSECTION_CONFIG } from "@/lib/constants"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 
 export function ProfessionalProjects() {
   const { isVisible, sectionRef } = useSectionVisibility(INTERSECTION_CONFIG.PROJECTS_THRESHOLD)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [lineHeight, setLineHeight] = useState(0)
+  const firstItemRef = useRef<HTMLDivElement>(null)
+  const lastItemRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const calculateLineHeight = () => {
+      if (firstItemRef.current && lastItemRef.current) {
+        const firstTop = firstItemRef.current.offsetTop
+        const lastTop = lastItemRef.current.offsetTop
+
+        // Calcular desde el centro del primer dot hasta el centro del último dot
+        const dotCenterOffset = 24 // Mitad de 48px (h-12)
+        const startPoint = firstTop + dotCenterOffset
+        const endPoint = lastTop + dotCenterOffset
+
+        setLineHeight(endPoint - startPoint)
+      }
+    }
+
+    // Calcular después de que las animaciones se completen
+    if (isVisible) {
+      const timer = setTimeout(calculateLineHeight, 100)
+
+      window.addEventListener('resize', calculateLineHeight)
+
+      return () => {
+        clearTimeout(timer)
+        window.removeEventListener('resize', calculateLineHeight)
+      }
+    }
+  }, [isVisible])
 
   return (
     <section
@@ -60,12 +91,12 @@ export function ProfessionalProjects() {
         </p>
 
         <div className="relative">
-          {/* Vertical timeline line with animation */}
+          {/* Vertical timeline line with animation - Dynamic height */}
           <div
             className="absolute left-5 sm:left-4 md:left-6 w-[2px] rounded-full transition-all duration-1000 ease-out bg-accent/50"
             style={{
               top: '56px',
-              height: isVisible ? 'calc(100% - 400px)' : '0px',
+              height: isVisible && lineHeight > 0 ? `${lineHeight}px` : '0px',
               transitionDelay: '0.5s',
               zIndex: 0
             }}
@@ -74,12 +105,13 @@ export function ProfessionalProjects() {
           {projectsContent.professional.items.map((project: Project, index: number) => (
             project.url ? (
               <div
+                ref={index === 0 ? firstItemRef : index === projectsContent.professional.items.length - 1 ? lastItemRef : null}
                 key={project.id}
                 className="relative flex items-start mb-12"
                 style={{
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? "translateY(0)" : "translateY(24px)",
-                  transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s`,
+                  transition: `opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.08}s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.08}s`,
                 }}
               >
                 {/* Timeline dot with icon */}
@@ -199,13 +231,14 @@ export function ProfessionalProjects() {
                 </div>
               </div>
             ) : (
-              <div 
+              <div
+                ref={index === 0 ? firstItemRef : index === projectsContent.professional.items.length - 1 ? lastItemRef : null}
                 key={project.id}
                 className="relative flex items-start mb-12"
                 style={{
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? "translateY(0)" : "translateY(24px)",
-                  transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.1}s`,
+                  transition: `opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.08}s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.08}s`,
                 }}
               >
                 {/* Timeline dot with icon */}
