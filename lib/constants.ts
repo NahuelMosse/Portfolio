@@ -14,8 +14,8 @@ export const ANIMATION_TIMING = {
 
 // IntersectionObserver configuration
 export const INTERSECTION_CONFIG = {
-  DEFAULT_THRESHOLD: 0.3,
-  PROJECTS_THRESHOLD: 0.2,
+  DEFAULT_THRESHOLD: 0.15,
+  PROJECTS_THRESHOLD: 0.15,
   ROOT_MARGIN: "-100px 0px -50% 0px",
   NAVIGATION_THRESHOLDS: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
 }
