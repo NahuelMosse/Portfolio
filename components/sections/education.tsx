@@ -4,11 +4,44 @@ import { Card } from "@/components/ui/card"
 import { education } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
 import { useSectionVisibility } from "@/hooks/use-section-visibility"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 
 export function Education() {
   const { isVisible, sectionRef } = useSectionVisibility()
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [lineHeight, setLineHeight] = useState(0)
+  const firstItemRef = useRef<HTMLDivElement>(null)
+  const lastItemRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const calculateLineHeight = () => {
+      if (firstItemRef.current && lastItemRef.current) {
+        const firstTop = firstItemRef.current.offsetTop
+        const lastTop = lastItemRef.current.offsetTop
+
+        // Calcular desde el centro del primer dot hasta el centro del último dot
+        // Los dots tienen h-10 sm:h-12, así que usamos 48px (h-12) para el cálculo
+        const dotCenterOffset = 24 // Mitad de 48px
+        const startPoint = firstTop + dotCenterOffset
+        const endPoint = lastTop + dotCenterOffset
+
+        setLineHeight(endPoint - startPoint)
+      }
+    }
+
+    // Calcular después de que las animaciones se completen
+    if (isVisible) {
+      // Pequeño delay para asegurar que el DOM está actualizado
+      const timer = setTimeout(calculateLineHeight, 100)
+
+      window.addEventListener('resize', calculateLineHeight)
+
+      return () => {
+        clearTimeout(timer)
+        window.removeEventListener('resize', calculateLineHeight)
+      }
+    }
+  }, [isVisible])
 
   return (
     <section
@@ -68,12 +101,12 @@ export function Education() {
 
           {/* Render all degrees in a timeline */}
           <div className="relative">
-            {/* Vertical timeline line with animation */}
+            {/* Vertical timeline line with animation - Dynamic height */}
             <div
               className="absolute left-5 sm:left-4 md:left-6 w-[2px] rounded-full transition-all duration-1000 ease-out bg-accent/50"
               style={{
                 top: '56px',
-                height: isVisible ? 'calc(100% - 345px)' : '0px',
+                height: isVisible && lineHeight > 0 ? `${lineHeight}px` : '0px',
                 transitionDelay: '0.5s',
                 zIndex: 0
               }}
@@ -82,12 +115,13 @@ export function Education() {
             {education.degrees.map((degree, index) => (
               degree.url ? (
                 <div
+                  ref={index === 0 ? firstItemRef : index === education.degrees.length - 1 ? lastItemRef : null}
                   key={degree.id}
                   className="relative flex items-start mb-12"
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? "translateY(0)" : "translateY(24px)",
-                    transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s`,
+                    transition: `opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.08}s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.08}s`,
                   }}
                 >
                   {/* Timeline dot with icon */}
@@ -195,13 +229,14 @@ export function Education() {
                   </a>
                 </div>
               ) : (
-                <div 
+                <div
+                  ref={index === 0 ? firstItemRef : index === education.degrees.length - 1 ? lastItemRef : null}
                   key={degree.id}
                   className="relative flex items-start mb-12"
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? "translateY(0)" : "translateY(24px)",
-                    transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${0.2 + index * 0.15}s`,
+                    transition: `opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.08}s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.1 + index * 0.08}s`,
                   }}
                 >
                   {/* Timeline dot with icon */}
