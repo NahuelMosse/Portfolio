@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react"
 /**
  * Custom hook for managing section visibility with IntersectionObserver
  * 
- * @param threshold - The threshold at which the observer's callback should be executed (default: 0.3)
+ * @param threshold - The threshold at which the observer's callback should be executed (default: 0.15)
  * @returns Object containing isVisible state and sectionRef
  */
-export function useSectionVisibility(threshold: number = 0.3) {
+export function useSectionVisibility(threshold: number = 0.15) {
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const observerRef = useRef<IntersectionObserver | null>(null)
