@@ -3,7 +3,6 @@
 import { Card } from "@/components/ui/card"
 import { projects as projectsContent } from "@/lib/content"
 import { ScrollIndicator } from "@/components/ui/scroll-indicator"
-import { TechDecorator } from "@/components/ui/tech-decorators"
 import { useSectionVisibility } from "@/hooks/use-section-visibility"
 import { INTERSECTION_CONFIG } from "@/lib/constants"
 
@@ -69,17 +68,38 @@ export function PersonalProjects() {
               }}
             >
               <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
-              
-              <div className="absolute top-6 right-6 opacity-40 group-hover:opacity-70 transition-opacity duration-500">
-                <TechDecorator variant="lambda" size="lg" />
-              </div>
-              
               <div className="flex items-start justify-between flex-wrap gap-4 relative z-10">
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1">
                   <h3 className="text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors duration-300">
                     {project.title}
                   </h3>
                   <p className="text-sm text-secondary font-medium">{project.period}</p>
+                </div>
+                <div className="flex gap-2 items-center">
+                  {project.url && (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Ver repositorio de ${project.title}`}
+                      title="Repositorio en GitHub"
+                      className="hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary/40 transition"
+                    >
+                      <img src="/github.png" alt="GitHub" width={28} height={28} style={{ display: 'block' }} />
+                    </a>
+                  )}
+                  {project.page && (
+                    <a
+                      href={project.page}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Ver página de ${project.title}`}
+                      title="Página web del proyecto"
+                      className="hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent/40 transition"
+                    >
+                      <img src="/page.jpg" alt="Página web" width={24} height={24} style={{ display: 'block', borderRadius: '50%' }} />
+                    </a>
+                  )}
                 </div>
               </div>
 

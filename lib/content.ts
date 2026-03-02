@@ -207,6 +207,7 @@ export const projects = {
         description: "Fitness tracking application designed to help users log workouts, track progress, and visualize their fitness journey over time.",
         technologies: ["React", "TypeScript", "Next.js", "Tailwind CSS"],
         impact: "Personal tool for tracking strength training progression with clean UI and data visualization.",
+        url: "https://github.com/nahuelmosse/gym-app",
       },
       {
         id: "personal-portfolio",
@@ -215,6 +216,8 @@ export const projects = {
         description: "This website—a modern, nature-inspired portfolio built with Next.js, featuring smooth animations, glassmorphism effects, and responsive design.",
         technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
         impact: "Showcases my work and technical skills with a unique design aesthetic and excellent user experience.",
+        url: "https://github.com/nahuelmosse/portfolio",
+        page: "https://nahuelmosse.vercel.app",
       },
       {
         id: "personal-nasa-calendar",
@@ -223,6 +226,7 @@ export const projects = {
         description: "A dynamic calendar-based web application that consumes NASA's Astronomy Picture of the Day API to render an interactive UI with server-side rendering.",
         technologies: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Server-Side Rendering"],
         impact: "Demonstrates proficiency in modern frontend development and API integration. Open source on GitHub.",
+        url: "https://github.com/nahuelmosse/nasa-calendar",
       },
       {
         id: "personal-interest-calculator",
@@ -231,6 +235,8 @@ export const projects = {
         description: "Financial calculator for computing compound interest with customizable parameters, featuring interactive charts and detailed breakdown of calculations.",
         technologies: ["React", "TypeScript", "Chart.js", "Tailwind CSS"],
         impact: "Useful tool for financial planning and understanding the power of compound returns over time.",
+        url: "https://github.com/NahuelMosse/Calculadora-de-interes-compuesto",
+        page: "https://nahuelmosse.github.io/Calculadora-de-interes-compuesto/"
       },
       {
         id: "personal-git-tutorial",
@@ -239,6 +245,8 @@ export const projects = {
         description: "Interactive Git tutorial and reference guide covering essential commands, workflows, and best practices for version control.",
         technologies: ["HTML", "CSS", "JavaScript", "Markdown"],
         impact: "Educational resource for developers learning Git fundamentals and advanced techniques.",
+        url: "https://github.com/NahuelMosse/Tutorial-de-Git",
+        page: "https://nahuelmosse.github.io/Tutorial-de-Git/"
       },
       {
         id: "personal-winapi-login",
@@ -247,6 +255,7 @@ export const projects = {
         description: "Windows desktop login application built using Windows API in C++, demonstrating low-level system programming and GUI development.",
         technologies: ["C++", "Windows API", "Win32"],
         impact: "Deep dive into Windows system programming and understanding OS-level authentication mechanisms.",
+        url: "https://github.com/NahuelMosse/Sign-in-log-in-WinApi",
       },
     ],
 

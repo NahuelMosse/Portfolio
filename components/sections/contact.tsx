@@ -80,6 +80,9 @@ export function Contact() {
 
         <div className="pt-16 text-sm text-muted-foreground">
           <p>© {new Date().getFullYear()} {personalInfo.name}. {personalInfo.footer.tagline}</p>
+          <p className="mt-2">
+            <a target="_blank" href="https://icons8.com/icon/62856/github" rel="noopener noreferrer" className="underline hover:text-accent">GitHub</a> icono de <a target="_blank" href="https://icons8.com" rel="noopener noreferrer" className="underline hover:text-accent">Icons8</a>
+          </p>
         </div>
       </div>
     </section>
