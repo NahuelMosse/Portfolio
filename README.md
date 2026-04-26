@@ -28,3 +28,45 @@ Continue building your app on:
 2. Deploy your chats from the v0 interface
 3. Changes are automatically pushed to this repository
 4. Vercel deploys the latest version from this repository
+
+## Local development (official)
+
+### Requirements
+
+- Node.js `22.x` (LTS)
+- npm `10.x` or `11.x`
+
+### Quickstart
+
+```bash
+npm i
+npm run dev
+```
+
+### Useful commands
+
+```bash
+npm run lint
+npm run build
+```
+
+## Windows EPERM recovery
+
+If you hit errors like `spawn EPERM` or `EPERM: operation not permitted, unlink ...`, run:
+
+```powershell
+# 1) Close stale Node processes
+Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force
+
+# 2) Remove Next cache/build output
+if (Test-Path .next) { Remove-Item -LiteralPath .next -Recurse -Force }
+
+# 3) Reinstall and retry
+npm i
+npm run dev
+```
+
+If the error persists:
+
+- Check Windows Defender / Controlled Folder Access and allow `node.exe` and your project folder.
+- If you use Volta, pin Node 22 for this project and open a fresh terminal.
