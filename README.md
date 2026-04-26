@@ -33,8 +33,8 @@ Continue building your app on:
 
 ### Requirements
 
-- Node.js `22.x` (LTS)
-- npm `10.x` or `11.x`
+- Node.js `24.x`
+- npm `11.x`
 
 ### Quickstart
 
@@ -69,4 +69,4 @@ npm run dev
 If the error persists:
 
 - Check Windows Defender / Controlled Folder Access and allow `node.exe` and your project folder.
-- If you use Volta, pin Node 22 for this project and open a fresh terminal.
+- If you use Volta, pin Node 24 for this project and open a fresh terminal.
