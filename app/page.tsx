@@ -8,20 +8,29 @@ import { Present } from "@/components/sections/present"
 import { Contact } from "@/components/sections/contact"
 import { ScrollSnapContainer } from "@/components/scroll-snap-container"
 import { GlassNavigation } from "@/components/glass-navigation"
+import { getStructuredData } from "@/lib/machine-readable"
 
 export default function Home() {
+  const structuredData = getStructuredData()
+
   return (
     <>
-      <ScrollSnapContainer>
-        <Hero />
-        <Origins />
-        <Education />
-        <ProfessionalProjects />
-        <PersonalProjects />
-        <Certifications />
-        <Present />
-        <Contact />
-      </ScrollSnapContainer>
+      <main id="main-content">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        <ScrollSnapContainer>
+          <Hero />
+          <Origins />
+          <Education />
+          <ProfessionalProjects />
+          <PersonalProjects />
+          <Certifications />
+          <Present />
+          <Contact />
+        </ScrollSnapContainer>
+      </main>
       <GlassNavigation />
     </>
   )
