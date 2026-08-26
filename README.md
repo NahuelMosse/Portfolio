@@ -1,72 +1,46 @@
-# Portfolio website
+# Portfolio
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+Personal portfolio site — a single-page, scroll-snapped narrative that walks through how I got into software, what I've built professionally, and where I'm heading.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/nahuelgamail-1582s-projects/v0-portfolio-website)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/gGwCuQZkgnf)
+**Live:** [nahuelmosse.vercel.app](https://nahuelmosse.vercel.app)
 
-## Overview
+## Stack
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+Next.js (App Router) · React · TypeScript · Tailwind CSS · Framer Motion
 
-## Deployment
+## Highlights
 
-Your project is live at:
+- **Scroll-snap narrative** — each section is a full viewport panel with visibility-driven animations (`hooks/use-section-visibility.ts`).
+- **Content as data** — every piece of copy, project and certification lives in `lib/content.ts`. No text is hardcoded in components.
+- **Machine-readable output** — the same content source feeds `/portfolio.json` and `/llms.txt`, plus JSON-LD structured data, so crawlers and LLMs can read the CV without scraping the DOM (`lib/machine-readable.ts`).
+- **Glassmorphism UI** with a custom floating tech-symbol layer and a responsive photo gallery.
+- SEO handled through `app/sitemap.ts`, `app/robots.ts` and `app/manifest.ts`.
 
-**[https://vercel.com/nahuelgamail-1582s-projects/v0-portfolio-website](https://vercel.com/nahuelgamail-1582s-projects/v0-portfolio-website)**
+## Structure
 
-## Build your app
+```
+app/          routes, metadata, sitemap/robots/manifest, json + llms endpoints
+components/
+  sections/   one component per narrative section
+  ui/         reusable primitives (button, card, gallery, decorators)
+lib/          content source, metadata, animation config, helpers
+hooks/        section visibility, gallery navigation
+```
 
-Continue building your app on:
-
-**[https://v0.app/chat/gGwCuQZkgnf](https://v0.app/chat/gGwCuQZkgnf)**
-
-## How It Works
-
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
-
-## Local development (official)
-
-### Requirements
-
-- Node.js `24.x`
-- npm `11.x`
-
-### Quickstart
+## Running it
 
 ```bash
-npm i
+npm install
 npm run dev
 ```
 
-### Useful commands
+Open [localhost:3000](http://localhost:3000).
 
 ```bash
-npm run lint
-npm run build
+npm run build   # production build
+npm run lint    # eslint
 ```
 
-## Windows EPERM recovery
+## Editing content
 
-If you hit errors like `spawn EPERM` or `EPERM: operation not permitted, unlink ...`, run:
-
-```powershell
-# 1) Close stale Node processes
-Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force
-
-# 2) Remove Next cache/build output
-if (Test-Path .next) { Remove-Item -LiteralPath .next -Recurse -Force }
-
-# 3) Reinstall and retry
-npm i
-npm run dev
-```
-
-If the error persists:
-
-- Check Windows Defender / Controlled Folder Access and allow `node.exe` and your project folder.
-- If you use Volta, pin Node 24 for this project and open a fresh terminal.
+Everything visible on the site comes from `lib/content.ts` — personal info, the origins story, education, professional and personal projects, certifications and contact. Change it there and it propagates to the page, the JSON endpoint and the structured data at once.
