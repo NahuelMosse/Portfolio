@@ -1,15 +1,12 @@
-import type { MetadataRoute } from 'next'
- 
+import type { MetadataRoute } from "next"
+import { SITE_URL } from "@/lib/metadata"
+
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nahuelmosse.vercel.app'
-  
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/api/', '/private/'],
-    },
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
+    // Everything published here is meant to be indexed, including the
+    // machine-readable /llms.txt and /portfolio.json.
+    rules: { userAgent: "*", allow: "/" },
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   }
 }

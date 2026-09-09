@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" fill="#0e1116"/>
+  <!-- Registration mark plus an N built from the same hairlines as the site. -->
+  <path d="M10 10h10M10 10v10" stroke="#c3ff3d" stroke-width="3" fill="none"/>
+  <path d="M54 54H44M54 54V44" stroke="#c3ff3d" stroke-width="3" fill="none"/>
+  <path d="M20 46V20l24 24V18" stroke="#f7f8fa" stroke-width="6" fill="none" stroke-linecap="square"/>
+</svg>

@@ -1,194 +1,149 @@
-import { certifications, contact, education, origins, personalInfo, present, projects } from "@/lib/content"
+import { getContent } from "./content"
+import type { Locale } from "./content/types"
+import { SITE_URL } from "./metadata"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nahuelmosse.vercel.app"
-const snapshotDate = new Date().toISOString()
+/**
+ * The same story the page tells, in a shape a machine can read.
+ *
+ * Everything here derives from `lib/content` — there is no second source of
+ * truth to drift out of sync with what a human actually sees.
+ */
+export function getPortfolioPayload(locale: Locale = "en") {
+  const c = getContent(locale)
 
-function normalizeText(value: string): string {
-  const normalized = value.normalize("NFC").replace(/\uFFFD/g, "")
-  const looksMojibake = /[\u00C2\u00C3\u00E2]/.test(normalized)
+  return {
+    $schema: "https://schema.org/Person",
+    generatedAt: new Date().toISOString(),
+    locale,
+    url: SITE_URL,
+    alternates: { en: `${SITE_URL}/`, es: `${SITE_URL}/es` },
 
-  if (!looksMojibake) {
-    return normalized
+    person: {
+      name: c.identity.name,
+      role: c.identity.role,
+      company: c.identity.company,
+      location: c.identity.location,
+      email: c.identity.email,
+      availability: c.identity.availability,
+      links: c.identity.links,
+      summary: c.meta.description,
+    },
+
+    highlights: c.telemetry.metrics.map((m) => ({
+      id: m.id,
+      value: `${m.value}${m.unit ? ` ${m.unit}` : ""}`,
+      label: m.label,
+      source: m.source,
+      project: m.projectId ?? null,
+    })),
+
+    experience: c.work.projects.map((p) => ({
+      id: p.id,
+      client: p.client,
+      title: p.title,
+      role: p.role,
+      period: p.period,
+      summary: p.summary,
+      detail: p.body,
+      stack: p.stack,
+      headline: {
+        value: p.headline.value,
+        label: p.headline.label,
+        source: p.headline.source,
+      },
+      process: p.flow.nodes.map((n) => n.label),
+    })),
+
+    projects: [
+      ...c.lab.projects.map((p) => ({
+        id: p.id,
+        title: p.title,
+        tagline: p.tagline,
+        detail: p.body,
+        stack: p.stack,
+        stats: p.stats,
+        url: null as string | null,
+      })),
+      ...c.lab.small.map((p) => ({
+        id: p.id,
+        title: p.title,
+        tagline: p.description,
+        detail: [] as string[],
+        stack: p.stack,
+        stats: [] as { value: string; label: string }[],
+        url: p.repo ?? p.demo ?? null,
+      })),
+    ],
+
+    method: {
+      summary: c.method.intro,
+      steps: c.method.steps.map((s) => ({ title: s.title, detail: s.body })),
+    },
+
+    skills: c.arsenal.items.map((item) => ({
+      name: item.name,
+      category: item.category,
+      years: item.years,
+      context: item.note,
+    })),
+
+    achievements: c.proof.items.map((a) => ({
+      title: a.title,
+      issuer: a.issuer,
+      year: a.year,
+      kind: a.kind,
+    })),
+
+    notes: [
+      "No client system screenshots are published on this site.",
+      "Every process diagram was drawn for this site and depicts a generic domain flow.",
+    ],
   }
-
-  const repaired = Buffer.from(normalized, "latin1").toString("utf8").normalize("NFC")
-  const repairedLooksBroken = /[\u00C2\u00C3\u00E2]/.test(repaired)
-
-  return repairedLooksBroken ? normalized : repaired
 }
 
-function deepNormalize<T>(value: T): T {
-  if (typeof value === "string") {
-    return normalizeText(value) as T
-  }
+/** Plain-text index for crawlers and LLMs. */
+export function getLlmsText(locale: Locale = "en"): string {
+  const c = getContent(locale)
+  const payload = getPortfolioPayload(locale)
 
-  if (Array.isArray(value)) {
-    return value.map((item) => deepNormalize(item)) as T
-  }
-
-  if (value && typeof value === "object") {
-    const entries = Object.entries(value as Record<string, unknown>).map(([key, val]) => [key, deepNormalize(val)])
-    return Object.fromEntries(entries) as T
-  }
-
-  return value
-}
-
-export function getPortfolioPayload() {
-  return deepNormalize({
-    version: "1.0.0",
-    updatedAt: snapshotDate,
-    site: {
-      name: "Nahuel Mosse Portfolio",
-      url: siteUrl,
-      language: "en",
-    },
-    profile: {
-      name: personalInfo.name,
-      role: personalInfo.role,
-      location: personalInfo.location,
-      email: personalInfo.email,
-      summary: personalInfo.hero.tagline,
-      links: {
-        linkedin: personalInfo.linkedin,
-        github: personalInfo.github,
-        gitlab: personalInfo.gitlab,
-      },
-    },
-    sections: {
-      origins: {
-        title: origins.title,
-        paragraphs: origins.paragraphs,
-      },
-      education: {
-        title: education.title,
-        intro: education.intro,
-        degrees: education.degrees.map((degree) => ({
-          id: degree.id,
-          title: degree.title,
-          institution: degree.institution,
-          period: degree.period,
-          status: degree.status,
-          description: degree.description,
-          url: degree.url,
-        })),
-        conclusion: education.conclusion,
-      },
-      professionalExperience: projects.professional.items.map((project) => ({
-        id: project.id,
-        title: project.title,
-        period: project.period,
-        description: project.description,
-        technologies: project.technologies,
-        impact: project.impact,
-        url: project.url ?? null,
-      })),
-      personalProjects: projects.personal.items.map((project) => ({
-        id: project.id,
-        title: project.title,
-        period: project.period,
-        description: project.description,
-        technologies: project.technologies,
-        impact: project.impact,
-        url: project.url ?? null,
-        page: project.page ?? null,
-      })),
-      certifications: certifications.items.map((item) => ({
-        id: item.id,
-        title: item.title,
-        issuer: item.issuer,
-        year: item.year,
-        description: item.description,
-      })),
-      present: {
-        title: present.title,
-        paragraphs: present.paragraphs,
-        interests: present.interests.items,
-        conclusion: present.conclusion,
-      },
-      contact: {
-        title: contact.title,
-        description: contact.description,
-        email: personalInfo.email,
-        links: contact.cta.secondary,
-      },
-    },
-  })
-}
-
-export function getStructuredData() {
-  const professionalAndPersonalProjects = [...projects.professional.items, ...projects.personal.items]
-
-  return deepNormalize([
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": `${siteUrl}/#person`,
-      name: personalInfo.name,
-      jobTitle: personalInfo.role,
-      email: `mailto:${personalInfo.email}`,
-      url: siteUrl,
-      homeLocation: {
-        "@type": "Place",
-        name: personalInfo.location,
-      },
-      sameAs: [personalInfo.linkedin, personalInfo.github, personalInfo.gitlab],
-      knowsAbout: [
-        "Node.js",
-        "NestJS",
-        "React",
-        "Next.js",
-        "TypeScript",
-        "PostgreSQL",
-        "API Development",
-        "Full Stack Development",
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "@id": `${siteUrl}/#website`,
-      url: siteUrl,
-      name: "Nahuel Mosse Portfolio",
-      description:
-        "Software Engineer specializing in full-stack development with Node.js, React, TypeScript, and PostgreSQL.",
-      publisher: {
-        "@id": `${siteUrl}/#person`,
-      },
-      inLanguage: "en",
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfilePage",
-      "@id": `${siteUrl}/#profile-page`,
-      url: siteUrl,
-      name: "Nahuel Mosse | Software Engineer Portfolio",
-      isPartOf: {
-        "@id": `${siteUrl}/#website`,
-      },
-      mainEntity: {
-        "@id": `${siteUrl}/#person`,
-      },
-      description:
-        "Portfolio with professional experience, personal projects, education, and certifications.",
-      inLanguage: "en",
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "@id": `${siteUrl}/#projects`,
-      name: "Projects",
-      itemListElement: professionalAndPersonalProjects.map((project, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        item: {
-          "@type": "CreativeWork",
-          name: project.title,
-          description: project.description,
-          url: project.url ?? ("page" in project ? project.page : undefined) ?? siteUrl,
-          keywords: project.technologies.join(", "),
-        },
-      })),
-    },
-  ])
+  return [
+    `# ${c.identity.name}`,
+    "",
+    `> ${c.meta.description}`,
+    "",
+    `${c.identity.role} at ${c.identity.company}. ${c.identity.location}.`,
+    c.identity.availability,
+    "",
+    "## Machine-readable",
+    "",
+    `- Structured profile: ${SITE_URL}/portfolio.json`,
+    `- Sitemap: ${SITE_URL}/sitemap.xml`,
+    `- English: ${SITE_URL}/`,
+    `- Spanish: ${SITE_URL}/es`,
+    "",
+    "## Highlights",
+    "",
+    ...payload.highlights.map((h) => `- ${h.value} — ${h.label} (${h.source})`),
+    "",
+    "## Experience",
+    "",
+    ...payload.experience.map(
+      (e) => `- ${e.client} — ${e.role}, ${e.period}. ${e.summary}`,
+    ),
+    "",
+    "## Own projects",
+    "",
+    ...payload.projects.map((p) => `- ${p.title}: ${p.tagline}`),
+    "",
+    "## Contact",
+    "",
+    `- Email: ${c.identity.email}`,
+    ...c.identity.links.map((l) => `- ${l.label}: ${l.href}`),
+    "",
+    "## Notes",
+    "",
+    ...payload.notes.map((n) => `- ${n}`),
+    "",
+    "Preferred extraction source: /portfolio.json",
+  ].join("\n")
 }

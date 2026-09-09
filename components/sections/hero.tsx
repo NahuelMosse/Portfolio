@@ -1,141 +1,222 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { personalInfo } from "@/lib/content"
+import dynamic from "next/dynamic"
+import { useEffect, useRef, useState } from "react"
+import type { PortfolioContent } from "@/lib/content/types"
+import { useIsDesktop, useReducedMotion, useZonedTime } from "@/hooks/use-runtime"
 
-export function Hero() {
-  const [isVisible, setIsVisible] = useState(false)
-  const [scrollY, setScrollY] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
+/** WebGL never reaches the server, and never blocks first paint. */
+const FieldCanvas = dynamic(() => import("@/components/hero/field-canvas"), {
+  ssr: false,
+})
 
+export function Hero({ content }: { content: PortfolioContent }) {
+  const { hero, identity } = content
+  const isDesktop = useIsDesktop()
+  const reducedMotion = useReducedMotion()
+  const time = useZonedTime(identity.timezone)
+
+  const sectionRef = useRef<HTMLElement>(null)
+  const [offScreen, setOffScreen] = useState(false)
+
+  // The shader is expensive; stop it the moment the hero leaves the viewport.
   useEffect(() => {
-    setIsVisible(true)
-    setIsMobile(window.innerWidth < 768)
+    const el = sectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setOffScreen(!entry.isIntersecting),
+      { rootMargin: "10% 0px" },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [])
 
-  useEffect(() => {
-    // Subtle parallax effect - throttled
-    let ticking = false
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrollY(window.scrollY)
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-    
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  const showShader = isDesktop && !reducedMotion
 
   return (
-    <section id="hero" className="snap-section min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-12 lg:px-24 relative overflow-hidden">
-      {/* Subtle ambient lighting - like warm interior lighting */}
-      <div className="absolute inset-0 opacity-20" aria-hidden="true">
-        <div
-          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-secondary/30 rounded-full blur-[120px]"
-          style={{
-            animation: "float 30s ease-in-out infinite",
-          }}
-        />
-        <div
-          className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent/20 rounded-full blur-[100px]"
-          style={{
-            animation: "float 35s ease-in-out infinite reverse",
-          }}
-        />
-      </div>
+    <section
+      ref={sectionRef}
+      id="hero"
+      className="relative isolate flex min-h-[100svh] flex-col justify-between overflow-hidden"
+    >
+      {/* Background ---------------------------------------------------- */}
+      {showShader ? (
+        <FieldCanvas paused={offScreen} />
+      ) : (
+        <StaticField />
+      )}
 
-      {/* Minimal pattern with parallax */}
+      {/* Legibility scrim.
+          The field is busiest exactly where the copy sits, so this darkens the
+          left column and the bottom edge. Two soft gradients rather than one
+          flat overlay: the shader stays visible, the text stays readable. */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
-        aria-hidden="true"
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1]"
         style={{
-          transform: !isMobile ? `translateY(${scrollY * 0.3}px)` : 'none',
-          transition: "transform 0.1s ease-out",
+          background: `
+            linear-gradient(100deg,
+              color-mix(in oklab, var(--bg-deep) 92%, transparent) 0%,
+              color-mix(in oklab, var(--bg-deep) 74%, transparent) 34%,
+              transparent 68%),
+            linear-gradient(0deg,
+              color-mix(in oklab, var(--bg-deep) 88%, transparent) 0%,
+              transparent 26%),
+            linear-gradient(180deg,
+              color-mix(in oklab, var(--bg-deep) 72%, transparent) 0%,
+              transparent 18%)
+          `,
         }}
-      >
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
-            backgroundSize: "60px 60px",
-            color: "oklch(0.72 0.06 75)",
-          }}
-        />
-      </div>
+      />
 
-      {/* Subtle code symbols floating - tech meets nature */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div className="hidden sm:block absolute top-[20%] left-[12%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "code-flow 24s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
-          {'</>'}
-        </div>
-        <div className="hidden sm:block absolute top-[35%] right-[15%] text-secondary/[0.28] text-3xl sm:text-5xl font-mono" style={{ animation: "float 28s ease-in-out infinite 6s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
-          {'{}'}
-        </div>
-        <div className="hidden sm:block absolute top-[55%] left-[18%] text-primary/[0.25] text-3xl sm:text-5xl" style={{ animation: "float 32s ease-in-out infinite 12s" }}>
-          λ
-        </div>
-        <div className="hidden sm:block absolute bottom-[25%] right-[20%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "code-flow 30s ease-in-out infinite 18s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
-          {'[]'}
-        </div>
-        <div className="hidden sm:block absolute bottom-[40%] left-[10%] text-secondary/[0.25] text-2xl sm:text-4xl" style={{ animation: "float 26s ease-in-out infinite 24s" }}>
-          →
-        </div>
-      </div>
-
-      <div
-        className="max-w-5xl mx-auto text-center space-y-10 md:space-y-12 relative z-10"
-        style={{
-          opacity: isVisible ? 1 : 0,
-          transform: isVisible ? "translateY(0)" : "translateY(32px)",
-          transition: "opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)",
-        }}
-      >
-        <div className="space-y-6">
-          <h1
-            className="text-4xl sm:text-5xl md:text-8xl lg:text-9xl font-bold tracking-tight text-balance leading-[0.95]"
-            style={{
-              letterSpacing: "-0.02em",
-            }}
-          >
-            <span className="text-foreground">{personalInfo.name}</span>
-          </h1>
-          <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground font-light tracking-wide">
-            {personalInfo.role}
-          </p>
-          {/* Subtle accent line - like a simple design element */}
-          <div className="flex justify-center pt-2">
-            <div className="w-24 h-0.5 bg-accent/60 rounded-full" />
-          </div>
+      {/* Top HUD — sits below the fixed nav, not under it. */}
+      <header className="relative z-10 shell flex items-start justify-between pt-20 md:pt-24">
+        <div className="mono flex items-center gap-2.5 text-fg-dim">
+          <CornerTick />
+          <span>{hero.eyebrow}</span>
         </div>
 
-        <div className="max-w-2xl mx-auto pt-4">
-          <p className="text-lg md:text-xl lg:text-2xl text-foreground/80 leading-relaxed text-pretty">
-            {personalInfo.hero.tagline}
-          </p>
+        <div className="mono flex items-center gap-2.5 text-fg-dim">
+          <span className="tnum" suppressHydrationWarning>
+            {time || "--:--"} <span className="text-fg-faint">BA</span>
+          </span>
+          <CornerTick align="right" />
         </div>
+      </header>
 
-        <div className="pt-8">
-          <div className="inline-flex items-center gap-2 text-sm text-muted-foreground group cursor-default">
-            <span className="transition-colors duration-300 group-hover:text-accent">Scroll to explore</span>
-            <svg 
-              className="w-4 h-4 text-accent/70 transition-transform duration-700 ease-in-out"
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-              aria-hidden="true"
-              style={{
-                animation: "bounce 2s cubic-bezier(0.16, 1, 0.3, 1) infinite",
-              }}
+      {/* Headline ------------------------------------------------------ */}
+      <div className="relative z-10 shell flex-1 flex flex-col justify-center py-10">
+        <h1 className="display text-fg">
+          {hero.headline.map((line, i) => (
+            <span
+              key={line}
+              data-reveal="rise"
+              style={{ "--reveal-delay": `${200 + i * 140}ms` } as React.CSSProperties}
+              className="block"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
+              <span>{line}</span>
+            </span>
+          ))}
+        </h1>
+
+        <div
+          className="mt-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between"
+          data-reveal
+          style={{ "--reveal-delay": "520ms" } as React.CSSProperties}
+        >
+          {/* The lede sits on its own reading plate.
+              Contrast is fine on its own, but the shader's contour strokes are
+              the same weight as the letterforms and they move, so the text and
+              the field compete as figure. The plate settles that, and matches
+              the treatment the role badge already has. */}
+          <p className="max-w-[46ch] border-l border-accent/40 bg-bg-deep/55 py-2 pl-5 text-lg leading-relaxed text-fg-dim backdrop-blur-[3px]">
+            {hero.statement}
+          </p>
+
+          {/* Its own backdrop: this sits over the brightest part of the field. */}
+          <div className="mono shrink-0 border border-line-soft/60 bg-bg-deep/70 px-4 py-3 text-fg-faint backdrop-blur-sm md:text-right">
+            <span className="block text-accent">{identity.role}</span>
+            <span className="mt-1 block">{identity.availability}</span>
           </div>
         </div>
       </div>
+
+      {/* Ticker + scroll cue ------------------------------------------- */}
+      <footer className="relative z-10 border-t border-line-soft/60">
+        <Ticker items={hero.ticker} paused={reducedMotion} />
+        <div className="shell flex items-center justify-between py-3">
+          <span className="mono text-fg-faint">{hero.paletteHint}</span>
+          <span className="mono flex items-center gap-2 text-fg-dim">
+            {hero.scrollCue}
+            <span
+              aria-hidden
+              className="inline-block h-3 w-px bg-accent"
+              style={{ animation: "rt-blink 1.6s steps(1) infinite" }}
+            />
+          </span>
+        </div>
+      </footer>
     </section>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+
+/** Mobile and reduced-motion fallback: the same visual language, in CSS. */
+function StaticField() {
+  return (
+    <div aria-hidden className="absolute inset-0 -z-10 bg-bg-deep">
+      <div
+        className="absolute inset-0 opacity-70"
+        style={{
+          background: `
+            radial-gradient(90% 60% at 78% 18%, color-mix(in oklab, var(--accent) 16%, transparent) 0%, transparent 58%),
+            radial-gradient(70% 50% at 15% 82%, color-mix(in oklab, var(--data) 12%, transparent) 0%, transparent 60%),
+            linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 100%)
+          `,
+        }}
+      />
+      <div
+        className="reticle absolute inset-0 opacity-[0.35]"
+        style={{
+          maskImage:
+            "radial-gradient(100% 80% at 50% 40%, black 10%, transparent 78%)",
+        }}
+      />
+    </div>
+  )
+}
+
+/** Corner registration mark — the frame of an instrument, not a decoration. */
+function CornerTick({ align = "left" }: { align?: "left" | "right" }) {
+  return (
+    <span
+      aria-hidden
+      className={`block h-2.5 w-4 shrink-0 border-accent/70 ${
+        align === "left" ? "border-l border-t" : "border-r border-t"
+      }`}
+    />
+  )
+}
+
+/**
+ * Marquee of headline numbers. The list is rendered twice and translated by
+ * exactly -50%, which is what makes the loop seamless.
+ */
+function Ticker({ items, paused }: { items: string[]; paused: boolean }) {
+  return (
+    <div
+      className="relative overflow-hidden border-b border-line-soft/60 py-2.5"
+      // Fades the cut edges so entries don't appear to be sliced mid-word.
+      style={{
+        maskImage:
+          "linear-gradient(to right, transparent 0, black 4rem, black calc(100% - 4rem), transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent 0, black 4rem, black calc(100% - 4rem), transparent 100%)",
+      }}
+    >
+      <div
+        className="flex w-max"
+        style={
+          paused
+            ? undefined
+            : { animation: "rt-ticker 42s linear infinite" }
+        }
+      >
+        {[0, 1].map((copy) => (
+          <ul key={copy} className="flex shrink-0" aria-hidden={copy === 1}>
+            {items.map((item) => (
+              <li
+                key={item}
+                className="mono flex items-center gap-4 whitespace-nowrap px-5 text-fg-dim"
+              >
+                <span className="h-1 w-1 rounded-full bg-accent" aria-hidden />
+                {item}
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
   )
 }

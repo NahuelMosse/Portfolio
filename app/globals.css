@@ -1,158 +1,486 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "./animations.css";
 
-@custom-variant dark (&:is(.dark *));
+/* ==========================================================================
+   RUNTIME — design tokens
+   A dark instrument panel: cold carbon surfaces, one acid accent that mutates
+   per section, monospace for anything that reads as data.
+   ========================================================================== */
 
 :root {
-  /* Interior design inspired: Dark forest green walls with cognac leather accents */
-  --background: oklch(0.18 0.04 165); /* Dark forest green base - like painted walls */
-  --foreground: oklch(0.95 0.01 80); /* Warm off-white cream */
-  --card: oklch(0.22 0.035 165); /* Slightly lighter forest green cards */
-  --card-foreground: oklch(0.93 0.01 75);
-  --popover: oklch(0.22 0.04 165);
-  --popover-foreground: oklch(0.93 0.01 75);
-  --primary: oklch(0.42 0.08 165); /* Subtle sage green - not vibrant */
-  --primary-foreground: oklch(0.95 0.01 80);
-  --secondary: oklch(0.55 0.10 55); /* Lighter cognac/warm brown leather */
-  --secondary-foreground: oklch(0.95 0.01 80);
-  --muted: oklch(0.28 0.03 165);
-  --muted-foreground: oklch(0.65 0.02 80);
-  --accent: oklch(0.72 0.06 75); /* Warm beige/gold - like pampas grass */
-  --accent-foreground: oklch(0.20 0.04 165);
-  --destructive: oklch(0.50 0.15 35);
-  --destructive-foreground: oklch(0.95 0.01 80);
-  --border: oklch(0.30 0.04 165); /* Subtle green borders */
-  --input: oklch(0.26 0.03 165);
-  --ring: oklch(0.42 0.08 165);
-  --chart-1: oklch(0.42 0.08 165);
-  --chart-2: oklch(0.45 0.08 55);
-  --chart-3: oklch(0.72 0.06 75);
-  --chart-4: oklch(0.40 0.06 180);
-  --chart-5: oklch(0.48 0.07 150);
-  --radius: 0.875rem;
-  --sidebar: oklch(0.22 0.035 165);
-  --sidebar-foreground: oklch(0.93 0.01 75);
-  --sidebar-primary: oklch(0.42 0.08 165);
-  --sidebar-primary-foreground: oklch(0.95 0.01 80);
-  --sidebar-accent: oklch(0.45 0.08 55);
-  --sidebar-accent-foreground: oklch(0.95 0.01 80);
-  --sidebar-border: oklch(0.30 0.04 165);
-  --sidebar-ring: oklch(0.42 0.08 165);
+  /* --- surfaces ------------------------------------------------------- */
+  --bg-deep: oklch(0.098 0.011 254);
+  --bg: oklch(0.145 0.013 254);
+  --surface: oklch(0.192 0.015 254);
+  --surface-hi: oklch(0.238 0.017 254);
+
+  /* --- text ------------------------------------------------------------ */
+  --fg: oklch(0.973 0.004 254);
+  --fg-dim: oklch(0.706 0.014 254);
+  /* 0.60 rather than 0.51: this colour carries the monospace labels at
+     ~11px, so it has to clear 4.5:1 as small text, not as large. */
+  --fg-faint: oklch(0.600 0.014 254);
+
+  /* --- lines ----------------------------------------------------------- */
+  --line: oklch(0.288 0.016 254);
+  --line-soft: oklch(0.228 0.014 254);
+
+  /* --- accent (mutates per section — see [data-palette]) --------------- */
+  --accent: oklch(0.874 0.208 128);
+  --accent-ink: oklch(0.16 0.05 128);
+  --accent-glow: oklch(0.874 0.208 128 / 0.16);
+
+  /* --- fixed signal colors --------------------------------------------- */
+  --data: oklch(0.79 0.142 213);
+  --warn: oklch(0.812 0.164 74);
+  --live: oklch(0.79 0.19 145);
+
+  /* --- radii ------------------------------------------------------------ */
+  --r-sm: 2px;
+  --r: 4px;
+  --r-lg: 8px;
+
+  /* --- motion ----------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-fast: 140ms;
+  --t: 280ms;
+  --t-slow: 620ms;
+
+  /* --- type scale (fluid) ----------------------------------------------- */
+  --step--1: clamp(0.79rem, 0.77rem + 0.11vw, 0.86rem);
+  --step-0: clamp(0.94rem, 0.9rem + 0.18vw, 1.06rem);
+  --step-1: clamp(1.13rem, 1.06rem + 0.34vw, 1.38rem);
+  --step-2: clamp(1.35rem, 1.23rem + 0.58vw, 1.79rem);
+  --step-3: clamp(1.62rem, 1.43rem + 0.94vw, 2.33rem);
+  --step-4: clamp(1.94rem, 1.64rem + 1.47vw, 3.03rem);
+  --step-5: clamp(2.33rem, 1.88rem + 2.25vw, 3.94rem);
+  /* Display ramp. The oversized headings used to be ad-hoc `text-[clamp(...)]`
+     values, which let two sibling h3s differ by 2x. Three steps, named by rank,
+     and every large heading binds to one of them. */
+  --display: clamp(3rem, 1.2rem + 9vw, 11rem); /* hero only */
+  --display-2: clamp(2.5rem, 1.4rem + 5.4vw, 5.5rem); /* section hero: Grit, Contact */
+  --display-3: clamp(1.9rem, 1.35rem + 2.6vw, 3.1rem); /* case titles, Kit */
+
+  color-scheme: dark;
 }
 
-.dark {
-  --background: oklch(0.18 0.04 165);
-  --foreground: oklch(0.95 0.01 80);
-  --card: oklch(0.22 0.035 165);
-  --card-foreground: oklch(0.93 0.01 75);
-  --popover: oklch(0.22 0.04 165);
-  --popover-foreground: oklch(0.93 0.01 75);
-  --primary: oklch(0.42 0.08 165);
-  --primary-foreground: oklch(0.95 0.01 80);
-  --secondary: oklch(0.55 0.10 55);
-  --secondary-foreground: oklch(0.95 0.01 80);
-  --muted: oklch(0.28 0.03 165);
-  --muted-foreground: oklch(0.65 0.02 80);
-  --accent: oklch(0.72 0.06 75);
-  --accent-foreground: oklch(0.20 0.04 165);
-  --destructive: oklch(0.50 0.15 35);
-  --destructive-foreground: oklch(0.95 0.01 80);
-  --border: oklch(0.30 0.04 165);
-  --input: oklch(0.26 0.03 165);
-  --ring: oklch(0.42 0.08 165);
-  --chart-1: oklch(0.42 0.08 165);
-  --chart-2: oklch(0.45 0.08 55);
-  --chart-3: oklch(0.72 0.06 75);
-  --chart-4: oklch(0.40 0.06 180);
-  --chart-5: oklch(0.48 0.07 150);
-  --sidebar: oklch(0.22 0.035 165);
-  --sidebar-foreground: oklch(0.93 0.01 75);
-  --sidebar-primary: oklch(0.42 0.08 165);
-  --sidebar-primary-foreground: oklch(0.95 0.01 80);
-  --sidebar-accent: oklch(0.45 0.08 55);
-  --sidebar-accent-foreground: oklch(0.95 0.01 80);
-  --sidebar-border: oklch(0.30 0.04 165);
-  --sidebar-ring: oklch(0.42 0.08 165);
+/* --------------------------------------------------------------------------
+   Palette mutation. Each work panel / section stamps one of these on <html>,
+   and every accent-bound surface interpolates because the vars are @property
+   registered below.
+   -------------------------------------------------------------------------- */
+
+[data-palette="lime"] {
+  --accent: oklch(0.874 0.208 128);
+  --accent-ink: oklch(0.16 0.05 128);
 }
+[data-palette="amber"] {
+  --accent: oklch(0.828 0.166 76);
+  --accent-ink: oklch(0.18 0.04 76);
+}
+[data-palette="nordic"] {
+  --accent: oklch(0.758 0.135 244);
+  --accent-ink: oklch(0.15 0.04 244);
+}
+[data-palette="violet"] {
+  --accent: oklch(0.712 0.196 305);
+  --accent-ink: oklch(0.16 0.05 305);
+}
+[data-palette="green"] {
+  --accent: oklch(0.802 0.176 155);
+  --accent-ink: oklch(0.16 0.04 155);
+}
+[data-palette="cyan"] {
+  --accent: oklch(0.812 0.132 210);
+  --accent-ink: oklch(0.15 0.04 210);
+}
+
+/* Grit inverts the whole page: cream paper, hard black, electric blue. */
+[data-palette="grit"] {
+  --bg-deep: oklch(0.938 0.012 92);
+  --bg: oklch(0.962 0.014 92);
+  --surface: oklch(0.99 0.006 92);
+  --surface-hi: oklch(1 0 0);
+  --fg: oklch(0.16 0.014 92);
+  --fg-dim: oklch(0.42 0.014 92);
+  --fg-faint: oklch(0.515 0.012 92);
+  --line: oklch(0.16 0.014 92);
+  --line-soft: oklch(0.78 0.014 92);
+  --accent: oklch(0.548 0.244 264);
+  --accent-ink: oklch(1 0 0);
+  color-scheme: light;
+}
+
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c3ff3d;
+}
+@property --bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #12151b;
+}
+@property --fg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f6f7f9;
+}
+@property --line {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #363b47;
+}
+
+/* --------------------------------------------------------------------------
+   Tailwind v4 theme bridge
+   -------------------------------------------------------------------------- */
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
+  --color-bg-deep: var(--bg-deep);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-hi: var(--surface-hi);
+  --color-fg: var(--fg);
+  --color-fg-dim: var(--fg-dim);
+  --color-fg-faint: var(--fg-faint);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
   --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-accent-ink: var(--accent-ink);
+  --color-data: var(--data);
+  --color-warn: var(--warn);
+  --color-live: var(--live);
+
+  --font-display: var(--font-display), "Arial Black", system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono-code), ui-monospace, "SF Mono", monospace;
+
+  --text-xs: var(--step--1);
+  --text-sm: var(--step-0);
+  --text-base: var(--step-0);
+  --text-lg: var(--step-1);
+  --text-xl: var(--step-2);
+  --text-2xl: var(--step-3);
+  --text-3xl: var(--step-4);
+  --text-4xl: var(--step-5);
+
+  --radius-sm: var(--r-sm);
+  --radius: var(--r);
+  --radius-lg: var(--r-lg);
+
+  --ease-out-expo: var(--ease-out);
 }
 
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: var(--line-soft);
+    min-width: 0;
   }
-  
-  body {
-    @apply bg-background text-foreground;
-    /* Subtle texture like a painted wall - minimal */
-    background-image: 
-      radial-gradient(circle at 20% 80%, oklch(0.20 0.04 165) 0px, transparent 50%),
-      radial-gradient(circle at 80% 20%, oklch(0.19 0.035 170) 0px, transparent 45%);
-    background-attachment: fixed;
-  }
-  
-  /* Optimizar animaciones para mejor rendimiento */
-  section {
-    will-change: opacity, transform;
-    contain: layout style paint;
-  }
-  
-  /* Optimizar scroll suave */
+
   html {
-    scroll-behavior: smooth;
+    /* Lenis drives scrolling — native smooth would fight it. */
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+    /*
+     * Reserve the scrollbar gutter permanently. The boot overlay locks
+     * scrolling with `overflow: hidden`, and without this the scrollbar
+     * disappears and reappears — the viewport changes width and the entire
+     * page reflows, which measured as the largest single layout shift on the
+     * site.
+     */
+    scrollbar-gutter: stable;
   }
-  
-  /* Ocultar scrollbar en todos los navegadores */
-  html,
+
   body {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    overflow-x: hidden; /* Prevent horizontal scroll */
-    max-width: 100vw; /* Ensure nothing exceeds viewport width */
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: var(--step-0);
+    line-height: 1.6;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color var(--t-slow) var(--ease-in-out),
+      color var(--t-slow) var(--ease-in-out);
   }
-  
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--r-sm);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  p {
+    text-wrap: pretty;
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  img,
+  video,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Scrollbar: present but quiet. Hiding it entirely breaks orientation. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-deep);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border: 3px solid var(--bg-deep);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Utilities
+   -------------------------------------------------------------------------- */
+
+@layer utilities {
+  /* Monospace label — the voice of every readout on the page. */
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-size: var(--display);
+    font-weight: 800;
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+  }
+
+  /*
+   * Ranks 2 and 3 of the display ramp, as utilities rather than inline
+   * `style={{ fontSize: var(--display-2) }}`. Tailwind only keeps custom
+   * properties it can see referenced in CSS; a var used solely from a JSX
+   * inline style gets dropped from the build and the heading silently falls
+   * back to body size.
+   */
+  .display-2 {
+    font-size: var(--display-2);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+  }
+
+  .display-3 {
+    font-size: var(--display-3);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+
+  /* Hairline grid — the page reads as an instrument, not a document. */
+  .reticle {
+    background-image: linear-gradient(
+        to right,
+        color-mix(in oklab, var(--line) 46%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--line) 46%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 64px 64px;
+  }
+
+  .edge {
+    border: 1px solid var(--line-soft);
+  }
+
+  .glow {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 40%, transparent),
+      0 0 32px -8px var(--accent);
+  }
+
+  /* Film grain. Procedural, one repeated tile, composited on the GPU. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    background-image: var(--grain-tile);
+    background-size: 180px 180px;
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 4.5rem);
+  }
+
+  .stack-full {
+    min-height: 100svh;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reveal primitives — driven by IntersectionObserver, not by a library, so
+   they cost nothing before they run.
+   -------------------------------------------------------------------------- */
+
+/*
+ * The observed element is never itself clipped or scaled to zero.
+ *
+ * IntersectionObserver measures an element's *visible* box: a `clip-path` that
+ * collapses it, or a `scaleX(0)`, makes its intersection area zero, so it never
+ * reports as visible and never gets revealed. Every variant below therefore
+ * animates a CHILD and leaves the observed element's own box intact.
+ */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal][data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Line rises from behind its own edge. */
+[data-reveal="rise"] {
+  opacity: 1;
+  transform: none;
+  overflow: hidden;
+}
+
+[data-reveal="rise"] > * {
+  display: block;
+  transform: translate3d(0, 110%, 0);
+  transition: transform 1100ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal="rise"][data-shown="true"] > * {
+  transform: none;
+}
+
+/* Rule draws itself in from the left. */
+[data-reveal="wipe"] {
+  opacity: 1;
+  transform: none;
+  overflow: hidden;
+}
+
+[data-reveal="wipe"] > * {
+  display: block;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1100ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal="wipe"][data-shown="true"] > * {
+  transform: none;
+}
+
+@keyframes rt-blink {
+  0%, 46% { opacity: 1; }
+  47%, 100% { opacity: 0.12; }
+}
+
+@keyframes rt-sweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+
+@keyframes rt-ticker {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* A pulse travelling the length of a pipeline rail. Translated rather than
+   offset: the percentages resolve against the full-height carrier, so the
+   travel matches `top: -12% -> 100%` without a layout pass per frame. */
+@keyframes rt-flow {
+  from { transform: translateY(-12%); opacity: 0; }
+  10% { opacity: 1; }
+  85% { opacity: 1; }
+  to { transform: translateY(100%); opacity: 0; }
+}
+
+@keyframes rt-fade-in {
+  from { opacity: 0; transform: translate3d(0, 8px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal],
+  [data-reveal] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
   }
 }

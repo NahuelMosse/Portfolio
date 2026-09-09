@@ -1,90 +1,99 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { personalInfo, contact } from "@/lib/content"
-import { useSectionVisibility } from "@/hooks/use-section-visibility"
+import type { PortfolioContent } from "@/lib/content/types"
+import { ActionButton, Link } from "@/components/ui/primitives"
+import { useCopy, useZonedTime } from "@/hooks/use-runtime"
 
-export function Contact() {
-  const { isVisible, sectionRef } = useSectionVisibility()
+export function Contact({ content }: { content: PortfolioContent }) {
+  const { contact, identity } = content
+  const time = useZonedTime(identity.timezone)
+  const { copied, copy } = useCopy()
 
   return (
     <section
       id="contact"
-      ref={sectionRef}
-      className="snap-section min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-12 lg:px-24 py-24 relative overflow-hidden"
+      className="relative border-t border-line-soft/60 py-24 md:py-36 overflow-hidden"
     >
-      {/* Subtle tech elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div className="hidden sm:block absolute top-[28%] left-[14%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "float 44s ease-in-out infinite", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
-          @
-        </div>
-        <div className="hidden sm:block absolute top-[46%] right-[16%] text-secondary/[0.28] text-3xl sm:text-5xl font-mono" style={{ animation: "float 40s ease-in-out infinite 8s", textShadow: '0 0 25px oklch(0.45 0.08 55 / 0.3)' }}>
-          {'//'}
-        </div>
-        <div className="hidden sm:block absolute top-[64%] left-[18%] text-primary/[0.25] text-3xl sm:text-5xl" style={{ animation: "float 46s ease-in-out infinite 16s" }}>
-          →
-        </div>
-        <div className="hidden sm:block absolute bottom-[34%] right-[12%] text-accent/[0.30] text-4xl sm:text-6xl font-mono" style={{ animation: "float 42s ease-in-out infinite 24s", textShadow: '0 0 30px oklch(0.72 0.06 75 / 0.4)' }}>
-          {'{ }'}
-        </div>
-        <div className="hidden sm:block absolute bottom-[50%] left-[10%] text-secondary/[0.25] text-2xl sm:text-4xl" style={{ animation: "float 48s ease-in-out infinite 32s" }}>
-          λ
-        </div>
-      </div>
-
       <div
-        className="max-w-3xl mx-auto text-center space-y-14 relative z-10"
+        aria-hidden
+        className="reticle absolute inset-0 opacity-[0.25]"
         style={{
-          opacity: isVisible ? 1 : 0,
-          transform: isVisible ? "translateY(0)" : "translateY(32px)",
-          transition: "opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+          maskImage:
+            "radial-gradient(100% 80% at 50% 40%, black 10%, transparent 78%)",
         }}
-      >
-        <div className="space-y-6">
-          <h2
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-tight"
-            style={{ letterSpacing: "-0.02em" }}
-          >
-            {contact.title}
-          </h2>
-          <div className="w-20 h-0.5 bg-accent/60 rounded-full mx-auto" />
-        </div>
+      />
 
-        <p className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground/80 text-pretty">
-          {contact.description}
+      <div className="shell relative">
+        <span className="mono text-accent" data-reveal>
+          {contact.eyebrow}
+        </span>
+
+        <h2
+          className="display-2 mt-5 max-w-[16ch] font-[family-name:var(--font-display)] font-extrabold leading-[0.9] tracking-[-0.03em] text-fg"
+          data-reveal
+        >
+          {contact.title}
+        </h2>
+
+        <p className="mt-8 max-w-[54ch] text-lg text-fg-dim" data-reveal>
+          {contact.body}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-          <Button
-            size="lg"
-            className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8 py-6 text-lg font-medium transition-all duration-300 hover:scale-[1.02] border border-secondary/40"
-            asChild
+        <div className="mt-10 flex flex-wrap items-center gap-4" data-reveal>
+          <ActionButton href={contact.primary.href}>{contact.primary.label}</ActionButton>
+          <button
+            type="button"
+            onClick={() => copy(identity.email)}
+            className="mono border border-line-soft px-6 py-3.5 text-fg-dim transition-colors duration-200 hover:border-accent/70 hover:text-fg"
           >
-            <a href={contact.cta.primary.href} aria-label={`${contact.cta.primary.text} - Opens email client`}>{contact.cta.primary.text}</a>
-          </Button>
-
-          {contact.cta.secondary.map((link) => (
-            <Button
-              key={link.href}
-              size="lg"
-              variant="outline"
-              className="border border-border/60 hover:bg-muted/30 hover:border-border px-8 py-6 text-lg font-medium transition-all duration-300 hover:scale-[1.02] bg-transparent"
-              asChild
-            >
-              <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`${link.text} - Opens in new tab`}>
-                {link.text}
-              </a>
-            </Button>
-          ))}
+            <span aria-live="polite" className={copied ? "text-accent" : undefined}>
+              {copied ? contact.copiedLabel : contact.copyLabel}
+            </span>
+          </button>
         </div>
 
-        <div className="pt-16 text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} {personalInfo.name}. {personalInfo.footer.tagline}</p>
-          <p className="mt-2">
-            <a target="_blank" href="https://icons8.com/icon/62856/github" rel="noopener noreferrer" className="underline hover:text-accent">GitHub</a> icono de <a target="_blank" href="https://icons8.com" rel="noopener noreferrer" className="underline hover:text-accent">Icons8</a>
-          </p>
+        <div className="mt-16 grid grid-cols-2 gap-x-8 gap-y-6 md:grid-cols-4">
+          <div className="mono">
+            <span className="block text-fg-faint">{contact.localTimeLabel}</span>
+            <span className="mt-1 block tnum text-fg" suppressHydrationWarning>
+              {time || "--:--"}
+            </span>
+          </div>
+          <div className="mono">
+            <span className="block text-fg-faint">{identity.location}</span>
+          </div>
+          <div className="mono">
+            <span className="block text-fg-faint">{identity.availability}</span>
+          </div>
+          <div className="mono flex flex-col gap-1">
+            {identity.links.map((link) => (
+              <Link key={link.href} href={link.href} external className="text-fg">
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
+  )
+}
+
+export function Footer({ content }: { content: PortfolioContent }) {
+  const { footer } = content
+
+  return (
+    <footer className="border-t border-line-soft/60 py-8">
+      <div className="shell">
+        <div className="mono flex flex-wrap items-center justify-between gap-4 text-fg-faint">
+          <span>
+            {footer.builtWith} {footer.stack}
+          </span>
+          <Link href="https://github.com/NahuelMosse/Portfolio" external>
+            {footer.repo}
+          </Link>
+        </div>
+        <p className="mono mt-4 text-fg-faint opacity-70">{footer.note}</p>
+      </div>
+    </footer>
   )
 }
