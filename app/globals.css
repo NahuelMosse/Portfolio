@@ -449,12 +449,145 @@
   padding-bottom: var(--space-6);
 }
 
-.spread-art.scene[data-has-art] {
-  min-height: var(--art-band);
+/* each project has its own spot color, the product's, used for the title rule, the links and the row markers */
+.spread {
+  --spot: var(--red);
 }
 
-.spread-art:not([data-has-art]) {
-  display: none;
+.spread[data-project="grit"] {
+  --spot: var(--spot-grit);
+}
+
+.spread[data-project="guardia"] {
+  --spot: var(--spot-triaje);
+}
+
+.spread[data-project="cebador"] {
+  --spot: var(--spot-cebador);
+}
+
+.spread[data-project="club"] {
+  --spot: var(--spot-club);
+}
+
+/* the scene: one full-bleed image at its own aspect, the drawn screen placed over it by the box measured on the art */
+.scene-plate {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--ink);
+  --sl: var(--wl);
+  --st: var(--wt);
+  --sw: var(--ww);
+  --sh: var(--wh);
+}
+
+.scene-plate picture,
+.scene-plate img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scene-screen {
+  position: absolute;
+  left: var(--sl);
+  top: var(--st);
+  width: var(--sw);
+  height: var(--sh);
+  overflow: hidden;
+  background: var(--ink);
+  /* the spot plate printed 1px off register from the black */
+  box-shadow: 1px 1px 0 var(--spot), -1px -1px 0 var(--ink-85);
+}
+
+.scene-screen .scene-media {
+  width: 100%;
+  height: 100%;
+}
+
+.scene-screen img,
+.scene-screen video {
+  object-fit: cover;
+  object-position: top;
+}
+
+/* halftone dots over the glass only, faint enough to leave the interface legible */
+.scene-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--ink-85) 0.5px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.scene-document {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-3);
+  color: var(--bone);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  line-height: 1.4;
+  overflow: hidden;
+}
+
+.scene-document p {
+  margin: 0 0 var(--space-1);
+  color: var(--spot);
+}
+
+.scene-document span {
+  display: block;
+  padding-left: var(--space-2);
+  border-left: 2px solid var(--spot);
+  overflow-wrap: anywhere;
+}
+
+.scene-title {
+  position: absolute;
+  left: 3%;
+  top: 6%;
+  width: 26%;
+}
+
+.scene-title h3,
+.spread-heading h3 {
+  padding-top: var(--space-2);
+  border-top: 3px solid var(--spot);
+  color: var(--bone);
+}
+
+.spread-heading {
+  padding: var(--space-4) var(--gutter-right) 0 var(--gutter-left);
+}
+
+@media (max-width: 767px) {
+  .scene-plate {
+    aspect-ratio: 4 / 5;
+    --sl: var(--tl);
+    --st: var(--tt);
+    --sw: var(--tw);
+    --sh: var(--th);
+  }
+
+  .scene-title {
+    left: 5%;
+    top: 4%;
+    width: 90%;
+  }
+
+  .scene-title h3 {
+    font-size: 1.75rem;
+  }
 }
 
 .spread-body {
@@ -513,81 +646,31 @@
   font-size: var(--text-small);
 }
 
-/* the entrance plays once per spread: the illustration slides in from its side, then the pieces follow in order */
-.spread[data-seen="true"] .spread-art {
-  animation: art-in-left var(--motion-section) var(--ease-out) both;
-}
-
-.spread[data-side="right"][data-seen="true"] .spread-art {
-  animation-name: art-in-right;
-}
-
+/* the pieces fade in once per project, in order; they do not move, so they can be measured at any moment */
 .spread[data-seen="true"] .piece {
   animation: piece-in var(--motion-section) var(--ease-out) both;
   animation-delay: calc(var(--order) * var(--stagger));
 }
 
-@keyframes art-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(calc(var(--space-6) * -1));
-  }
-}
-
-@keyframes art-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(var(--space-6));
-  }
-}
-
 @keyframes piece-in {
   from {
     opacity: 0;
-    transform: translateY(var(--space-4));
   }
 }
 
 @media (min-width: 1280px) {
-  .spread {
-    grid-template-columns: var(--art-share) minmax(0, 1fr);
-  }
-
-  .spread[data-side="right"] {
-    grid-template-columns: minmax(0, 1fr) var(--art-share);
-  }
-
-  .spread[data-side="right"] .spread-art {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .spread-art.scene[data-has-art] {
-    min-height: 0;
-  }
-
   .spread-body {
     padding: var(--space-5);
-  }
-
-  .spread[data-side="right"] .spread-body {
-    grid-column: 1;
-    grid-row: 1;
   }
 
   .spread-fields {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-4);
   }
+}
 
-  /* the inner edge of the panel dissolves into the page */
-  .spread .scene-art {
-    mask-image: linear-gradient(to right, #000 35%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-  }
-
-  .spread[data-side="right"] .scene-art {
-    mask-image: linear-gradient(to left, #000 35%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-  }
+.links a {
+  color: var(--spot);
 }
 
 .links {
@@ -773,52 +856,41 @@
   min-width: 0;
 }
 
-/* below the wide layout the pieces are one row that swipes, the lead taking most of the column */
+/* the pieces are one row beneath the scene that swipes and snaps; a project without a scene shows its lead first and larger */
 .stage .pieces {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: var(--other-share);
-  gap: var(--space-3);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--gutter-right) var(--space-2) var(--gutter-left);
   overflow-x: auto;
-  padding-bottom: var(--space-2);
   scroll-snap-type: x mandatory;
 }
 
 .stage .piece {
+  flex: 0 0 var(--other-share);
   min-width: 0;
   scroll-snap-align: start;
 }
 
-@media (max-width: 1279px) {
-  .stage .pieces {
-    grid-template-columns: var(--lead-share);
-  }
+.scene-pieces[data-has-scene] .piece {
+  flex-basis: var(--row-piece);
 }
 
-@media (min-width: 1280px) {
-  .stage .pieces {
-    grid-auto-flow: row;
-    grid-auto-columns: auto;
-    grid-template-columns: var(--lead-width) var(--other-width);
-    gap: 0;
-    overflow: visible;
-    scroll-snap-type: none;
+.scene-pieces:not([data-has-scene]) .piece[data-lead] {
+  flex-basis: var(--lead-share);
+}
+
+@media (min-width: 768px) {
+  .stage .piece {
+    flex-basis: var(--other-width);
   }
 
-  .stage .piece[data-lead] {
-    grid-column: 1;
-    grid-row: 1 / span 6;
+  .scene-pieces[data-has-scene] .piece {
+    flex-basis: var(--row-piece-wide);
   }
 
-  .stage .piece:not([data-lead]) {
-    grid-column: 2;
-    z-index: 1;
-    margin-left: calc(var(--space-7) * -1);
-    margin-bottom: calc(var(--space-4) * -1);
-  }
-
-  .stage .piece:nth-child(3) {
-    margin-left: calc(var(--space-4) - var(--space-7));
+  .scene-pieces:not([data-has-scene]) .piece[data-lead] {
+    flex-basis: var(--lead-width);
   }
 }
 
@@ -1313,7 +1385,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   /* the entrance keeps its opacity and loses its movement */
-  .spread[data-seen="true"] .spread-art,
   .spread[data-seen="true"] .piece {
     animation-name: fade-in;
   }

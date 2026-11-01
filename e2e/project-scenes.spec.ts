@@ -46,7 +46,7 @@ test("at 390 and 1440 each project is a full-bleed scene whose real interface si
       if (delivered) {
         const art = spread.locator("[data-illustration]")
         await expect(art).toHaveCount(1)
-        await expect(art.locator("img")).toHaveAttribute("src", new RegExp(`ill-scene-${name}-${aspect}\\.webp`))
+        await expect.poll(() => art.locator(":scope > picture > img").evaluate((img: HTMLImageElement) => img.currentSrc), `${project} scene image`).toMatch(new RegExp(`ill-scene-${name}-${aspect}\\.webp`))
         const artBox = (await art.boundingBox())!
         expect(artBox.width, `${project} scene is full-bleed`).toBeGreaterThanOrEqual(viewport.width - 1)
         const ratio = desktop ? 16 / 9 : 4 / 5

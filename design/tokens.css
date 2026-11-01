@@ -6,6 +6,12 @@
   --ink: #0c0c0b;
   --ink-warm: #1a0b09;
 
+  /* each project's own spot color, the product's */
+  --spot-grit: #1f55d6;
+  --spot-triaje: #36d1a8;
+  --spot-cebador: #f0a8ac;
+  --spot-club: #cdeb3a;
+
   --red-16: color-mix(in srgb, var(--red) 16%, transparent);
   --red-20: color-mix(in srgb, var(--red) 20%, transparent);
   --red-28: color-mix(in srgb, var(--red) 28%, transparent);
@@ -75,7 +81,8 @@
   --other-width: 240px;
   --lead-share: 85%;
   --other-share: 62%;
-  --art-share: 36%;
+  --row-piece: 72%;
+  --row-piece-wide: 30%;
   --art-band: 34svh;
   --stagger: 60ms;
   --logo-size: 56px;
