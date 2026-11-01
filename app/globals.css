@@ -493,7 +493,8 @@
   letter-spacing: -0.02em;
   white-space: nowrap;
   color: var(--bone);
-  mix-blend-mode: difference;
+  /* screen keeps the letters bone over shadow and lifts to white in the lamp light: no inverted hue */
+  mix-blend-mode: screen;
 }
 
 .professional-name {
@@ -578,8 +579,9 @@
 
 .sheet-head {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
   margin-bottom: var(--space-2);
 }
 
@@ -618,6 +620,7 @@
     grid-template-columns: 24rem 1fr auto;
     align-items: end;
     gap: var(--space-5);
+    padding-bottom: var(--space-3);
   }
 
   .hero-line {
@@ -912,9 +915,42 @@
 }
 
 .project-text h3 {
-  padding-top: var(--space-2);
-  border-top: 3px solid var(--spot);
+  text-transform: uppercase;
+  line-height: var(--poster-leading);
   color: var(--bone);
+}
+
+/* the case numeral in Boska, a hairline and a small catalog label: poster detail instead of a rule */
+.project-numeral {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  order: 0;
+  margin: 0 var(--gutter-right) 0 var(--gutter-left);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+}
+
+.project-numeral b {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: var(--poster-leading);
+  letter-spacing: -0.02em;
+  color: var(--spot);
+}
+
+.project-numeral i {
+  flex: 0 0 var(--space-6);
+  border-top: var(--rule) solid var(--bone-70);
+}
+
+@media (min-width: 1280px) {
+  .project-numeral {
+    margin-inline: 0;
+  }
 }
 
 /* sized so the longest word fits the text column; a word never breaks */
@@ -1710,7 +1746,8 @@
 
   /* on the phone the name rides above NAWI so the letters cross his hair, not the line */
   .cover-title {
-    top: calc(var(--space-7) + var(--space-3));
+    top: var(--space-5);
+    --size-nawi: 43vw;
     flex-direction: column-reverse;
   }
 

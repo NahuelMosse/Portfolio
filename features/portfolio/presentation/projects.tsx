@@ -59,9 +59,15 @@ function Title({ project }: { project: Project }) {
   );
 }
 
-function ProjectText({ project }: { project: Project }) {
+function ProjectText({ project, index }: { project: Project; index: number }) {
+  const numeral = String(index + 1).padStart(2, "0");
   return (
     <div data-project-text="" className="project-text">
+      <p className="project-numeral" aria-hidden="true">
+        <b>{numeral}</b>
+        <i />
+        <span>Case file</span>
+      </p>
       <Title project={project} />
       <div className="project-details">
         <p data-field="line" className="project-line">
@@ -99,10 +105,15 @@ function ProjectText({ project }: { project: Project }) {
 export function Projects() {
   return (
     <section data-chapter="projects" id="projects" className="projects">
-      <ChapterWord id="projects" heading="h2" numeral="01" note={`${projects.length} projects`}>
+      <ChapterWord
+        id="projects"
+        heading="h2"
+        numeral="01"
+        note={`${projects.length} projects`}
+      >
         Projects
       </ChapterWord>
-      {projects.map((project) => {
+      {projects.map((project, index) => {
         const scene = SCENES[project.id];
         if (!scene)
           throw new Error(`No scene is mapped for project ${project.id}`);
@@ -115,7 +126,7 @@ export function Projects() {
         return (
           <ProjectSpread key={project.id} id={project.id}>
             <div className="spread-main" data-device={scene.device}>
-              <ProjectText project={project} />
+              <ProjectText project={project} index={index} />
               {delivered ? (
                 <ProjectScene
                   asset={asset}
