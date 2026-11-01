@@ -289,3 +289,82 @@ test("the roll lists Analista en Informática 2025 and Técnico Electromecánico
   })
   expect(still).toEqual({ animation: "none", wraps: "wrap", extraCopies: true })
 })
+
+test("each chapter title straddles the edge with the chapter before, the one red disc travels down behind every chapter with scroll and is the rising disc at the closing, each deity looks or reaches toward the next chapter, one HUD rail with a tick per chapter runs the whole page, and no full-width background change sits between chapters @PF-1-ASM-26", async ({ page }) => {
+  const straddle = await page.evaluate((ids) => {
+    return ids.slice(1).map((id) => {
+      const section = document.querySelector(`section[data-chapter="${id}"]`)!
+      const edge = section.getBoundingClientRect().top
+      const title = section.querySelector("h2")!.getBoundingClientRect()
+      return { id, over: edge - title.top, under: title.bottom - edge, height: title.height }
+    })
+  }, CHAPTERS)
+  for (const t of straddle) {
+    expect(t.over, `${t.id} title rises over the chapter before`).toBeGreaterThan(t.height * 0.25)
+    expect(t.under, `${t.id} title falls into its own chapter`).toBeGreaterThan(t.height * 0.25)
+  }
+
+  await expect(page.locator("[data-red-disc]")).toHaveCount(1)
+  const disc = (fraction: number) =>
+    scrollFraction(page, fraction).then(() =>
+      page.evaluate(() => {
+        const el = document.querySelector("[data-red-disc]")!
+        const r = el.getBoundingClientRect()
+        const centre = r.top + r.height / 2
+        const inside = (id: string) => {
+          const s = document.querySelector(`section[data-chapter="${id}"]`)!.getBoundingClientRect()
+          return centre + scrollY >= s.top + scrollY && centre + scrollY <= s.bottom + scrollY
+        }
+        const z = parseInt(getComputedStyle(el).zIndex || "0") || 0
+        const chapterZ = parseInt(getComputedStyle(document.querySelector("section[data-chapter]")!).zIndex) || 0
+        return { top: r.top, page: centre + scrollY, inColdOpen: inside("cold-open"), inCredits: inside("end-credits"), behind: z < chapterZ }
+      }),
+    )
+  const start = await disc(0)
+  const middle = await disc(0.5)
+  const late = await disc(0.75)
+  const end = await disc(1)
+  expect(start.inColdOpen).toBe(true)
+  expect(start.page).toBeLessThan(middle.page)
+  expect(middle.page).toBeLessThan(end.page)
+  expect(end.inCredits).toBe(true)
+  expect(end.top).toBeLessThan(late.top)
+  expect([start, middle, end].every((d) => d.behind)).toBe(true)
+
+  const figures = await page.evaluate(() =>
+    [...document.querySelectorAll("[data-seam-figure]")].map((f) => ({
+      toward: f.getAttribute("data-toward"),
+      side: f.getAttribute("data-side"),
+      mirrored: new DOMMatrix(getComputedStyle(f).transform).a < 0,
+    })),
+  )
+  expect(figures.map((f) => f.toward)).toEqual(CHAPTERS.slice(1))
+  figures.forEach((f, i) => {
+    expect(f.mirrored, `figure ${i} faces the chapter its side points to`).toBe(f.side === "right")
+    if (i > 0) expect(f.side).not.toBe(figures[i - 1].side)
+  })
+
+  const rail = page.locator("[data-hud-rail]")
+  await expect(rail).toHaveCount(1)
+  await expect(rail.locator("[data-rail-tick]")).toHaveCount(CHAPTERS.length)
+  const box = await rail.boundingBox()
+  expect(box!.height).toBeGreaterThan(page.viewportSize()!.height * 0.5)
+  expect(await rail.evaluate((el) => getComputedStyle(el).position)).toBe("fixed")
+  await scrollFraction(page, 0)
+  await expect(rail.locator('[data-rail-tick][aria-current="true"]')).toHaveAttribute("data-rail-tick", "cold-open")
+  await scrollFraction(page, 1)
+  await expect(rail.locator('[data-rail-tick][aria-current="true"]')).toHaveAttribute("data-rail-tick", "end-credits")
+
+  const bands = await page.evaluate(() => {
+    const wide = (el: Element) => el.getBoundingClientRect().width >= innerWidth * 0.9
+    const painted = (el: Element) => {
+      const cs = getComputedStyle(el)
+      const alpha = cs.backgroundColor.match(/[\d.]+/g)?.[3]
+      return (cs.backgroundColor !== "rgba(0, 0, 0, 0)" && alpha !== "0") || cs.backgroundImage !== "none"
+    }
+    return [...document.querySelectorAll("section[data-chapter]:not([data-chapter='cold-open']), [data-transition]")]
+      .filter((el) => wide(el) && painted(el))
+      .map((el) => el.getAttribute("data-chapter") ?? "transition")
+  })
+  expect(bands).toEqual([])
+})
