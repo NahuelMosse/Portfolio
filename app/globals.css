@@ -442,6 +442,12 @@
   overflow-wrap: anywhere;
 }
 
+/* titles always paint above the seam figures and photo slots */
+.chapter-title {
+  position: relative;
+  z-index: 30;
+}
+
 .poster-word em {
   color: var(--red);
   font-style: normal;
@@ -482,13 +488,14 @@
 }
 
 .mark {
-  margin: 0;
+  /* the line box is the full glyph height so longer text never overflows it */
+  margin: -0.22em 0;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 41vw;
-  line-height: 0.8;
+  line-height: 1.25;
   letter-spacing: -0.02em;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .professional-name {
@@ -580,7 +587,7 @@
 }
 
 .sheet-photo {
-  flex: 1;
+  flex: 0 1 40%;
   aspect-ratio: 4 / 5;
   border: 1px solid var(--ink-35);
 }
@@ -721,8 +728,13 @@
 
 .torn-edge {
   position: absolute;
-  inset: 0 0 auto 0;
+  inset: auto 0 100% 0;
   height: var(--space-4);
+  background: transparent;
+}
+
+.torn-edge img {
+  object-fit: fill;
 }
 
 .sealed-file {
@@ -1176,6 +1188,10 @@
     margin-left: 0;
     margin-right: 0;
     padding: 0;
+  }
+
+  .sealed-file:has([data-state="field"]) {
+    display: none;
   }
 
   .chapter-title {
