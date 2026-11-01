@@ -78,5 +78,5 @@ What you open, you close. The main thread compacts at 200k.
 
 Fixed once, here (`$E2E`); `kit.mjs e2e <path>` changes it.
 ```
-E2E=apps/e2e        # adjust to this repo's real path
+E2E=e2e        # adjust to this repo's real path
 ```

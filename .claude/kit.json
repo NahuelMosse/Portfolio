@@ -1,7 +1,7 @@
 {
   "kit": "6.38.0",
   "stack": "react-shadcn",
-  "e2e": "apps/e2e",
+  "e2e": "e2e",
   "rulePaths": {
     "architecture": [
       "apps/**",
