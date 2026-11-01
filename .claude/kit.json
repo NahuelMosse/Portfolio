@@ -1,0 +1,134 @@
+{
+  "kit": "6.38.0",
+  "stack": "react-shadcn",
+  "e2e": "apps/e2e",
+  "rulePaths": {
+    "architecture": [
+      "apps/**",
+      "src/**",
+      "packages/**",
+      "lib/**"
+    ],
+    "design": [
+      "**/*.css",
+      "**/*.tsx",
+      "**/*.jsx",
+      "**/*.vue",
+      "**/*.svelte",
+      "**/*.html"
+    ],
+    "interface": [
+      "**/*.css",
+      "**/*.tsx",
+      "**/*.jsx",
+      "**/*.vue",
+      "**/*.svelte",
+      "**/*.html"
+    ],
+    "speed": [
+      "apps/**",
+      "src/**",
+      "packages/**",
+      "lib/**"
+    ]
+  },
+  "source": {
+    "path": "D:\\projects\\SDD-implementation",
+    "commit": "1f7a63008cc41925cc8cec7d7a923013795d1f7e"
+  },
+  "modules": {
+    "ui": {
+      "state": "on",
+      "version": "1.0.0",
+      "since": "install 2026-11-01"
+    },
+    "api": {
+      "state": "off",
+      "reason": "profile backend not chosen at install",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "data": {
+      "state": "off",
+      "reason": "profile backend not chosen at install",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "infra": {
+      "state": "off",
+      "reason": "profile backend not chosen at install",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "ci": {
+      "state": "off",
+      "reason": "not chosen at install: no signal found in the repo",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "observability": {
+      "state": "off",
+      "reason": "profile backend not chosen at install",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "docs": {
+      "state": "off",
+      "reason": "not chosen at install: no signal found in the repo",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "i18n": {
+      "state": "off",
+      "reason": "no signal found in the repo",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "security-l2": {
+      "state": "off",
+      "reason": "opt-in module, not chosen at install",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    }
+  },
+  "grade": {
+    "level": "poc",
+    "reason": "portfolio revamp exploration: presentation-only facade, judged by capture rounds",
+    "by": "person",
+    "at": "2026-11-01",
+    "history": []
+  },
+  "profiles": {
+    "web": {
+      "state": "on",
+      "since": "install 2026-11-01",
+      "reason": "chosen at install",
+      "mcp": {
+        "motion": {
+          "type": "http",
+          "url": "https://mcp.motion.dev"
+        }
+      }
+    },
+    "backend": {
+      "state": "off",
+      "reason": "not chosen at install",
+      "by": "person",
+      "at": "2026-11-01"
+    },
+    "flutter": {
+      "state": "off",
+      "reason": "not chosen at install",
+      "by": "person",
+      "at": "2026-11-01"
+    }
+  }
+}

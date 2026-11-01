@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Motion defects</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 0; color: #1c1c1c; }
+  main { padding: 32px; display: grid; gap: 24px; max-width: 720px; }
+  .row { display: flex; gap: 12px; align-items: center; }
+  button { font: inherit; border: 1px solid #bbb; background: #f2f2f2; padding: 8px 14px; border-radius: 8px; }
+
+  /* transition: all, slow, ease-in; press changes width (layout) */
+  .save { transition: all 600ms ease-in; width: 100px; }
+  .save:hover { background: #e4e4e4; }
+  .save:active { width: 120px; }
+
+  /* no hover, no press, focus ring removed */
+  .plain { color: #1c1c1c; text-decoration: none; }
+  .plain:focus { outline: none; }
+
+  /* hover driven by keyframes: leaving mid-way snaps back; transform not gated by (hover: hover) */
+  .card { background: #fff; }
+  .card:hover { animation: lift 400ms cubic-bezier(0.23, 1, 0.32, 1) forwards; transform: translateY(-12px); }
+  @keyframes lift { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+
+  /* same control, different durations; press scales with no reduced-motion handling */
+  .chip { transition: background-color 100ms ease-out, transform 120ms ease-out; }
+  .chip.slow { transition: background-color 450ms ease-out, transform 120ms ease-out; }
+  .chip:hover { background: #ddd; }
+  .chip:active { transform: scale(0.95); }
+  .chip:focus-visible, .save:focus-visible, .card:focus-visible, #open:focus-visible, #heavy:focus-visible { outline: 2px solid #2a5bd7; outline-offset: 2px; }
+
+  #heavy { color: #2a5bd7; text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color 150ms ease-out; }
+  #heavy:hover { text-decoration-color: currentColor; }
+  #heavy:active { color: #123; }
+
+  #open { transition: background-color 150ms ease-out, transform 120ms ease-out; }
+  #open:hover { background: #e6e6e6; }
+  #open:active { transform: scale(0.97); }
+  #panel { height: 0; overflow: hidden; background: #eef; }
+
+  .spinner { width: 24px; height: 24px; border: 3px solid #ccc; border-top-color: #333; border-radius: 50%; animation: spin 900ms linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .reveal { opacity: 0; animation: fade-in 500ms ease-out 200ms forwards; }
+  @keyframes fade-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .reveal { animation: none; } }
+
+  section { min-height: 600px; padding-top: 24px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Orders</h1>
+  <p class="reveal">Every order placed this month.</p>
+  <div class="row">
+    <button class="save">Save</button>
+    <a class="plain" href="#orders">All orders</a>
+    <button class="card">Card</button>
+    <div class="spinner" aria-label="Loading"></div>
+  </div>
+  <div class="row">
+    <button class="chip">Open</button>
+    <button class="chip slow">Closed</button>
+    <a id="heavy" href="#report">Report</a>
+    <button id="open">Details</button>
+  </div>
+  <div id="panel"><p>Details of the order.</p></div>
+  <div style="height: 900px"></div>
+  <section><h2>History</h2><p>Older orders.</p></section>
+</main>
+<script>
+  const busy = (ms) => { const end = performance.now() + ms; while (performance.now() < end) {} };
+  document.getElementById('heavy').addEventListener('mouseenter', () => busy(120));
+  const panel = document.getElementById('panel');
+  document.getElementById('open').addEventListener('click', () => {
+    busy(150);
+    const start = performance.now();
+    const from = panel.offsetHeight;
+    const to = from > 0 ? 0 : 120;
+    const step = (now) => {
+      const u = Math.min(1, (now - start) / 400);
+      panel.style.height = `${from + (to - from) * u}px`;
+      if (u < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+</script>
+</body>
+</html>

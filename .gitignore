@@ -30,6 +30,7 @@ next-env.d.ts
 /cv/**/*.aux
 /cv/**/*.log
 /cv/**/*.out
+.claude/.kit-incoming/
 
 # per-application CVs stay local, out of the public repo
 /cv/postulaciones/

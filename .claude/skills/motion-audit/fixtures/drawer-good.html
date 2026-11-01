@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Drawer on transitions</title>
+<style>
+  :root { --ease-out: cubic-bezier(0.23, 1, 0.32, 1); }
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 0; color: #1c1c1c; overflow-x: hidden; }
+  main { padding: 32px; }
+  button { font: inherit; border: 1px solid #bbb; background: #f2f2f2; padding: 8px 14px; border-radius: 8px;
+    transition: background-color 140ms var(--ease-out), transform 120ms var(--ease-out); }
+  button:hover { background: #e4e4e4; }
+  button:active { transform: scale(0.97); }
+  :focus-visible { outline: 2px solid #2a5bd7; outline-offset: 2px; }
+  .drawer { position: fixed; top: 0; left: 0; bottom: 0; width: 250px; overflow: hidden; pointer-events: none; }
+  .drawer.open { pointer-events: auto; }
+  .panel { height: 100%; box-sizing: border-box; padding: 24px; background: #fff; box-shadow: 2px 0 12px rgb(0 0 0 / 0.2); }
+  .panel { transform: translateX(-100%); transition: transform 400ms var(--ease-out); }
+  .drawer.open .panel { transform: translateX(0); }
+  @media (prefers-reduced-motion: reduce) { button:active { transform: none; } .panel { animation-duration: 1ms; transition-duration: 1ms; } }
+</style>
+</head>
+<body>
+<main>
+  <button id="toggle" aria-expanded="false" aria-controls="drawer">Menu</button>
+  <p>The drawer slides in from the left.</p>
+</main>
+<aside class="drawer" id="drawer">
+  <div class="panel">
+    <h2>Menu</h2>
+    <button type="button">Profile</button>
+    <button type="button">Settings</button>
+  </div>
+</aside>
+<script>
+const toggle = document.getElementById('toggle');
+const drawer = document.getElementById('drawer');
+toggle.addEventListener('click', () => {
+  const opening = toggle.getAttribute('aria-expanded') !== 'true';
+  toggle.setAttribute('aria-expanded', String(opening));
+  drawer.classList.toggle('open', opening);
+});
+</script>
+</body>
+</html>
