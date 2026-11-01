@@ -1,0 +1,348 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage{microtype}
+\usepackage{needspace}
+
+\geometry{
+  top=1.5cm,
+  bottom=1.5cm,
+  left=1.8cm,
+  right=1.8cm
+}
+
+% Paleta tomada del portfolio: verde bosque, cuero cognac y crema cálido.
+\definecolor{forest}{HTML}{173A32}
+\definecolor{sage}{HTML}{497466}
+\definecolor{cognac}{HTML}{986846}
+\definecolor{gold}{HTML}{BDAA79}
+\definecolor{cream}{HTML}{F5F0E7}
+\definecolor{accent}{HTML}{8A5A3A}
+\definecolor{accentdark}{HTML}{173A32}
+\definecolor{accentlight}{HTML}{D9E3DD}
+\definecolor{bodytext}{HTML}{292D2B}
+\definecolor{muted}{HTML}{68736E}
+
+\hypersetup{
+  colorlinks=true,
+  urlcolor=accent,
+  linkcolor=accent,
+  pdftitle={CV de Nahuel Mosse},
+  pdfauthor={Nahuel Mosse},
+  pdfsubject={Senior Full Stack Developer y Software Engineer},
+  pdfkeywords={Senior Full Stack Developer, TypeScript, Next.js, NestJS, Azure,
+    Terraform, Kubernetes, OpenAI, arquitectura de software, liderazgo técnico}
+}
+
+\pagestyle{empty}
+\renewcommand{\familydefault}{\sfdefault}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.25em}
+\setlist[itemize]{
+  leftmargin=1.25em,
+  itemsep=0.12em,
+  topsep=0.2em,
+  parsep=0pt,
+  partopsep=0pt
+}
+\setlist[itemize,2]{leftmargin=1.4em,label=--}
+\urlstyle{same}
+\color{bodytext}
+
+\newcommand{\cvsection}[1]{%
+  \Needspace{4\baselineskip}%
+  \vspace{0.55em}%
+  \noindent
+  {\color{accent}\rule[-0.18em]{3pt}{1.25em}}%
+  \hspace{0.45em}%
+  {\large\bfseries\color{accentdark}\MakeUppercase{#1}}%
+  \hspace{0.55em}%
+  {\color{accentlight}\leaders\hrule height 1.2pt\hfill\kern0pt}\par
+  \vspace{0.28em}%
+}
+
+\newcommand{\cventry}[3]{%
+  \begin{tabularx}{\textwidth}{@{}Xr@{}}
+    \textbf{\color{accentdark}#1} \textcolor{muted}{\textbar}\enspace #2
+    & \small\textcolor{muted}{#3}
+  \end{tabularx}
+}
+
+\newcommand{\project}[1]{%
+  \Needspace{6\baselineskip}%
+  \vspace{0.3em}%
+  {\color{accent}\rule[0.18em]{0.45em}{0.45em}}\hspace{0.4em}%
+  \textbf{\color{accentdark}Proyecto: #1}\par
+}
+
+\begin{document}
+
+% REVISAR: confirmar si el correo "nahuelgamail@gmail.com" es correcto.
+\noindent
+\colorbox{forest}{%
+  \parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+    \centering
+    \vspace{0.7em}
+    {\fontsize{27}{30}\selectfont\bfseries\color{cream}Nahuel Mosse}\par
+    \vspace{0.12em}
+    {\Large\color{cream}Senior Full Stack Developer}\par
+    \vspace{0.18em}
+    {\scriptsize\ttfamily\color{gold}%
+      \textless from curiosity to craft /\textgreater
+    }\par
+    \vspace{0.48em}
+    {\small\color{cream}%
+      \begingroup\hypersetup{urlcolor=cream}%
+      \href{mailto:nahuelgamail@gmail.com}{nahuelgamail@gmail.com}
+      \enspace\textbar\enspace
+      Buenos Aires, Argentina (AMBA)\par
+      \vspace{0.12em}
+      \href{https://linkedin.com/in/nahuelmosse}{linkedin.com/in/nahuelmosse}
+      \enspace\textbar\enspace
+      \href{https://github.com/NahuelMosse}{github.com/NahuelMosse}
+      \enspace\textbar\enspace
+      \href{https://gitlab.com/NahuelMosse}{gitlab.com/NahuelMosse}%
+      \endgroup
+    }\par
+    \vspace{0.6em}
+  }%
+}
+{\color{cognac}\rule{\textwidth}{1.4pt}}
+
+\cvsection{Perfil profesional}
+
+Senior Full Stack Developer con más de 4 años liderando productos web end-to-end. Integra
+arquitectura, desarrollo full stack, business analysis, liderazgo técnico y DevOps/cloud
+para convertir necesidades de negocio en plataformas escalables, seguras y mantenibles.
+Especializado en APIs e IA aplicada con impacto medible.
+
+\cvsection{Experiencia laboral}
+
+\cventry{Consultora Kovix}{Senior Full Stack Developer / Technical Lead}{06/2022 -- Actualidad}
+
+\project{Smart Warehousing --- AI Engineering Enablement Lead / SDD Coach
+  \textnormal{\small\textcolor{muted}{\enspace 09/2026 -- Actualidad}}}
+\begin{itemize}
+  \item Creación y evolución de una metodología transversal de desarrollo asistido por IA,
+    aplicable a proyectos greenfield y brownfield de diferentes equipos y arquitecturas.
+  \item Capacitación de empleados mediante formación, documentación y acompañamiento
+    práctico para adoptar SDD y Claude Code multiagente en su trabajo cotidiano.
+  \item Facilitación de la adopción con un rol análogo al de Scrum Master, enfocado en SDD:
+    asesoramiento a los equipos, resolución de bloqueos, seguimiento del uso de la
+    metodología y mejora continua a partir del feedback.
+  \item Definición de workflows con especificaciones, responsabilidades, criterios de
+    aceptación y validaciones explícitas para delegar implementación a agentes de IA bajo
+    revisión y gobierno humano.
+  \item Modelo operativo donde los agentes asumen tareas de alcance junior/semi-senior y
+    los perfiles Senior concentran arquitectura, escalabilidad, mantenibilidad, calidad y
+    decisiones críticas del producto.
+\end{itemize}
+
+\project{Grupo ST --- Plataforma de Riesgo Crediticio
+  \textnormal{\small\textcolor{muted}{\enspace 08/2026 -- Actualidad}}}
+\begin{itemize}
+  \item Technical Lead en asignación paralela con Visma, dirigiendo una plataforma de
+    gestión documental y decisiones orientada a automatizar la aprobación de créditos.
+  \item Modelo de desarrollo AI-first: orquestación de agentes con Claude Code y
+    Spec-Driven Development (SDD) para implementar el producto end-to-end desde
+    especificaciones y decisiones de arquitectura.
+  \item Diseño de una arquitectura DDD sobre Next.js y NestJS, con Sequelize y PostgreSQL;
+    definición de estándares técnicos y control de la evolución del producto aún en desarrollo.
+  \item Estrategia de calidad para desarrollo con IA mediante Jest y una suite de regresión
+    end-to-end con Playwright, validando los flujos completos para prevenir regresiones.
+  \item \textbf{Stack:} TypeScript, Next.js, React, NestJS, Sequelize, PostgreSQL, DDD,
+    Claude Code, SDD, Jest, Playwright y Turborepo.
+\end{itemize}
+
+\newpage
+\project{Visma Payroll Onboarding \textnormal{\small\textcolor{muted}{\enspace 01/2026 -- Actualidad}}}
+\begin{itemize}
+  \item Liderazgo técnico y elicitación de requisitos: interlocutor directo con el cliente,
+    convirtiendo necesidades del negocio de payroll en alcance, arquitectura y roadmap.
+  \item Gestión del calendario, prioridades y distribución del trabajo; mentoría y
+    capacitación de un desarrollador junior, y conducción del design system del producto.
+  \item Diseño e implementación en un monorepo Nx con Next.js y NestJS, aplicando Clean
+    Architecture y DDD; integración con APIs internas y Azure OpenAI que redujo una etapa
+    del onboarding de 2 meses a 1 semana.
+  \item Arquitectura de datos y procesos asíncronos con Prisma/PostgreSQL para persistencia
+    y BullMQ/Redis para colas, caché y rate limiting distribuido de APIs e IA; optimización
+    de costos evitando usar Redis persistente como almacenamiento durable.
+  \item Responsable de ciberseguridad, CI/CD e infraestructura como código: despliegue en
+    Azure con Terraform y AKS, identidades administradas, Key Vault, redes privadas y
+    políticas de seguridad sobre Kubernetes.
+  \item \textbf{Aplicación y datos:} TypeScript, Nx, Next.js, NestJS,
+    Prisma/PostgreSQL, Redis/BullMQ y Azure OpenAI.
+  \item \textbf{Cloud y calidad:} Terraform, AKS/Kubernetes, Azure DevOps, Playwright y
+    Claude Code con flujos multiagente.
+\end{itemize}
+
+\project{Frávega --- WMS B2C \textnormal{\small\textcolor{muted}{\enspace 06/2023 -- 01/2026}}}
+\begin{itemize}
+  \item Modernización del fulfillment de pedidos en un warehouse de gran escala:
+    desarrollo del software que orquestaba el armado de paquetes y su integración con el
+    sorter responsable del transporte interno.
+  \item Implementación integral de la arquitectura BFF del módulo Sellers, soportando
+    40.000 requests diarias (1,2 millones mensuales).
+  \item Simplificación de procesos de negocio en un 80\% y reducción del tiempo promedio
+    de recepción de 7 h 48 min a 46 min (aprox. 90\%).
+  \item Diseño técnico y documentación de contratos entre APIs, optimización de queries,
+    implementación de unit testing y soporte en producción.
+  \item Planificación estratégica de releases críticos, gestión preventiva de riesgos de
+    calendario, elaboración de guías de despliegue y mentoría del equipo.
+  \item \textbf{Stack:} Node.js, NestJS, Angular, React, Jest, Vitest, TypeScript,
+    Sequelize, SQL, PostgreSQL, Tailwind CSS, HTML, CSS y webhooks.
+\end{itemize}
+
+\project{Jüsto --- WMS Multiwarehouse
+  \textnormal{\small\textcolor{muted}{\enspace 11/2022 -- 12/2023}}}
+\begin{itemize}
+  \item Diseño de un WMS multiwarehouse con aislamiento similar a multitenancy para los
+    centros de distribución, más una versión reducida para Micro-Fulfillment Centers (MFC).
+  \item Sustitución de planillas y conocimiento informal por trazabilidad de inventario y
+    ubicaciones, con despacho FEFO (First Expired, First Out) para el supermercado online.
+  \item Más de 10 despliegues, 50\% menos tiempo de preparación, 40 millones de operaciones
+    y mayor holgura ante picos de ventas.
+  \item Diseño técnico y contratos entre APIs; estimación de esfuerzos, asignación y
+    seguimiento de tareas, coordinación del equipo e implementación de unit testing.
+  \item Mentoría y colaboración con el equipo para resolver bloqueos y sostener la
+    estabilidad durante los picos históricos de ventas.
+  \item \textbf{Stack:} Node.js, NestJS, Angular, React, Jest, TypeScript,
+    Sequelize, SQL, PostgreSQL, Tailwind CSS, HTML, CSS y webhooks.
+\end{itemize}
+
+\newpage
+\cvsection{Educación}
+
+\cventry{Ingeniería Informática}{Universidad de Morón}{03/2022 -- Actualidad}
+\begin{itemize}
+  \item Cursando 4.º año.
+  \item Beca al mérito con promedio superior a 8,5.
+  \item Líder de grupos de estudio.
+\end{itemize}
+
+\cventry{Analista en Informática}{Universidad de Morón}{03/2022 -- 12/2025}
+\begin{itemize}
+  \item Carrera finalizada.
+  \item Beca al mérito con promedio superior a 8,5.
+  \item Líder de grupos de estudio.
+\end{itemize}
+
+\cventry{Técnico Electromecánico}{Colegio Emaús}{03/2015 -- 12/2021}
+\begin{itemize}
+  \item Orientación en electromecánica.
+\end{itemize}
+
+\cvsection{Proyectos personales}
+
+\cventry{Nasa Calendar}{Next.js}{}
+
+Calendario que consume una API de la NASA para mostrar la imagen astronómica de cada día.
+
+\href{https://github.com/NahuelMosse/nasa-calendar}{github.com/NahuelMosse/nasa-calendar}
+
+\begin{itemize}
+  \item \textbf{Stack:} TypeScript, JavaScript, server-side rendering (SSR), React.js,
+    Next.js y Tailwind CSS.
+\end{itemize}
+
+\cvsection{Logros académicos y certificaciones}
+
+{\large\bfseries\color{accentdark}Certificaciones y formación complementaria}\par
+\begin{itemize}
+  \item \textbf{EF SET English Certificate --- C2 Proficient} --- EF Education First
+    (2026). Certificación del nivel más alto del MCER.
+  \item \textbf{Curso de Arquitectura de Software Aplicada} --- Platzi (2026).
+    Patrones avanzados de arquitectura y diseño de sistemas.
+  \item \textbf{Curso de Fundamentos de Arquitectura de Software} --- Platzi (2026).
+    Principios y buenas prácticas de arquitectura.
+  \item \textbf{Liceo Cultural Británico --- Nivel 7} (2025). Inglés avanzado y
+    literatura inglesa.
+  \item \textbf{Liceo Cultural Británico --- Nivel 6} (2025). Formación orientada a la
+    preparación del First Certificate.
+  \item \textbf{Fundamentos de Arquitectura de Software} --- Platzi (2023).
+  \item \textbf{Fundamentos de Ingeniería de Software} --- Platzi (2023).
+  \item \textbf{Responsive Web Design} --- freeCodeCamp (2022). HTML5, CSS3, Flexbox y
+    CSS Grid.
+\end{itemize}
+
+\newpage
+{\large\bfseries\color{accentdark}Olimpíadas y competencias académicas}\par
+\begin{itemize}
+  \item \textbf{Finalista nacional --- Olimpiada Argentina de Física}, modalidad Juegos
+    (OAF, 2019).
+  \item \textbf{Participante de la instancia metropolitana --- Olimpiada Matemática
+    Argentina} (OMA, 2019).
+  \item \textbf{Campeón de Desafíos Científicos --- Ematemática}, Colegio Emaús (2019).
+  \item \textbf{Campeón de la tercera instancia --- Ematemática}, Colegio Emaús (2019).
+  \item \textbf{Campeón de la segunda instancia --- Ematemática}, Colegio Emaús (2019).
+  \item \textbf{Subcampeón de la primera instancia --- Ematemática}, Colegio Emaús (2019).
+  \item \textbf{Segundo subcampeón nacional --- Mateclubes}, Olimpiada Matemática
+    Argentina (OMA, 2018).
+  \item \textbf{Finalista nacional --- Olimpiada de Literatura y Matemática} (2018).
+  \item \textbf{Participante de la instancia metropolitana --- Olimpiada Matemática
+    Argentina} (OMA, 2018).
+  \item \textbf{Campeón de Desafíos Científicos --- Ematemática}, Colegio Emaús (2018).
+  \item \textbf{Segundo subcampeón de la tercera instancia --- Ematemática}, Colegio
+    Emaús (2018).
+  \item \textbf{Campeón de la segunda instancia --- Ematemática}, Colegio Emaús (2018).
+  \item \textbf{Segundo subcampeón de la primera instancia --- Ematemática}, Colegio
+    Emaús (2018).
+  \item \textbf{Finalista nacional --- Mateclubes}, Olimpiada Matemática Argentina
+    (OMA, 2017).
+  \item \textbf{Campeón --- Ematemática}, Colegio Emaús (2017).
+\end{itemize}
+
+\newpage
+\cvsection{Habilidades técnicas}
+
+\begin{itemize}
+  \item \textbf{Lenguajes:} TypeScript, JavaScript, SQL, Python, Go, C++ y Java.
+  \item \textbf{Frontend/UI:} React, Next.js, Angular, Tailwind CSS, shadcn/ui, Radix UI,
+    SSR y design systems.
+  \item \textbf{Backend y datos:} Node.js, NestJS, Prisma, Sequelize, PostgreSQL, MySQL,
+    MongoDB, Redis, BullMQ, REST APIs y webhooks.
+  \item \textbf{Arquitectura:} DDD, Clean Architecture, BFF, sistemas distribuidos,
+    contratos entre APIs y procesamiento asíncrono.
+  \item \textbf{Cloud, DevOps y seguridad:} Azure, AKS, Kubernetes, Terraform, Docker,
+    Azure DevOps, CI/CD, Key Vault, identidades administradas y redes privadas.
+  \item \textbf{AI Engineering:} OpenAI, Azure OpenAI, Claude Code, orquestación
+    multiagente, SDD y workflows de desarrollo asistido por IA.
+  \item \textbf{Testing y observabilidad:} Jest, Vitest, Playwright, Datadog, OpenSearch
+    y Argo.
+  \item \textbf{Gestión:} liderazgo técnico, business analysis, elicitación de requisitos,
+    planificación, Scrum, Agile, Kanban, Jira y Confluence.
+\end{itemize}
+
+\cvsection{Idiomas}
+
+\begin{itemize}
+  \item \textbf{Español:} nativo.
+  \item \textbf{Inglés:} C2 Proficient (EF SET, 2026).
+\end{itemize}
+
+\cvsection{Habilidades blandas}
+
+Liderazgo, planificación, comunicación clara, negociación, resolución de problemas,
+aprendizaje continuo y autónomo, trabajo en equipo y manejo de personal.
+
+\cvsection{Recomendaciones}
+
+\textbf{Resumen de LinkedIn}
+\begin{itemize}
+  \item \textbf{Braian Lo Surdo --- Técnico en Programación Informática:} destaca rapidez,
+    eficiencia, capacidad colaborativa, entusiasmo y calidez en el trabajo en equipo.
+  \item \textbf{Enzo Codini --- Full Stack Developer:} resalta el aporte técnico y humano
+    en proyectos complejos, la buena disposición y la calidad de trabajo, considerándolo
+    un referente en el equipo.
+\end{itemize}
+
+\end{document}

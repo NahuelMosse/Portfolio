@@ -25,3 +25,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# latex build artifacts
+/cv/**/*.aux
+/cv/**/*.log
+/cv/**/*.out
+
+# per-application CVs stay local, out of the public repo
+/cv/postulaciones/
