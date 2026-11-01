@@ -7,7 +7,12 @@ export type RollBand = { id: string; label: string; speed: "slow" | "fast"; item
 function RollEntries({ items }: { items: readonly RollItem[] }) {
   return items.map((item) => (
     <li key={item.text} className="roll-item">
-      {item.logo && <Image src={item.logo} alt="" width={32} height={32} />}
+      {item.logo && (
+        // an issuer's logo is scene media for the ASM-10 rule: flat artwork, not a photo that needs a mask
+        <span data-scene-media="logo" className="roll-logo">
+          <Image src={item.logo} alt="" width={32} height={32} />
+        </span>
+      )}
       {item.text}
     </li>
   ))

@@ -16,7 +16,7 @@ const bands: readonly RollBand[] = [
 
 export function EndCredits() {
   return (
-    <Chapter id="end-credits" label="Contact" tone="dark" seamSide="left" className="credits" title={<>Let&rsquo;s <em>talk</em></>}>
+    <Chapter id="end-credits" label="Contact" seamSide="right" className="credits" title={<>Let&rsquo;s <em>talk</em></>}>
       <SceneMedia
         asset="pf-closing-16x9"
         poster={sceneAsset("pf-closing-16x9", "webp")}

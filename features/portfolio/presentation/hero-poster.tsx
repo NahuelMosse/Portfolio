@@ -4,7 +4,7 @@ import { identity } from "./content"
 
 export function HeroPoster() {
   return (
-    <section data-chapter="cold-open" data-tone="dark" className="chapter cold-open">
+    <section data-chapter="cold-open" className="chapter cold-open">
       <div data-media className="chapter-media" aria-hidden="true" />
       <DepthStage className="stage">
         <DepthLayer name="backdrop" pointerDepth={24} scrollLag={0.1} className="layer-backdrop">
@@ -17,7 +17,6 @@ export function HeroPoster() {
           {identity.professionalName}
         </p>
         <DepthLayer name="cutout" pointerDepth={110} scrollLag={0.35} className="layer-cutout" >
-          <div className="cutout-disc" aria-hidden="true" />
           <div data-arch className="arch" style={{ height: "100%" }} aria-hidden="true" />
         </DepthLayer>
         <DepthLayer name="sheet" pointerDepth={160} scrollLag={0.5} className="layer-sheet">
@@ -31,7 +30,7 @@ export function HeroPoster() {
           Let&rsquo;s talk
         </a>
       </DepthStage>
-      <div data-transition className="chapter-transition" style={{ ["--next-tone" as string]: "var(--bone)" }} aria-hidden="true" />
+      <div data-transition data-side="right" className="chapter-transition" aria-hidden="true" />
     </section>
   )
 }

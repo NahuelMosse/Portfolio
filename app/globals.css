@@ -169,6 +169,55 @@
 
 .seam-figure[data-side="right"] {
   right: var(--space-5);
+  transform: scaleX(-1);
+}
+
+/* the red sun: fixed behind every chapter, moved by scroll (see red-disc.tsx) */
+.red-disc {
+  position: fixed;
+  top: calc(45vh - var(--disc-size) / 2);
+  left: 0;
+  right: 0;
+  z-index: 0;
+  width: var(--disc-size);
+  margin-inline: auto;
+  aspect-ratio: 1;
+  border-radius: var(--radius-round);
+  background: var(--red);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* one thin rail down the right edge, a tick per chapter */
+.hud-rail {
+  position: fixed;
+  top: 12vh;
+  right: var(--space-2);
+  bottom: 12vh;
+  z-index: 35;
+  width: 1px;
+  background: var(--bone-30);
+  pointer-events: none;
+}
+
+.hud-rail-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--red);
+  transform-origin: top;
+}
+
+.hud-rail-tick {
+  position: absolute;
+  right: 0;
+  width: var(--space-3);
+  height: 1px;
+  background: var(--bone-70);
+  transition: background var(--motion-control) var(--ease-out);
+}
+
+.hud-rail-tick[aria-current="true"] {
+  background: var(--red);
 }
 
 /* ---------- controls that never hold the visitor ---------- */
@@ -196,6 +245,12 @@
 .corner-cta:hover {
   background: var(--red);
   border-color: var(--red);
+}
+
+.film-control:disabled,
+.corner-cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .film-control:active,
@@ -256,17 +311,16 @@
   padding-bottom: var(--space-7);
 }
 
-.chapter[data-tone="paper"] {
-  background: var(--bone);
-  color: var(--ink);
-  --line: var(--ink-35);
-}
-
-.chapter[data-tone="dark"] {
-  /* the fresco shows through the dark chapters */
+/* the fresco shows through every chapter: no chapter paints a background of its own */
+.chapter {
   background: transparent;
   color: var(--bone);
   --line: var(--bone-35);
+}
+
+/* each title rises over the chapter before, half over each */
+.chapter:not(.cold-open) .chapter-title {
+  margin-top: calc(-0.62em - var(--space-6) - var(--space-3));
 }
 
 .chapter-media {
@@ -279,19 +333,23 @@
     radial-gradient(50% 50% at 10% 90%, var(--red-16), transparent 70%);
 }
 
-.chapter[data-tone="paper"] .chapter-media {
-  background:
-    radial-gradient(40% 30% at 85% 12%, var(--red-20), transparent 70%),
-    radial-gradient(var(--ink-08) 1px, transparent 1.5px) 0 0 / 6px 6px;
-}
-
+/* a torn sheet of paper laid over the fresco on the seam: a scrap, never a full-width band */
 .chapter-transition {
   position: absolute;
-  inset: auto 0 -1px 0;
+  bottom: -1px;
+  width: 46%;
   height: 72px;
-  background: var(--next-tone);
+  background: var(--bone);
   clip-path: polygon(0 100%, 0 60%, 6% 30%, 13% 55%, 21% 20%, 30% 50%, 38% 25%, 47% 60%, 55% 15%, 64% 45%, 72% 22%, 81% 58%, 90% 28%, 96% 50%, 100% 35%, 100% 100%);
   pointer-events: none;
+}
+
+.chapter-transition[data-side="left"] {
+  left: 0;
+}
+
+.chapter-transition[data-side="right"] {
+  right: 0;
 }
 
 .title-card {
@@ -361,10 +419,7 @@
   position: absolute;
   inset: 0 -5%;
   z-index: 0;
-  background:
-    radial-gradient(circle at 50% 78%, var(--red) 0 7%, var(--red-45) 12%, transparent 38%),
-    radial-gradient(80% 60% at 50% 100%, var(--red-50), transparent 70%),
-    linear-gradient(180deg, var(--ink) 20%, var(--ink-warm) 100%);
+  background: radial-gradient(80% 60% at 50% 100%, var(--red-50), transparent 70%);
 }
 
 .layer-mark {
@@ -406,18 +461,6 @@
   border: 1px solid var(--bone);
   border-radius: var(--radius-pill) var(--radius-pill) 0 0;
   background: linear-gradient(180deg, transparent, var(--ink-85));
-}
-
-.cutout-disc {
-  position: absolute;
-  inset: 8% 0 auto 0;
-  margin-inline: auto;
-  width: 90%;
-  aspect-ratio: 1;
-  border-radius: var(--radius-round);
-  background: var(--red);
-  opacity: 0.85;
-  z-index: -1;
 }
 
 .layer-sheet {
@@ -514,7 +557,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(2.25rem, 7vw, 5rem);
-  line-height: 0.9;
+  line-height: 1.1;
   letter-spacing: -0.02em;
   text-transform: uppercase;
 }
@@ -552,6 +595,7 @@
   text-transform: uppercase;
   transition:
     background var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
     color var(--motion-control) var(--ease-out),
     transform var(--motion-control) var(--ease-out);
 }
@@ -579,7 +623,7 @@
 }
 
 .employer[data-current="true"] {
-  background: var(--red-deep);
+  background: var(--red);
   color: var(--bone);
 }
 
@@ -658,7 +702,6 @@
   gap: var(--space-2);
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2.5rem);
-  text-transform: uppercase;
   white-space: nowrap;
 }
 
@@ -845,6 +888,15 @@
   .film-control,
   .corner-cta {
     transition: none;
+  }
+
+  .film-control:active,
+  .corner-cta:active,
+  .links a:active,
+  .door:active,
+  .contact-line a:active,
+  .secondary-link a:active {
+    transform: none;
   }
 
   /* the roll stands still and wraps: one copy, no loop */

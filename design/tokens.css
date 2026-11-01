@@ -5,8 +5,6 @@
   --bone: #ede4d0;
   --ink: #0c0c0b;
   --ink-warm: #1a0b09;
-  /* a deeper red keeps bone text at AA contrast */
-  --red-deep: #891813;
 
   --red-16: color-mix(in srgb, var(--red) 16%, transparent);
   --red-20: color-mix(in srgb, var(--red) 20%, transparent);
@@ -49,6 +47,7 @@
   /* the descent of a poster word: its line height is under 0.9, so the glyphs hang below the box */
   --poster-descent: 0.2em;
   --seam-height: 160px;
+  --disc-size: min(70vw, 560px);
 
   --font-display: "Boska", serif;
   --font-text: "General Sans", sans-serif;

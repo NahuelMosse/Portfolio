@@ -4,7 +4,7 @@ import { Piece } from "./piece"
 
 export function Projects() {
   return (
-    <Chapter id="projects" label="Projects" tone="paper" nextTone="dark" seamSide="right" title={<>What I <em>built</em></>}>
+    <Chapter id="projects" label="Projects" torn="left" seamSide="right" title={<>What I <em>built</em></>}>
       {projects.map((project, index) => (
         <Reveal
           key={project.id}

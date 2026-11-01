@@ -4,7 +4,7 @@ import { Piece } from "./piece"
 
 export function Experience() {
   return (
-    <Chapter id="experience" label="Experience" tone="dark" nextTone="dark" seamSide="left" title={<>Where I <em>served</em></>}>
+    <Chapter id="experience" label="Experience" torn="right" seamSide="left" title={<>Where I <em>served</em></>}>
       <SceneMedia
         asset="pf-world-16x9"
         poster={sceneAsset("pf-world-16x9", "webp")}
