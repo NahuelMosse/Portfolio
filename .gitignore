@@ -32,5 +32,8 @@ next-env.d.ts
 /cv/**/*.out
 .claude/.kit-incoming/
 
+# originals of real photos; only treated, metadata-free copies go to public/
+/.media-source/
+
 # per-application CVs stay local, out of the public repo
 /cv/postulaciones/
