@@ -14,31 +14,23 @@ const SCENES: Record<string, { name: string; device: DeviceKind }> = {
   club: { name: "club", device: "phone" },
 };
 
-const FIELDS = [
-  { key: "what", label: "What" },
-  { key: "problem", label: "Problem" },
-  { key: "role", label: "My role" },
-] as const;
-
-// What the drawn screen shows: the lead piece, or for the kit the card and its tests as typed documents.
+// What the drawn screen shows: the kit's typed documents, or the project's lead piece.
 function ScreenContent({ project }: { project: Project }) {
-  const [lead, second] = project.pieces;
-  if ("lines" in lead) {
-    const documents = [lead, second].filter(
-      (piece) => piece && "lines" in piece,
-    );
+  if (project.documents) {
     return (
       <div data-document="" className="scene-document">
-        {documents.map((piece) => (
-          <div key={piece.caption}>
-            <p>{piece.caption}</p>
-            {"lines" in piece &&
-              piece.lines.map((line) => <span key={line}>{line}</span>)}
+        {project.documents.map((document) => (
+          <div key={document.caption}>
+            <p>{document.caption}</p>
+            {document.lines.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
           </div>
         ))}
       </div>
     );
   }
+  const [lead] = project.pieces;
   if ("video" in lead)
     return (
       <SceneMedia
@@ -71,16 +63,15 @@ function ProjectText({ project }: { project: Project }) {
     <div data-project-text="" className="project-text">
       <Title project={project} />
       <div className="project-details">
-        <div className="spread-fields">
-          {FIELDS.map(({ key, label }) => (
-            <p key={key} data-field={key}>
-              <span data-label="">{label}</span>
-              {project[key]}
-            </p>
-          ))}
-        </div>
+        <p data-field="line" className="project-line">
+          {project.line}
+        </p>
         <div className="spread-meta">
-          <p data-stack="">{project.stack}</p>
+          <ul data-stack="" className="stack" aria-label="Stack">
+            {project.stack.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
           {project.links.length > 0 && (
             <div className="links">
               {project.links.map((link) => (
@@ -102,7 +93,8 @@ function ProjectText({ project }: { project: Project }) {
 }
 
 // Each project is its real interface, large, framed by the illustration cropped around the device drawn for it,
-// with its words beside it. An undelivered scene falls back to the lead piece in a device frame at the same size.
+// with its title, line, stack and link beside or above it and its other pieces in view with it. An undelivered scene
+// falls back to the lead piece in a device frame at the same size.
 export function Projects() {
   return (
     <section data-chapter="projects" id="projects" className="projects">
@@ -117,11 +109,11 @@ export function Projects() {
         const wide = sceneAsset(`${asset}-16x9`, "webp");
         const tall = sceneAsset(`${asset}-4x5`, "webp");
         const delivered = wide && tall;
-        const onScreen = delivered && "lines" in project.pieces[0] ? 2 : 1;
-        const beneath = project.pieces.slice(onScreen);
+        const onScreen = delivered && project.documents ? 0 : 1;
+        const others = project.pieces.slice(onScreen);
         return (
           <ProjectSpread key={project.id} id={project.id}>
-            <div className="spread-main">
+            <div className="spread-main" data-device={scene.device}>
               <ProjectText project={project} />
               {delivered ? (
                 <ProjectScene
@@ -137,11 +129,9 @@ export function Projects() {
                   <Piece piece={project.pieces[0]} lead order={0} />
                 </div>
               )}
-            </div>
-            {beneath.length > 0 && (
               <div className="scene-pieces" data-has-scene="">
-                <PieceRow count={beneath.length}>
-                  {beneath.map((piece, order) => (
+                <PieceRow count={others.length}>
+                  {others.map((piece, order) => (
                     <Piece
                       key={piece.caption}
                       piece={piece}
@@ -150,7 +140,7 @@ export function Projects() {
                   ))}
                 </PieceRow>
               </div>
-            )}
+            </div>
           </ProjectSpread>
         );
       })}

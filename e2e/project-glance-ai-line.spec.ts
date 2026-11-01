@@ -6,9 +6,9 @@ import { test, expect } from "@playwright/test"
 const onDisk = (id: string) => existsSync(join(process.cwd(), "public", "film", `${id}.webp`))
 
 const STAGES = [
-  { project: "dev-kit", name: "kit", device: "wide", line: "How I build with AI agents: the spec in, tested code out." },
-  { project: "grit", name: "grit", device: "phone", line: "Offline gym tracker for Android and iOS. Product, design and code." },
-  { project: "guardia", name: "triaje", device: "wide", line: "A browser game about triage under pressure. Rules and code." },
+  { project: "dev-kit", name: "kit", device: "wide", line: "Claude Code agents build each card; hooks and tests keep them honest." },
+  { project: "grit", name: "grit", device: "phone", line: "Specified with Spec Kit; AI agents wrote the code against the specs." },
+  { project: "guardia", name: "triaje", device: "wide", line: "Built with Claude Code; its trailers and ads made with AI." },
   { project: "cebador", name: "cebador", device: "wide", line: "Brand site for a fictional mate soda. Art direction, motion, code." },
   { project: "club", name: "club", device: "phone", line: "App and API to book sports courts. I built both." },
 ]

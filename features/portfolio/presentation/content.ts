@@ -24,16 +24,24 @@ export type Story = {
   role: string
 }
 
-// A real piece of work: a screen, a photo, a capture of a live page, or a text frame taken from a real card, test or pull request.
+// A real piece of work: a screen, a photo or a capture of a live page.
 export type Piece =
   | { kind: "screen" | "photo"; frame: ScreenFrame; src: string; alt: string; caption: string; whole?: true }
   | { kind: "capture"; frame: ScreenFrame; video: string; poster: string; alt: string; caption: string }
-  | { kind: "card" | "tests" | "pull-request" | "link"; caption: string; lines: readonly string[]; href?: string }
 
 // What the piece is shown in: an app screen in a phone frame, a web page in a browser frame.
 export type ScreenFrame = "phone" | "browser"
 
-export type Project = Story & { stack: string; links: readonly Link[]; pieces: readonly Piece[] }
+// A typed document of the kit, shown inside its drawn monitor.
+export type KitDocument = { caption: string; lines: readonly string[] }
+
+export type Project = Story & {
+  line: string
+  stack: readonly string[]
+  links: readonly Link[]
+  documents?: readonly KitDocument[]
+  pieces: readonly Piece[]
+}
 export type Employer = Story & { title: string; period: string; current?: boolean; logo?: string }
 
 const screen = (frame: ScreenFrame, src: string, alt: string, caption: string): Piece => ({
@@ -61,20 +69,19 @@ export const projects: readonly Project[] = [
     what: "A development kit where the requirement is frozen as a card and every behavior is proven by tests tagged to it.",
     problem: "Work built with AI agents drifts from what was asked, and nobody can tell which part was verified.",
     role: "I designed the method, the guards and the tools, and published the skills that stand alone.",
-    stack: "Node.js · Playwright · Claude Code",
+    line: "Claude Code agents build each card; hooks and tests keep them honest.",
+    stack: ["Node.js", "Playwright", "Claude Code"],
     links: [
       { label: "motion-audit", href: "https://github.com/NahuelMosse/motion-audit" },
       { label: "http-attack", href: "https://github.com/NahuelMosse/http-attack" },
       { label: "migrations-safe", href: "https://github.com/NahuelMosse/migrations-safe" },
     ],
-    pieces: [
+    documents: [
       {
-        kind: "card",
         caption: "A real card: the requirement frozen, one spec per sentence",
         lines: ["PF-1 · S19 · “los primeros 5 segundos son los mas importantes”", "PF-1 · S27 · “para TPM mucho que se usar IA”", "status: proposed"],
       },
       {
-        kind: "tests",
         caption: "Its tagged tests, one per spec",
         lines: [
           "@PF-1-S19 by second 5 the name, the offer and a door are in view",
@@ -82,12 +89,13 @@ export const projects: readonly Project[] = [
           "@PF-1-ASM-17 a failed video keeps its poster",
         ],
       },
-      {
-        kind: "pull-request",
-        caption: "A pull request it closed",
-        lines: ["motion-audit #7 · ci: a Dependabot update that reaches the package publishes a new version"],
-        href: "https://github.com/NahuelMosse/motion-audit/pull/7",
-      },
+    ],
+    pieces: [
+      screen("browser", "kit-report", "The Playwright HTML report of this portfolio's end-to-end run", "The e2e report"),
+      screen("browser", "kit-report-test", "One test of the report open, with its tagged title and its steps", "A tagged test, step by step"),
+      screen("browser", "kit-skill-motion-audit", "The motion-audit skill's page on GitHub", "motion-audit"),
+      screen("browser", "kit-skill-http-attack", "The http-attack skill's page on GitHub", "http-attack"),
+      screen("browser", "kit-skill-migrations-safe", "The migrations-safe skill's page on GitHub", "migrations-safe"),
     ],
   },
   {
@@ -96,7 +104,8 @@ export const projects: readonly Project[] = [
     what: "A local-first training app for Android and iOS, built in Flutter with Riverpod and SQLite.",
     problem: "Training logs need to work in a gym with no signal and still feel instant.",
     role: "I rebuilt it from its specs, end to end: product, design lab and code.",
-    stack: "Flutter · Riverpod · SQLite",
+    line: "Specified with Spec Kit; AI agents wrote the code against the specs.",
+    stack: ["Flutter", "Riverpod", "SQLite"],
     links: [],
     pieces: [
       screen("phone", "grit-hoy", "Grit's Hoy screen with the active training session", "Today"),
@@ -112,9 +121,12 @@ export const projects: readonly Project[] = [
     what: "A triage game for the browser, published as Triaje.",
     problem: "Deciding who is treated first under pressure is hard to explain and easy to play.",
     role: "I designed the rules and built the game.",
-    stack: "Browser game · itch.io",
+    line: "Built with Claude Code; its trailers and ads made with AI.",
+    stack: ["Browser game", "itch.io"],
     links: [{ label: "Play Triaje", href: "https://nahuelmosse.itch.io/triaje" }],
     pieces: [
+      screen("browser", "triaje-title", "The title screen of the Triaje game", "Title screen"),
+      screen("browser", "triaje-play-2", "A shift of Triaje in play, with the waiting room open", "In play"),
       screen("browser", "triaje-page", "The Triaje page on itch.io at desktop width", "Triaje on itch.io"),
       screen("browser", "triaje-scrolled", "The Triaje page on itch.io, further down", "Further down the page"),
       wholeScreen("phone", "triaje-mobile", "The Triaje page on itch.io on a phone", "On a phone"),
@@ -126,7 +138,8 @@ export const projects: readonly Project[] = [
     what: "The site of a fictional canned mate soda brand, a design piece.",
     problem: "A new brand needs an identity that is felt before it is read.",
     role: "I did the art direction, the motion and the code.",
-    stack: "Landing site · motion · GitHub Pages",
+    line: "Brand site for a fictional mate soda. Art direction, motion, code.",
+    stack: ["Landing site", "Motion", "GitHub Pages"],
     links: [{ label: "Visit the site", href: "https://nahuelmosse.github.io/cebador-landing/" }],
     pieces: [
       {
@@ -145,12 +158,9 @@ export const projects: readonly Project[] = [
         alt: "The Cebador site scrolling on a phone",
         caption: "Live, at 390",
       },
-      {
-        kind: "link",
-        caption: "The live site",
-        lines: ["nahuelmosse.github.io/cebador-landing"],
-        href: "https://nahuelmosse.github.io/cebador-landing/",
-      },
+      screen("browser", "cebador-s2-1280", "The Cebador site's origin section at desktop width", "Origin, at 1280"),
+      screen("browser", "cebador-s3-1280", "The Cebador site's reviews section at desktop width", "Reviews, at 1280"),
+      screen("phone", "cebador-s2-390", "The Cebador site's origin section on a phone", "Origin, at 390"),
     ],
   },
   {
@@ -159,7 +169,8 @@ export const projects: readonly Project[] = [
     what: "A Flutter app with a REST API to book sports courts.",
     problem: "Reserving a court by message is slow and double reservations happen.",
     role: "I built the app and the API.",
-    stack: "Flutter · REST API",
+    line: "App and API to book sports courts. I built both.",
+    stack: ["Flutter", "REST API"],
     links: [{ label: "Repository", href: "https://github.com/NahuelMosse/ClubNahuelMosse" }],
     pieces: [
       screen("phone", "club-login", "ClubNahuelMosse login screen", "Login"),

@@ -642,13 +642,39 @@
   padding: 0 var(--gutter-right) 0 var(--gutter-left);
 }
 
+/* the row of pieces never widens the grid track it spans */
+.spread-main > .scene-pieces {
+  order: 4;
+  min-width: 0;
+  contain: inline-size;
+}
+
+/* wide: the text column, the lead, and beneath them one row of the other pieces; phone: the pieces are a column beside the lead,
+   so the lead and at least three others fit one screen */
 @media (min-width: 1280px) {
   .spread-main {
     grid-template-columns: minmax(0, var(--stage-text-width)) max-content;
     justify-content: center;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-4) var(--space-5);
     padding: var(--space-5) 0 0;
+  }
+
+  .spread-main > .scene-pieces {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .spread-main[data-device="phone"] {
+    grid-template-columns: minmax(0, var(--stage-text-width)) max-content var(--other-width);
+  }
+
+  /* the column starts level with the drawn phone's screen: the art above it is 15% of the screen's height (MARGIN in project-scene) */
+  .spread-main[data-device="phone"] > .scene-pieces {
+    grid-column: 3;
+    grid-row: 1;
+    align-self: start;
+    padding-top: calc(var(--stage-phone-height) * 0.15);
   }
 
   .project-text {
@@ -746,33 +772,31 @@
   font-size: 1.125rem;
 }
 
-.spread-fields {
+.project-line {
+  font-size: 1.125rem;
+}
+
+.spread-meta {
   display: grid;
   gap: var(--space-3);
 }
 
-[data-label] {
-  display: block;
-  margin-bottom: var(--space-1);
-  color: var(--red);
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking);
-  text-transform: uppercase;
-}
-
-.spread-meta {
+/* the stack: one mono line of chips, each in the project's spot color */
+.stack {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-2) var(--space-4);
-}
-
-[data-stack] {
+  gap: var(--space-2);
   margin: 0;
-  color: var(--muted-foreground);
+  padding: 0;
+  list-style: none;
   font-family: var(--font-label);
   font-size: var(--text-small);
+}
+
+.stack li {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--spot);
+  color: var(--bone);
 }
 
 /* the pieces fade in once per project, in order; they do not move, so they can be measured at any moment */
@@ -1243,6 +1267,36 @@
   flex-basis: calc(var(--phone-capture-stage-height) * var(--phone-capture-width) / var(--phone-capture-height) + var(--space-4));
 }
 
+/* on a wide screen every other piece is a 240 px glance, a phone's screen cropped to its top, so several sit beside the lead */
+@media (min-width: 1280px) {
+  .scene-pieces[data-has-scene] .piece,
+  .scene-pieces[data-has-scene] .piece[data-whole] {
+    flex: 0 0 var(--other-width);
+  }
+
+  .scene-pieces .piece .frame[data-frame="phone"] .frame-screen,
+  .scene-pieces .piece[data-whole] .frame[data-frame="phone"] .frame-screen {
+    aspect-ratio: var(--glance-ratio);
+  }
+
+  .spread-main[data-device="phone"] .scene-pieces .pieces {
+    flex-direction: column;
+    padding-inline: 0;
+    overflow: visible;
+  }
+
+  /* in a column the flex basis would be a height */
+  .spread-main[data-device="phone"] .scene-pieces[data-has-scene] .piece,
+  .spread-main[data-device="phone"] .scene-pieces[data-has-scene] .piece[data-whole] {
+    flex: none;
+    width: var(--other-width);
+  }
+
+  .spread-main[data-device="wide"] .scene-pieces .pieces {
+    padding-block: var(--space-3) 0;
+  }
+}
+
 .frame[data-frame="browser"] {
   border-radius: var(--radius-frame);
   overflow: hidden;
@@ -1264,41 +1318,6 @@
 
 .frame[data-frame="browser"] .frame-screen {
   aspect-ratio: var(--browser-ratio);
-}
-
-.frame[data-frame="document"] {
-  border-radius: var(--radius-frame);
-  background: var(--ink-warm);
-}
-
-/* a long caption wraps inside a document, so its tab joins the flow above the text instead of floating over the first line */
-.frame[data-frame="document"] .frame-tab {
-  position: static;
-  width: fit-content;
-  max-width: calc(100% - var(--space-6));
-  margin: var(--space-3) var(--space-3) 0;
-  overflow-wrap: normal;
-}
-
-.piece-text {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-3);
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  line-height: 1.5;
-  overflow-wrap: anywhere;
-}
-
-.piece[data-lead] .piece-text {
-  gap: var(--space-3);
-  font-size: 1rem;
-}
-
-.piece-text a {
-  align-self: flex-start;
-  text-decoration: underline;
 }
 
 /* fine film grain over the print, drawn by the browser */

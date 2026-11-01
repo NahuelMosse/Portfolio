@@ -15,7 +15,7 @@ type ProjectSceneProps = {
 // How much of the illustration shows around the drawn screen, as a share of the screen: sideways and up/down.
 // The sideways share of a phone is large (the hand), of a laptop small (the page holds the text beside it).
 const MARGIN = {
-  "16x9": { phone: { x: 0.45, y: 0.15 }, wide: { x: 0.1, y: 0.18 } },
+  "16x9": { phone: { x: 0.45, y: 0.15 }, wide: { x: 0.1, y: 0.08 } },
   "4x5": { phone: { x: 0.12, y: 0.15 }, wide: { x: 0.04, y: 0.15 } },
 } as const
 
