@@ -19,7 +19,7 @@ export function EndCredits() {
     <Chapter id="end-credits" label="04 · OFFER" subtitle="OPEN CASES // TWO DOORS" title="Offer" className="credits">
       <Offer />
       <div className="contact">
-        <div className="contact-text">
+        <Reveal className="contact-text">
           <p data-contact-label="" className="title-card contact-label">05 · CONTACT</p>
           <h3 id="contact-title" tabIndex={-1} className="poster-word chapter-title">Let&rsquo;s talk</h3>
           <ul className="contact-rows">
@@ -36,7 +36,7 @@ export function EndCredits() {
               </li>
             ))}
           </ul>
-        </div>
+        </Reveal>
         <div data-sealed-file="" className="sealed-file">
           <SceneMedia
             asset="pf-file-sealed-16x9"

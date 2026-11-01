@@ -92,6 +92,8 @@
 
   html {
     background: var(--ink);
+    /* long translated words wrap inside their box; whatever still spills is cut at the page edge */
+    overflow-x: clip;
   }
 
   body {
