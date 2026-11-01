@@ -42,12 +42,15 @@ function measure(host: HTMLElement): Geometry | null {
     const x = spine ? SPINE_X : frame.width * side
     return { id: el.getAttribute("data-thread-stop") ?? String(index), at: { x, y: place.y } }
   })
-  const fork = { x: (doorPlaces[0].x + doorPlaces[1].x) / 2, y: doorPlaces[0].top - DOOR_GAP * 2 }
-  const route = [{ x: start.x, y: start.y }, ...stops.map((s) => s.at), fork]
+  const forkX = spine ? SPINE_X : (doorPlaces[0].x + doorPlaces[1].x) / 2
+  const fork = { x: forkX, y: doorPlaces[0].top - DOOR_GAP * 2 }
+  const origin = { x: spine ? SPINE_X : start.x, y: start.y }
+  const route = [origin, ...stops.map((s) => s.at), fork]
   const trunk = route.slice(1).reduce((d, point, i) => `${d} ${smooth(route[i], point)}`, `M ${route[0].x} ${route[0].y}`)
-  const branches = doorPlaces.map((door) => `M ${fork.x} ${fork.y} ${smooth(fork, { x: door.x, y: door.top })}`)
+  // on a phone the thread is the spine only: no branches or ties across the text and the doors
+  const branches = spine ? [] : doorPlaces.map((door) => `M ${fork.x} ${fork.y} ${smooth(fork, { x: door.x, y: door.top })}`)
   // each branch carries on from its door and ties around the sealed file, one end on each side of the seal
-  const ties = doorPlaces.map((door, index) => {
+  const ties = spine ? [] : doorPlaces.map((door, index) => {
     const end = { x: sealedFile.x + (index === 0 ? -TIE_REACH : TIE_REACH), y: sealedFile.y }
     return `M ${door.x} ${door.bottom} ${smooth({ x: door.x, y: door.bottom }, end)}`
   })

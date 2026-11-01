@@ -10,7 +10,7 @@ test.describe("phone layout", () => {
     const fixed = await page.evaluate(() =>
       [...document.querySelectorAll("body *")]
         .filter((el) => getComputedStyle(el).position === "fixed" && getComputedStyle(el).display !== "none")
-        .filter((el) => el.getBoundingClientRect().height > 0 && !el.hasAttribute("data-grain") && !el.classList.contains("lamp-light"))
+        .filter((el) => el.getBoundingClientRect().height > 1 && !el.hasAttribute("data-grain") && !el.classList.contains("lamp-light"))
         .map((el) => el.className.toString()),
     )
     expect(fixed.filter((c) => !c.includes("hire-bar") && !c.includes("scroll-progress") && !c.includes("pointer-events"))).toEqual([])

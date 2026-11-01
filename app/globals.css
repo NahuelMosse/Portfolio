@@ -196,7 +196,8 @@
   pointer-events: none;
 }
 
-.grain-texture {
+/* .scene-media sets position: relative later in the sheet: the child selector keeps this texture out of the flow */
+.film > .grain-texture {
   position: absolute;
   inset: 0;
   z-index: 0;
@@ -271,6 +272,12 @@
 .corner-cta:hover {
   background: var(--red);
   border-color: var(--red);
+}
+
+/* unlayered: the catalog button's outline-none utility would win over the base layer rule */
+.film-control:focus-visible {
+  outline: 2px solid var(--bone);
+  outline-offset: 4px;
 }
 
 .film-control:disabled,
@@ -818,8 +825,10 @@
 }
 
 @media (min-width: 900px) {
+  /* the folders keep their own heights: the lamp tells them apart by where each one centres */
   .offer {
     grid-template-columns: 1fr 1fr;
+    align-items: start;
   }
 }
 
@@ -1070,12 +1079,120 @@
 }
 
 @media (max-width: 700px) {
+  /* the controls sit in the flow at the top of the page and scroll away: only the hire bar is fixed */
+  [aria-label="Page controls"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4) 0;
+  }
+
+  .skip-intro,
+  .sound-toggle,
   .chapter-index {
+    position: static;
+    transform: none;
+  }
+
+  .chapter-index {
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: var(--space-1);
   }
 
   .chapter-index .film-control {
     padding: var(--space-1) var(--space-2);
+  }
+
+  .chapter.cold-open {
+    padding-left: 0;
+  }
+
+  .cold-open .stage {
+    justify-content: flex-start;
+    padding: var(--space-4) var(--space-4) var(--space-5) var(--space-5);
+  }
+
+  .mark {
+    font-size: 40vw;
+  }
+
+  /* NAWI spans the viewport edge to edge: the layer cancels the stage padding */
+  .layer-mark {
+    align-self: stretch;
+    margin: 0 calc(-1 * var(--space-4)) 0 calc(-1 * var(--space-5));
+  }
+
+  /* the desk covers the first screen; the sheet below it sits on the wall strip */
+  .layer-backdrop {
+    bottom: auto;
+    height: 100svh;
+  }
+
+  .layer-cutout {
+    position: relative;
+    inset: auto;
+    width: 64vw;
+    height: 34svh;
+    margin: calc(-1 * var(--space-5)) 0 0;
+  }
+
+  /* the promise and the door read in the first screen; the identification sheet follows them */
+  .layer-sheet {
+    position: relative;
+    inset: auto;
+    order: 10;
+    width: 100%;
+    margin-top: var(--space-5);
+  }
+
+  .hero-line {
+    margin-top: var(--space-3);
+  }
+
+  .hero-line,
+  .hero-door {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  }
+
+  .chapter-title {
+    transform: none !important;
+    margin-top: 0 !important;
+    font-size: clamp(2.25rem, 10vw, 3.5rem);
+    padding-inline: var(--space-4);
+    overflow-wrap: anywhere;
+  }
+
+  .project > *,
+  .employer > *,
+  .offer > *,
+  .doors > * {
+    min-width: 0;
+  }
+
+  .project h3,
+  .employer h3,
+  .story p,
+  .piece-text,
+  .folder,
+  .offer h3 {
+    overflow-wrap: anywhere;
+  }
+
+  .project h3,
+  .employer h3 {
+    font-size: 2rem;
+  }
+
+  .exhibit .scene-media,
+  .folder-media,
+  .sealed-media,
+  .world-media,
+  .arch-media {
+    max-height: 80svh;
   }
 
   .hud-rail,

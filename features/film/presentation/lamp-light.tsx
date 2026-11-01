@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react"
 
-const LAMP_SPRING = { stiffness: 60, damping: 18 }
+const LAMP_SPRING = { stiffness: 140, damping: 22 }
 const KEEP_IN_VIEW = 0.25
 
 type Spot = { x: number; y: number }
