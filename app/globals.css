@@ -1245,7 +1245,7 @@
 
   .layer-backdrop {
     bottom: auto;
-    height: 64svh;
+    height: 84svh;
   }
 
   .case-file-label {
@@ -1257,6 +1257,8 @@
     margin: var(--space-5) calc(-1 * var(--gutter-right)) 0 calc(-1 * var(--gutter-left));
     /* the cover and the sheet stay in flow on a phone: the depth shift would drift one over the other */
     transform: none !important;
+    /* his face and the envelope own the first screen; the sheet starts below it */
+    min-height: 62svh;
   }
 
   .mark {
