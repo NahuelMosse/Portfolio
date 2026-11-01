@@ -707,8 +707,11 @@
 }
 
 .piece-row {
-  grid-area: pieces;
   min-width: 0;
+}
+
+.project .piece-row {
+  grid-area: pieces;
 }
 
 @media (min-width: 1100px) {
@@ -932,6 +935,22 @@
 .hero-door {
   display: inline-block;
   margin: 0;
+  transition:
+    background-color var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out);
+}
+
+/* the title sits right of the identification sheet, whole, never under it */
+@media (min-width: 701px) {
+  .layer-mark {
+    margin-left: 30vw;
+  }
+
+  .mark {
+    font-size: 27vw;
+  }
 }
 
 .contact {
@@ -1260,8 +1279,13 @@
     gap: var(--space-2);
   }
 
+  /* the folders overlap by a sliver, never over the next tab */
   .folder + .folder {
-    margin-top: calc(-1 * var(--space-5));
+    margin-top: calc(-1 * var(--space-2));
+  }
+
+  .folder {
+    padding-bottom: var(--space-4);
   }
 
   .case-body {
