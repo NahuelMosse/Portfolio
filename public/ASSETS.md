@@ -1,6 +1,6 @@
 # Scene media
 
-The page is a case file opened at night under one hard desk lamp. Every generated asset is a place or an object, never a person: the only person on the page is the owner, in real photos. Each image is made by the requester in Gemini (gemini.google.com, free, image model "Nano Banana") from the prompt below and saved as `public/film/<id>.webp`. The cover loops are made in Kling AI (klingai.com, free daily credits, image to video). The page reads each file when it exists; a file that is not delivered is a declared gap, shown as a graded dark field, never a stand-in.
+The page is a case file opened at night under one hard desk lamp. The only person on the page is the owner, in likenesses made from his own reference photos. Each image is made by the requester in Gemini (gemini.google.com, free, image model "Nano Banana") from the prompt below and saved as `public/film/<id>.webp`. The cover loops are made in Kling AI (klingai.com, free daily credits, image to video). The page reads each file when it exists; a file that is not delivered is a declared gap, shown as a graded dark field, never a stand-in.
 
 Look shared by every Gemini prompt: a neo-noir still photograph taken at night, one hard warm desk lamp as the only light, deep black shadows, shallow depth of field, real film grain and slight halation. Strict palette: near-black, bone cream paper and one deep crimson red. No people, no hands, no text, no logos, no watermark.
 
@@ -118,26 +118,26 @@ Real pieces (screens, captures, photos) are not generated: they are listed in th
 - Status: gap
 - Prompt: Slow neo-noir ambient loop, soft upright bass, brushed drums far away, light rain and a low warm synth pad, no vocals, calm and late-night, seamless loop of about two minutes. It plays only when the visitor presses the sound toggle.
 
-## pf-him-front
-- File: film/pf-him-front.webp
-- Tool: Photo by the owner
-- License: shot by the owner, his to publish, metadata stripped
-- Status: gap
-- Prompt: Not generated. Photo of the owner standing, front shot, holding a sealed envelope at chest height, lit by one hard warm lamp from the upper right against a dark wall; cut out on transparent background, 4:5.
+## pf-cover-him-16x9
+- File: film/pf-cover-him-16x9.webp
+- Tool: Codex (OpenAI image generation) from the owner's reference photos
+- License: generated for the requester with Codex from his own photos, the requester's to publish
+- Status: delivered
+- Prompt: The owner at the desk under the hard warm lamp holding a sealed envelope, dark evidence wall behind, near-black, bone cream and one crimson. Likeness from the owner's reference photos. Used as the cold open backdrop in place of pf-desk-16x9. 16:9 wide.
 
-## pf-him-closeup
-- File: film/pf-him-closeup.webp
-- Tool: Photo by the owner
-- License: shot by the owner, his to publish, metadata stripped
-- Status: gap
-- Prompt: Not generated. Three-quarter close crop of the owner, same lamp and wall, cut out on transparent background, 4:5.
+## pf-cover-him-9x16
+- File: film/pf-cover-him-9x16.webp
+- Tool: Codex (OpenAI image generation) from the owner's reference photos
+- License: generated for the requester with Codex from his own photos, the requester's to publish
+- Status: delivered
+- Prompt: The same composition as pf-cover-him-16x9, tall 9:16, used in place of pf-desk-9x16.
 
 ## pf-him-profile
 - File: film/pf-him-profile.webp
-- Tool: Photo by the owner
-- License: shot by the owner, his to publish, metadata stripped
-- Status: gap
-- Prompt: Not generated. Profile of the owner looking toward the lamp, same lamp and wall, cut out on transparent background, 4:5.
+- Tool: Codex (OpenAI image generation) from the owner's reference photos
+- License: generated for the requester with Codex from his own photos, the requester's to publish
+- Status: delivered
+- Prompt: Profile of the owner looking toward the lamp, same lamp and wall, 4:5. Shown at the left edge on the seam between Projects and Experience, fading into the dark.
 
 ## pf-id-front
 - File: film/pf-id-front.webp
@@ -148,10 +148,10 @@ Real pieces (screens, captures, photos) are not generated: they are listed in th
 
 ## pf-id-profile
 - File: film/pf-id-profile.webp
-- Tool: Photo by the owner
-- License: shot by the owner, his to publish, metadata stripped
-- Status: gap
-- Prompt: Not generated. Small ID-style profile photo of the owner against a plain dark wall, 4:5.
+- Tool: Codex (OpenAI image generation) from the owner's reference photos
+- License: generated for the requester with Codex from his own photos, the requester's to publish
+- Status: delivered
+- Prompt: Small ID-style profile photo of the owner against a plain dark wall, 4:5.
 
 ## Real pieces
 

@@ -43,7 +43,7 @@ All in `design/tokens.css`.
 
 ## 4. Typography
 
-Boska (display) is the identity: NAWI edge to edge as the mark, chapter titles at poster scale (4.5rem to 17rem on a wide screen, 2.25rem to 3.5rem on a phone), uppercase, tracking -0.03em, line height 0.82. General Sans carries text. Courier Prime is the typed label of the file (identification sheet, off-duty line). Two weights: 700 for display, regular for text. All self-hosted in `public/fonts`.
+Boska (display) is the identity: NAWI edge to edge as the mark, chapter titles at poster scale (4.5rem to 17rem on a wide screen, 2.25rem to 3.5rem on a phone), uppercase, tracking -0.03em, line height 0.82. Courier Prime is the typed voice: body text, the name under NAWI and the labels of the file (identification sheet, off-duty line). Two weights: 700 for display, regular for text. All self-hosted in `public/fonts`.
 
 ## 5. The system: primitives, components and patterns
 
