@@ -6,13 +6,11 @@ const PHOTOS = [
   { asset: "pf-id-profile", alt: "Nahuel Mosse, profile" },
 ] as const
 
-// The identification sheet clipped over the desk: the delivered photos of him (an undelivered one leaves no element)
-// and the typed fields of the file.
+// The identification sheet: the delivered photos of him (an undelivered one leaves no element) and the typed fields of the file.
 export function CharacterSheet() {
   const delivered = PHOTOS.filter(({ asset }) => sceneAsset(asset, "webp"))
   return (
-    <aside data-id-sheet="" data-paper="id-sheet" aria-label="Identification sheet" className="paper id-sheet">
-      <span className="clip" aria-hidden="true" />
+    <aside data-id-sheet="" aria-label="Identification sheet" className="id-sheet">
       <p className="sheet-title">Identification sheet</p>
       {delivered.length > 0 && (
         <div className="sheet-photos">
@@ -33,7 +31,6 @@ export function CharacterSheet() {
         <dt>Known for</dt>
         <dd>{identity.knownFor}</dd>
       </dl>
-      <span data-stamp="" className="stamp">Active</span>
     </aside>
   )
 }

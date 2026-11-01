@@ -163,3 +163,21 @@ Captured or fetched by the session from the live pages and repositories of the o
 - `film/pieces/triaje-*.webp`: captures of https://nahuelmosse.itch.io/triaje.
 - `film/justo-team.webp`: the "Equipo WMS Justo" presentation photo, resized, metadata stripped.
 - The photos of the owner (cover, close crop, profile, identification front and profile): shot by the owner, published as treated copies with metadata stripped; until they arrive each is a declared gap.
+
+## Chapter illustrations (ink and wash)
+
+One style across the set: bold brush ink, solid blacks, dry-brush texture, bone highlights, crimson as the only spot color; he is the only figure. Drawn from his reference photos. Each file is 16:9 (the cover also 9:16), the left or top of the frame left dark for the copy. Decorative: shown with empty alt text, faded into the page at the edges.
+
+| File | Chapter | Tool | Status |
+|---|---|---|---|
+| film/ill-cover-16x9.webp, film/ill-cover-9x16.webp | Cold open: at the desk under the lamp holding the sealed envelope | Codex (OpenAI image generation) | delivered |
+| film/ill-kit-16x9.webp | Project: the development kit | Codex | delivered |
+| film/ill-grit-16x9.webp | Project: Grit | Codex | delivered |
+| film/ill-triaje-16x9.webp | Project: Guardia (Triaje) | Codex | delivered |
+| film/ill-cebador-16x9.webp | Project: Cebador | Codex | delivered |
+| film/ill-club-16x9.webp | Project: ClubNahuelMosse | Codex | delivered |
+| film/ill-experience-16x9.webp | Experience | Codex | delivered |
+| film/ill-offer-16x9.webp | Offer: the two doors | Codex | delivered |
+| film/ill-contact-16x9.webp | Closing: sealing the file | Codex | delivered |
+
+License: generated for the requester with Codex from his own photos, the requester's to publish. A missing file is a declared gap: its chapter closes over it with no box.

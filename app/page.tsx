@@ -1,7 +1,6 @@
 import { FilmShell } from "@/features/film"
 import { HeroPoster } from "@/features/portfolio/presentation/hero-poster"
 import { Projects } from "@/features/portfolio/presentation/projects"
-import { ProfileSeam } from "@/features/portfolio/presentation/profile-seam"
 import { Experience } from "@/features/portfolio/presentation/experience"
 import { EndCredits } from "@/features/portfolio/presentation/end-credits"
 import { doorHref, offer } from "@/features/portfolio/presentation/content"
@@ -28,7 +27,6 @@ export default function Home() {
       >
         <HeroPoster />
         <Projects />
-        <ProfileSeam />
         <Experience />
         <EndCredits />
       </FilmShell>

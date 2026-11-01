@@ -1,4 +1,5 @@
-import { Chapter, CreditsRoll, Reveal, SceneMedia, sceneAsset, type RollBand } from "@/features/film"
+import { CreditsRoll, type RollBand } from "@/features/film"
+import { ChapterIllustration } from "./chapter-illustration"
 import { credits, identity } from "./content"
 import { Offer } from "./offer"
 
@@ -13,15 +14,17 @@ const contactRows = [
   { id: "github", label: "GitHub", href: identity.github, external: true },
 ] as const
 
-// The offer, then Let's talk with its link rows beside the sealed file, the credits sheet and the roll, and the end of the file.
+// The offer over the two-doors illustration, Let's talk over the sealing illustration, then the credits sheet and the roll.
 export function EndCredits() {
   return (
-    <Chapter id="end-credits" label="04 · OFFER" subtitle="OPEN CASES // TWO DOORS" title="Offer" className="credits">
-      <Offer />
-      <div className="contact">
-        <Reveal className="contact-text">
-          <p data-contact-label="" className="title-card contact-label">05 · CONTACT</p>
-          <h3 id="contact-title" tabIndex={-1} className="poster-word chapter-title">Let&rsquo;s talk</h3>
+    <section data-chapter="end-credits" id="end-credits" className="credits">
+      <ChapterIllustration asset="ill-offer-16x9" className="offer-scene">
+        <h2 tabIndex={-1} className="chapter-heading">Offer</h2>
+        <Offer />
+      </ChapterIllustration>
+      <ChapterIllustration asset="ill-contact-16x9" className="contact-scene">
+        <div className="contact">
+          <h3 id="contact-title" tabIndex={-1}>Let&rsquo;s talk</h3>
           <ul className="contact-rows">
             {contactRows.map((row) => (
               <li key={row.id} data-secondary={row.id === "github" ? "" : undefined}>
@@ -36,34 +39,24 @@ export function EndCredits() {
               </li>
             ))}
           </ul>
-        </Reveal>
-        <div data-sealed-file="" className="sealed-file">
-          <SceneMedia
-            asset="pf-file-sealed-16x9"
-            poster={sceneAsset("pf-file-sealed-16x9", "webp")}
-            tallPoster={sceneAsset("pf-file-sealed-9x16", "webp")}
-            alt="The case file closed under the lamp, sealed in crimson wax"
-            className="sealed-media"
-          />
-          <span data-stamp="case-open" className="stamp case-open">Case open</span>
         </div>
-      </div>
-      <div data-credits-sheet="" data-paper="credits-sheet" className="paper credits-sheet">
-        <Reveal>
+      </ChapterIllustration>
+      <div data-credits-sheet="" className="credits-sheet">
+        <section>
           <h3>Studies</h3>
           <ul>{credits.studies.map((item) => <li key={item.text}>{item.text}</li>)}</ul>
-        </Reveal>
-        <Reveal>
+        </section>
+        <section>
           <h3>Certifications</h3>
           <ul>{credits.certifications.map((item) => <li key={item.text}>{item.text}</li>)}</ul>
-        </Reveal>
-        <Reveal>
+        </section>
+        <section>
           <h3>Off duty</h3>
           <p data-off-duty="">{identity.offDuty}</p>
-        </Reveal>
+        </section>
       </div>
       <CreditsRoll bands={bands} />
       <footer className="end-of-file">© Nahuel Mosse — NAWI · END OF FILE</footer>
-    </Chapter>
+    </section>
   )
 }
