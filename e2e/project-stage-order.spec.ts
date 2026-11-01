@@ -29,7 +29,7 @@ const fades = (el: Element) => {
   return style.maskImage !== "none" || style.webkitMaskImage !== "none" || style.clipPath !== "none"
 }
 
-test("at 390 and 1440 each project's real interface is its focal point, a phone interface at least 70% of the viewport's height at 1440 and 75% of its width at 390 and a laptop or monitor interface at least 55% of the viewport's width at 1440 and 90% at 390, sitting in the screen drawn in its illustration, whose visible part reaches at most twice the interface's width and 1.4 times its height; the title, What, Problem and My role are visible without a toggle beside it at 1440 and above it at 390, and its other pieces sit in a row beneath; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26", async ({ page }) => {
+test("at 390 and 1440 each project's real interface is its focal point, a phone interface at least 70% of the viewport's height at 1440 and 75% of its width at 390 and a laptop or monitor interface at least 55% of the viewport's width at 1440 and 90% at 390, sitting in the screen drawn in its illustration, whose visible part reaches at most twice the interface's width and 1.4 times its height; the title, What, Problem and My role are visible without a toggle beside it at 1440, at 390 the title is above it and starts in view together with its top half while the three lines follow beneath it, and its other pieces sit in a row beneath; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26", async ({ page }) => {
   const requested: string[] = []
   page.on("request", (request) => requested.push(request.url()))
 
@@ -81,17 +81,32 @@ test("at 390 and 1440 each project's real interface is its focal point, a phone 
       }
       await expect(spread.locator("button[aria-expanded]")).toHaveCount(0)
       await expect(text.locator("[data-stack]")).not.toBeEmpty()
-      const textBox = (await text.boundingBox())!
+      let textBottom = 0
       if (desktop) {
+        const textBox = (await text.boundingBox())!
+        textBottom = textBox.y + textBox.height
         expect(textBox.x + textBox.width, `${project} text beside the interface`).toBeLessThanOrEqual(screenBox.x + 1)
         expect(textBox.y, `${project} text level with the interface`).toBeLessThan(screenBox.y + screenBox.height)
         expect(textBox.y + textBox.height, `${project} text level with the interface`).toBeGreaterThan(screenBox.y)
       } else {
-        expect(textBox.y + textBox.height, `${project} text above the interface`).toBeLessThanOrEqual(screenBox.y + 1)
+        // the title alone is above the interface; the interface starts in view with it; the lines follow beneath
+        await spread.locator("h3").first().evaluate((el) => el.scrollIntoView({ block: "start" }))
+        const titleBox = (await spread.locator("h3").first().boundingBox())!
+        const nowScreen = (await screen.boundingBox())!
+        expect(titleBox.y + titleBox.height, `${project} title above the interface`).toBeLessThanOrEqual(nowScreen.y + 1)
+        expect(titleBox.y, `${project} title in view`).toBeGreaterThanOrEqual(0)
+        expect(nowScreen.y + nowScreen.height / 2, `${project} top half of the interface in view`).toBeLessThanOrEqual(viewport.height)
+        for (const field of ["what", "problem", "role"]) {
+          const box = (await text.locator(`[data-field="${field}"]`).boundingBox())!
+          expect(box.y, `${project} ${field} beneath the interface`).toBeGreaterThanOrEqual(nowScreen.y + nowScreen.height - 1)
+          textBottom = Math.max(textBottom, box.y + box.height)
+        }
+        textBottom = Math.max(textBottom, (await text.locator("[data-stack]").boundingBox())!.y)
       }
+      const screenNow = (await screen.boundingBox())!
 
       // the other pieces are one row beneath
-      const stageBottom = Math.max(screenBox.y + screenBox.height, textBox.y + textBox.height)
+      const stageBottom = Math.max(screenNow.y + screenNow.height, textBottom)
       const others = spread.locator("[data-pieces] [data-piece]")
       expect(await others.count(), `${project} other pieces`).toBeGreaterThan(0)
       const boxes: { x: number; y: number }[] = []
