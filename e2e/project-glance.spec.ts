@@ -6,11 +6,11 @@ import { test, expect } from "@playwright/test"
 const onDisk = (id: string) => existsSync(join(process.cwd(), "public", "film", `${id}.webp`))
 
 const STAGES = [
-  { project: "dev-kit", name: "kit", device: "wide" },
-  { project: "grit", name: "grit", device: "phone" },
-  { project: "guardia", name: "triaje", device: "wide" },
-  { project: "cebador", name: "cebador", device: "wide" },
-  { project: "club", name: "club", device: "phone" },
+  { project: "dev-kit", name: "kit", device: "wide", line: "How I build with AI agents: the spec in, tested code out." },
+  { project: "grit", name: "grit", device: "phone", line: "Offline gym tracker for Android and iOS. Product, design and code." },
+  { project: "guardia", name: "triaje", device: "wide", line: "A browser game about triage under pressure. Rules and code." },
+  { project: "cebador", name: "cebador", device: "wide", line: "Brand site for a fictional mate soda. Art direction, motion, code." },
+  { project: "club", name: "club", device: "phone", line: "App and API to book sports courts. I built both." },
 ]
 const EMPLOYERS = ["smart-warehousing", "grupo-st", "visma", "fravega", "justo"]
 const FULL_BLEED = ["ill-cover-16x9", "ill-offer-16x9", "ill-contact-16x9"]
@@ -23,13 +23,16 @@ const WIDE_WIDTH_MOBILE = 0.9
 const ART_WIDTH_LIMIT = 2
 const ART_HEIGHT_LIMIT = 1.4
 const EMPLOYER_ART_DESKTOP_MIN = 480
+const MAX_WORDS = 12
+const MIN_OTHER_PIECES = 3
+const MIN_PIECE_WIDTH = 240
 
 const fades = (el: Element) => {
   const style = getComputedStyle(el)
   return style.maskImage !== "none" || style.webkitMaskImage !== "none" || style.clipPath !== "none"
 }
 
-test("at 390 and 1440 each project's real interface is its focal point, a phone interface at least 70% of the viewport's height at 1440 and 75% of its width at 390 and a laptop or monitor interface at least 55% of the viewport's width at 1440 and 90% at 390, sitting in the screen drawn in its illustration, whose visible part reaches at most twice the interface's width and 1.4 times its height; the title, What, Problem and My role are visible without a toggle beside it at 1440, at 390 the title is above it and starts in view together with its top half while the three lines follow beneath it, and its other pieces sit in a row beneath; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26", async ({ page }) => {
+test("at 390 and 1440 each project's real interface is its focal point, a phone interface at least 70% of the viewport's height at 1440 and 75% of its width at 390 and a laptop or monitor interface at least 55% of the viewport's width at 1440 and 90% at 390, sitting in the screen drawn in its illustration, whose visible part reaches at most twice the interface's width and 1.4 times its height; beside it only the title, one line of at most 12 words, the stack and the link, no What, Problem or My role and no text card among its pieces, at least three other pieces each at least 240 px wide are in view at once with the lead at 1440, at 390 the order is title, interface, line, stack and link, then the swiping row; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26", async ({ page }) => {
   const requested: string[] = []
   page.on("request", (request) => requested.push(request.url()))
 
@@ -40,7 +43,7 @@ test("at 390 and 1440 each project's real interface is its focal point, a phone 
     const desktop = viewport.width === 1440
     const aspect = desktop ? "16x9" : "4x5"
 
-    for (const { project, name, device } of STAGES) {
+    for (const { project, name, device, line } of STAGES) {
       const spread = page.locator(`[data-project="${project}"]`)
       await spread.scrollIntoViewIfNeeded()
       const delivered = onDisk(`ill-scene-${name}-${aspect}`)
@@ -72,48 +75,49 @@ test("at 390 and 1440 each project's real interface is its focal point, a phone 
         await expect(spread.locator("[data-lead] [data-frame]")).toHaveCount(1)
       }
 
-      // the words: beside the interface at 1440, above it at 390
+      // the words: the title, one short line, the stack and the link; nothing else
       const text = spread.locator("[data-project-text]")
       await expect(text.locator("h3")).toBeVisible()
-      for (const [field, label] of [["what", "What"], ["problem", "Problem"], ["role", "My role"]]) {
-        await expect(text.locator(`[data-field="${field}"]`)).toBeVisible()
-        await expect(text.locator(`[data-field="${field}"] [data-label]`)).toHaveText(label)
-      }
+      const lineBox = text.locator('[data-field="line"]')
+      await expect(lineBox).toHaveText(line)
+      expect(line.split(/\s+/).length, `${project} line length`).toBeLessThanOrEqual(MAX_WORDS)
+      await expect(spread.locator('[data-field="what"], [data-field="problem"], [data-field="role"], [data-label]'), `${project} has no labeled text`).toHaveCount(0)
       await expect(spread.locator("button[aria-expanded]")).toHaveCount(0)
       await expect(text.locator("[data-stack]")).not.toBeEmpty()
-      let textBottom = 0
-      if (desktop) {
-        const textBox = (await text.boundingBox())!
-        textBottom = textBox.y + textBox.height
-        expect(textBox.x + textBox.width, `${project} text beside the interface`).toBeLessThanOrEqual(screenBox.x + 1)
-        expect(textBox.y, `${project} text level with the interface`).toBeLessThan(screenBox.y + screenBox.height)
-        expect(textBox.y + textBox.height, `${project} text level with the interface`).toBeGreaterThan(screenBox.y)
-      } else {
-        // the title alone is above the interface; the interface starts in view with it; the lines follow beneath
-        await spread.locator("h3").first().evaluate((el) => el.scrollIntoView({ block: "start" }))
-        const titleBox = (await spread.locator("h3").first().boundingBox())!
-        const nowScreen = (await screen.boundingBox())!
-        expect(titleBox.y + titleBox.height, `${project} title above the interface`).toBeLessThanOrEqual(nowScreen.y + 1)
-        expect(titleBox.y, `${project} title in view`).toBeGreaterThanOrEqual(0)
-        expect(nowScreen.y + nowScreen.height / 2, `${project} top half of the interface in view`).toBeLessThanOrEqual(viewport.height)
-        for (const field of ["what", "problem", "role"]) {
-          const box = (await text.locator(`[data-field="${field}"]`).boundingBox())!
-          expect(box.y, `${project} ${field} beneath the interface`).toBeGreaterThanOrEqual(nowScreen.y + nowScreen.height - 1)
-          textBottom = Math.max(textBottom, box.y + box.height)
-        }
-        textBottom = Math.max(textBottom, (await text.locator("[data-stack]").boundingBox())!.y)
-      }
-      const screenNow = (await screen.boundingBox())!
+      await expect(spread.locator('[data-kind="card"], [data-kind="tests"], [data-kind="pull-request"], [data-kind="link"], .piece-text'), `${project} has no text piece`).toHaveCount(0)
 
-      // the other pieces are one row beneath
-      const stageBottom = Math.max(screenNow.y + screenNow.height, textBottom)
       const others = spread.locator("[data-pieces] [data-piece]")
-      expect(await others.count(), `${project} other pieces`).toBeGreaterThan(0)
-      const boxes: { x: number; y: number }[] = []
-      for (const piece of await others.all()) boxes.push((await piece.boundingBox())!)
-      for (const box of boxes) {
-        expect(box.y, `${project} piece beneath`).toBeGreaterThanOrEqual(stageBottom - 1)
-        expect(Math.abs(box.y - boxes[0].y), `${project} pieces in one row`).toBeLessThanOrEqual(2)
+      expect(await others.count(), `${project} other pieces`).toBeGreaterThanOrEqual(MIN_OTHER_PIECES)
+
+      if (desktop) {
+        // the lead and at least three other pieces fit the viewport together
+        const stage = spread.locator("[data-lead], [data-scene-screen]").first()
+        await stage.evaluate((el) => window.scrollBy(0, el.getBoundingClientRect().top - 72))
+        const lead = (await screen.boundingBox())!
+        expect(lead.y, `${project} lead in view`).toBeGreaterThanOrEqual(0)
+        expect(lead.y + lead.height, `${project} lead in view`).toBeLessThanOrEqual(viewport.height)
+        const inView: number[] = []
+        for (const piece of await others.all()) {
+          const box = (await piece.boundingBox())!
+          const visible = box.x >= 0 && box.x + box.width <= viewport.width && box.y >= 56 && box.y + box.height <= viewport.height
+          if (visible) inView.push(box.width)
+        }
+        expect(inView.length, `${project} pieces in view with the lead`).toBeGreaterThanOrEqual(MIN_OTHER_PIECES)
+        for (const width of inView) expect(width, `${project} piece width`).toBeGreaterThanOrEqual(MIN_PIECE_WIDTH - 1)
+      } else {
+        // title above the interface, then the line, the stack and the link, then the row
+        const title = (await spread.locator("h3").first().boundingBox())!
+        const now = (await screen.boundingBox())!
+        const lineAt = (await lineBox.boundingBox())!
+        const stack = (await text.locator("[data-stack]").boundingBox())!
+        const row = (await spread.locator("[data-pieces]").boundingBox())!
+        expect(title.y + title.height, `${project} title above the interface`).toBeLessThanOrEqual(now.y + 1)
+        expect(lineAt.y, `${project} line beneath the interface`).toBeGreaterThanOrEqual(now.y + now.height - 1)
+        expect(stack.y, `${project} stack beneath the line`).toBeGreaterThanOrEqual(lineAt.y + lineAt.height - 1)
+        expect(row.y, `${project} row beneath the stack`).toBeGreaterThanOrEqual(stack.y + stack.height - 1)
+        const links = spread.locator("[data-project-text] .links a")
+        if (await links.count()) expect((await links.first().boundingBox())!.y, `${project} link before the row`).toBeLessThanOrEqual(row.y)
+        await expect(spread.locator("[data-piece-counter]")).toBeVisible()
       }
     }
 

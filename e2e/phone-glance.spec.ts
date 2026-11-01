@@ -2,13 +2,13 @@ import { test, expect } from "@playwright/test"
 
 const MIN_TEXT = 14
 const MIN_HIRE_BAR = 48
-const SHORT_LINE = 200
+const MAX_WORDS = 12
 const PROJECTS = ["dev-kit", "grit", "guardia", "cebador", "club"]
 
-test.describe("phone spreads", () => {
+test.describe("phone glance", () => {
   test.use({ viewport: { width: 390, height: 844 }, hasTouch: true })
 
-  test("at 390 the page is one column, the chapter index opens from the top bar menu, each case's pieces swipe sideways with the next one cut at the edge and a counter, what, problem and role are visible as short lines, a fixed Hire me bar at the bottom is at least 48 px tall, no text is under 14 px and only the piece rows scroll sideways @PF-1-ASM-27", async ({ page }) => {
+  test("at 390 the page is one column, the chapter index opens from the top bar menu, each case's pieces swipe sideways with the next one cut at the edge and a counter, each case says what it is in one line of at most 12 words, a fixed Hire me bar at the bottom is at least 48 px tall, no text is under 14 px and only the piece rows scroll sideways @PF-1-ASM-27", async ({ page }) => {
     await page.goto("/")
     await page.waitForLoadState("load")
 
@@ -24,14 +24,12 @@ test.describe("phone spreads", () => {
       const spread = page.locator(`[data-project="${id}"]`)
       await spread.scrollIntoViewIfNeeded()
       const stage = (await spread.locator("[data-stage]").boundingBox())!
-      const copy = (await spread.locator('[data-field="what"]').boundingBox())!
-      expect(copy.width, `${id} one column`).toBeGreaterThan(390 * 0.6)
+      const line = spread.locator('[data-field="line"]')
+      await expect(line).toBeVisible()
+      expect((await line.boundingBox())!.width, `${id} one column`).toBeGreaterThan(390 * 0.6)
       expect(stage.width, `${id} stage inside the viewport`).toBeLessThanOrEqual(390)
-      for (const field of ["what", "problem", "role"]) {
-        const line = spread.locator(`[data-field="${field}"]`)
-        await expect(line).toBeVisible()
-        expect((await line.innerText()).length, `${id} ${field} is short`).toBeLessThanOrEqual(SHORT_LINE)
-      }
+      expect((await line.innerText()).trim().split(/\s+/).length, `${id} line is short`).toBeLessThanOrEqual(MAX_WORDS)
+      await expect(spread.locator('[data-field="what"], [data-field="problem"], [data-field="role"], [data-label]')).toHaveCount(0)
     }
 
     const row = page.locator('[data-project="grit"] [data-pieces]')
