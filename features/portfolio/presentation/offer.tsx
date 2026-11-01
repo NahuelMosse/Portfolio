@@ -35,7 +35,7 @@ export function Offer() {
         <h3>{offer.tpm.title}</h3>
         <p>{offer.tpm.line}</p>
         <p>{offer.tpm.detail}</p>
-        <a href="#dev-kit">See the proof: the dev kit</a>
+        <a href="#dev-kit" className="proof-link">See the proof: the dev kit</a>
       </section>
     </div>
   )

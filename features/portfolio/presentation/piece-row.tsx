@@ -20,7 +20,7 @@ export function PieceRow({ count, className, children }: PieceRowProps) {
 
   return (
     <div className={`piece-row ${className ?? ""}`}>
-      <div ref={row} data-pieces="" className="pieces" onScroll={follow}>
+      <div ref={row} data-pieces="" role="group" aria-label="Pieces of this case" tabIndex={0} className="pieces" onScroll={follow}>
         {children}
       </div>
       {count > 1 && (

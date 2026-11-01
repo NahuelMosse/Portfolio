@@ -1,6 +1,7 @@
 "use client"
 
 import { useId, useState, type ReactNode } from "react"
+import { Button } from "@/components/ui/button"
 
 // What, problem and role of a case. On a phone they open and close with a toggle; on wide screens they are always open.
 export function CaseDetails({ defaultOpen, children }: { defaultOpen: boolean; children: ReactNode }) {
@@ -9,9 +10,9 @@ export function CaseDetails({ defaultOpen, children }: { defaultOpen: boolean; c
 
   return (
     <div data-case-details="" data-open={open} className="case-details">
-      <button type="button" className="case-toggle" aria-expanded={open} aria-controls={body} onClick={() => setOpen(!open)}>
+      <Button type="button" variant="ghost" className="case-toggle" aria-expanded={open} aria-controls={body} onClick={() => setOpen(!open)}>
         {open ? "Close the case" : "Open the case"}
-      </button>
+      </Button>
       <div id={body} className="case-body">
         {children}
       </div>

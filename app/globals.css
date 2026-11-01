@@ -264,8 +264,27 @@
   cursor: pointer;
   transition:
     background var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
     color var(--motion-control) var(--ease-out),
     transform var(--motion-control) var(--ease-out);
+}
+
+.proof-link {
+  display: inline-block;
+  margin-top: var(--space-3);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition:
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out);
+}
+
+.proof-link:hover {
+  color: var(--red);
+}
+
+.proof-link:active {
+  transform: scale(var(--press-scale));
 }
 
 .film-control:hover,
@@ -735,7 +754,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(2.25rem, 7vw, 5rem);
-  line-height: 1.1;
+  line-height: 1.2;
   letter-spacing: -0.02em;
   text-transform: uppercase;
 }
