@@ -214,6 +214,7 @@ export const offer = {
     detail: "I build the whole product myself, design, code and launch, and the pieces above are what I already built.",
     door: "Hire me for a project",
     subject: "Freelance project · Nahuel Mosse",
+    prompts: ["What are you building, and for whom?", "What should it look and feel like?", "When do you need the first version?"],
   },
   tpm: {
     title: "Technical Project Manager",
@@ -222,22 +223,25 @@ export const offer = {
       "AI-first delivery: Spec-Driven Development, agents orchestrated with Claude Code, every requirement traced to a test and reviewed by a person on each pull request.",
     door: "Bring AI-first delivery to your team",
     subject: "Technical Project Manager role · Nahuel Mosse",
+    prompts: ["What does your team deliver today?", "Where does delivery slow down?", "Who reviews the AI-assisted work?"],
   },
 } as const
 
-export const credits = {
+export type CreditItem = { text: string; logo?: string }
+
+export const credits: { studies: readonly CreditItem[]; certifications: readonly CreditItem[] } = {
   studies: [
-    "Analista en Informática · Universidad de Morón · 2025",
-    "Técnico Electromecánico · Colegio Emaús · 2021",
+    { text: "Analista en Informática · Universidad de Morón · 2025", logo: "/logo-UM.webp" },
+    { text: "Técnico Electromecánico · Colegio Emaús · 2021", logo: "/logo-emaus.webp" },
   ],
   certifications: [
-    "EF SET C2 Proficient",
-    "Arquitectura de Software Aplicada · Platzi",
-    "Fundamentos de Arquitectura de Software · Platzi 2026",
-    "Liceo Cultural Británico · Nivel 7",
-    "Liceo Cultural Británico · Nivel 6",
-    "Fundamentos de Arquitectura de Software · Platzi 2023",
-    "Fundamentos de Ingeniería de Software · Platzi",
-    "Responsive Web Design · freeCodeCamp",
+    { text: "EF SET C2 Proficient" },
+    { text: "Arquitectura de Software Aplicada · Platzi" },
+    { text: "Fundamentos de Arquitectura de Software · Platzi 2026" },
+    { text: "Liceo Cultural Británico · Nivel 7", logo: "/logo-liceo-cultural-britanico.webp" },
+    { text: "Liceo Cultural Británico · Nivel 6", logo: "/logo-liceo-cultural-britanico.webp" },
+    { text: "Fundamentos de Arquitectura de Software · Platzi 2023" },
+    { text: "Fundamentos de Ingeniería de Software · Platzi" },
+    { text: "Responsive Web Design · freeCodeCamp" },
   ],
-} as const
+}

@@ -11,7 +11,7 @@ export function HeroPoster() {
           <ColdOpenBackdrop />
         </DepthLayer>
         <DepthLayer name="mark" pointerDepth={60} scrollLag={0.2} className="layer layer-mark">
-          <h1 className="mark">{identity.mark}</h1>
+          <h1 tabIndex={-1} className="mark">{identity.mark}</h1>
         </DepthLayer>
         <p data-name="professional" className="professional-name">
           {identity.professionalName}

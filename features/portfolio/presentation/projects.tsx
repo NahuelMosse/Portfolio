@@ -4,9 +4,15 @@ import { Piece } from "./piece"
 
 export function Projects() {
   return (
-    <Chapter id="projects" label="Projects" tone="paper" nextTone="dark" title={<>What I <em>built</em></>}>
+    <Chapter id="projects" label="Projects" tone="paper" nextTone="dark" seamSide="right" title={<>What I <em>built</em></>}>
       {projects.map((project, index) => (
-        <Reveal key={project.id} id={project.id} data-project={project.id} className="project story">
+        <Reveal
+          key={project.id}
+          id={project.id}
+          data-project={project.id}
+          data-thread-stop={`project:${project.id}`}
+          className="project story"
+        >
           <div>
             <span className="numeral" aria-hidden="true">{index + 1}</span>
             <SceneMedia
@@ -16,8 +22,8 @@ export function Projects() {
               className="arch-media"
             />
           </div>
-          <div>
-            <h3>{project.name}</h3>
+          <header className="story-text">
+            <h3 tabIndex={-1}>{project.name}</h3>
             <p data-field="what">{project.what}</p>
             <p data-field="problem">{project.problem}</p>
             <p data-field="role">{project.role}</p>
@@ -30,7 +36,7 @@ export function Projects() {
                 ))}
               </div>
             )}
-          </div>
+          </header>
           <div className="pieces">
             {project.pieces.map((piece) => (
               <Piece key={piece.caption} piece={piece} />

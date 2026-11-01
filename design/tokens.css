@@ -1,0 +1,75 @@
+/* The only place where a color, a duration, a radius or a space of the site is written. */
+:root {
+  /* One red as the only accent, over black and bone cream */
+  --red: #d2231b;
+  --bone: #ede4d0;
+  --ink: #0c0c0b;
+  --ink-warm: #1a0b09;
+  /* a deeper red keeps bone text at AA contrast */
+  --red-deep: #891813;
+
+  --red-16: color-mix(in srgb, var(--red) 16%, transparent);
+  --red-20: color-mix(in srgb, var(--red) 20%, transparent);
+  --red-28: color-mix(in srgb, var(--red) 28%, transparent);
+  --red-45: color-mix(in srgb, var(--red) 45%, transparent);
+  --red-50: color-mix(in srgb, var(--red) 50%, transparent);
+  --bone-08: color-mix(in srgb, var(--bone) 8%, transparent);
+  --bone-12: color-mix(in srgb, var(--bone) 12%, transparent);
+  --bone-30: color-mix(in srgb, var(--bone) 30%, transparent);
+  --bone-35: color-mix(in srgb, var(--bone) 35%, transparent);
+  --bone-70: color-mix(in srgb, var(--bone) 70%, transparent);
+  --ink-08: color-mix(in srgb, var(--ink) 8%, transparent);
+  --ink-35: color-mix(in srgb, var(--ink) 35%, transparent);
+  --ink-70: color-mix(in srgb, var(--ink) 70%, transparent);
+  --ink-85: color-mix(in srgb, var(--ink) 85%, transparent);
+
+  /* spacing scale: 4 8 16 24 40 64 112 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+  --space-7: 112px;
+
+  --radius-pill: 999px;
+  --radius-round: 50%;
+
+  /* easing and durations by use */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-control: 200ms;
+  --motion-section: 900ms;
+  --motion-roll-slow: 60s;
+  --motion-roll-fast: 36s;
+  --motion-marquee: 40s;
+  --motion-shiny: 8s;
+  --motion-beam: 6s;
+  --press-scale: 0.96;
+
+  /* the descent of a poster word: its line height is under 0.9, so the glyphs hang below the box */
+  --poster-descent: 0.2em;
+  --seam-height: 160px;
+
+  --font-display: "Boska", serif;
+  --font-text: "General Sans", sans-serif;
+
+  /* semantic */
+  --background: var(--ink);
+  --foreground: var(--bone);
+  --border: var(--bone-30);
+  --ring: var(--bone);
+  --muted: var(--bone-08);
+  --muted-foreground: var(--bone-70);
+  --primary: var(--bone);
+  --primary-foreground: var(--ink);
+  --secondary: var(--bone-12);
+  --secondary-foreground: var(--bone);
+  --accent: var(--bone-12);
+  --accent-foreground: var(--bone);
+  --card: var(--ink);
+  --card-foreground: var(--bone);
+  --popover: var(--ink);
+  --popover-foreground: var(--bone);
+  --input: var(--border);
+  --destructive: var(--red);
+}

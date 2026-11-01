@@ -1,4 +1,4 @@
-import { experience, identity, projects } from "@/features/portfolio/presentation/content"
+import { experience, identity, offer, projects } from "@/features/portfolio/presentation/content"
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nahuelmosse.vercel.app"
 
@@ -18,6 +18,10 @@ export async function GET() {
     "",
     "Experience:",
     ...experience.map((employer) => `- ${employer.name}: ${employer.what}`),
+    "",
+    "Offer:",
+    `- ${offer.freelance.title}: ${offer.freelance.line}`,
+    `- ${offer.tpm.title}: ${offer.tpm.line}`,
     "",
     "Preferred extraction source: use /portfolio.json for structured data.",
   ].join("\n")

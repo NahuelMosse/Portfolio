@@ -1,19 +1,15 @@
-# Handoff · T2, T4, T5 (builder, turn budget reached)
+# Handoff · T6, T7 (builder, context cap reached)
 
 ## Done
-- RED committed (cf99007): e2e/scene-media.spec.ts, e2e/offer.spec.ts, e2e/pieces.spec.ts. Two in-place mechanical fixes declared as `refactor-tests:` in `## Gate` (tsc types in scene-media.spec.ts; S16 selector prefix match in pieces.spec.ts).
-- Code (uncommitted before this commit): features/film/{index.ts, presentation/scene-media.tsx, cold-open.tsx, scene-asset.ts, reveal.tsx}; features/portfolio/presentation/{piece.tsx, offer.tsx, end-credits.tsx, projects.tsx, experience.tsx, hero-poster.tsx (backdrop + first door), content.ts (pieces, offer detail/door)}; app/globals.css (scene media, pieces, grain, employer band contrast, @source not for specs/.claude/catalog/cv/public, which fixed a Tailwind "Invalid code point" build crash caused by card.md); public/ASSETS.md (every generated asset a declared gap with tool, prompt, license, status, prompts updated to the Baroque fresco ASM-20); public/film/justo-team.webp and public/film/pieces/* (real captures: Cebador webm at 1280 and 390 + posters, ClubNahuelMosse 4 README screens, Grit 4 screens, Triaje 3 captures); specs/PF-1-cinematic-portfolio/steps/{loading,reduced-motion,error}.json.
-- Before the last CSS/ASM-20 round: `npx playwright test e2e` -> 46 passed, tsc and eslint clean. The final rerun (after removing the arch radius and the ASSETS prompt edits) was started but its result was not read.
+- RED committed (6c74893): e2e/credits.spec.ts (10 tests, S17 S18 S21 S22 ASM-04 08 12 13 18 25), e2e/machine-text.spec.ts (T7: ASM-07, S14, ASM-16; S14 and ASM-16 already pass). New file instead of content.spec.ts because committed tagged tests cannot be edited.
+- Code written, UNVERIFIED (tsc had one error, fixed by a wrapper div in crimson-thread.tsx; no test run since):
+  - features/film/presentation/{crimson-thread, seam-figure, credits-roll, call-to-action, chapter-index (SkipIntro + ChapterIndex), sound-toggle}.tsx; chapter.tsx (seamSide prop, h2 tabIndex -1); film-shell.tsx (fresco, thread, controls; props chapters, skipLabel, cta); scene-asset.ts (mp3); index.ts.
+  - features/portfolio/presentation/end-credits.tsx (stays in portfolio, not film/end-credits.tsx as the Tasks line says: it needs content.ts), content.ts (credits with logos, door prompts), projects/experience (header column so motion-audit sees the Reveal article; data-thread-stop), offer.tsx, character-sheet.tsx (data-sealed-card), hero-poster.tsx (h1 tabIndex).
+  - app/page.tsx, app/llms.txt/route.ts (offer lines), app/globals.css rewritten on design/tokens.css (new file, all colors, durations, radius, space), components/ui/{marquee, border-beam, sticky-scroll-reveal}.tsx moved to tokens, public/ASSETS.md (pf-soundtrack gap), design/line.md copied from the template, EMPTY (sections 1 to 5 not filled).
+  - Overflow fixes: .poster-word padding-bottom var(--poster-descent); .offer h3 line-height 1.2.
 
-## Assumptions to log
-- Dev kit "pull request it closed" = NahuelMosse/motion-audit #7 (a public skill of the kit); no merged PR exists in dev-kit or Portfolio.
-- Pieces' grain is a CSS feTurbulence overlay (pf-grain-1x1 stays a gap until delivered); torn paper (pf-paper-torn) is not wired anywhere yet (needs the file to decide where).
-- Generated-asset tests (S1 video, ASM-17 failure paths, S24/ASM-20 with real files, ASM-14 poster time) annotate `gap` and pass without the files: they could not run on real media.
-
-## Not covered (turn budget)
-- Gate `node .claude/tools/verify.mjs` after the last fixes: could not run. Last full run failed on motion (project entrances: fixed with Reveal, not re-run), overflow at 1280 pseudo-localized (offer h3 line-height raised to 1.05; `h2.poster-word` "Let's talk" scrollHeight 445 > 399 still unverified, belongs to the T3 CSS), axe color-contrast on the current employer band (band now rgb(137 24 19), not re-run), boundaries (fixed with features/film/index.ts, not re-run).
-- `required` lists group A files (components/ui/*, fonts, depth-stage, character-sheet) not in any Tasks line: the main thread adds them.
-- `specs` S17, S18, S21, S22 untagged and the `ref` captures belong to other tasks and the designer.
-- Log lines (`log.mjs`) for T2, T4, T5 not written; app not brought down (verify handled it).
-- ASM-12 names the doors "Start a project" / "Bring me in as TPM", but the committed @PF-1-S27 test needs the TPM door to say AI; the doors currently read "Hire me for a project" / "Bring AI-first delivery to your team".
-- `.arch-media` keeps only the aspect ratio now (no closed frame, per ASM-25 note).
+## Left
+1. ASM-26 (coordinator message, card commit f18bf1f): add a test tagged @PF-1-ASM-26 in a NEW RED commit, then build: chapter titles straddle the edge with the previous chapter; the one red disc travels down the page with scroll and becomes the closing's rising disc; figure slots mirrored and oriented toward the next chapter; one thin HUD rail with a tick per chapter down the whole page; no full-width background change between chapters (today .chapter[data-tone="paper"] is a full-width bone band: needs resolving).
+2. Fill design/line.md sections 1 to 5 (card ## Look, ASM-09/15/20/25/26).
+3. Run: `npx tsc --noEmit`, `npx eslint .`, `npx playwright test e2e/credits.spec.ts e2e/machine-text.spec.ts` then whole e2e (existing tests may break: dark chapters now transparent, .chapter overflow-x only, doors reduced to 2 links, hero-door), then `node .claude/tools/verify.mjs` in background. Check: motion (Reveal), overflow pseudo-localized, required (tokens), ref and dead-clicks via design-round.mjs (could not run if captures are needed).
+4. Update the T6 Tasks line (end-credits.tsx path, seam-figure.tsx), write Log lines T6 and T7 with log.mjs, `node .claude/tools/app.mjs down`.

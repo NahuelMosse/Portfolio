@@ -40,15 +40,11 @@ export const StickyScroll = ({
     setActiveCard(closestBreakpointIndex);
   });
 
-  const backgroundColors = [
-    "#0f172a", // slate-900
-    "#000000", // black
-    "#171717", // neutral-900
-  ];
+  const backgroundColors = ["var(--ink)", "var(--ink-warm)", "var(--red-deep)"];
   const linearGradients = [
-    "linear-gradient(to bottom right, #06b6d4, #10b981)", // cyan-500 to emerald-500
-    "linear-gradient(to bottom right, #ec4899, #6366f1)", // pink-500 to indigo-500
-    "linear-gradient(to bottom right, #f97316, #eab308)", // orange-500 to yellow-500
+    "linear-gradient(to bottom right, var(--red), var(--ink-warm))",
+    "linear-gradient(to bottom right, var(--red-deep), var(--ink))",
+    "linear-gradient(to bottom right, var(--bone), var(--red))",
   ];
 
   const [backgroundGradient, setBackgroundGradient] = useState(

@@ -1,5 +1,6 @@
 export { Chapter } from "./presentation/chapter"
 export { ColdOpenBackdrop } from "./presentation/cold-open"
+export { CreditsRoll, type RollBand } from "./presentation/credits-roll"
 export { DepthLayer, DepthStage } from "./presentation/depth-stage"
 export { FilmShell } from "./presentation/film-shell"
 export { Reveal } from "./presentation/reveal"

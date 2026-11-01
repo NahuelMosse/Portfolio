@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
+import { SeamFigure } from "./seam-figure"
 
 type Tone = "dark" | "paper"
 
@@ -12,13 +13,15 @@ type ChapterProps = {
   tone: Tone
   // tone of the chapter that follows, painted by the torn edge at the bottom
   nextTone?: Tone
+  // side of the seam figure that crosses this chapter's top edge into the one above
+  seamSide: "left" | "right"
   className?: string
   children: ReactNode
 }
 
 const TONE_COLOR: Record<Tone, string> = { dark: "var(--ink)", paper: "var(--bone)" }
 
-export function Chapter({ id, label, title, tone, nextTone, className, children }: ChapterProps) {
+export function Chapter({ id, label, title, tone, nextTone, seamSide, className, children }: ChapterProps) {
   const section = useRef<HTMLElement>(null)
   const card = useRef<HTMLDivElement>(null)
   const [entered, setEntered] = useState(false)
@@ -40,10 +43,11 @@ export function Chapter({ id, label, title, tone, nextTone, className, children 
   return (
     <section ref={section} data-chapter={id} data-tone={tone} className={`chapter ${className ?? ""}`}>
       <div data-media className="chapter-media" aria-hidden="true" />
+      <SeamFigure side={seamSide} />
       <div ref={card} data-title-card data-entered={entered} className="title-card">
         {label}
       </div>
-      <motion.h2 data-motion className="poster-word" style={{ x: drift }}>
+      <motion.h2 data-motion tabIndex={-1} className="poster-word" style={{ x: drift }}>
         {title}
       </motion.h2>
       {children}

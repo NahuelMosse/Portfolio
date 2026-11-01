@@ -10,7 +10,7 @@ function FourPointStar() {
 
 export function CharacterSheet() {
   return (
-    <aside aria-label="Character sheet">
+    <aside data-sealed-card="" aria-label="Character sheet">
       <div data-frame className="sheet-frame">
         <FourPointStar />
         <dl>

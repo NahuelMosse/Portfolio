@@ -4,7 +4,7 @@ import { Piece } from "./piece"
 
 export function Experience() {
   return (
-    <Chapter id="experience" label="Experience" tone="dark" nextTone="dark" title={<>Where I <em>served</em></>}>
+    <Chapter id="experience" label="Experience" tone="dark" nextTone="dark" seamSide="left" title={<>Where I <em>served</em></>}>
       <SceneMedia
         asset="pf-world-16x9"
         poster={sceneAsset("pf-world-16x9", "webp")}
@@ -16,9 +16,10 @@ export function Experience() {
           key={employer.id}
           data-employer={employer.id}
           data-current={String(employer.current === true)}
+          data-thread-stop={`employer:${employer.id}`}
           className="employer story"
         >
-          <div>
+          <header className="story-text">
             <h3>{employer.name}</h3>
             <span className="period">{employer.period}</span>
             <SceneMedia
@@ -27,7 +28,7 @@ export function Experience() {
               alt={`${employer.name}, painted`}
               className="scene-wide"
             />
-          </div>
+          </header>
           <div>
             <p data-field="what">{employer.what}</p>
             <p data-field="problem">{employer.problem}</p>

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../design/tokens.css";
 
 /* the cards, tools and the catalog hold prose and snippets, not classes of the site */
 @source not "../specs";
@@ -29,42 +30,6 @@
   font-display: swap;
 }
 
-:root {
-  /* One red as the only accent, over black and bone cream */
-  --red: #d2231b;
-  --bone: #ede4d0;
-  --ink: #0c0c0b;
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 16px;
-  --space-4: 24px;
-  --space-5: 40px;
-  --space-6: 64px;
-  --space-7: 112px;
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --font-display: "Boska", serif;
-  --font-text: "General Sans", sans-serif;
-
-  --background: var(--ink);
-  --foreground: var(--bone);
-  --border: rgb(237 228 208 / 0.3);
-  --ring: var(--bone);
-  --muted: rgb(237 228 208 / 0.08);
-  --muted-foreground: rgb(237 228 208 / 0.7);
-  --primary: var(--bone);
-  --primary-foreground: var(--ink);
-  --secondary: rgb(237 228 208 / 0.12);
-  --secondary-foreground: var(--bone);
-  --accent: rgb(237 228 208 / 0.12);
-  --accent-foreground: var(--bone);
-  --card: var(--ink);
-  --card-foreground: var(--bone);
-  --popover: var(--ink);
-  --popover-foreground: var(--bone);
-  --input: var(--border);
-  --destructive: var(--red);
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -84,7 +49,7 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-input: var(--input);
   --color-destructive: var(--destructive);
-  --animate-shiny-text: shiny-text 8s infinite;
+  --animate-shiny-text: shiny-text var(--motion-shiny) infinite;
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   @keyframes shiny-text {
@@ -137,25 +102,171 @@
   }
 }
 
+/* a heading that receives focus after a jump is not outlined: the page moved to it */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* ---------- the film: fresco, thread, seams ---------- */
+
+.film {
+  position: relative;
+}
+
+.fresco {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.fresco-media {
+  width: 100%;
+  height: 100%;
+}
+
+.thread-host {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.crimson-thread {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.crimson-thread path {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 2;
+  stroke-linecap: butt;
+  vector-effect: non-scaling-stroke;
+}
+
+.crimson-thread circle {
+  fill: var(--red);
+}
+
+.seam-figure {
+  position: absolute;
+  top: calc(var(--seam-height) / -2);
+  z-index: 20;
+  width: calc(var(--seam-height) * 0.75);
+  height: var(--seam-height);
+  color: var(--red);
+  pointer-events: none;
+}
+
+.seam-figure[data-side="left"] {
+  left: var(--space-5);
+}
+
+.seam-figure[data-side="right"] {
+  right: var(--space-5);
+}
+
+/* ---------- controls that never hold the visitor ---------- */
+
+.film-control,
+.corner-cta {
+  display: inline-block;
+  border: 1px solid var(--bone);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-3);
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-text);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out);
+}
+
+.film-control:hover,
+.corner-cta:hover {
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.film-control:active,
+.corner-cta:active,
+.links a:active,
+.door:active,
+.contact-line a:active,
+.secondary-link a:active {
+  transform: scale(var(--press-scale));
+}
+
+.skip-intro {
+  position: fixed;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: 40;
+}
+
+.sound-toggle {
+  position: fixed;
+  bottom: var(--space-4);
+  left: var(--space-4);
+  z-index: 40;
+}
+
+.chapter-index {
+  position: fixed;
+  top: 50%;
+  right: var(--space-3);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  transform: translateY(-50%);
+}
+
+.corner-cta {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 40;
+}
+
+.corner-cta[data-visible="false"] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(var(--space-3));
+}
+
 /* ---------- chapters ---------- */
 
 .chapter {
   position: relative;
+  z-index: 1;
   isolation: isolate;
-  overflow: clip;
+  /* the seam figures cross the top edge, so only the sides are clipped */
+  overflow-x: clip;
   padding-bottom: var(--space-7);
 }
 
 .chapter[data-tone="paper"] {
   background: var(--bone);
   color: var(--ink);
-  --line: rgb(12 12 11 / 0.35);
+  --line: var(--ink-35);
 }
 
 .chapter[data-tone="dark"] {
-  background: var(--ink);
+  /* the fresco shows through the dark chapters */
+  background: transparent;
   color: var(--bone);
-  --line: rgb(237 228 208 / 0.35);
+  --line: var(--bone-35);
 }
 
 .chapter-media {
@@ -164,14 +275,14 @@
   z-index: -1;
   width: 100%;
   background:
-    radial-gradient(60% 40% at 80% 20%, rgb(210 35 27 / 0.28), transparent 70%),
-    radial-gradient(50% 50% at 10% 90%, rgb(210 35 27 / 0.16), transparent 70%);
+    radial-gradient(60% 40% at 80% 20%, var(--red-28), transparent 70%),
+    radial-gradient(50% 50% at 10% 90%, var(--red-16), transparent 70%);
 }
 
 .chapter[data-tone="paper"] .chapter-media {
   background:
-    radial-gradient(40% 30% at 85% 12%, rgb(210 35 27 / 0.2), transparent 70%),
-    radial-gradient(rgb(12 12 11 / 0.08) 1px, transparent 1.5px) 0 0 / 6px 6px;
+    radial-gradient(40% 30% at 85% 12%, var(--red-20), transparent 70%),
+    radial-gradient(var(--ink-08) 1px, transparent 1.5px) 0 0 / 6px 6px;
 }
 
 .chapter-transition {
@@ -194,8 +305,8 @@
   opacity: 0;
   transform: translateY(var(--space-4));
   transition:
-    opacity 900ms var(--ease-out),
-    transform 900ms var(--ease-out);
+    opacity var(--motion-section) var(--ease-out),
+    transform var(--motion-section) var(--ease-out);
 }
 
 .title-card[data-entered="true"] {
@@ -211,7 +322,7 @@
 
 .poster-word {
   margin: var(--space-4) 0 0 -0.04em;
-  padding: 0 var(--space-4);
+  padding: 0 var(--space-4) var(--poster-descent);
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(4.5rem, 19vw, 17rem);
@@ -230,6 +341,7 @@
 .cold-open {
   min-height: 100svh;
   padding: 0;
+  overflow: clip;
 }
 
 .stage {
@@ -247,12 +359,12 @@
 
 .layer-backdrop {
   position: absolute;
-  inset: -5% -5% -5% -5%;
+  inset: 0 -5%;
   z-index: 0;
   background:
-    radial-gradient(circle at 50% 78%, var(--red) 0 7%, rgb(210 35 27 / 0.45) 12%, transparent 38%),
-    radial-gradient(80% 60% at 50% 100%, rgb(210 35 27 / 0.5), transparent 70%),
-    linear-gradient(180deg, var(--ink) 20%, #1a0b09 100%);
+    radial-gradient(circle at 50% 78%, var(--red) 0 7%, var(--red-45) 12%, transparent 38%),
+    radial-gradient(80% 60% at 50% 100%, var(--red-50), transparent 70%),
+    linear-gradient(180deg, var(--ink) 20%, var(--ink-warm) 100%);
 }
 
 .layer-mark {
@@ -292,8 +404,8 @@
 
 .arch {
   border: 1px solid var(--bone);
-  border-radius: 999px 999px 0 0;
-  background: linear-gradient(180deg, transparent, rgb(12 12 11 / 0.85));
+  border-radius: var(--radius-pill) var(--radius-pill) 0 0;
+  background: linear-gradient(180deg, transparent, var(--ink-85));
 }
 
 .cutout-disc {
@@ -302,7 +414,7 @@
   margin-inline: auto;
   width: 90%;
   aspect-ratio: 1;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--red);
   opacity: 0.85;
   z-index: -1;
@@ -322,7 +434,7 @@
   padding: var(--space-3);
   font-size: 0.75rem;
   line-height: 1.5;
-  background: rgb(12 12 11 / 0.7);
+  background: var(--ink-70);
 }
 
 .sheet-frame dt {
@@ -428,20 +540,26 @@
 }
 
 .links a,
-.door {
+.door,
+.contact-line a,
+.secondary-link a {
+  display: inline-block;
   border: 1px solid currentColor;
   padding: var(--space-2) var(--space-4);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-size: 0.8rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   transition:
-    background 200ms,
-    color 200ms;
+    background var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out);
 }
 
 .links a:hover,
-.door:hover {
+.door:hover,
+.contact-line a:hover,
+.secondary-link a:hover {
   background: var(--red);
   color: var(--bone);
   border-color: var(--red);
@@ -461,8 +579,7 @@
 }
 
 .employer[data-current="true"] {
-  /* a deeper red keeps bone text at AA contrast */
-  background: rgb(137 24 19);
+  background: var(--red-deep);
   color: var(--bone);
 }
 
@@ -496,14 +613,84 @@
   font-family: var(--font-display);
   font-size: clamp(2rem, 5vw, 3.5rem);
   text-transform: uppercase;
-  line-height: 1.05;
+  line-height: 1.2;
+}
+
+.contact-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+/* the roll runs edge to edge: it cancels the chapter's side padding */
+.credits-roll {
+  margin: var(--space-6) calc(-1 * var(--space-4));
+}
+
+.roll-band {
+  position: relative;
+  padding-block: var(--space-3);
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}
+
+.roll-band:focus-visible {
+  outline: 2px solid var(--bone);
+  outline-offset: -2px;
+}
+
+.roll-band:hover .animate-marquee,
+.roll-band:focus-within .animate-marquee {
+  animation-play-state: paused;
+}
+
+.roll-list {
+  display: flex;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roll-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.roll-item img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 .doors {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: var(--space-4);
   margin-top: var(--space-6);
+}
+
+@media (min-width: 700px) {
+  .doors {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.doors .door {
+  padding: var(--space-5) var(--space-4);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 3rem);
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: none;
+}
+
+.secondary-link {
+  margin-top: var(--space-4);
 }
 
 /* ---------- scene media and real pieces ---------- */
@@ -513,7 +700,7 @@
   display: block;
   overflow: hidden;
   /* the graded dark field a missing or failed image falls back to */
-  background: linear-gradient(160deg, #1a0b09, var(--ink));
+  background: linear-gradient(160deg, var(--ink-warm), var(--ink));
 }
 
 .scene-media picture,
@@ -529,7 +716,7 @@
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 900ms var(--ease-out);
+  transition: opacity var(--motion-section) var(--ease-out);
 }
 
 .scene-media[data-state="video"] video {
@@ -599,7 +786,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  background: rgb(12 12 11 / 0.7);
+  background: var(--ink-70);
   color: var(--bone);
 }
 
@@ -634,16 +821,47 @@
   margin: var(--space-3) var(--space-4) 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .scene-media video {
-    transition: none;
+@media (max-width: 700px) {
+  .chapter-index {
+    gap: var(--space-1);
+  }
+  .chapter-index .film-control {
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.65rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .scene-media video {
+    transition: none;
+  }
+
   .title-card {
     transition: none;
     transform: none;
     opacity: 1;
+  }
+
+  .film-control,
+  .corner-cta {
+    transition: none;
+  }
+
+  /* the roll stands still and wraps: one copy, no loop */
+  .roll-marquee {
+    flex-wrap: wrap;
+  }
+
+  .roll-marquee .animate-marquee {
+    animation: none;
+    flex-wrap: wrap;
+  }
+
+  .roll-marquee > .animate-marquee:nth-child(n + 2) {
+    display: none;
+  }
+
+  .roll-list {
+    flex-wrap: wrap;
   }
 }

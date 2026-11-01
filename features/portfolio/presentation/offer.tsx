@@ -12,7 +12,7 @@ const strip: readonly PieceData[] = projects.flatMap((project) => {
 
 export function Offer() {
   return (
-    <div data-offer="" className="offer">
+    <div data-offer="" data-thread-stop="offer" className="offer">
       <section data-offer-card="freelance">
         <SceneMedia
           asset="pf-offer-freelance-4x5"
