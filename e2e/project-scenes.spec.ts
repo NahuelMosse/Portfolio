@@ -5,30 +5,29 @@ import { test, expect } from "@playwright/test"
 // The illustrations and photos are previewed untracked: the test follows what is on disk.
 const onDisk = (id: string) => existsSync(join(process.cwd(), "public", "film", `${id}.webp`))
 
-const SPREADS = [
-  { project: "dev-kit", asset: "ill-kit-16x9", art: "ill-kit-4x5", frame: "document" },
-  { project: "grit", asset: "ill-grit-16x9", art: "ill-grit-4x5", frame: "phone" },
-  { project: "guardia", asset: "ill-triaje-16x9", art: "ill-triaje-4x5", frame: "browser" },
-  { project: "cebador", asset: "ill-cebador-16x9", art: "ill-cebador-4x5", frame: "browser" },
-  { project: "club", asset: "ill-club-16x9", art: "ill-club-4x5", frame: "phone" },
+const SCENES = [
+  { project: "dev-kit", name: "kit", device: "wide" },
+  { project: "grit", name: "grit", device: "phone" },
+  { project: "guardia", name: "triaje", device: "wide" },
+  { project: "cebador", name: "cebador", device: "wide" },
+  { project: "club", name: "club", device: "phone" },
 ]
 const EMPLOYERS = ["smart-warehousing", "grupo-st", "visma", "fravega", "justo"]
 const FULL_BLEED = ["ill-cover-16x9", "ill-offer-16x9", "ill-contact-16x9"]
 const WORK_STRIP = ["work-warehouse", "work-desk-a", "work-desk-b"]
 const PRIVATE_CAPTURE = /\/(fravega-\d|justo-[12])\.webp/
-const LEAD_DESKTOP = 560
-const LEAD_PHONE_SHARE = 0.85
-const ART_DESKTOP_SHARE = 0.45
-const ART_PHONE_SHARE = 0.4
+const PHONE_HEIGHT_DESKTOP = 0.6
+const PHONE_WIDTH_MOBILE = 0.45
+const WIDE_WIDTH_DESKTOP = 0.45
+const WIDE_WIDTH_MOBILE = 0.8
 const EMPLOYER_ART_DESKTOP_MIN = 480
-const MIN_TITLE = 32
 
 const fades = (el: Element) => {
   const style = getComputedStyle(el)
   return style.maskImage !== "none" || style.webkitMaskImage !== "none" || style.clipPath !== "none"
 }
 
-test("at 390 and 1440 each project is a spread whose illustration takes at most 45% of the width at 1440 and alternates sides, whose lead piece sits in a device frame at least 560 px wide at 1440 and 85% of the column at 390, with What, Problem and My role visible without a toggle; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26", async ({ page }) => {
+test("at 390 and 1440 each project is a full-bleed scene whose real interface sits inside the screen drawn in its illustration, a phone screen at least 60% of the illustration's height at 1440 and 45% of its width at 390 and a laptop or monitor screen at least 45% of its width at 1440 and 80% at 390, with the title over the illustration, What, Problem and My role visible without a toggle and its other pieces in a row beneath; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26", async ({ page }) => {
   const requested: string[] = []
   page.on("request", (request) => requested.push(request.url()))
 
@@ -37,41 +36,47 @@ test("at 390 and 1440 each project is a spread whose illustration takes at most 
     await page.goto("/")
     await page.waitForLoadState("load")
     const desktop = viewport.width === 1440
-    const sides: string[] = []
+    const aspect = desktop ? "16x9" : "4x5"
 
-    for (const { project, asset, art: fitted, frame } of SPREADS) {
+    for (const { project, name, device } of SCENES) {
       const spread = page.locator(`[data-project="${project}"]`)
       await spread.scrollIntoViewIfNeeded()
-      const stage = (await spread.locator("[data-stage]").boundingBox())!
+      const delivered = onDisk(`ill-scene-${name}-${aspect}`)
 
-      if (onDisk(asset) || onDisk(fitted)) {
-        const art = spread.locator(`[data-illustration][data-asset="${asset}"]`)
+      if (delivered) {
+        const art = spread.locator("[data-illustration]")
+        await expect(art).toHaveCount(1)
+        await expect(art.locator("img")).toHaveAttribute("src", new RegExp(`ill-scene-${name}-${aspect}\\.webp`))
         const artBox = (await art.boundingBox())!
-        expect(await art.evaluate(fades), `${project} art fades`).toBe(true)
-        if (onDisk(fitted)) await expect(art.locator("img")).toHaveAttribute("src", new RegExp(`${fitted}\\.webp`))
-        if (desktop) {
-          expect(artBox.width, `${project} art share`).toBeLessThanOrEqual(viewport.width * ART_DESKTOP_SHARE)
-          sides.push(artBox.x + artBox.width / 2 < viewport.width / 2 ? "left" : "right")
+        expect(artBox.width, `${project} scene is full-bleed`).toBeGreaterThanOrEqual(viewport.width - 1)
+        const ratio = desktop ? 16 / 9 : 4 / 5
+        expect(artBox.width / artBox.height, `${project} scene keeps the image's aspect`).toBeCloseTo(ratio, 1)
+
+        const screen = spread.locator("[data-scene-screen]")
+        await expect(screen).toHaveCount(1)
+        const screenBox = (await screen.boundingBox())!
+        expect(screenBox.x, `${project} screen inside the art`).toBeGreaterThanOrEqual(artBox.x - 1)
+        expect(screenBox.y, `${project} screen inside the art`).toBeGreaterThanOrEqual(artBox.y - 1)
+        expect(screenBox.x + screenBox.width, `${project} screen inside the art`).toBeLessThanOrEqual(artBox.x + artBox.width + 1)
+        expect(screenBox.y + screenBox.height, `${project} screen inside the art`).toBeLessThanOrEqual(artBox.y + artBox.height + 1)
+        if (device === "phone") {
+          if (desktop) expect(screenBox.height / artBox.height, `${project} phone height`).toBeGreaterThanOrEqual(PHONE_HEIGHT_DESKTOP)
+          else expect(screenBox.width / artBox.width, `${project} phone width`).toBeGreaterThanOrEqual(PHONE_WIDTH_MOBILE)
         } else {
-          expect(artBox.height, `${project} art band`).toBeLessThanOrEqual(viewport.height * ART_PHONE_SHARE + 1)
-          expect(artBox.y + artBox.height, `${project} band above the work`).toBeLessThanOrEqual(stage.y + 1)
+          expect(screenBox.width / artBox.width, `${project} screen width`).toBeGreaterThanOrEqual(desktop ? WIDE_WIDTH_DESKTOP : WIDE_WIDTH_MOBILE)
         }
-      }
 
-      const lead = spread.locator("[data-lead] [data-frame]")
-      await expect(lead).toHaveAttribute("data-frame", frame)
-      const leadBox = (await lead.boundingBox())!
-      if (desktop) expect(leadBox.width, `${project} lead width`).toBeGreaterThanOrEqual(LEAD_DESKTOP - 1)
-      else expect(leadBox.width, `${project} lead share`).toBeGreaterThanOrEqual(stage.width * LEAD_PHONE_SHARE - 1)
+        const media = screen.locator("img, video, [data-document]")
+        expect(await media.count(), `${project} real interface in the screen`).toBeGreaterThan(0)
 
-      if (desktop) {
-        const others = spread.locator("[data-piece]:not([data-lead]) [data-frame]")
-        for (const other of await others.all()) {
-          expect((await other.boundingBox())!.width, `${project} other smaller`).toBeLessThan(leadBox.width)
-        }
-        const first = (await others.first().boundingBox())!
-        const overlaps = first.x < leadBox.x + leadBox.width && first.x + first.width > leadBox.x && first.y < leadBox.y + leadBox.height
-        expect(overlaps, `${project} other overlaps the lead`).toBe(true)
+        const title = spread.locator("h3").first()
+        const titleBox = (await title.boundingBox())!
+        expect(titleBox.y, `${project} title over the art`).toBeGreaterThanOrEqual(artBox.y - 1)
+        expect(titleBox.y + titleBox.height, `${project} title over the art`).toBeLessThanOrEqual(artBox.y + artBox.height + 1)
+        expect(titleBox.x + titleBox.width, `${project} title over the art`).toBeLessThanOrEqual(artBox.x + artBox.width + 1)
+      } else {
+        await expect(spread.locator("[data-illustration]"), `${project} leaves no box`).toHaveCount(0)
+        await expect(spread.locator("[data-lead] [data-frame]")).toHaveCount(1)
       }
 
       for (const [field, label] of [["what", "What"], ["problem", "Problem"], ["role", "My role"]]) {
@@ -80,21 +85,19 @@ test("at 390 and 1440 each project is a spread whose illustration takes at most 
       }
       await expect(spread.locator("button[aria-expanded]")).toHaveCount(0)
       await expect(spread.locator("[data-stack]")).not.toBeEmpty()
-      const titleSize = await spread.locator("h3").first().evaluate((el) => parseFloat(getComputedStyle(el).fontSize))
-      expect(titleSize, `${project} title`).toBeGreaterThanOrEqual(MIN_TITLE)
-    }
-    if (desktop) {
-      const other = (side: string) => (side === "left" ? "right" : "left")
-      sides.forEach((side, index) => expect(side, `side of spread ${index}`).toBe(index % 2 === 0 ? sides[0] : other(sides[0])))
-    }
 
-    // the kit's document tab stays in the flow: it never covers the first line
-    const tab = page.locator('[data-project="dev-kit"] [data-lead] .frame-tab')
-    const firstLine = page.locator('[data-project="dev-kit"] [data-lead] .piece-text span').first()
-    await firstLine.scrollIntoViewIfNeeded()
-    const tabBox = (await tab.boundingBox())!
-    const lineBox = (await firstLine.boundingBox())!
-    expect(tabBox.y + tabBox.height, "document tab above the first line").toBeLessThanOrEqual(lineBox.y + 1)
+      // the other pieces are one row beneath the scene
+      const bottom = delivered ? (await spread.locator("[data-illustration]").boundingBox())!.y + (await spread.locator("[data-illustration]").boundingBox())!.height : 0
+      const others = spread.locator("[data-pieces] [data-piece]")
+      expect(await others.count(), `${project} other pieces`).toBeGreaterThan(0)
+      const boxes: { x: number; y: number; width: number }[] = []
+      for (const piece of await others.all()) boxes.push((await piece.boundingBox())!)
+      for (const box of boxes) {
+        expect(box.y, `${project} piece beneath the scene`).toBeGreaterThanOrEqual(bottom - 1)
+        expect(Math.abs(box.y - boxes[0].y), `${project} pieces in one row`).toBeLessThanOrEqual(2)
+      }
+      if (desktop && boxes.length > 1) expect(boxes[1].x, `${project} second piece sits beside the first`).toBeGreaterThan(boxes[0].x)
+    }
 
     const experience = page.locator('[data-chapter="experience"]')
     if (onDisk("ill-experience-21x9") || onDisk("ill-experience-16x9")) {
