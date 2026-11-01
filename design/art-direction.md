@@ -45,7 +45,7 @@ A screen-printed noir comic: three flat inks on rough paper. The shapes are carv
 
 ## The device in a project frame
 
-The page puts the real interface inside the drawn device, so the device is drawn to receive it:
+Only the cold open lets the art lead. In a project the real interface leads: the page crops the frame around the drawn device and puts the real interface in its screen, so what shows of the art is the hand, the bezel and the nearest objects framing the work. The device is drawn to receive it:
 
 - **Placement.** The device faces the viewer front-on and flat, its screen an axis-aligned rectangle with no perspective, tilt, glare or reflection.
 - **Size.** The device is the largest thing in the frame, closer to the camera than he is, so the interface reads:
