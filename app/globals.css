@@ -617,9 +617,25 @@
   padding: var(--space-4) 0 0;
 }
 
+/* on a phone the title, the stage and the details are three rows of the spread: the title, then the interface, then the three lines */
 .project-text {
+  display: contents;
+}
+
+.project-text h3 {
+  order: 1;
+  margin-inline: var(--gutter-left) var(--gutter-right);
+}
+
+.spread-main > .project-stage,
+.spread-main > .stage-fallback {
+  order: 2;
+}
+
+.project-details {
   display: grid;
   gap: var(--space-4);
+  order: 3;
   min-width: 0;
   padding: 0 var(--gutter-right) 0 var(--gutter-left);
 }
@@ -634,6 +650,16 @@
   }
 
   .project-text {
+    display: grid;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  .project-text h3 {
+    margin-inline: 0;
+  }
+
+  .project-details {
     padding: 0;
   }
 }

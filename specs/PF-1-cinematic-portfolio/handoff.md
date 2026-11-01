@@ -1,13 +1,14 @@
-# Handoff PF-1 T6
+# Handoff · T6 project stage order (ASM-26)
 
-## Done (committed, portfolio-revamp, not pushed)
-- Phone hero in flow: `transform: none !important` on `.layer-sheet` and `.layer-mark` at 700px and under; `e2e/hero-flow.spec.ts` (@PF-1-ASM-27, 320 and 390) green.
-- General Sans dropped for Courier Prime (css, preload, tokens, design/line.md); replacements in `e2e/fonts-two-faces.spec.ts` (logged L70, L71).
-- S2 replaced by `case-file-layout-contracts.spec.ts:180` (L72). Lint wired with react-hooks (passes). `.corner-cta` opacity-only, `app/loading.tsx` with main and h1.
-- Cold open uses `pf-cover-him-*` when present; `features/portfolio/presentation/profile-seam.tsx` between Projects and Experience; `ASSETS.md` updated. The four webp files are untracked on purpose, never commit them.
-- Last verify (`.validation/t6-verify3.log`): suite 55 passed, 2 failed (old scene-media S24 and ASM-20 tests, already replaced in L67); ref failed (no real reference captures, L75); rounds, I-tokens, dead-clicks, contrast and focus could not run.
+## Done
+- RED committed: `e95eb59` e2e/project-stage-order.spec.ts (planned T6 title); project-stage.spec.ts removed.
+- Code written, committed as work in progress, NOT run: at 390 the order is title, stage, details.
+  - features/portfolio/presentation/projects.tsx: `.project-details` wraps fields and meta inside `.project-text`; prettier run on it.
+  - app/globals.css: `.project-text` is `display: contents` below 1280 (title order 1, stage and fallback order 2, details order 3), grid again at 1280 and up; 1440 layout unchanged by design.
 
-## Not covered (turn budget), each could not run
-- Phone cold-open framing (coordinator's last request): at 700px and under, `.layer-backdrop { height: 64svh }` (about L1246 of `app/globals.css`) and `.layer-sheet { margin-top: 12svh }` (about L1282) must change so the sheet top lands at about 85-90svh, with his face and the envelope visible above it. Check 320, 390 and 390x664.
-- New test in a new file (for example `e2e/hero-framing.spec.ts`) tagged @PF-1-ASM-26: at 390 the sheet top is at least 80% of the viewport height at scroll 0. Write it RED first, commit, then fix the CSS.
-- Re-run only hero-flow, the new spec, overflow and motion; then a fresh `.validation/review/m-cold-open.png` with `node .validation/review-shots.cjs <APP_URL>` (app down then up after the CSS change), and commit.
+## Not covered (turn budget)
+- could not run: `project-stage-order` + `phone-spreads` + `hero-flow` against a fresh `node .claude/tools/app.mjs up` (the shared app at http://127.0.0.1:58761 runs the previous build).
+- could not run: tsc and eslint after the projects.tsx reformat.
+- could not run: fix 2, Guardia at 1440. The second piece of the row, `triaje-mobile` in a phone frame, shows one giant "T": `.piece:not([data-lead]) .frame[data-frame="phone"] .frame-screen` uses `aspect-ratio: var(--phone-other-ratio)` (4/5, tokens.css) with object-fit cover. Needs a phone-shaped frame showing the whole capture, `object-position: top` (read the capture size first; `.frame-screen img` already has object-position top). Check Club and Grit rows are not harmed.
+- could not run: `node D:/tmp/ill3/walk.cjs <url>` and viewing walk-m.png and walk-d.png; the 390 test measures that the interface's top half is in view when the title sits at the top (the Hire me bar was not measured).
+- could not run: Log line (`node .claude/tools/log.mjs specs/PF-1-cinematic-portfolio "T6 · ..."`), final commit, leaving the app UP and reporting its URL.
