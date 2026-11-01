@@ -8,15 +8,16 @@ const KEEP_IN_VIEW = 0.25
 
 type Spot = { x: number; y: number }
 
-// The nearest lit target to the middle of the screen: its distance is zero when the middle is inside it.
+const SIDE_WEIGHT = 0.001
+
+// The lit target whose centre is nearest to the middle of the screen.
 function nearestTarget(targets: Element[]): DOMRect | null {
   const middle = { x: window.innerWidth / 2, y: window.innerHeight / 2 }
   let best: { rect: DOMRect; distance: number } | null = null
   for (const target of targets) {
     const rect = target.getBoundingClientRect()
-    const dx = Math.max(rect.left - middle.x, 0, middle.x - rect.right)
-    const dy = Math.max(rect.top - middle.y, 0, middle.y - rect.bottom)
-    const distance = Math.hypot(dx, dy)
+    // the vertical gap to the centre decides; the horizontal one only breaks ties between side-by-side targets
+    const distance = Math.abs(rect.top + rect.height / 2 - middle.y) + SIDE_WEIGHT * Math.abs(rect.left + rect.width / 2 - middle.x)
     if (!best || distance < best.distance) best = { rect, distance }
   }
   return best?.rect ?? null

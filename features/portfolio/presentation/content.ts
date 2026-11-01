@@ -136,14 +136,14 @@ export const projects: readonly Project[] = [
     id: "club",
     name: "ClubNahuelMosse",
     what: "A Flutter app with a REST API to book sports courts.",
-    problem: "Booking a court by message is slow and double bookings happen.",
+    problem: "Reserving a court by message is slow and double reservations happen.",
     role: "I built the app and the API.",
     links: [{ label: "Repository", href: "https://github.com/NahuelMosse/ClubNahuelMosse" }],
     pieces: [
       screen("club-login", "ClubNahuelMosse login screen", "Login"),
       screen("club-sedes", "ClubNahuelMosse venue list", "Venues"),
       screen("club-horarios", "ClubNahuelMosse court schedule", "Schedule"),
-      screen("club-listo", "ClubNahuelMosse booking confirmed", "Booked"),
+      screen("club-listo", "ClubNahuelMosse reservation confirmed", "Booked"),
     ],
   },
 ]
