@@ -1,4 +1,4 @@
-import { DepthLayer, DepthStage } from "@/features/film/presentation/depth-stage"
+import { ColdOpenBackdrop, DepthLayer, DepthStage } from "@/features/film"
 import { CharacterSheet } from "./character-sheet"
 import { identity } from "./content"
 
@@ -7,7 +7,9 @@ export function HeroPoster() {
     <section data-chapter="cold-open" data-tone="dark" className="chapter cold-open">
       <div data-media className="chapter-media" aria-hidden="true" />
       <DepthStage className="stage">
-        <DepthLayer name="backdrop" pointerDepth={24} scrollLag={0.1} className="layer-backdrop" />
+        <DepthLayer name="backdrop" pointerDepth={24} scrollLag={0.1} className="layer-backdrop">
+          <ColdOpenBackdrop />
+        </DepthLayer>
         <DepthLayer name="mark" pointerDepth={60} scrollLag={0.2} className="layer layer-mark">
           <h1 className="mark">{identity.mark}</h1>
         </DepthLayer>
@@ -25,6 +27,9 @@ export function HeroPoster() {
           <strong>{identity.greeting}</strong>
           {identity.promise}
         </p>
+        <a data-door="" className="door hero-door" href="#end-credits">
+          Let&rsquo;s talk
+        </a>
       </DepthStage>
       <div data-transition className="chapter-transition" style={{ ["--next-tone" as string]: "var(--bone)" }} aria-hidden="true" />
     </section>

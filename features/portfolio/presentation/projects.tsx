@@ -1,13 +1,20 @@
-import { Chapter } from "@/features/film/presentation/chapter"
+import { Chapter, Reveal, SceneMedia, sceneAsset } from "@/features/film"
 import { projects } from "./content"
+import { Piece } from "./piece"
 
 export function Projects() {
   return (
     <Chapter id="projects" label="Projects" tone="paper" nextTone="dark" title={<>What I <em>built</em></>}>
       {projects.map((project, index) => (
-        <article key={project.id} data-project={project.id} className="project story">
+        <Reveal key={project.id} id={project.id} data-project={project.id} className="project story">
           <div>
             <span className="numeral" aria-hidden="true">{index + 1}</span>
+            <SceneMedia
+              asset={`pf-proj-${project.id}-4x5`}
+              poster={sceneAsset(`pf-proj-${project.id}-4x5`, "webp")}
+              alt={`${project.name}, painted`}
+              className="arch-media"
+            />
           </div>
           <div>
             <h3>{project.name}</h3>
@@ -24,7 +31,12 @@ export function Projects() {
               </div>
             )}
           </div>
-        </article>
+          <div className="pieces">
+            {project.pieces.map((piece) => (
+              <Piece key={piece.caption} piece={piece} />
+            ))}
+          </div>
+        </Reveal>
       ))}
     </Chapter>
   )

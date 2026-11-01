@@ -40,5 +40,12 @@
     "components.json",
     "components/ui/"
   ],
-  "tasks": 8
+  "tasks": 8,
+  "lensesOff": [
+    {
+      "lens": "contract",
+      "profile": "backend",
+      "why": "not chosen at install"
+    }
+  ]
 }

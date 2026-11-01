@@ -68,7 +68,7 @@ test("every real screen and photo sits under a mask or clip-path with a grade fi
 
 test("each project scene has a generated visual reference beside its explanation @PF-1-S16", async ({ page }) => {
   for (const id of ["dev-kit", "grit", "guardia", "cebador", "club"]) {
-    const reference = project(page, id).locator(`[data-scene-media][data-asset="pf-proj-${id === "dev-kit" ? "dev-kit" : id}"]`)
+    const reference = project(page, id).locator(`[data-scene-media][data-asset^="pf-proj-${id}-"]`)
     await expect(reference).toHaveCount(1)
   }
 })

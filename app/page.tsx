@@ -1,4 +1,4 @@
-import { FilmShell } from "@/features/film/presentation/film-shell"
+import { FilmShell } from "@/features/film"
 import { HeroPoster } from "@/features/portfolio/presentation/hero-poster"
 import { Projects } from "@/features/portfolio/presentation/projects"
 import { Experience } from "@/features/portfolio/presentation/experience"

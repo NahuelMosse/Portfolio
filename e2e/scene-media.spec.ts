@@ -78,7 +78,7 @@ test("video is muted and looping with a poster; reduced motion shows only the po
   await page.goto("/")
   const videos = page.locator("video")
   expect(await videos.count()).toBeGreaterThan(0)
-  for (const attributes of await videos.evaluateAll((all) => all.map((v: HTMLVideoElement) => ({ muted: v.muted, loop: v.loop, poster: v.getAttribute("poster"), inline: v.playsInline })))) {
+  for (const attributes of await videos.evaluateAll((all) => all.map((el) => { const v = el as HTMLVideoElement; return { muted: v.muted, loop: v.loop, poster: v.getAttribute("poster"), inline: v.playsInline } }))) {
     expect(attributes.muted).toBe(true)
     expect(attributes.loop).toBe(true)
     expect(attributes.poster).toBeTruthy()
@@ -190,7 +190,7 @@ test("the page shows the backdrop and the closing in 16:9 on wide screens and 9:
     }
     const page = await browser.newPage({ viewport: { width, height } })
     await page.goto("/")
-    const sources = await page.locator("[data-scene-media] img").evaluateAll((all) => all.map((i: HTMLImageElement) => i.currentSrc))
+    const sources = await page.locator("[data-scene-media] img").evaluateAll((all) => all.map((el) => (el as HTMLImageElement).currentSrc))
     expect(sources.some((s) => s.includes(`pf-cover-${suffix}`))).toBe(true)
     expect(sources.some((s) => s.includes(`pf-closing-${suffix}`))).toBe(true)
     await page.close()

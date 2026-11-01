@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* the cards, tools and the catalog hold prose and snippets, not classes of the site */
+@source not "../specs";
+@source not "../.claude";
+@source not "../catalog";
+@source not "../cv";
+@source not "../public";
+
 @font-face {
   font-family: "Boska";
   src: url("/fonts/boska-700.woff2") format("woff2");
@@ -454,7 +461,8 @@
 }
 
 .employer[data-current="true"] {
-  background: var(--red);
+  /* a deeper red keeps bone text at AA contrast */
+  background: rgb(137 24 19);
   color: var(--bone);
 }
 
@@ -488,7 +496,7 @@
   font-family: var(--font-display);
   font-size: clamp(2rem, 5vw, 3.5rem);
   text-transform: uppercase;
-  line-height: 0.9;
+  line-height: 1.05;
 }
 
 .doors {
@@ -496,6 +504,140 @@
   flex-wrap: wrap;
   gap: var(--space-4);
   margin-top: var(--space-6);
+}
+
+/* ---------- scene media and real pieces ---------- */
+
+.scene-media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  /* the graded dark field a missing or failed image falls back to */
+  background: linear-gradient(160deg, #1a0b09, var(--ink));
+}
+
+.scene-media picture,
+.scene-media img,
+.scene-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scene-media video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out);
+}
+
+.scene-media[data-state="video"] video {
+  opacity: 1;
+}
+
+.cover-media {
+  position: absolute;
+  inset: 0;
+}
+
+.arch-media {
+  aspect-ratio: 4 / 5;
+  margin-top: var(--space-4);
+}
+
+.scene-wide {
+  aspect-ratio: 16 / 9;
+  margin-top: var(--space-3);
+}
+
+.world-media {
+  aspect-ratio: 16 / 9;
+  max-height: 60svh;
+  width: 100%;
+}
+
+@media (orientation: portrait) {
+  .world-media {
+    aspect-ratio: 9 / 16;
+  }
+}
+
+.pieces,
+.piece-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.pieces {
+  grid-column: 1 / -1;
+}
+
+.piece {
+  position: relative;
+  margin: 0;
+  clip-path: polygon(0 3%, 7% 0, 100% 2%, 98% 100%, 4% 97%);
+  filter: contrast(1.08) saturate(0.7) brightness(0.95);
+  border: 1px solid var(--line);
+}
+
+.piece:nth-child(even) {
+  clip-path: polygon(2% 0, 100% 4%, 96% 98%, 0 100%);
+  margin-top: var(--space-4);
+}
+
+.piece .scene-media {
+  aspect-ratio: 4 / 3;
+}
+
+.piece figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgb(12 12 11 / 0.7);
+  color: var(--bone);
+}
+
+.piece-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 10rem;
+  padding: var(--space-3) var(--space-3) var(--space-6);
+  font-size: 0.8rem;
+}
+
+.piece-text a {
+  align-self: flex-start;
+  text-decoration: underline;
+}
+
+/* fine film grain over the print, drawn by the browser */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+}
+
+.hero-door {
+  position: relative;
+  z-index: 30;
+  align-self: flex-start;
+  margin: var(--space-3) var(--space-4) 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-media video {
+    transition: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
