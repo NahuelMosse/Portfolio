@@ -41,7 +41,18 @@ function ScreenContent({ project }: { project: Project }) {
 }
 
 function Title({ project }: { project: Project }) {
-  return <h3 tabIndex={-1}>{project.name}</h3>
+  // a camel-case name may break only between its words, never inside one
+  const words = project.name.split(/(?<=[a-z])(?=[A-Z])/)
+  return (
+    <h3 tabIndex={-1}>
+      {words.map((word, index) => (
+        <span key={word}>
+          {index > 0 && <wbr />}
+          {word}
+        </span>
+      ))}
+    </h3>
+  )
 }
 
 // Each project is one scene where he holds or sits at a drawn device and the real interface is its screen.

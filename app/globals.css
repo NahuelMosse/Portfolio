@@ -570,7 +570,21 @@
   padding: var(--space-4) var(--gutter-right) 0 var(--gutter-left);
 }
 
+/* sized so the longest word fits the black band (26% of the width); a word never breaks */
+.spread .scene-title h3 {
+  font-size: var(--size-scene-title);
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
 @media (max-width: 767px) {
+  .scene-document div:nth-child(n + 2),
+  .scene-document p,
+  .scene-document span:nth-of-type(n + 3) {
+    display: none;
+  }
+
   .scene-plate {
     aspect-ratio: 4 / 5;
     --sl: var(--tl);
@@ -585,8 +599,8 @@
     width: 90%;
   }
 
-  .scene-title h3 {
-    font-size: 1.75rem;
+  .spread .scene-title h3 {
+    font-size: var(--size-scene-title-phone);
   }
 }
 
