@@ -47,7 +47,21 @@
       "reason": "profile backend not chosen at install",
       "by": "person",
       "at": "2026-11-01",
-      "signalsAtDecision": []
+      "signalsAtDecision": [
+        "route in e2e/film.spec.ts",
+        "route in e2e/scene-media.spec.ts"
+      ],
+      "confirmed": [
+        {
+          "at": "2026-11-01",
+          "card": "PF-1-cinematic-portfolio",
+          "reason": "the e2e route calls are Playwright page.route mocks of media failures; the site has no API of its own",
+          "signals": [
+            "route in e2e/film.spec.ts",
+            "route in e2e/scene-media.spec.ts"
+          ]
+        }
+      ]
     },
     "data": {
       "state": "off",
@@ -75,7 +89,21 @@
       "reason": "profile backend not chosen at install",
       "by": "person",
       "at": "2026-11-01",
-      "signalsAtDecision": []
+      "signalsAtDecision": [
+        "route in e2e/film.spec.ts",
+        "route in e2e/scene-media.spec.ts"
+      ],
+      "confirmed": [
+        {
+          "at": "2026-11-01",
+          "card": "PF-1-cinematic-portfolio",
+          "reason": "a static portfolio with no server routes; the only route calls are Playwright mocks in e2e",
+          "signals": [
+            "route in e2e/film.spec.ts",
+            "route in e2e/scene-media.spec.ts"
+          ]
+        }
+      ]
     },
     "docs": {
       "state": "off",
