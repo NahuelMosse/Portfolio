@@ -1,17 +1,14 @@
-# Handoff PF-1 T2 T3 T6 T7
+# Handoff PF-1 T6 (case file layout)
 
-## Done (written, build and tsc clean at the last build; e2e not re-verified after the last three edits)
-- features/film/presentation: lamp-light.tsx, hire-bar.tsx, seam-figure.tsx, chapter.tsx, film-shell.tsx, crimson-thread.tsx, cold-open.tsx (red-disc.tsx deleted); features/film/index.ts exports SeamFigure.
-- features/portfolio/presentation: hero-poster, character-sheet, projects, experience, offer, end-credits, piece-row, case-details; content.ts (identity, doorHref, club copy without "booking").
-- app/page.tsx, app/layout.tsx, app/globals.css, design/tokens.css, public/ASSETS.md, public/fonts/courier-prime-400.woff2.
-- e2e/case-file.spec.ts committed RED (769e42c).
+## Done (committed on portfolio-revamp)
+- New layout built: top bar, typed chapters, paper only behind the id sheet, folders and credits sheet, spine thread, compact case and employer rows.
+- `e2e/case-file-layout.spec.ts` (RED then green) and `e2e/case-file-layout-contracts.spec.ts` (replacements, logged L61 to L69): 14 passed at 390 and 1440.
+- Last coordinator round fixes: employer grid (the `grid-area: pieces` rule now scoped to `.project`), folder overlap on phone, NAWI title right of the id sheet at wide, `.hero-door` transition.
+- Gate (last verify run): types passed, overflow passed, probes passed, specs/states/layers/shape/boundaries passed. Motion had one item (hero door hover transition) fixed afterwards, not re-run.
 
-## Left
-1. Re-run e2e: `PORT=3100 npx playwright test e2e/case-file.spec.ts --reporter=line > .validation/cf.log 2>&1`, then the whole e2e. Last full run was 52 passed, 12 failed, before the lamp tie, pf-desk ids and booking-copy fixes. The Bash tool here runs cmd: do not put `|` inside --grep, run whole files.
-2. credits.spec.ts S18 sound focus ring (outlineStyle none): not investigated.
-3. film.spec.ts ASM-15: expects Courier Prime among loaded fonts; only Boska and General Sans load. Use Courier Prime on a visible label or replace the test.
-4. Old tests naming dropped assets or DOM (pieces.spec.ts S26, S16, [data-piece-strip]; scene-media.spec.ts S2; credits.spec.ts ASM-26; film.spec.ts ASM-21): replace in new files with the same tags, Log `replaces:` lines.
-5. design/line.md sections 1 to 5 empty; T6 Tasks line paths; `reuses:`/`new:` lines.
-6. Gate: eslint, tsc, probes (loading, reduced-motion, error), overflow, motion-audit, `verify.mjs` in background, `app.mjs down`.
-7. Log one line per task T2, T3, T6, T7 with log.mjs.
-8. Declared gaps: generated assets and the photos of him (public/ASSETS.md).
+## Not covered (turn budget), each could not run
+- Visual check of the last captures (`.validation/rebuild/d-*.png`, `m-*.png`) for: Experience at 1 screen per employer (desktop and 390), Jüsto pieces next to its row, NAWI whole beside the sheet, folder overlap at 390.
+- Re-run of `node .claude/tools/verify.mjs specs/PF-1-cinematic-portfolio` after the last commit (motion line).
+- Point 5 of the coordinator: the credits roll stays, because PF-1-ASM-18 and PF-1-S22 require it. Removing it needs the card to change.
+- lint cannot run (the repo's eslint config lacks the react-hooks plugin); fonts gate fails on 3 families (Courier Prime was already there); ref gate wants named captures; fonts/film ASM-15 e2e fail on localhost vs 127.0.0.1.
+- The shared app is down (`app.mjs down` ran before the last restart; the last `up` is still alive and must be brought down).
