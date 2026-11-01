@@ -107,7 +107,7 @@ not_read: none; the "Equipo WMS Justo" photo is .media-source/justo-team-present
 suite: npx playwright test {affected}
 lint: npx eslint .
 types: npx tsc --noEmit
-app: npm run build && npx next start -p $PORT
+app: npm run build && npx next start
 probe loading: node .claude/tools/app.mjs probe specs/PF-1-cinematic-portfolio/steps/loading.json --axe --route "GET /film/*=hold" --out .validation/probe/loading
 probe reduced-motion: node .claude/tools/app.mjs probe specs/PF-1-cinematic-portfolio/steps/reduced-motion.json --axe --out .validation/probe/reduced-motion
 probe error: node .claude/tools/app.mjs probe specs/PF-1-cinematic-portfolio/steps/error.json --axe --route "GET /film/*=500" --out .validation/probe/error
@@ -142,3 +142,9 @@ motion: node .claude/tools/motion-audit.mjs $APP_URL
 - L23 · 2026-11-01 · requester on the empty sun backdrop: chose the chessboard landscape for the cold open (PF-1-ASM-20).
 - L24 · 2026-11-01 · requester: "me gusta mas la opcion del ajedrez, pero siento que se siente medio engreido". Read as: he stands among the pieces at pawn height, a player crossing the board; the closing is the last rank (PF-1-ASM-20).
 - L25 · 2026-11-01 · requester: "lo que tiene el ajedrez es que parece que soy ajedrecista ... tampoco quiero parecer un experto ajedresista". Read as: the cold open moves to Buenos Aires rooftops at dusk, closing on the same rooftops at dawn (PF-1-ASM-20).
+- L26 · 2026-11-01 · T8 · components.json registries + 12 catalog items installed, @playwright/test + playwright.config.ts; npx playwright test e2e (APP_URL=local next start) -> 21 passed incl. no-console-error at 390/1280; npx tsc --noEmit clean; npx eslint . clean (catalog and .claude ignored)
+- L27 · 2026-11-01 · T1 · features/portfolio/presentation/content.ts + projects/experience/end-credits; e2e/content.spec.ts 8 passed (same run)
+- L28 · 2026-11-01 · T3 · film shell, chapter, depth-stage, hero-poster, character-sheet, globals.css, layout; e2e/film.spec.ts 13 passed (same run), Boska/General Sans self-hosted in public/fonts
+- L29 · 2026-11-01 · gate red · app line · verify.mjs: app could not start, next start -p $PORT is invalid on this Windows shell ('$PORT' is not a non-negative number); not a code failure, probes/overflow/motion lines did not run
+- L30 · 2026-11-01 · OUT · cut-out photo of him and the key-art backdrop are not delivered (T2/requester): cold open uses an arch outline, red disc and CSS haze, declared gap; no ASSETS.md stand-in written
+- L31 · 2026-11-01 · Gate app line runs next start without -p: next reads PORT from the environment app.mjs sets, on cmd.exe too.

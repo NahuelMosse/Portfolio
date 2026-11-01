@@ -40,3 +40,5 @@ next-env.d.ts
 
 # third-party reference images sent by the requester; local only
 /specs/*/ref/requester-*
+/test-results/
+/playwright-report/

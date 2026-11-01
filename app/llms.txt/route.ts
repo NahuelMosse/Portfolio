@@ -1,22 +1,23 @@
+import { experience, identity, projects } from "@/features/portfolio/presentation/content"
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nahuelmosse.vercel.app"
 
 export const revalidate = 3600
 
 export async function GET() {
   const content = [
-    "# Nahuel Mosse Portfolio",
+    `# ${identity.professionalName} Portfolio`,
     "",
-    "This is the official portfolio of Nahuel Mosse, Software Engineer (Full Stack).",
+    `This is the official portfolio of ${identity.professionalName} (known as Nawi), ${identity.role}.`,
     "",
     `Homepage: ${siteUrl}/`,
     `Machine-readable profile: ${siteUrl}/portfolio.json`,
-    `Sitemap: ${siteUrl}/sitemap.xml`,
-    `Robots: ${siteUrl}/robots.txt`,
     "",
-    "Primary topics:",
-    "- Professional software engineering experience",
-    "- Full-stack development with Node.js, React, TypeScript, PostgreSQL, and NestJS",
-    "- Personal projects, education, and certifications",
+    "Projects:",
+    ...projects.map((project) => `- ${project.name}: ${project.what}`),
+    "",
+    "Experience:",
+    ...experience.map((employer) => `- ${employer.name}: ${employer.what}`),
     "",
     "Preferred extraction source: use /portfolio.json for structured data.",
   ].join("\n")
