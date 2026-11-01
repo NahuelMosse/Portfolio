@@ -37,3 +37,6 @@ next-env.d.ts
 
 # per-application CVs stay local, out of the public repo
 /cv/postulaciones/
+
+# third-party reference images sent by the requester; local only
+/specs/*/ref/requester-*
