@@ -111,7 +111,7 @@ refactor-tests: e2e/scene-media.spec.ts has two evaluateAll callbacks typed HTML
 suite: npx playwright test {affected}
 lint: npx eslint .
 types: npx tsc --noEmit
-app: npm run build && npx next start
+app: npx next dev --webpack
 probe loading: node .claude/tools/app.mjs probe specs/PF-1-cinematic-portfolio/steps/loading.json --axe --route "GET /film/*=hold" --out .validation/probe/loading
 probe reduced-motion: node .claude/tools/app.mjs probe specs/PF-1-cinematic-portfolio/steps/reduced-motion.json --axe --out .validation/probe/reduced-motion
 probe error: node .claude/tools/app.mjs probe specs/PF-1-cinematic-portfolio/steps/error.json --axe --route "GET /film/*=500" --out .validation/probe/error
@@ -240,3 +240,4 @@ motion: node .claude/tools/motion-audit.mjs $APP_URL
 - L117 · 2026-11-01 · T6 · screen blend replaces difference (no inverted hue), phone NAWI 43vw lifted under the bar, sheet head stacked, project numeral 01-05 in Boska without red rule; designer-line, project-glance-dev-kit-line, phone-glance, hero-flow 5 passed; old-layout fonts, fonts-two-faces, case-file-layout-contracts: 5 passed, rest failed (not fixed)
 - L118 · 2026-11-01 · variant B (branch portfolio-poster), from the requester's «se sigue viendo feo y muy hecho con IA» and the standing rule of a from-scratch variant beside the asked fix: projects drop the drawn-device illustrations, the most generated-looking element (hands holding devices, repeated), for type posters on the product's color with the real interface in a plain frame; PF-1-ASM-26 re-aimed on this branch only
 - L119 · 2026-11-01 · replaces: e2e/project-glance-dev-kit-line.spec.ts "at 390 and 1440 each project's real interface is its focal point ... @PF-1-ASM-26" · on this branch the interface sits in a plain frame on a color field, not in a drawn screen · by: e2e/project-poster.spec.ts "at 390 and 1440 each project is a full-bleed field of its product color ... @PF-1-ASM-26"
+- L120 · 2026-11-01 · T6 · variant B code: poster-device.tsx, projects.tsx, project-spread.tsx, globals.css, tokens.css; project-scene and scene-screens removed; APP_URL=http://127.0.0.1:55879 playwright project-poster, phone-glance, designer-line, hero-flow -> 5 passed; tsc and eslint (changed files) clean; walks .validation/walk-b-d.png, walk-b-m.png; app line is 'next dev --webpack' because the production build through the node_modules junction takes 5 min and Turbopack refuses the symlink; e2e/project-glance-ai-line.spec.ts is stale (drawn art), not touched

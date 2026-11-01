@@ -7,6 +7,7 @@
   --ink-warm: #1a0b09;
 
   /* each project's own spot color, the product's */
+  --spot-kit: #b3261e;
   --spot-grit: #1f55d6;
   --spot-triaje: #36d1a8;
   --spot-cebador: #f0a8ac;
@@ -87,7 +88,13 @@
   --stage-wide-width: 56vw;
   --stage-wide-width-phone: 92vw;
   --stage-wide-cap: 900px;
-  --stage-fade: 18%;
+  --poster-word-size: 13vw;
+  --poster-word-size-phone: 19vw;
+  --poster-numeral-size: 13vw;
+  --poster-numeral-size-phone: 28vw;
+  --device-bezel: 10px;
+  --radius-phone: 2rem;
+  --poster-wide-ratio: 16 / 9;
   --stage-text-width: 22rem;
   --size-scene-title:clamp(1.75rem, 2.8vw, 2.75rem);
   --size-scene-title-phone: 1.75rem;

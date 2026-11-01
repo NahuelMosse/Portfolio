@@ -1,21 +1,24 @@
-import { SceneMedia, sceneAsset } from "@/features/film";
+import { SceneMedia } from "@/features/film";
 import { projects, type Project } from "./content";
 import { ChapterWord } from "./chapter-word";
 import { Piece } from "./piece";
 import { PieceRow } from "./piece-row";
-import { ProjectScene, type DeviceKind } from "./project-scene";
+import { PosterDevice, type DeviceKind } from "./poster-device";
 import { ProjectSpread } from "./project-spread";
 
-// The scene illustration of each project (ill-scene-<name>-16x9 and -4x5) and the device drawn in it, by project id.
-const SCENES: Record<string, { name: string; device: DeviceKind }> = {
-  "dev-kit": { name: "kit", device: "wide" },
-  grit: { name: "grit", device: "phone" },
-  guardia: { name: "triaje", device: "wide" },
-  cebador: { name: "cebador", device: "wide" },
-  club: { name: "club", device: "phone" },
+// The device each project's lead interface sits in: a phone for an app, a browser for a page or a game.
+const DEVICES: Record<string, DeviceKind> = {
+  "dev-kit": "wide",
+  grit: "phone",
+  guardia: "wide",
+  cebador: "wide",
+  club: "phone",
 };
 
-// What the drawn screen shows: the kit's typed documents, or the project's lead piece.
+// The word set at poster scale; the kit's title is a sentence, so it has a short word of its own.
+const POSTER_WORDS: Record<string, string> = { "dev-kit": "Dev kit" };
+
+// What the frame shows: the kit's typed documents, or the project's lead piece.
 function ScreenContent({ project }: { project: Project }) {
   if (project.documents) {
     return (
@@ -59,15 +62,35 @@ function Title({ project }: { project: Project }) {
   );
 }
 
-function ProjectText({ project, index }: { project: Project; index: number }) {
-  const numeral = String(index + 1).padStart(2, "0");
+// The camel-case words of a name are stacked, one per line, as on a poster.
+function PosterWord({ word }: { word: string }) {
+  return (
+    <p data-poster-word="" className="poster-word" aria-hidden="true">
+      {word.split(/(?<=[a-z])(?=[A-Z])/).map((part) => (
+        <span key={part}>{part}</span>
+      ))}
+    </p>
+  );
+}
+
+// Fine small type along the top of the poster: the maker, the case number, a hairline and a four-point star.
+function PosterDetail({ numeral, total }: { numeral: string; total: number }) {
+  return (
+    <p data-poster-detail="" className="poster-strip" aria-hidden="true">
+      <span>NAWI</span>
+      <span>
+        Case {numeral} / {String(total).padStart(2, "0")}
+      </span>
+      <i />
+      <span>Case file 001</span>
+      <b />
+    </p>
+  );
+}
+
+function ProjectText({ project }: { project: Project }) {
   return (
     <div data-project-text="" className="project-text">
-      <p className="project-numeral" aria-hidden="true">
-        <b>{numeral}</b>
-        <i />
-        <span>Case file</span>
-      </p>
       <Title project={project} />
       <div className="project-details">
         <p data-field="line" className="project-line">
@@ -99,9 +122,9 @@ function ProjectText({ project, index }: { project: Project; index: number }) {
   );
 }
 
-// Each project is its real interface, large, framed by the illustration cropped around the device drawn for it,
-// with its title, line, stack and link beside or above it and its other pieces in view with it. An undelivered scene
-// falls back to the lead piece in a device frame at the same size.
+// Each project is a type poster: a field of the product's own color, its real interface large in a plain frame, its case
+// numeral and word at poster scale crossing the frame, then its title, line, stack and link and its other pieces in view
+// with it. The cases alternate their composition.
 export function Projects() {
   return (
     <section data-chapter="projects" id="projects" className="projects">
@@ -114,33 +137,27 @@ export function Projects() {
         Projects
       </ChapterWord>
       {projects.map((project, index) => {
-        const scene = SCENES[project.id];
-        if (!scene)
-          throw new Error(`No scene is mapped for project ${project.id}`);
-        const asset = `ill-scene-${scene.name}`;
-        const wide = sceneAsset(`${asset}-16x9`, "webp");
-        const tall = sceneAsset(`${asset}-4x5`, "webp");
-        const delivered = wide && tall;
-        const onScreen = delivered && project.documents ? 0 : 1;
-        const others = project.pieces.slice(onScreen);
+        const device = DEVICES[project.id];
+        if (!device)
+          throw new Error(`No device is mapped for project ${project.id}`);
+        const numeral = String(index + 1).padStart(2, "0");
+        const others = project.pieces.slice(project.documents ? 0 : 1);
         return (
-          <ProjectSpread key={project.id} id={project.id}>
-            <div className="spread-main" data-device={scene.device}>
-              <ProjectText project={project} index={index} />
-              {delivered ? (
-                <ProjectScene
-                  asset={asset}
-                  wide={wide}
-                  tall={tall}
-                  device={scene.device}
-                >
-                  <ScreenContent project={project} />
-                </ProjectScene>
-              ) : (
-                <div data-device={scene.device} className="stage-fallback">
-                  <Piece piece={project.pieces[0]} lead order={0} />
-                </div>
-              )}
+          <ProjectSpread
+            key={project.id}
+            id={project.id}
+            composition={index % 2 === 0 ? "a" : "b"}
+          >
+            <PosterDetail numeral={numeral} total={projects.length} />
+            <p data-poster-numeral="" className="poster-numeral" aria-hidden="true">
+              {numeral}
+            </p>
+            <PosterWord word={POSTER_WORDS[project.id] ?? project.name} />
+            <div className="spread-main" data-device={device}>
+              <ProjectText project={project} />
+              <PosterDevice device={device}>
+                <ScreenContent project={project} />
+              </PosterDevice>
               <div className="scene-pieces" data-has-scene="">
                 <PieceRow count={others.length}>
                   {others.map((piece, order) => (
