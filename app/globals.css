@@ -439,6 +439,7 @@
   line-height: 0.82;
   letter-spacing: -0.03em;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .poster-word em {
