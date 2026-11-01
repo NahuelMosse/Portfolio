@@ -98,6 +98,10 @@
   --logo-size: 56px;
   --phone-lead-ratio: 7 / 6;
   --phone-other-ratio: 4 / 5;
+  --phone-capture-width: 360;
+  --phone-capture-height: 779;
+  --phone-capture-ratio: var(--phone-capture-width) / var(--phone-capture-height);
+  --phone-capture-stage-height: 55svh;
   --browser-ratio: 16 / 10;
   --radius-device: 28px;
   --cast: 0 var(--space-4) var(--space-6) var(--red-20), 0 var(--space-2) var(--space-4) var(--ink-85);

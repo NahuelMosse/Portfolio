@@ -26,7 +26,7 @@ const frameOf = (piece: PieceData): FrameKind => ("frame" in piece ? piece.frame
 // One real piece in its frame. The lead piece is the first of its case; `order` staggers its entrance.
 export function Piece({ piece, lead, order }: PieceProps) {
   return (
-    <div data-piece="" data-lead={lead ? "" : undefined} data-kind={piece.kind} className="piece" style={{ "--order": order } as React.CSSProperties}>
+    <div data-piece="" data-lead={lead ? "" : undefined} data-kind={piece.kind} data-whole={"whole" in piece ? "" : undefined} className="piece" style={{ "--order": order } as React.CSSProperties}>
       <DeviceFrame kind={frameOf(piece)} label={piece.caption}>
         <PieceBody piece={piece} />
       </DeviceFrame>

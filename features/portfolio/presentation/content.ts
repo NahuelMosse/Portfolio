@@ -26,7 +26,7 @@ export type Story = {
 
 // A real piece of work: a screen, a photo, a capture of a live page, or a text frame taken from a real card, test or pull request.
 export type Piece =
-  | { kind: "screen" | "photo"; frame: ScreenFrame; src: string; alt: string; caption: string }
+  | { kind: "screen" | "photo"; frame: ScreenFrame; src: string; alt: string; caption: string; whole?: true }
   | { kind: "capture"; frame: ScreenFrame; video: string; poster: string; alt: string; caption: string }
   | { kind: "card" | "tests" | "pull-request" | "link"; caption: string; lines: readonly string[]; href?: string }
 
@@ -42,6 +42,16 @@ const screen = (frame: ScreenFrame, src: string, alt: string, caption: string): 
   src: `/film/pieces/${src}.webp`,
   alt,
   caption,
+})
+
+// A screen whose frame takes the capture's own ratio, so it is shown whole.
+const wholeScreen = (frame: ScreenFrame, src: string, alt: string, caption: string): Piece => ({
+  kind: "screen",
+  frame,
+  src: `/film/pieces/${src}.webp`,
+  alt,
+  caption,
+  whole: true,
 })
 
 export const projects: readonly Project[] = [
@@ -106,7 +116,7 @@ export const projects: readonly Project[] = [
     pieces: [
       screen("browser", "triaje-page", "The Triaje page on itch.io at desktop width", "Triaje on itch.io"),
       screen("browser", "triaje-scrolled", "The Triaje page on itch.io, further down", "Further down the page"),
-      screen("phone", "triaje-mobile", "The Triaje page on itch.io on a phone", "On a phone"),
+      wholeScreen("phone", "triaje-mobile", "The Triaje page on itch.io on a phone", "On a phone"),
     ],
   },
   {

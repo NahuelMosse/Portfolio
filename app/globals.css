@@ -624,6 +624,8 @@
 
 .project-text h3 {
   order: 1;
+  /* a title brought to the top of the screen rests under the fixed top bar, not behind it */
+  scroll-margin-top: calc(var(--top-bar-height) + var(--space-2));
   margin-inline: var(--gutter-left) var(--gutter-right);
 }
 
@@ -1228,6 +1230,17 @@
 
 .piece:not([data-lead]) .frame[data-frame="phone"] .frame-screen {
   aspect-ratio: var(--phone-other-ratio);
+}
+
+/* a capture shown whole keeps its own ratio, so the frame takes the shape of the phone it came from */
+.piece[data-whole] .frame[data-frame="phone"] .frame-screen {
+  aspect-ratio: var(--phone-capture-ratio);
+}
+
+/* its width follows from the height it may take in the row, so a tall capture does not stretch the row */
+.stage .piece[data-whole],
+.scene-pieces[data-has-scene] .piece[data-whole] {
+  flex-basis: calc(var(--phone-capture-stage-height) * var(--phone-capture-width) / var(--phone-capture-height) + var(--space-4));
 }
 
 .frame[data-frame="browser"] {
