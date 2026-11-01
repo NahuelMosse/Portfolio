@@ -2,16 +2,16 @@ import { SceneMedia, sceneAsset } from "@/features/film"
 import { projects, type Project } from "./content"
 import { Piece } from "./piece"
 import { PieceRow } from "./piece-row"
-import { ProjectScene } from "./project-scene"
+import { ProjectScene, type DeviceKind } from "./project-scene"
 import { ProjectSpread } from "./project-spread"
 
-// The scene illustration of each project, by project id: ill-scene-<name>-16x9 and -4x5.
-const SCENE_NAMES: Record<string, string> = {
-  "dev-kit": "kit",
-  grit: "grit",
-  guardia: "triaje",
-  cebador: "cebador",
-  club: "club",
+// The scene illustration of each project (ill-scene-<name>-16x9 and -4x5) and the device drawn in it, by project id.
+const SCENES: Record<string, { name: string; device: DeviceKind }> = {
+  "dev-kit": { name: "kit", device: "wide" },
+  grit: { name: "grit", device: "phone" },
+  guardia: { name: "triaje", device: "wide" },
+  cebador: { name: "cebador", device: "wide" },
+  club: { name: "club", device: "phone" },
 }
 
 const FIELDS = [
@@ -55,59 +55,68 @@ function Title({ project }: { project: Project }) {
   )
 }
 
-// Each project is one scene where he holds or sits at a drawn device and the real interface is its screen.
-// An undelivered scene falls back to the lead piece in a device frame.
+function ProjectText({ project }: { project: Project }) {
+  return (
+    <div data-project-text="" className="project-text">
+      <Title project={project} />
+      <div className="spread-fields">
+        {FIELDS.map(({ key, label }) => (
+          <p key={key} data-field={key}>
+            <span data-label="">{label}</span>
+            {project[key]}
+          </p>
+        ))}
+      </div>
+      <div className="spread-meta">
+        <p data-stack="">{project.stack}</p>
+        {project.links.length > 0 && (
+          <div className="links">
+            {project.links.map((link) => (
+              <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
+                {link.label}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Each project is its real interface, large, framed by the illustration cropped around the device drawn for it,
+// with its words beside it. An undelivered scene falls back to the lead piece in a device frame at the same size.
 export function Projects() {
   return (
     <section data-chapter="projects" id="projects" className="projects">
       <h2 tabIndex={-1} className="chapter-heading">Projects</h2>
       {projects.map((project) => {
-        const name = SCENE_NAMES[project.id]
-        if (!name) throw new Error(`No scene is mapped for project ${project.id}`)
-        const asset = `ill-scene-${name}`
+        const scene = SCENES[project.id]
+        if (!scene) throw new Error(`No scene is mapped for project ${project.id}`)
+        const asset = `ill-scene-${scene.name}`
         const wide = sceneAsset(`${asset}-16x9`, "webp")
         const tall = sceneAsset(`${asset}-4x5`, "webp")
-        const scene = wide && tall
-        const onScreen = scene && "lines" in project.pieces[0] ? 2 : 1
-        const beneath = scene ? project.pieces.slice(onScreen) : project.pieces
+        const delivered = wide && tall
+        const onScreen = delivered && "lines" in project.pieces[0] ? 2 : 1
+        const beneath = project.pieces.slice(onScreen)
         return (
           <ProjectSpread key={project.id} id={project.id}>
-            {scene ? (
-              <ProjectScene asset={asset} wide={wide} tall={tall} title={<Title project={project} />}>
-                <ScreenContent project={project} />
-              </ProjectScene>
-            ) : (
-              <div className="spread-heading">
-                <Title project={project} />
-              </div>
-            )}
-            <div className="spread-body">
-              <div className="spread-fields">
-                {FIELDS.map(({ key, label }) => (
-                  <p key={key} data-field={key}>
-                    <span data-label="">{label}</span>
-                    {project[key]}
-                  </p>
-                ))}
-              </div>
-              <div className="spread-meta">
-                <p data-stack="">{project.stack}</p>
-                {project.links.length > 0 && (
-                  <div className="links">
-                    {project.links.map((link) => (
-                      <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
+            <div className="spread-main">
+              <ProjectText project={project} />
+              {delivered ? (
+                <ProjectScene asset={asset} wide={wide} tall={tall} device={scene.device}>
+                  <ScreenContent project={project} />
+                </ProjectScene>
+              ) : (
+                <div data-device={scene.device} className="stage-fallback">
+                  <Piece piece={project.pieces[0]} lead order={0} />
+                </div>
+              )}
             </div>
             {beneath.length > 0 && (
-              <div className="scene-pieces" data-has-scene={scene ? "" : undefined}>
+              <div className="scene-pieces" data-has-scene="">
                 <PieceRow count={beneath.length}>
                   {beneath.map((piece, order) => (
-                    <Piece key={piece.caption} piece={piece} lead={!scene && order === 0} order={order} />
+                    <Piece key={piece.caption} piece={piece} order={order + 1} />
                   ))}
                 </PieceRow>
               </div>

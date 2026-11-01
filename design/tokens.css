@@ -81,7 +81,15 @@
   --other-width: 240px;
   --lead-share: 85%;
   --other-share: 62%;
-  --size-scene-title: clamp(1.75rem, 2.8vw, 2.75rem);
+  /* the project stage: the interface's size per viewport, the art's fade, the text column */
+  --stage-phone-height: 72svh;
+  --stage-phone-width-phone: 80vw;
+  --stage-wide-width: 56vw;
+  --stage-wide-width-phone: 92vw;
+  --stage-wide-cap: 900px;
+  --stage-fade: 18%;
+  --stage-text-width: 22rem;
+  --size-scene-title:clamp(1.75rem, 2.8vw, 2.75rem);
   --size-scene-title-phone: 1.75rem;
   --row-piece: 72%;
   --row-piece-wide: 30%;

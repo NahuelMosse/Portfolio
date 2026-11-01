@@ -13,3 +13,9 @@ export const SCENE_SCREENS: Readonly<Record<string, ScreenBox>> = {
   "ill-scene-triaje-16x9": { left: 47.61, top: 36.45, width: 49.04, height: 44.21 },
   "ill-scene-triaje-4x5": { left: 8.38, top: 49.86, width: 84.94, height: 31.88 },
 }
+
+// Pixel size of each cut of a scene, to turn the screen's percentages into proportions.
+export const SCENE_SIZES = {
+  "16x9": { width: 1672, height: 941 },
+  "4x5": { width: 1122, height: 1402 },
+} as const

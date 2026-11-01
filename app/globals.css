@@ -470,61 +470,172 @@
   --spot: var(--spot-club);
 }
 
-/* the scene: one full-bleed image at its own aspect, the drawn screen placed over it by the box measured on the art */
-.scene-plate {
+/* the stage: the real interface leads at a size set by the viewport, and the illustration is cropped around its drawn screen.
+   Lengths come from --k, the pixels of one percent of the illustration's width; the geometry variables are unitless percents
+   of the image, set per aspect by the component (w = 16:9, t = 4:5). */
+.project-stage {
+  --bw: var(--wbw);
+  --bh: var(--wbh);
+  --ox: var(--wox);
+  --oy: var(--woy);
+  --ww: var(--wwin-w);
+  --wh: var(--wwin-h);
+  --wl: var(--wwin-l);
+  --wt: var(--wwin-t);
+  --r: var(--wr);
+  --ar: var(--war);
+  --k: calc(var(--iw) / var(--bw));
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: var(--ink);
-  --sl: var(--wl);
-  --st: var(--wt);
-  --sw: var(--ww);
-  --sh: var(--wh);
+  flex: none;
+  width: calc(var(--k) * var(--ww));
+  height: calc(var(--k) * var(--wh) * var(--r));
+  margin-inline: auto;
 }
 
-.scene-plate picture,
-.scene-plate img {
+.project-stage[data-device="phone"] {
+  --iw: calc(var(--stage-phone-height) * var(--ar));
+}
+
+.project-stage[data-device="wide"] {
+  --iw: var(--stage-wide-width);
+}
+
+@media (max-width: 1279px) {
+  .project-stage {
+    --bw: var(--tbw);
+    --bh: var(--tbh);
+    --ox: var(--tox);
+    --oy: var(--toy);
+    --ww: var(--twin-w);
+    --wh: var(--twin-h);
+    --wl: var(--twin-l);
+    --wt: var(--twin-t);
+    --r: var(--tr);
+    --ar: var(--tar);
+  }
+
+  .project-stage[data-device="phone"] {
+    --iw: min(var(--stage-phone-width-phone), calc(var(--stage-phone-height) * var(--ar)));
+  }
+
+  .project-stage[data-device="wide"] {
+    --iw: min(var(--stage-wide-width-phone), var(--stage-wide-cap));
+  }
+}
+
+/* the art around the interface: its edges fade into the page */
+.stage-art {
   position: absolute;
   inset: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent), linear-gradient(to bottom, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent);
+  mask-composite: intersect;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent), linear-gradient(to bottom, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent);
+  -webkit-mask-composite: source-in;
+}
+
+.stage-art picture {
+  position: absolute;
+  left: calc(var(--k) * var(--wl) * -1);
+  top: calc(var(--k) * var(--wt) * var(--r) * -1);
+  width: calc(var(--k) * 100);
+  height: calc(var(--k) * 100 * var(--r));
+}
+
+.stage-art img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  max-width: none;
 }
 
-.scene-screen {
+.stage-screen {
   position: absolute;
-  left: var(--sl);
-  top: var(--st);
-  width: var(--sw);
-  height: var(--sh);
+  left: calc(var(--k) * var(--ox));
+  top: calc(var(--k) * var(--oy) * var(--r));
+  width: calc(var(--k) * var(--bw));
+  height: calc(var(--k) * var(--bh) * var(--r));
   overflow: hidden;
   background: var(--ink);
   /* the spot plate printed 1px off register from the black */
   box-shadow: 1px 1px 0 var(--spot), -1px -1px 0 var(--ink-85);
 }
 
-.scene-screen .scene-media {
+.stage-screen .scene-media {
   width: 100%;
   height: 100%;
 }
 
-.scene-screen img,
-.scene-screen video {
+.stage-screen img,
+.stage-screen video {
   object-fit: cover;
   object-position: top;
 }
 
-/* halftone dots over the glass only, faint enough to leave the interface legible */
-.scene-screen::after {
+/* halftone dots over the glass only, faint enough to leave the interface crisp */
+.stage-screen::after {
   content: "";
   position: absolute;
   inset: 0;
   background-image: radial-gradient(circle, var(--ink-85) 0.5px, transparent 1px);
   background-size: 4px 4px;
-  opacity: 0.18;
+  opacity: 0.07;
   mix-blend-mode: multiply;
   pointer-events: none;
+}
+
+/* an undelivered scene: the lead piece in its device frame at the stage's size */
+.stage-fallback {
+  --ar: 0.5;
+  width: min(100%, var(--iw));
+  margin-inline: auto;
+}
+
+.stage-fallback[data-device="phone"] {
+  --iw: min(var(--stage-phone-width-phone), calc(var(--stage-phone-height) * var(--ar)));
+}
+
+.stage-fallback[data-device="wide"] {
+  --iw: min(var(--stage-wide-width-phone), var(--stage-wide-cap));
+}
+
+@media (min-width: 1280px) {
+  .stage-fallback[data-device="phone"] {
+    --iw: calc(var(--stage-phone-height) * var(--ar));
+  }
+
+  .stage-fallback[data-device="wide"] {
+    --iw: var(--stage-wide-width);
+  }
+}
+
+/* the words sit above the stage on a phone and beside it on a wide screen */
+.spread-main {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-4) 0 0;
+}
+
+.project-text {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: 0 var(--gutter-right) 0 var(--gutter-left);
+}
+
+@media (min-width: 1280px) {
+  .spread-main {
+    grid-template-columns: minmax(0, var(--stage-text-width)) max-content;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-5);
+    padding: var(--space-5) 0 0;
+  }
+
+  .project-text {
+    padding: 0;
+  }
 }
 
 .scene-document {
@@ -540,6 +651,14 @@
   overflow: hidden;
 }
 
+@media (min-width: 1280px) {
+  .scene-document {
+    gap: var(--space-4);
+    padding: var(--space-4);
+    font-size: 1.0625rem;
+  }
+}
+
 .scene-document p {
   margin: 0 0 var(--space-1);
   color: var(--spot);
@@ -552,26 +671,14 @@
   overflow-wrap: anywhere;
 }
 
-.scene-title {
-  position: absolute;
-  left: 3%;
-  top: 6%;
-  width: 26%;
-}
-
-.scene-title h3,
-.spread-heading h3 {
+.project-text h3 {
   padding-top: var(--space-2);
   border-top: 3px solid var(--spot);
   color: var(--bone);
 }
 
-.spread-heading {
-  padding: var(--space-4) var(--gutter-right) 0 var(--gutter-left);
-}
-
-/* sized so the longest word fits the black band (26% of the width); a word never breaks */
-.spread .scene-title h3 {
+/* sized so the longest word fits the text column; a word never breaks */
+.spread .project-text h3 {
   font-size: var(--size-scene-title);
   overflow-wrap: normal;
   word-break: normal;
@@ -579,36 +686,16 @@
 }
 
 @media (max-width: 767px) {
+  .spread .project-text h3 {
+    font-size: var(--size-scene-title-phone);
+  }
+
+  /* the drawn screen is short on a phone: the kit shows its card, two lines of it */
   .scene-document div:nth-child(n + 2),
   .scene-document p,
   .scene-document span:nth-of-type(n + 3) {
     display: none;
   }
-
-  .scene-plate {
-    aspect-ratio: 4 / 5;
-    --sl: var(--tl);
-    --st: var(--tt);
-    --sw: var(--tw);
-    --sh: var(--th);
-  }
-
-  .scene-title {
-    left: 5%;
-    top: 4%;
-    width: 90%;
-  }
-
-  .spread .scene-title h3 {
-    font-size: var(--size-scene-title-phone);
-  }
-}
-
-.spread-body {
-  display: grid;
-  gap: var(--space-4);
-  min-width: 0;
-  padding: var(--space-4) var(--gutter-right) 0 var(--gutter-left);
 }
 
 .spread h3 {
@@ -669,17 +756,6 @@
 @keyframes piece-in {
   from {
     opacity: 0;
-  }
-}
-
-@media (min-width: 1280px) {
-  .spread-body {
-    padding: var(--space-5);
-  }
-
-  .spread-fields {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-4);
   }
 }
 
@@ -890,10 +966,6 @@
   flex-basis: var(--row-piece);
 }
 
-.scene-pieces:not([data-has-scene]) .piece[data-lead] {
-  flex-basis: var(--lead-share);
-}
-
 @media (min-width: 768px) {
   .stage .piece {
     flex-basis: var(--other-width);
@@ -901,10 +973,6 @@
 
   .scene-pieces[data-has-scene] .piece {
     flex-basis: var(--row-piece-wide);
-  }
-
-  .scene-pieces:not([data-has-scene]) .piece[data-lead] {
-    flex-basis: var(--lead-width);
   }
 }
 
