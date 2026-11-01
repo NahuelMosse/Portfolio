@@ -377,7 +377,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--size-chapter-title);
-  line-height: 1.05;
+  line-height: 1.2;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   overflow-wrap: anywhere;
@@ -527,7 +527,8 @@
 .paper {
   position: relative;
   padding: var(--space-4);
-  background: var(--paper-texture) 55% 50% / 160% auto, var(--bone);
+  /* the delivered paper strip has black ends, so the sheet is bone with a soft fold shade instead */
+  background: linear-gradient(100deg, var(--ink-08), transparent 18%, transparent 82%, var(--ink-08)), var(--bone);
   color: var(--ink);
   clip-path: var(--torn);
   font-family: var(--font-label);
@@ -629,7 +630,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--size-case-title);
-  line-height: 1.15;
+  line-height: 1.3;
   letter-spacing: -0.01em;
   overflow-wrap: anywhere;
 }
@@ -728,6 +729,15 @@
 }
 
 @media (max-width: 1099px) {
+  .project {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "pieces"
+      "details"
+      "links";
+  }
+
   .case-details[data-open="false"] .case-body {
     display: none;
   }
@@ -806,6 +816,7 @@
   margin: 0;
   border: 2px solid var(--bone-35);
   border-radius: var(--radius-frame);
+  clip-path: inset(0 round var(--radius-frame));
   overflow: hidden;
   background: var(--ink-warm);
   filter: contrast(1.08) saturate(0.7) brightness(0.95);
@@ -887,7 +898,7 @@
 .folder h3 {
   margin: 0 0 var(--space-2);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
-  line-height: 1.1;
+  line-height: 1.3;
 }
 
 .folder p {
@@ -905,7 +916,6 @@
   font-size: var(--text-small);
   letter-spacing: var(--label-tracking);
   text-align: center;
-  text-transform: uppercase;
   transition:
     background var(--motion-control) var(--ease-out),
     color var(--motion-control) var(--ease-out),

@@ -1,4 +1,4 @@
-import { Chapter, CreditsRoll, SceneMedia, sceneAsset, type RollBand } from "@/features/film"
+import { Chapter, CreditsRoll, Reveal, SceneMedia, sceneAsset, type RollBand } from "@/features/film"
 import { credits, identity } from "./content"
 import { Offer } from "./offer"
 
@@ -49,18 +49,18 @@ export function EndCredits() {
         </div>
       </div>
       <div data-credits-sheet="" data-paper="credits-sheet" className="paper credits-sheet">
-        <section>
+        <Reveal>
           <h3>Studies</h3>
           <ul>{credits.studies.map((item) => <li key={item.text}>{item.text}</li>)}</ul>
-        </section>
-        <section>
+        </Reveal>
+        <Reveal>
           <h3>Certifications</h3>
           <ul>{credits.certifications.map((item) => <li key={item.text}>{item.text}</li>)}</ul>
-        </section>
-        <section>
+        </Reveal>
+        <Reveal>
           <h3>Off duty</h3>
           <p data-off-duty="">{identity.offDuty}</p>
-        </section>
+        </Reveal>
       </div>
       <CreditsRoll bands={bands} />
       <footer className="end-of-file">© Nahuel Mosse — NAWI · END OF FILE</footer>
