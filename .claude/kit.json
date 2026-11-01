@@ -100,11 +100,17 @@
     }
   },
   "grade": {
-    "level": "poc",
-    "reason": "portfolio revamp exploration: presentation-only facade, judged by capture rounds",
+    "level": "mvp",
+    "reason": "full design control for the portfolio revamp: design line, component set and screen audit",
     "by": "person",
     "at": "2026-11-01",
-    "history": []
+    "history": [
+      {
+        "level": "poc",
+        "reason": "portfolio revamp exploration: presentation-only facade, judged by capture rounds",
+        "at": "2026-11-01"
+      }
+    ]
   },
   "profiles": {
     "web": {
