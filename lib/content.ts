@@ -13,7 +13,6 @@ export const personalInfo = {
   name: "Nahuel Mosse",
   role: "Software Engineer – Full Stack",
   email: "nahuelgamail@gmail.com",
-  phone: "+54 9 11 2161-5807",
   location: "Buenos Aires, Argentina",
   linkedin: "https://linkedin.com/in/nahuelmosse",
   github: "https://github.com/NahuelMosse",
