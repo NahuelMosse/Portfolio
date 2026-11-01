@@ -5,13 +5,16 @@ import { test, expect } from "@playwright/test"
 // The illustrations and photos are previewed untracked: the test follows what is on disk.
 const onDisk = (id: string) => existsSync(join(process.cwd(), "public", "film", `${id}.webp`))
 
+// the product's own color per project (design/art-direction.md) as the browser reports it
 const STAGES = [
-  { project: "dev-kit", name: "kit", device: "wide", line: "Claude Code agents build each card; hooks and tests keep them honest." },
-  { project: "grit", name: "grit", device: "phone", line: "Specified with Spec Kit; AI agents wrote the code against the specs." },
-  { project: "guardia", name: "triaje", device: "wide", line: "Built with Claude Code; its trailers and ads made with AI." },
-  { project: "cebador", name: "cebador", device: "wide", line: "Built with my dev kit: Claude Code agents, every behavior tested." },
-  { project: "club", name: "club", device: "phone", line: "Built with my dev kit: specs first, then Claude Code agents." },
+  { project: "dev-kit", device: "wide", field: "rgb(179, 38, 30)", line: "Claude Code agents build each card; hooks and tests keep them honest." },
+  { project: "grit", device: "phone", field: "rgb(31, 85, 214)", line: "Specified with Spec Kit; AI agents wrote the code against the specs." },
+  { project: "guardia", device: "wide", field: "rgb(54, 209, 168)", line: "Built with Claude Code; its trailers and ads made with AI." },
+  { project: "cebador", device: "wide", field: "rgb(240, 168, 172)", line: "Built with my dev kit: Claude Code agents, every behavior tested." },
+  { project: "club", device: "phone", field: "rgb(205, 235, 58)", line: "Built with my dev kit: specs first, then Claude Code agents." },
 ]
+const POSTER_WORD_DESKTOP = 0.12
+const CASE_NUMERALS = ["01", "02", "03", "04", "05"]
 const EMPLOYERS = ["smart-warehousing", "grupo-st", "visma", "fravega", "justo"]
 const FULL_BLEED = ["ill-cover-16x9", "ill-offer-16x9", "ill-contact-16x9"]
 const WORK_STRIP = ["work-warehouse", "work-desk-a", "work-desk-b"]
@@ -20,8 +23,6 @@ const PHONE_HEIGHT_DESKTOP = 0.7
 const PHONE_WIDTH_MOBILE = 0.75
 const WIDE_WIDTH_DESKTOP = 0.55
 const WIDE_WIDTH_MOBILE = 0.9
-const ART_WIDTH_LIMIT = 2
-const ART_HEIGHT_LIMIT = 1.4
 const EMPLOYER_ART_DESKTOP_MIN = 480
 const MAX_WORDS = 12
 const MIN_OTHER_PIECES = 3
@@ -32,7 +33,7 @@ const fades = (el: Element) => {
   return style.maskImage !== "none" || style.webkitMaskImage !== "none" || style.clipPath !== "none"
 }
 
-test("at 390 and 1440 each project's real interface is its focal point, a phone interface at least 70% of the viewport's height at 1440 and 75% of its width at 390 and a laptop or monitor interface at least 55% of the viewport's width at 1440 and 90% at 390, sitting in the screen drawn in its illustration, whose visible part reaches at most twice the interface's width and 1.4 times its height; beside it only the title, one line of at most 12 words, the stack and the link, no What, Problem or My role and no text card among its pieces, at least three other pieces each at least 240 px wide are in view at once with the lead at 1440, at 390 the order is title, interface, line, stack and link, then the swiping row; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26", async ({ page }) => {
+test("at 390 and 1440 each project is a full-bleed field of its product color with its real interface in a plain device frame, a phone at least 70% of the viewport height at 1440 and 75% of its width at 390, a laptop or browser at least 55% of the width at 1440 and 90% at 390, its numeral and word in Boska uppercase at least 12% of the viewport wide at 1440, no project illustration loaded, consecutive cases with different compositions, beside it the stack, one line of at most 12 words and the link, and at 1440 at least three other pieces in view each at least 240 px wide; no What, Problem or My role and no text card among its pieces, at 390 the order is title, interface, line, stack and link, then the swiping row; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26", async ({ page }) => {
   const requested: string[] = []
   page.on("request", (request) => requested.push(request.url()))
 
@@ -41,14 +42,20 @@ test("at 390 and 1440 each project's real interface is its focal point, a phone 
     await page.goto("/")
     await page.waitForLoadState("load")
     const desktop = viewport.width === 1440
-    const aspect = desktop ? "16x9" : "4x5"
+    const compositions: string[] = []
+    const textSides: string[] = []
 
-    for (const { project, name, device, line } of STAGES) {
+    for (const [index, { project, device, field, line }] of STAGES.entries()) {
       const spread = page.locator(`[data-project="${project}"]`)
       await spread.scrollIntoViewIfNeeded()
-      const delivered = onDisk(`ill-scene-${name}-${aspect}`)
-      const screen = spread.locator("[data-scene-screen], [data-lead] [data-frame]").first()
+      const screen = spread.locator("[data-scene-screen]")
       const screenBox = (await screen.boundingBox())!
+
+      // the field: the product's color, edge to edge
+      expect(await spread.evaluate((el) => getComputedStyle(el).backgroundColor), `${project} field color`).toBe(field)
+      const spreadBox = (await spread.boundingBox())!
+      expect(spreadBox.x, `${project} field starts at the left edge`).toBeLessThanOrEqual(1)
+      expect(spreadBox.width, `${project} field is full-bleed`).toBeGreaterThanOrEqual(viewport.width - 1)
 
       if (device === "phone") {
         if (desktop) expect(screenBox.height / viewport.height, `${project} phone height`).toBeGreaterThanOrEqual(PHONE_HEIGHT_DESKTOP - 0.01)
@@ -57,23 +64,38 @@ test("at 390 and 1440 each project's real interface is its focal point, a phone 
         expect(screenBox.width / viewport.width, `${project} interface width`).toBeGreaterThanOrEqual((desktop ? WIDE_WIDTH_DESKTOP : WIDE_WIDTH_MOBILE) - 0.01)
       }
 
-      if (delivered) {
-        const art = spread.locator("[data-illustration]")
-        await expect(art).toHaveCount(1)
-        await expect.poll(() => art.locator("img").evaluate((img: HTMLImageElement) => img.currentSrc), `${project} scene image`).toMatch(new RegExp(`ill-scene-${name}-${aspect}\\.webp`))
-        expect(await art.evaluate(fades), `${project} art fades into the page`).toBe(true)
-        const artBox = (await art.boundingBox())!
-        expect(artBox.width, `${project} art width`).toBeLessThanOrEqual(screenBox.width * ART_WIDTH_LIMIT + 1)
-        expect(artBox.height, `${project} art height`).toBeLessThanOrEqual(screenBox.height * ART_HEIGHT_LIMIT + 1)
-        expect(screenBox.x, `${project} interface inside the art`).toBeGreaterThanOrEqual(artBox.x - 1)
-        expect(screenBox.y, `${project} interface inside the art`).toBeGreaterThanOrEqual(artBox.y - 1)
-        expect(screenBox.x + screenBox.width, `${project} interface inside the art`).toBeLessThanOrEqual(artBox.x + artBox.width + 1)
-        expect(screenBox.y + screenBox.height, `${project} interface inside the art`).toBeLessThanOrEqual(artBox.y + artBox.height + 1)
-        expect(await screen.locator("img, video, [data-document]").count(), `${project} real interface in the screen`).toBeGreaterThan(0)
-      } else {
-        await expect(spread.locator("[data-illustration]"), `${project} leaves no box`).toHaveCount(0)
-        await expect(spread.locator("[data-lead] [data-frame]")).toHaveCount(1)
+      // no drawn scene: the interface is the only picture of the project, in a frame drawn by code
+      await expect(spread.locator("[data-illustration]"), `${project} has no illustration`).toHaveCount(0)
+      const frame = spread.locator("[data-poster-device]")
+      await expect(frame).toHaveAttribute("data-device", device)
+      expect(await screen.locator("img, video, [data-document]").count(), `${project} real interface in the frame`).toBeGreaterThan(0)
+
+      // the numeral and the word: Boska uppercase at poster scale
+      const numeral = spread.locator("[data-poster-numeral]")
+      const word = spread.locator("[data-poster-word]")
+      await expect(numeral).toHaveText(CASE_NUMERALS[index])
+      await expect(word).not.toBeEmpty()
+      for (const piece of [numeral, word]) {
+        const style = await piece.evaluate((el) => {
+          const computed = getComputedStyle(el)
+          return { family: computed.fontFamily, size: parseFloat(computed.fontSize), transform: computed.textTransform }
+        })
+        expect(style.family, `${project} poster type face`).toContain("Boska")
+        expect(style.transform, `${project} poster type is uppercase`).toBe("uppercase")
+        if (desktop) expect(style.size / viewport.width, `${project} poster type scale`).toBeGreaterThanOrEqual(POSTER_WORD_DESKTOP - 0.002)
       }
+      const frameBox = (await frame.boundingBox())!
+      if (desktop) {
+        // the word crosses the device, behind it or in front of it
+        const wordBox = (await word.boundingBox())!
+        const overlapX = Math.min(wordBox.x + wordBox.width, frameBox.x + frameBox.width) - Math.max(wordBox.x, frameBox.x)
+        const overlapY = Math.min(wordBox.y + wordBox.height, frameBox.y + frameBox.height) - Math.max(wordBox.y, frameBox.y)
+        expect(Math.min(overlapX, overlapY), `${project} word crosses the device`).toBeGreaterThan(0)
+        const textBox = (await spread.locator("[data-project-text]").boundingBox())!
+        textSides.push(textBox.x + textBox.width / 2 < frameBox.x + frameBox.width / 2 ? "left" : "right")
+      }
+      compositions.push((await spread.getAttribute("data-composition")) ?? "")
+      expect(await spread.locator("[data-poster-detail]").count(), `${project} fine small-type detail`).toBeGreaterThan(0)
 
       // the words: the title, one short line, the stack and the link; nothing else
       const text = spread.locator("[data-project-text]")
@@ -120,6 +142,9 @@ test("at 390 and 1440 each project's real interface is its focal point, a phone 
         await expect(spread.locator("[data-piece-counter]")).toBeVisible()
       }
     }
+
+    compositions.forEach((composition, index) => expect(composition, `composition ${index}`).not.toBe(compositions[index - 1]))
+    textSides.forEach((side, index) => expect(side, `text side ${index}`).not.toBe(textSides[index - 1]))
 
     const experience = page.locator('[data-chapter="experience"]')
     if (onDisk("ill-experience-21x9") || onDisk("ill-experience-16x9")) {
@@ -198,4 +223,5 @@ test("at 390 and 1440 each project's real interface is its focal point, a phone 
   }
 
   expect(requested.filter((url) => PRIVATE_CAPTURE.test(url)), "no private capture is ever requested").toEqual([])
+  expect(requested.filter((url) => /ill-scene-/.test(url)), "no project illustration is ever requested").toEqual([])
 })
