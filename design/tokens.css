@@ -36,7 +36,7 @@
   --space-6: 64px;
   --space-7: 112px;
 
-  --radius-pill: 999px;
+  --radius-rectangle: 0;
   --radius-round: 50%;
 
   /* easing and durations by use */
@@ -109,7 +109,21 @@
 
   --font-label: "Courier Prime", monospace;
   --font-display: "Boska", serif;
-  --font-text: "Courier Prime", monospace;
+  --font-text: "General Sans", sans-serif;
+  --text-body: 1rem;
+  --label-tracking-fine: 0.08em;
+
+  /* poster type: NAWI and the chapter words, sized by the viewport; the long words are sized down to fit */
+  --size-nawi: 41vw;
+  --size-word: 17vw;
+  --size-word-long: 15.2vw;
+  --size-word-phone: 3.6rem;
+  --size-word-long-phone: 3rem;
+  --poster-drop: 0.32em;
+  --word-clearance: 5vw;
+  --sheet-photo-width: 4rem;
+  --poster-leading: 0.82;
+  --rule: 1px;
 
   /* semantic */
   --background: var(--ink);

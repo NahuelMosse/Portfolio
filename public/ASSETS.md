@@ -173,7 +173,7 @@ One style across the set: bold brush ink, solid blacks, dry-brush texture, bone 
 
 | File | Chapter | Tool | Status |
 |---|---|---|---|
-| film/ill-cover-16x9.webp, film/ill-cover-9x16.webp | Cold open: at the desk under the lamp holding the sealed envelope | Codex (OpenAI image generation) | delivered |
+| film/ill-cover-16x9.webp, film/ill-cover-9x16.webp | Cold open: at the desk under the lamp, forearms on the desk, the sealed envelope small beside him, black area above his head for NAWI | Codex, prompt in D:/tmp/ill3/gen-cover.sh | delivered |
 | film/ill-kit-16x9.webp | Project: the development kit | Codex | delivered |
 | film/ill-grit-16x9.webp | Project: Grit | Codex | delivered |
 | film/ill-triaje-16x9.webp | Project: Guardia (Triaje) | Codex | delivered |

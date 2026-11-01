@@ -1,6 +1,7 @@
 import { Fragment } from "react"
 import { sceneAsset } from "@/features/film"
 import { ChapterIllustration } from "./chapter-illustration"
+import { ChapterWord } from "./chapter-word"
 import { experience } from "./content"
 
 const WORK_PHOTOS = {
@@ -49,7 +50,7 @@ export function Experience() {
   return (
     <section data-chapter="experience" id="experience" className="experience">
       <ChapterIllustration asset="ill-experience-16x9" fittedAsset="ill-experience-21x9" className="experience-band">
-        <h2 tabIndex={-1} className="chapter-heading">Experience</h2>
+        <ChapterWord id="experience" heading="h2" numeral="02" note={`${experience.length} employers`}>Experience</ChapterWord>
       </ChapterIllustration>
       <ul className="employers">
         {experience.map((employer, index) => (

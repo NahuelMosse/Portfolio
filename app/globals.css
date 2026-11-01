@@ -23,6 +23,20 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/general-sans-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/general-sans-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -143,7 +157,7 @@
 .corner-cta {
   display: inline-block;
   border: 1px solid var(--bone);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-rectangle);
   padding: var(--space-2) var(--space-3);
   background: var(--ink);
   color: var(--bone);
@@ -178,14 +192,20 @@
 }
 
 .top-hire {
-  border-color: var(--red);
-  background: var(--red);
+  border-color: var(--bone);
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.top-hire::after,
+.door::after {
+  content: " →";
 }
 
 .top-hire:hover {
-  background: var(--bone);
-  border-color: var(--bone);
-  color: var(--ink);
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--bone);
 }
 
 .menu-button,
@@ -300,21 +320,141 @@
   background: linear-gradient(to top, var(--ink-70), transparent 55%);
 }
 
-.scene-copy > :not(.offer, .contact, .employers) {
+.scene-copy > :not(.offer, .contact, .employers, .chapter-title, .cover-title) {
   max-width: 34rem;
 }
 
-.chapter-heading {
+/* ---------- chapter words: poster type, each with its own composition ---------- */
+
+.chapter-title {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: fit-content;
+  pointer-events: none;
+}
+
+.chapter-word {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--size-chapter-title);
-  line-height: 1.05;
+  font-size: var(--size-word-phone);
+  line-height: var(--poster-leading);
   letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--bone);
+  mix-blend-mode: difference;
 }
 
-.projects > .chapter-heading {
-  padding: var(--space-7) var(--gutter-right) var(--space-4) var(--gutter-left);
+.chapter-word[data-long] {
+  font-size: var(--size-word-long-phone);
+}
+
+@media (min-width: 701px) {
+  .chapter-word {
+    font-size: var(--size-word);
+    white-space: nowrap;
+  }
+
+  .chapter-word[data-long] {
+    font-size: var(--size-word-long);
+  }
+}
+
+/* fine detail around the word: numeral, a thin rule, a catalog line, a four-point star */
+.chapter-detail {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+}
+
+.chapter-detail i {
+  flex: 0 0 var(--space-6);
+  border-top: var(--rule) solid var(--bone-70);
+}
+
+.chapter-detail b {
+  width: var(--space-3);
+  height: var(--space-3);
+  background: var(--bone);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+
+/* projects: flush left, no illustration of its own; it hangs over the top of the first project */
+.chapter-title[data-chapter-title="projects"] {
+  margin-top: var(--space-6);
+  padding-left: var(--gutter-left);
+  margin-bottom: calc(var(--word-clearance) * -1);
+}
+
+.chapter-title[data-chapter-title="projects"] .chapter-word {
+  margin-left: calc(var(--gutter-left) * -1);
+}
+
+/* experience: flush to the right edge, dropping below the band into the first employer */
+.experience-band .chapter-title {
+  align-self: flex-end;
+  align-items: flex-end;
+  width: max-content;
+  margin-right: calc(var(--gutter-right) * -1);
+}
+
+.experience-band .chapter-detail {
+  padding-right: var(--gutter-right);
+}
+
+/* the last letter's serif overhangs its advance, so it keeps a little room before the edge */
+.experience-band .chapter-word {
+  padding-right: var(--space-3);
+  transform: translateY(var(--poster-drop));
+}
+
+/* offer: outlined, flush left, the whole title rising across the top edge of its illustration */
+.offer-scene .chapter-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: var(--gutter-left);
+  transform: translateY(-60%);
+}
+
+.offer-scene .scene-copy {
+  padding-top: calc(var(--size-word-phone) * 0.5);
+}
+
+@media (min-width: 701px) {
+  .offer-scene .scene-copy {
+    padding-top: calc(var(--size-word) * 0.5);
+  }
+}
+
+.offer-scene .chapter-word {
+  margin-left: calc(var(--gutter-left) * -1);
+  color: transparent;
+  -webkit-text-stroke: var(--rule) var(--bone);
+  mix-blend-mode: normal;
+}
+
+/* let's talk: crimson, along the bottom of its illustration, dropping into the credits */
+.contact-scene .chapter-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding-left: var(--gutter-left);
+}
+
+.contact-scene .chapter-word {
+  margin-left: calc(var(--gutter-left) * -1);
+  color: var(--red);
+  mix-blend-mode: normal;
+  transform: translateY(var(--poster-drop));
 }
 
 /* ---------- cold open ---------- */
@@ -329,13 +469,18 @@
 }
 
 .cover-scene .scene-copy {
-  justify-content: flex-start;
-  align-items: center;
-  padding-top: calc(var(--top-bar-height) + var(--space-4));
   background: none;
 }
 
-.cover-scene .scene-copy > * {
+/* NAWI is poster type set flush to one edge and crossing his head: it inverts against the lit parts of the drawing */
+.cover-title {
+  position: absolute;
+  top: calc(var(--top-bar-height) + var(--space-3));
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
   max-width: none;
 }
 
@@ -343,26 +488,45 @@
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 25vw;
-  line-height: 1;
+  font-size: var(--size-nawi);
+  line-height: var(--poster-leading);
   letter-spacing: -0.02em;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  color: var(--bone);
+  mix-blend-mode: difference;
 }
 
 .professional-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   margin: 0;
-  font-size: 1rem;
-  letter-spacing: 0.32em;
+  padding-inline: var(--space-3);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
   text-transform: uppercase;
 }
 
-/* the cover illustration starts below the name: the lettering sits on the black above his head */
-.cover-scene .scene-art {
-  top: 30svh;
+.professional-name i {
+  flex: 0 0 var(--space-6);
+  border-top: var(--rule) solid var(--bone-70);
 }
 
 .cover-scene .scene-art img {
-  object-position: center top;
+  object-position: center;
+}
+
+@media (min-width: 701px) {
+  .cover-title {
+    right: 0;
+    left: auto;
+    align-items: flex-end;
+  }
+
+  .professional-name {
+    padding-inline: 0 var(--gutter-right);
+  }
 }
 
 .cover-foot {
@@ -372,49 +536,71 @@
   padding: var(--space-5) var(--gutter-right) var(--space-5) var(--gutter-left);
 }
 
+/* the identification sheet is fine type ruled by hairlines, with no box around it */
 .id-sheet {
   max-width: 24rem;
-  padding: var(--space-4);
-  border: 1px solid var(--bone-30);
-  background: var(--ink-85);
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .sheet-title {
-  margin: 0 0 var(--space-3);
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
   text-transform: uppercase;
 }
 
+.id-sheet dl {
+  margin: 0;
+}
+
+.sheet-row {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-top: var(--rule) solid var(--bone-35);
+}
+
 .id-sheet dt {
-  letter-spacing: var(--label-tracking);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
   text-transform: uppercase;
   opacity: 0.7;
 }
 
 .id-sheet dd {
-  margin: 0 0 var(--space-2);
+  margin: 0;
+  font-size: var(--text-body);
+}
+
+.sheet-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.sheet-head .sheet-title {
+  margin: 0;
 }
 
 .sheet-photos {
   display: flex;
   gap: var(--space-2);
-  margin-bottom: var(--space-3);
 }
 
 .sheet-photo {
-  flex: 0 1 40%;
+  flex: 0 0 var(--sheet-photo-width);
   aspect-ratio: 4 / 5;
 }
 
 .hero-line {
   max-width: 28rem;
   margin: 0;
-  font-size: 1.125rem;
+  font-size: var(--text-body);
 }
 
 .hero-line strong {
@@ -791,11 +977,14 @@
   list-style: none;
   font-family: var(--font-label);
   font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
 }
 
+/* a stack item is a word under one line in the project's spot color, not a box */
 .stack li {
-  padding: var(--space-1) var(--space-2);
-  border: 1px solid var(--spot);
+  padding: var(--space-1) 0;
+  border-bottom: var(--rule) solid var(--spot);
   color: var(--bone);
 }
 
@@ -821,6 +1010,8 @@
   gap: var(--space-2) var(--space-4);
   font-family: var(--font-label);
   font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
 }
 
 .links a {
@@ -840,9 +1031,14 @@
   min-height: var(--art-band);
 }
 
+.experience-band {
+  margin-bottom: var(--word-clearance);
+}
+
 .experience-band .scene-copy {
-  justify-content: center;
+  justify-content: flex-end;
   min-height: var(--art-band);
+  padding-bottom: 0;
 }
 
 .employers {
@@ -885,12 +1081,19 @@
 .employer-title,
 .employer-period {
   margin: 0;
-  font-family: var(--font-label);
-  font-size: var(--text-small);
+}
+
+.employer-title {
+  font-size: var(--text-body);
+  font-weight: 500;
 }
 
 .employer-period {
   color: var(--muted-foreground);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
 }
 
 /* the illustration of the employer's system in use: drawn, so it dissolves into the page instead of sitting in a frame */
@@ -980,11 +1183,12 @@
 .status-tag {
   display: inline-block;
   padding: 0 var(--space-2);
-  background: var(--red);
-  color: var(--bone);
+  background: var(--bone);
+  color: var(--ink);
   font-family: var(--font-label);
   font-size: var(--text-small);
-  letter-spacing: var(--label-tracking);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
 }
 
 .employer[data-current="false"] .status-tag {
@@ -1061,19 +1265,27 @@
   justify-content: center;
 }
 
+/* a door is fine type under one hairline, not a box */
 .folder {
-  padding: var(--space-4);
-  border: 1px solid var(--bone-30);
-  background: var(--ink-85);
+  padding: var(--space-3) 0 0;
+  border-top: var(--rule) solid var(--bone-70);
+  background: linear-gradient(to bottom, var(--ink-70), transparent);
 }
 
 .folder-tab {
   margin: 0 0 var(--space-2);
-  color: var(--red);
   font-family: var(--font-label);
   font-size: var(--text-small);
-  letter-spacing: var(--label-tracking);
+  letter-spacing: var(--label-tracking-fine);
   text-transform: uppercase;
+}
+
+.offer-scene {
+  margin-top: var(--word-clearance);
+}
+
+.contact-scene {
+  margin-bottom: var(--word-clearance);
 }
 
 .folder h3 {
@@ -1090,13 +1302,15 @@
 .door {
   display: block;
   margin-top: var(--space-3);
-  padding: var(--space-2) var(--space-4);
-  background: var(--red);
-  color: var(--bone);
-  border: 1px solid var(--red);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bone);
+  color: var(--ink);
+  border: 1px solid var(--bone);
+  border-radius: var(--radius-rectangle);
   font-family: var(--font-label);
   font-size: var(--text-small);
-  letter-spacing: var(--label-tracking);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
   text-align: center;
   transition:
     background var(--motion-control) var(--ease-out),
@@ -1105,7 +1319,9 @@
 }
 
 .door:hover {
-  background: var(--ink);
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--bone);
 }
 
 .hero-door {
@@ -1113,20 +1329,12 @@
   margin: 0;
 }
 
-.contact h3 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: var(--size-chapter-title);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-}
-
 .contact-rows {
   max-width: 28rem;
   margin: var(--space-4) 0 0;
   padding: 0;
   list-style: none;
-  font-family: var(--font-label);
+  font-size: var(--text-body);
 }
 
 .contact-rows li {
@@ -1159,8 +1367,7 @@
   display: grid;
   gap: var(--space-4);
   padding: var(--space-6) var(--gutter-right) var(--space-4) var(--gutter-left);
-  font-family: var(--font-label);
-  font-size: var(--text-small);
+  font-size: var(--text-body);
   line-height: 1.6;
 }
 
@@ -1193,6 +1400,8 @@
   padding-bottom: var(--space-5);
   font-family: var(--font-label);
   font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
   text-align: center;
 }
 
@@ -1218,8 +1427,8 @@
   left: var(--space-3);
   z-index: 2;
   padding: 0 var(--space-2);
-  background: var(--red);
-  color: var(--bone);
+  background: var(--bone);
+  color: var(--ink);
   font-family: var(--font-label);
   font-size: var(--text-small);
   letter-spacing: var(--label-tracking);
@@ -1470,8 +1679,8 @@
     align-items: center;
     justify-content: center;
     min-height: var(--hire-bar-height);
-    background: var(--red);
-    color: var(--bone);
+    background: var(--bone);
+    color: var(--ink);
     font-family: var(--font-label);
     font-size: 1.25rem;
     letter-spacing: var(--label-tracking);
@@ -1495,18 +1704,14 @@
   }
 
   /* the phone cover is portrait: the illustration fills the screen and the lettering lies over its dark top */
-  .cover-scene .scene-art {
-    top: 0;
-  }
-
   .cover-scene .scene-copy {
     padding-inline: 0;
   }
 
-  .mark {
-    font-size: 42vw;
-    line-height: 0.9;
-    white-space: nowrap;
+  /* on the phone the name rides above NAWI so the letters cross his hair, not the line */
+  .cover-title {
+    top: calc(var(--space-7) + var(--space-3));
+    flex-direction: column-reverse;
   }
 
   .spread h3 {

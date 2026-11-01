@@ -1,5 +1,6 @@
 import { SceneMedia, sceneAsset } from "@/features/film";
 import { projects, type Project } from "./content";
+import { ChapterWord } from "./chapter-word";
 import { Piece } from "./piece";
 import { PieceRow } from "./piece-row";
 import { ProjectScene, type DeviceKind } from "./project-scene";
@@ -98,9 +99,9 @@ function ProjectText({ project }: { project: Project }) {
 export function Projects() {
   return (
     <section data-chapter="projects" id="projects" className="projects">
-      <h2 tabIndex={-1} className="chapter-heading">
+      <ChapterWord id="projects" heading="h2" numeral="01" note={`${projects.length} projects`}>
         Projects
-      </h2>
+      </ChapterWord>
       {projects.map((project) => {
         const scene = SCENES[project.id];
         if (!scene)

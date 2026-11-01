@@ -37,7 +37,7 @@ All in `design/tokens.css`.
 
 - Color: black `--ink`, bone cream `--bone` and one accent `--red`, plus tints of each by percentage (`--red-16`, `--bone-35`, `--ink-70`). Bone text on `--ink` and on `--red` meets 4.5:1. Nothing else is saturated.
 - Space: 4 8 16 24 40 64 112 (`--space-1` to `--space-7`).
-- Radius: `--radius-pill` for controls, `--radius-round` for the lamp pool. No shadows: separation is by thin line and by the desk image.
+- Radius: `--radius-rectangle` (0) for controls, `--radius-round` for the lamp pool. No shadows: separation is by thin line and by the desk image.
 - Motion: `out` cubic-bezier(.16,1,.3,1) at `--motion-control` 200 ms for controls and `--motion-section` 900 ms for the section moves; the roll and marquee have their own long durations; press scales to `--press-scale`. Only transform, opacity and color move.
 - Layout constants: `--poster-descent`, `--seam-height`, `--lamp-size`, `--hire-bar-height`.
 

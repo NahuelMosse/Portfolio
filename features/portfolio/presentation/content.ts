@@ -138,7 +138,7 @@ export const projects: readonly Project[] = [
     what: "The site of a fictional canned mate soda brand, a design piece.",
     problem: "A new brand needs an identity that is felt before it is read.",
     role: "I did the art direction, the motion and the code.",
-    line: "Brand site for a fictional mate soda. Art direction, motion, code.",
+    line: "Built with my dev kit: Claude Code agents, every behavior tested.",
     stack: ["Landing site", "Motion", "GitHub Pages"],
     links: [{ label: "Visit the site", href: "https://nahuelmosse.github.io/cebador-landing/" }],
     pieces: [
@@ -169,7 +169,7 @@ export const projects: readonly Project[] = [
     what: "A Flutter app with a REST API to book sports courts.",
     problem: "Reserving a court by message is slow and double reservations happen.",
     role: "I built the app and the API.",
-    line: "App and API to book sports courts. I built both.",
+    line: "Built with my dev kit: specs first, then Claude Code agents.",
     stack: ["Flutter", "REST API"],
     links: [{ label: "Repository", href: "https://github.com/NahuelMosse/ClubNahuelMosse" }],
     pieces: [

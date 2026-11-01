@@ -1,5 +1,6 @@
 import { CreditsRoll, type RollBand } from "@/features/film"
 import { ChapterIllustration } from "./chapter-illustration"
+import { ChapterWord } from "./chapter-word"
 import { credits, identity } from "./content"
 import { Offer } from "./offer"
 
@@ -19,12 +20,12 @@ export function EndCredits() {
   return (
     <section data-chapter="end-credits" id="end-credits" className="credits">
       <ChapterIllustration asset="ill-offer-16x9" className="offer-scene">
-        <h2 tabIndex={-1} className="chapter-heading">Offer</h2>
+        <ChapterWord id="offer" heading="h2" numeral="03" note="Two doors">Offer</ChapterWord>
         <Offer />
       </ChapterIllustration>
       <ChapterIllustration asset="ill-contact-16x9" className="contact-scene">
         <div className="contact">
-          <h3 id="contact-title" tabIndex={-1}>Let&rsquo;s talk</h3>
+          <ChapterWord id="contact" heading="h3" headingId="contact-title" numeral="04" note={identity.base}>Let&rsquo;s talk</ChapterWord>
           <ul className="contact-rows">
             {contactRows.map((row) => (
               <li key={row.id} data-secondary={row.id === "github" ? "" : undefined}>
