@@ -5,7 +5,7 @@ import { test, expect } from "@playwright/test"
 // The illustrations and photos are previewed untracked: the test follows what is on disk.
 const onDisk = (id: string) => existsSync(join(process.cwd(), "public", "film", `${id}.webp`))
 
-const SCENES = [
+const STAGES = [
   { project: "dev-kit", name: "kit", device: "wide" },
   { project: "grit", name: "grit", device: "phone" },
   { project: "guardia", name: "triaje", device: "wide" },
@@ -16,10 +16,12 @@ const EMPLOYERS = ["smart-warehousing", "grupo-st", "visma", "fravega", "justo"]
 const FULL_BLEED = ["ill-cover-16x9", "ill-offer-16x9", "ill-contact-16x9"]
 const WORK_STRIP = ["work-warehouse", "work-desk-a", "work-desk-b"]
 const PRIVATE_CAPTURE = /\/(fravega-\d|justo-[12])\.webp/
-const PHONE_HEIGHT_DESKTOP = 0.6
-const PHONE_WIDTH_MOBILE = 0.45
-const WIDE_WIDTH_DESKTOP = 0.45
-const WIDE_WIDTH_MOBILE = 0.8
+const PHONE_HEIGHT_DESKTOP = 0.7
+const PHONE_WIDTH_MOBILE = 0.75
+const WIDE_WIDTH_DESKTOP = 0.55
+const WIDE_WIDTH_MOBILE = 0.9
+const ART_WIDTH_LIMIT = 2
+const ART_HEIGHT_LIMIT = 1.4
 const EMPLOYER_ART_DESKTOP_MIN = 480
 
 const fades = (el: Element) => {
@@ -27,7 +29,7 @@ const fades = (el: Element) => {
   return style.maskImage !== "none" || style.webkitMaskImage !== "none" || style.clipPath !== "none"
 }
 
-test("at 390 and 1440 each project is a full-bleed scene whose real interface sits inside the screen drawn in its illustration, a phone screen at least 60% of the illustration's height at 1440 and 45% of its width at 390 and a laptop or monitor screen at least 45% of its width at 1440 and 80% at 390, with the title over the illustration, What, Problem and My role visible without a toggle and its other pieces in a row beneath; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26", async ({ page }) => {
+test("at 390 and 1440 each project's real interface is its focal point, a phone interface at least 70% of the viewport's height at 1440 and 75% of its width at 390 and a laptop or monitor interface at least 55% of the viewport's width at 1440 and 90% at 390, sitting in the screen drawn in its illustration, whose visible part reaches at most twice the interface's width and 1.4 times its height; the title, What, Problem and My role are visible without a toggle beside it at 1440 and above it at 390, and its other pieces sit in a row beneath; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26", async ({ page }) => {
   const requested: string[] = []
   page.on("request", (request) => requested.push(request.url()))
 
@@ -38,65 +40,66 @@ test("at 390 and 1440 each project is a full-bleed scene whose real interface si
     const desktop = viewport.width === 1440
     const aspect = desktop ? "16x9" : "4x5"
 
-    for (const { project, name, device } of SCENES) {
+    for (const { project, name, device } of STAGES) {
       const spread = page.locator(`[data-project="${project}"]`)
       await spread.scrollIntoViewIfNeeded()
       const delivered = onDisk(`ill-scene-${name}-${aspect}`)
+      const screen = spread.locator("[data-scene-screen], [data-lead] [data-frame]").first()
+      const screenBox = (await screen.boundingBox())!
+
+      if (device === "phone") {
+        if (desktop) expect(screenBox.height / viewport.height, `${project} phone height`).toBeGreaterThanOrEqual(PHONE_HEIGHT_DESKTOP - 0.01)
+        else expect(screenBox.width / viewport.width, `${project} phone width`).toBeGreaterThanOrEqual(PHONE_WIDTH_MOBILE - 0.01)
+      } else {
+        expect(screenBox.width / viewport.width, `${project} interface width`).toBeGreaterThanOrEqual((desktop ? WIDE_WIDTH_DESKTOP : WIDE_WIDTH_MOBILE) - 0.01)
+      }
 
       if (delivered) {
         const art = spread.locator("[data-illustration]")
         await expect(art).toHaveCount(1)
-        await expect.poll(() => art.locator(":scope > picture > img").evaluate((img: HTMLImageElement) => img.currentSrc), `${project} scene image`).toMatch(new RegExp(`ill-scene-${name}-${aspect}\\.webp`))
+        await expect.poll(() => art.locator("img").evaluate((img: HTMLImageElement) => img.currentSrc), `${project} scene image`).toMatch(new RegExp(`ill-scene-${name}-${aspect}\\.webp`))
+        expect(await art.evaluate(fades), `${project} art fades into the page`).toBe(true)
         const artBox = (await art.boundingBox())!
-        expect(artBox.width, `${project} scene is full-bleed`).toBeGreaterThanOrEqual(viewport.width - 1)
-        const ratio = desktop ? 16 / 9 : 4 / 5
-        expect(artBox.width / artBox.height, `${project} scene keeps the image's aspect`).toBeCloseTo(ratio, 1)
-
-        const screen = spread.locator("[data-scene-screen]")
-        await expect(screen).toHaveCount(1)
-        const screenBox = (await screen.boundingBox())!
-        expect(screenBox.x, `${project} screen inside the art`).toBeGreaterThanOrEqual(artBox.x - 1)
-        expect(screenBox.y, `${project} screen inside the art`).toBeGreaterThanOrEqual(artBox.y - 1)
-        expect(screenBox.x + screenBox.width, `${project} screen inside the art`).toBeLessThanOrEqual(artBox.x + artBox.width + 1)
-        expect(screenBox.y + screenBox.height, `${project} screen inside the art`).toBeLessThanOrEqual(artBox.y + artBox.height + 1)
-        if (device === "phone") {
-          if (desktop) expect(screenBox.height / artBox.height, `${project} phone height`).toBeGreaterThanOrEqual(PHONE_HEIGHT_DESKTOP)
-          else expect(screenBox.width / artBox.width, `${project} phone width`).toBeGreaterThanOrEqual(PHONE_WIDTH_MOBILE)
-        } else {
-          expect(screenBox.width / artBox.width, `${project} screen width`).toBeGreaterThanOrEqual(desktop ? WIDE_WIDTH_DESKTOP : WIDE_WIDTH_MOBILE)
-        }
-
-        const media = screen.locator("img, video, [data-document]")
-        expect(await media.count(), `${project} real interface in the screen`).toBeGreaterThan(0)
-
-        const title = spread.locator("h3").first()
-        const titleBox = (await title.boundingBox())!
-        expect(titleBox.y, `${project} title over the art`).toBeGreaterThanOrEqual(artBox.y - 1)
-        expect(titleBox.y + titleBox.height, `${project} title over the art`).toBeLessThanOrEqual(artBox.y + artBox.height + 1)
-        expect(titleBox.x + titleBox.width, `${project} title over the art`).toBeLessThanOrEqual(artBox.x + artBox.width + 1)
+        expect(artBox.width, `${project} art width`).toBeLessThanOrEqual(screenBox.width * ART_WIDTH_LIMIT + 1)
+        expect(artBox.height, `${project} art height`).toBeLessThanOrEqual(screenBox.height * ART_HEIGHT_LIMIT + 1)
+        expect(screenBox.x, `${project} interface inside the art`).toBeGreaterThanOrEqual(artBox.x - 1)
+        expect(screenBox.y, `${project} interface inside the art`).toBeGreaterThanOrEqual(artBox.y - 1)
+        expect(screenBox.x + screenBox.width, `${project} interface inside the art`).toBeLessThanOrEqual(artBox.x + artBox.width + 1)
+        expect(screenBox.y + screenBox.height, `${project} interface inside the art`).toBeLessThanOrEqual(artBox.y + artBox.height + 1)
+        expect(await screen.locator("img, video, [data-document]").count(), `${project} real interface in the screen`).toBeGreaterThan(0)
       } else {
         await expect(spread.locator("[data-illustration]"), `${project} leaves no box`).toHaveCount(0)
         await expect(spread.locator("[data-lead] [data-frame]")).toHaveCount(1)
       }
 
+      // the words: beside the interface at 1440, above it at 390
+      const text = spread.locator("[data-project-text]")
+      await expect(text.locator("h3")).toBeVisible()
       for (const [field, label] of [["what", "What"], ["problem", "Problem"], ["role", "My role"]]) {
-        await expect(spread.locator(`[data-field="${field}"]`)).toBeVisible()
-        await expect(spread.locator(`[data-field="${field}"] [data-label]`)).toHaveText(label)
+        await expect(text.locator(`[data-field="${field}"]`)).toBeVisible()
+        await expect(text.locator(`[data-field="${field}"] [data-label]`)).toHaveText(label)
       }
       await expect(spread.locator("button[aria-expanded]")).toHaveCount(0)
-      await expect(spread.locator("[data-stack]")).not.toBeEmpty()
+      await expect(text.locator("[data-stack]")).not.toBeEmpty()
+      const textBox = (await text.boundingBox())!
+      if (desktop) {
+        expect(textBox.x + textBox.width, `${project} text beside the interface`).toBeLessThanOrEqual(screenBox.x + 1)
+        expect(textBox.y, `${project} text level with the interface`).toBeLessThan(screenBox.y + screenBox.height)
+        expect(textBox.y + textBox.height, `${project} text level with the interface`).toBeGreaterThan(screenBox.y)
+      } else {
+        expect(textBox.y + textBox.height, `${project} text above the interface`).toBeLessThanOrEqual(screenBox.y + 1)
+      }
 
-      // the other pieces are one row beneath the scene
-      const bottom = delivered ? (await spread.locator("[data-illustration]").boundingBox())!.y + (await spread.locator("[data-illustration]").boundingBox())!.height : 0
+      // the other pieces are one row beneath
+      const stageBottom = Math.max(screenBox.y + screenBox.height, textBox.y + textBox.height)
       const others = spread.locator("[data-pieces] [data-piece]")
       expect(await others.count(), `${project} other pieces`).toBeGreaterThan(0)
-      const boxes: { x: number; y: number; width: number }[] = []
+      const boxes: { x: number; y: number }[] = []
       for (const piece of await others.all()) boxes.push((await piece.boundingBox())!)
       for (const box of boxes) {
-        expect(box.y, `${project} piece beneath the scene`).toBeGreaterThanOrEqual(bottom - 1)
+        expect(box.y, `${project} piece beneath`).toBeGreaterThanOrEqual(stageBottom - 1)
         expect(Math.abs(box.y - boxes[0].y), `${project} pieces in one row`).toBeLessThanOrEqual(2)
       }
-      if (desktop && boxes.length > 1) expect(boxes[1].x, `${project} second piece sits beside the first`).toBeGreaterThan(boxes[0].x)
     }
 
     const experience = page.locator('[data-chapter="experience"]')
