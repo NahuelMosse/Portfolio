@@ -3,6 +3,7 @@ import { HeroPoster } from "@/features/portfolio/presentation/hero-poster"
 import { Projects } from "@/features/portfolio/presentation/projects"
 import { Experience } from "@/features/portfolio/presentation/experience"
 import { EndCredits } from "@/features/portfolio/presentation/end-credits"
+import { doorHref, offer } from "@/features/portfolio/presentation/content"
 import { getStructuredData } from "@/lib/machine-readable"
 
 const CHAPTERS = [
@@ -17,7 +18,12 @@ export default function Home() {
 
   return (
     <>
-      <FilmShell chapters={CHAPTERS} skipLabel="Skip intro" cta={{ label: "Let’s talk", href: "#end-credits" }}>
+      <FilmShell
+        chapters={CHAPTERS}
+        skipLabel="Skip intro"
+        cta={{ label: "Let’s talk", href: "#end-credits" }}
+        hire={{ label: "Hire me", href: doorHref(offer.freelance) }}
+      >
         <HeroPoster />
         <Projects />
         <Experience />

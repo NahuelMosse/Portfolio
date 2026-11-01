@@ -1,16 +1,19 @@
-import { Chapter, Reveal, SceneMedia, sceneAsset } from "@/features/film"
+import { Chapter, Reveal, SeamFigure } from "@/features/film"
 import { experience } from "./content"
 import { Piece } from "./piece"
+import { PieceRow } from "./piece-row"
 
+// Experience is a typed record on the dark: employer, period, then what, problem and role.
 export function Experience() {
   return (
-    <Chapter id="experience" label="Experience" torn="right" seamSide="left" title={<>Where I <em>served</em></>}>
-      <SceneMedia
-        asset="pf-world-16x9"
-        poster={sceneAsset("pf-world-16x9", "webp")}
-        tallPoster={sceneAsset("pf-world-9x16", "webp")}
-        className="world-media"
-      />
+    <Chapter
+      id="experience"
+      label="Experience"
+      number="03"
+      torn="right"
+      seam={<SeamFigure side="left" toward="experience" asset="pf-him-closeup" photo="close-crop" />}
+      title={<>Where I <em>served</em></>}
+    >
       {experience.map((employer) => (
         <Reveal
           key={employer.id}
@@ -22,12 +25,6 @@ export function Experience() {
           <header className="story-text">
             <h3>{employer.name}</h3>
             <span className="period">{employer.period}</span>
-            <SceneMedia
-              asset={`pf-exp-${employer.id}-16x9`}
-              poster={sceneAsset(`pf-exp-${employer.id}-16x9`, "webp")}
-              alt={`${employer.name}, painted`}
-              className="scene-wide"
-            />
           </header>
           <div>
             <p data-field="what">{employer.what}</p>
@@ -35,11 +32,11 @@ export function Experience() {
             <p data-field="role">{employer.role}</p>
           </div>
           {employer.pieces.length > 0 && (
-            <div className="pieces">
+            <PieceRow count={employer.pieces.length}>
               {employer.pieces.map((piece) => (
                 <Piece key={piece.caption} piece={piece} />
               ))}
-            </div>
+            </PieceRow>
           )}
         </Reveal>
       ))}

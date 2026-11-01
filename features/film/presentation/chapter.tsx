@@ -2,21 +2,22 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
-import { SeamFigure } from "./seam-figure"
 
 type ChapterProps = {
   id: string
   label: string
+  // two digits, shown on the thread at the left edge on phones
+  number: string
   title: ReactNode
-  // side of the seam figure that crosses this chapter's top edge into the one above
-  seamSide: "left" | "right"
-  // side of the torn paper scrap laid over the fresco on this chapter's bottom edge; none on the last chapter
+  // the photo of him that stands on this chapter's top edge (a server-rendered SeamFigure)
+  seam: ReactNode
+  // side of the torn scrap on this chapter's bottom edge; none on the last chapter
   torn?: "left" | "right"
   className?: string
   children: ReactNode
 }
 
-export function Chapter({ id, label, title, seamSide, torn, className, children }: ChapterProps) {
+export function Chapter({ id, label, number, title, seam, torn, className, children }: ChapterProps) {
   const section = useRef<HTMLElement>(null)
   const card = useRef<HTMLDivElement>(null)
   const [entered, setEntered] = useState(false)
@@ -38,7 +39,8 @@ export function Chapter({ id, label, title, seamSide, torn, className, children 
   return (
     <section ref={section} data-chapter={id} className={`chapter ${className ?? ""}`}>
       <div data-media className="chapter-media" aria-hidden="true" />
-      <SeamFigure side={seamSide} toward={id} />
+      <span data-spine-number="" className="spine-number" aria-hidden="true">{number}</span>
+      {seam}
       <div ref={card} data-title-card data-entered={entered} className="title-card">
         {label}
       </div>

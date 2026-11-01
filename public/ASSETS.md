@@ -118,6 +118,41 @@ Real pieces (screens, captures, photos) are not generated: they are listed in th
 - Status: gap
 - Prompt: Slow neo-noir ambient loop, soft upright bass, brushed drums far away, light rain and a low warm synth pad, no vocals, calm and late-night, seamless loop of about two minutes. It plays only when the visitor presses the sound toggle.
 
+## pf-him-front
+- File: film/pf-him-front.webp
+- Tool: Photo by the owner
+- License: shot by the owner, his to publish, metadata stripped
+- Status: gap
+- Prompt: Not generated. Photo of the owner standing, front shot, holding a sealed envelope at chest height, lit by one hard warm lamp from the upper right against a dark wall; cut out on transparent background, 4:5.
+
+## pf-him-closeup
+- File: film/pf-him-closeup.webp
+- Tool: Photo by the owner
+- License: shot by the owner, his to publish, metadata stripped
+- Status: gap
+- Prompt: Not generated. Three-quarter close crop of the owner, same lamp and wall, cut out on transparent background, 4:5.
+
+## pf-him-profile
+- File: film/pf-him-profile.webp
+- Tool: Photo by the owner
+- License: shot by the owner, his to publish, metadata stripped
+- Status: gap
+- Prompt: Not generated. Profile of the owner looking toward the lamp, same lamp and wall, cut out on transparent background, 4:5.
+
+## pf-id-front
+- File: film/pf-id-front.webp
+- Tool: Photo by the owner
+- License: shot by the owner, his to publish, metadata stripped
+- Status: gap
+- Prompt: Not generated. Small ID-style front photo of the owner against a plain dark wall, 4:5.
+
+## pf-id-profile
+- File: film/pf-id-profile.webp
+- Tool: Photo by the owner
+- License: shot by the owner, his to publish, metadata stripped
+- Status: gap
+- Prompt: Not generated. Small ID-style profile photo of the owner against a plain dark wall, 4:5.
+
 ## Real pieces
 
 Captured or fetched by the session from the live pages and repositories of the owner, converted to webp (stills) and webm (captures), metadata stripped.

@@ -46,9 +46,12 @@
 
   /* the descent of a poster word: its line height is under 0.9, so the glyphs hang below the box */
   --poster-descent: 0.2em;
-  --seam-height: 160px;
-  --disc-size: min(70vw, 560px);
+  --seam-height: 320px;
+  --lamp-size: min(90vw, 760px);
+  --hire-bar-height: 56px;
+  --text-small: 0.875rem;
 
+  --font-label: "Courier Prime", monospace;
   --font-display: "Boska", serif;
   --font-text: "General Sans", sans-serif;
 

@@ -4,8 +4,12 @@ import { useEffect, useRef, useState } from "react"
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 
 type Point = { x: number; y: number }
-type Geometry = { width: number; height: number; trunk: string; nodes: { id: string; at: Point }[]; branches: string[] }
+type Geometry = { width: number; height: number; trunk: string; nodes: { id: string; at: Point }[]; branches: string[]; ties: string[] }
 
+const PHONE_WIDTH = 700
+// on a phone the thread is the spine at the left edge
+const SPINE_X = 20
+const TIE_REACH = 28
 const SWING = 0.06
 const DOOR_GAP = 24
 const BRANCHES_START = 0.9
@@ -21,24 +25,33 @@ function measure(host: HTMLElement): Geometry | null {
   const frame = host.getBoundingClientRect()
   const locate = (el: Element) => {
     const r = el.getBoundingClientRect()
-    return { x: r.left - frame.left + r.width / 2, y: r.top - frame.top + r.height / 2, top: r.top - frame.top, width: r.width }
+    return { x: r.left - frame.left + r.width / 2, y: r.top - frame.top + r.height / 2, top: r.top - frame.top, bottom: r.bottom - frame.top, width: r.width }
   }
-  const card = host.querySelector("[data-sealed-card]")
+  const envelope = host.querySelector("[data-sealed-envelope]")
+  const file = host.querySelector("[data-sealed-file]")
   const doors = [...host.querySelectorAll("[data-doors] a[href^='mailto:']")]
-  if (!card || doors.length !== 2) return null
+  if (!envelope || !file || doors.length !== 2) return null
 
-  const start = locate(card)
+  const start = locate(envelope)
+  const sealedFile = locate(file)
   const doorPlaces = doors.map(locate)
+  const spine = frame.width < PHONE_WIDTH
   const stops = [...host.querySelectorAll("[data-thread-stop]")].map((el, index) => {
     const place = locate(el)
     const side = index % 2 === 0 ? SWING : 1 - SWING
-    return { id: el.getAttribute("data-thread-stop") ?? String(index), at: { x: frame.width * side, y: place.y } }
+    const x = spine ? SPINE_X : frame.width * side
+    return { id: el.getAttribute("data-thread-stop") ?? String(index), at: { x, y: place.y } }
   })
   const fork = { x: (doorPlaces[0].x + doorPlaces[1].x) / 2, y: doorPlaces[0].top - DOOR_GAP * 2 }
   const route = [{ x: start.x, y: start.y }, ...stops.map((s) => s.at), fork]
   const trunk = route.slice(1).reduce((d, point, i) => `${d} ${smooth(route[i], point)}`, `M ${route[0].x} ${route[0].y}`)
   const branches = doorPlaces.map((door) => `M ${fork.x} ${fork.y} ${smooth(fork, { x: door.x, y: door.top })}`)
-  return { width: frame.width, height: frame.height, trunk, nodes: stops, branches }
+  // each branch carries on from its door and ties around the sealed file, one end on each side of the seal
+  const ties = doorPlaces.map((door, index) => {
+    const end = { x: sealedFile.x + (index === 0 ? -TIE_REACH : TIE_REACH), y: sealedFile.y }
+    return `M ${door.x} ${door.bottom} ${smooth({ x: door.x, y: door.bottom }, end)}`
+  })
+  return { width: frame.width, height: frame.height, trunk, nodes: stops, branches, ties }
 }
 
 export function CrimsonThread() {
@@ -77,6 +90,9 @@ export function CrimsonThread() {
           <motion.path data-thread-path="" d={geometry.trunk} style={{ pathLength: reduced ? 1 : trunkLength }} />
           {geometry.branches.map((d, index) => (
             <motion.path key={index} data-thread-branch="" d={d} style={{ pathLength: reduced ? 1 : branchLength }} />
+          ))}
+          {geometry.ties.map((d, index) => (
+            <motion.path key={`tie-${index}`} data-thread-tie="" d={d} style={{ pathLength: reduced ? 1 : branchLength }} />
           ))}
           {geometry.nodes.map((node) => (
             <circle key={node.id} data-thread-node={node.id} cx={node.at.x} cy={node.at.y} r={4} />

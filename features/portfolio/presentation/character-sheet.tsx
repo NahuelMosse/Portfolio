@@ -1,3 +1,4 @@
+import { SceneMedia, sceneAsset } from "@/features/film"
 import { identity } from "./content"
 
 function FourPointStar() {
@@ -8,22 +9,35 @@ function FourPointStar() {
   )
 }
 
+const PHOTOS = [
+  { asset: "pf-id-front", alt: "Nahuel Mosse, front" },
+  { asset: "pf-id-profile", alt: "Nahuel Mosse, profile" },
+] as const
+
+// The identification sheet clipped beside him: two small photos of him and the typed fields of the file.
 export function CharacterSheet() {
   return (
-    <aside data-sealed-card="" aria-label="Character sheet">
+    <aside data-id-sheet="" data-paper="id-sheet" aria-label="Identification sheet">
       <div data-frame className="sheet-frame">
         <FourPointStar />
+        <div className="sheet-photos">
+          {PHOTOS.map(({ asset, alt }) => (
+            <SceneMedia key={asset} asset={asset} poster={sceneAsset(asset, "webp")} alt={alt} className="sheet-photo" />
+          ))}
+        </div>
         <dl>
-          <dt>Class</dt>
+          <dt>Subject</dt>
+          <dd>{identity.mark}</dd>
+          <dt>Name</dt>
+          <dd>{identity.professionalName}</dd>
+          <dt>Role</dt>
           <dd>{identity.role}</dd>
           <dt>Base</dt>
           <dd>{identity.base}</dd>
-          <dt>Guild</dt>
-          <dd>{identity.guild}</dd>
-          <dt>Skills</dt>
-          <dd>{identity.skills.join(", ")}</dd>
+          <dt>Known for</dt>
+          <dd>{identity.knownFor}</dd>
         </dl>
-        <p data-off-duty>{identity.offDuty}</p>
+        <span data-stamp="" className="stamp">Active</span>
       </div>
       <span data-leader className="leader" aria-hidden="true" />
     </aside>

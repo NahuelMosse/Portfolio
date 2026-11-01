@@ -7,8 +7,7 @@ export const identity = {
   promise: "I design, build and lead digital products, and I put AI to work for them.",
   role: "Technical Lead · Technical Project Manager",
   base: "Buenos Aires",
-  guild: "Consultora Kovix",
-  skills: ["Product architecture", "Full-stack delivery", "AI-assisted engineering", "Technical leadership"],
+  knownFor: "designing, building and leading digital products",
   offDuty: "Off duty: CS2, Rocket League, Minecraft, Smite, The Witcher 3, Cyberpunk 2077, chess and Formula 1.",
   email: "nahuelgamail@gmail.com",
   github: "https://github.com/NahuelMosse",
@@ -227,7 +226,13 @@ export const offer = {
   },
 } as const
 
-export type CreditItem = { text: string; logo?: string }
+// The email a door opens: its own subject and its three prompts as the body.
+export const doorHref = ({ subject, prompts }: { subject: string; prompts: readonly string[] }) => {
+  const body = prompts.map((prompt, index) => `${index + 1}. ${prompt}`).join("\n")
+  return `mailto:${identity.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+}
+
+export type CreditItem ={ text: string; logo?: string }
 
 export const credits: { studies: readonly CreditItem[]; certifications: readonly CreditItem[] } = {
   studies: [
