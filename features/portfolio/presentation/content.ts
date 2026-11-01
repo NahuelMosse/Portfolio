@@ -26,15 +26,19 @@ export type Story = {
 
 // A real piece of work: a screen, a photo, a capture of a live page, or a text frame taken from a real card, test or pull request.
 export type Piece =
-  | { kind: "screen" | "photo"; src: string; alt: string; caption: string }
-  | { kind: "capture"; video: string; poster: string; alt: string; caption: string }
+  | { kind: "screen" | "photo"; frame: ScreenFrame; src: string; alt: string; caption: string }
+  | { kind: "capture"; frame: ScreenFrame; video: string; poster: string; alt: string; caption: string }
   | { kind: "card" | "tests" | "pull-request" | "link"; caption: string; lines: readonly string[]; href?: string }
 
-export type Project = Story & { links: readonly Link[]; pieces: readonly Piece[] }
-export type Employer = Story & { period: string; current?: boolean; pieces: readonly Piece[] }
+// What the piece is shown in: an app screen in a phone frame, a web page in a browser frame.
+export type ScreenFrame = "phone" | "browser"
 
-const screen = (src: string, alt: string, caption: string): Piece => ({
+export type Project = Story & { stack: string; links: readonly Link[]; pieces: readonly Piece[] }
+export type Employer = Story & { title: string; period: string; current?: boolean; logo?: string; pieces: readonly Piece[] }
+
+const screen = (frame: ScreenFrame, src: string, alt: string, caption: string): Piece => ({
   kind: "screen",
+  frame,
   src: `/film/pieces/${src}.webp`,
   alt,
   caption,
@@ -47,6 +51,7 @@ export const projects: readonly Project[] = [
     what: "A development kit where the requirement is frozen as a card and every behavior is proven by tests tagged to it.",
     problem: "Work built with AI agents drifts from what was asked, and nobody can tell which part was verified.",
     role: "I designed the method, the guards and the tools, and published the skills that stand alone.",
+    stack: "Node.js · Playwright · Claude Code",
     links: [
       { label: "motion-audit", href: "https://github.com/NahuelMosse/motion-audit" },
       { label: "http-attack", href: "https://github.com/NahuelMosse/http-attack" },
@@ -81,12 +86,13 @@ export const projects: readonly Project[] = [
     what: "A local-first training app for Android and iOS, built in Flutter with Riverpod and SQLite.",
     problem: "Training logs need to work in a gym with no signal and still feel instant.",
     role: "I rebuilt it from its specs, end to end: product, design lab and code.",
+    stack: "Flutter · Riverpod · SQLite",
     links: [],
     pieces: [
-      screen("grit-today", "Grit, the today screen of a training day", "Today"),
-      screen("grit-live", "Grit, a live training session", "A live session"),
-      screen("grit-progress", "Grit, the progress screen", "Progress"),
-      screen("grit-lab", "Grit design lab, the exercise illustrations", "The design lab"),
+      screen("phone", "grit-today", "Grit, the today screen of a training day", "Today"),
+      screen("phone", "grit-live", "Grit, a live training session", "A live session"),
+      screen("phone", "grit-progress", "Grit, the progress screen", "Progress"),
+      screen("browser", "grit-lab", "Grit design lab, the exercise illustrations", "The design lab"),
     ],
   },
   {
@@ -95,11 +101,12 @@ export const projects: readonly Project[] = [
     what: "A triage game for the browser, published as Triaje.",
     problem: "Deciding who is treated first under pressure is hard to explain and easy to play.",
     role: "I designed the rules and built the game.",
+    stack: "Browser game · itch.io",
     links: [{ label: "Play Triaje", href: "https://nahuelmosse.itch.io/triaje" }],
     pieces: [
-      screen("triaje-page", "The Triaje page on itch.io at desktop width", "Triaje on itch.io"),
-      screen("triaje-scrolled", "The Triaje page on itch.io, further down", "Further down the page"),
-      screen("triaje-mobile", "The Triaje page on itch.io on a phone", "On a phone"),
+      screen("browser", "triaje-page", "The Triaje page on itch.io at desktop width", "Triaje on itch.io"),
+      screen("browser", "triaje-scrolled", "The Triaje page on itch.io, further down", "Further down the page"),
+      screen("phone", "triaje-mobile", "The Triaje page on itch.io on a phone", "On a phone"),
     ],
   },
   {
@@ -108,10 +115,12 @@ export const projects: readonly Project[] = [
     what: "The site of a fictional canned mate soda brand, a design piece.",
     problem: "A new brand needs an identity that is felt before it is read.",
     role: "I did the art direction, the motion and the code.",
+    stack: "Landing site · motion · GitHub Pages",
     links: [{ label: "Visit the site", href: "https://nahuelmosse.github.io/cebador-landing/" }],
     pieces: [
       {
         kind: "capture",
+        frame: "browser",
         video: "/film/pieces/cebador-1280.webm",
         poster: "/film/pieces/cebador-1280-poster.webp",
         alt: "The Cebador site scrolling at desktop width",
@@ -119,6 +128,7 @@ export const projects: readonly Project[] = [
       },
       {
         kind: "capture",
+        frame: "phone",
         video: "/film/pieces/cebador-390.webm",
         poster: "/film/pieces/cebador-390-poster.webp",
         alt: "The Cebador site scrolling on a phone",
@@ -138,12 +148,13 @@ export const projects: readonly Project[] = [
     what: "A Flutter app with a REST API to book sports courts.",
     problem: "Reserving a court by message is slow and double reservations happen.",
     role: "I built the app and the API.",
+    stack: "Flutter · REST API",
     links: [{ label: "Repository", href: "https://github.com/NahuelMosse/ClubNahuelMosse" }],
     pieces: [
-      screen("club-login", "ClubNahuelMosse login screen", "Login"),
-      screen("club-sedes", "ClubNahuelMosse venue list", "Venues"),
-      screen("club-horarios", "ClubNahuelMosse court schedule", "Schedule"),
-      screen("club-listo", "ClubNahuelMosse reservation confirmed", "Booked"),
+      screen("phone", "club-login", "ClubNahuelMosse login screen", "Login"),
+      screen("phone", "club-sedes", "ClubNahuelMosse venue list", "Venues"),
+      screen("phone", "club-horarios", "ClubNahuelMosse court schedule", "Schedule"),
+      screen("phone", "club-listo", "ClubNahuelMosse reservation confirmed", "Booked"),
     ],
   },
 ]
@@ -152,7 +163,8 @@ export const experience: readonly Employer[] = [
   {
     id: "smart-warehousing",
     name: "Smart Warehousing",
-    period: "Current",
+    title: "AI Engineering Enablement Lead / SDD Coach",
+    period: "09/2026 – Present",
     current: true,
     what: "A set of warehouse teams adopting AI-assisted development.",
     problem: "Each team used agents its own way, with no shared method and no review of what they produced.",
@@ -162,7 +174,9 @@ export const experience: readonly Employer[] = [
   {
     id: "grupo-st",
     name: "Grupo ST",
-    period: "Current",
+    title: "Technical Lead",
+    period: "08/2026 – Present",
+    current: true,
     what: "An AI-first delivery on a credit risk platform that manages documents and decisions.",
     problem: "Approving a credit meant moving papers by hand between people.",
     role: "As technical lead I set the architecture and run the delivery with specifications and tests.",
@@ -171,7 +185,10 @@ export const experience: readonly Employer[] = [
   {
     id: "visma",
     name: "Visma",
-    period: "Current",
+    title: "Technical Lead",
+    period: "01/2026 – Present",
+    current: true,
+    logo: "/logo-visma.webp",
     what: "A payroll onboarding product for a Nordic software company.",
     problem: "Setting up a new payroll customer took too long and depended on manual steps.",
     role: "I am the customer's technical contact: scope, architecture, security, cloud and mentoring.",
@@ -180,12 +197,15 @@ export const experience: readonly Employer[] = [
   {
     id: "fravega",
     name: "Frávega",
-    period: "Past",
+    title: "Senior Full Stack Developer",
+    period: "06/2023 – 01/2026",
+    logo: "/logo-fravega.webp",
     what: "The warehouse system of a large retailer's online orders.",
     problem: "Packing orders and handing them to the sorter was slow and fragile.",
     role: "I built the order flow and the seller interface, and planned the critical releases.",
     pieces: [1, 2, 3, 4].map((n) => ({
       kind: "screen" as const,
+      frame: "browser" as const,
       src: `/fravega-${n}.webp`,
       alt: `Frávega warehouse screen ${n}`,
       caption: `Screen ${n}`,
@@ -194,14 +214,16 @@ export const experience: readonly Employer[] = [
   {
     id: "justo",
     name: "Jüsto",
-    period: "Past",
+    title: "Senior Full Stack Developer",
+    period: "11/2022 – 12/2023",
+    logo: "/logo-justo.webp",
     what: "A multi-warehouse system for an online supermarket.",
     problem: "Inventory lived in spreadsheets and informal knowledge across distribution centers.",
     role: "I designed the system, coordinated the team and kept it steady through the sales peaks.",
     pieces: [
-      { kind: "photo", src: "/film/justo-team.webp", alt: "The Jüsto warehouse team at a presentation", caption: "The team" },
-      { kind: "screen", src: "/justo-1.webp", alt: "Jüsto warehouse screen 1", caption: "Screen 1" },
-      { kind: "screen", src: "/justo-2.webp", alt: "Jüsto warehouse screen 2", caption: "Screen 2" },
+      { kind: "screen", frame: "browser", src: "/justo-1.webp", alt: "Jüsto warehouse screen 1", caption: "Screen 1" },
+      { kind: "photo", frame: "browser", src: "/film/justo-team.webp", alt: "The Jüsto warehouse team at a presentation", caption: "The team" },
+      { kind: "screen", frame: "browser", src: "/justo-2.webp", alt: "Jüsto warehouse screen 2", caption: "Screen 2" },
     ],
   },
 ]

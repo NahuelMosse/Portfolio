@@ -2,11 +2,11 @@
 
 import { useRef, useState, type ReactNode } from "react"
 
-type PieceRowProps = { count: number; className?: string; children: ReactNode }
+type PieceRowProps = { count: number; children: ReactNode }
 
-// The real pieces of one case, rendered by the server and passed in. On a phone they are one row that swipes,
-// the next piece cut at the edge, with a counter.
-export function PieceRow({ count, className, children }: PieceRowProps) {
+// The work of one case on its stage, rendered by the server and passed in. On a phone the pieces are one row that swipes,
+// the next piece cut at the edge, with a counter; on a wide screen they are composed, the others overlapping the lead.
+export function PieceRow({ count, children }: PieceRowProps) {
   const row = useRef<HTMLDivElement>(null)
   const [current, setCurrent] = useState(1)
 
@@ -19,7 +19,7 @@ export function PieceRow({ count, className, children }: PieceRowProps) {
   }
 
   return (
-    <div className={`piece-row ${className ?? ""}`}>
+    <div data-stage="" className="stage">
       <div ref={row} data-pieces="" role="group" aria-label="Pieces of this case" tabIndex={0} className="pieces" onScroll={follow}>
         {children}
       </div>

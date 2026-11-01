@@ -304,10 +304,6 @@
   max-width: 34rem;
 }
 
-.project .scene-copy > h3 {
-  max-width: 60rem;
-}
-
 .chapter-heading {
   margin: 0;
   font-family: var(--font-display);
@@ -445,12 +441,30 @@
 
 /* ---------- projects and experience ---------- */
 
-.project-scene .scene-copy {
-  gap: var(--space-3);
+/* a spread: the illustration is a band above the work on a phone and a side panel beside it on a wide screen */
+.spread {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding-bottom: var(--space-6);
 }
 
-.project h3,
-.employer h3 {
+.spread-art.scene[data-has-art] {
+  min-height: var(--art-band);
+}
+
+.spread-art:not([data-has-art]) {
+  display: none;
+}
+
+.spread-body {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-4) var(--gutter-right) 0 var(--gutter-left);
+}
+
+.spread h3 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
@@ -460,21 +474,120 @@
   overflow-wrap: anywhere;
 }
 
-.employer h3 {
-  font-size: var(--size-case-title);
-  line-height: 1.2;
-}
-
-[data-field="what"] {
+[data-field] {
   margin: 0;
-  font-size: 1.125rem;
+  font-size: 1rem;
   line-height: 1.5;
 }
 
-.project-body {
+[data-field="what"] {
+  font-size: 1.125rem;
+}
+
+.spread-fields {
   display: grid;
-  gap: var(--space-4);
-  padding: var(--space-4) var(--gutter-right) var(--space-6) var(--gutter-left);
+  gap: var(--space-3);
+}
+
+[data-label] {
+  display: block;
+  margin-bottom: var(--space-1);
+  color: var(--red);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+}
+
+.spread-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+}
+
+[data-stack] {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+}
+
+/* the entrance plays once per spread: the illustration slides in from its side, then the pieces follow in order */
+.spread[data-seen="true"] .spread-art {
+  animation: art-in-left var(--motion-section) var(--ease-out) both;
+}
+
+.spread[data-side="right"][data-seen="true"] .spread-art {
+  animation-name: art-in-right;
+}
+
+.spread[data-seen="true"] .piece {
+  animation: piece-in var(--motion-section) var(--ease-out) both;
+  animation-delay: calc(var(--order) * var(--stagger));
+}
+
+@keyframes art-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--space-6) * -1));
+  }
+}
+
+@keyframes art-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(var(--space-6));
+  }
+}
+
+@keyframes piece-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-4));
+  }
+}
+
+@media (min-width: 1280px) {
+  .spread {
+    grid-template-columns: var(--art-share) minmax(0, 1fr);
+  }
+
+  .spread[data-side="right"] {
+    grid-template-columns: minmax(0, 1fr) var(--art-share);
+  }
+
+  .spread[data-side="right"] .spread-art {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .spread-art.scene[data-has-art] {
+    min-height: 0;
+  }
+
+  .spread-body {
+    padding: var(--space-5);
+  }
+
+  .spread[data-side="right"] .spread-body {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .spread-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  /* the inner edge of the panel dissolves into the page */
+  .spread .scene-art {
+    mask-image: linear-gradient(to right, #000 35%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .spread[data-side="right"] .scene-art {
+    mask-image: linear-gradient(to left, #000 35%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  }
 }
 
 .links {
@@ -498,50 +611,68 @@
   color: var(--bone);
 }
 
-.case-body {
-  display: none;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
-  margin-top: var(--space-3);
+.experience-band.scene[data-has-art] {
+  min-height: var(--art-band);
 }
 
-.case-details[data-open="true"] .case-body {
-  display: grid;
-}
-
-.case-body p {
-  margin: 0;
-  max-width: 40rem;
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-[data-field="problem"]::before,
-[data-field="role"]::before {
-  display: block;
-  margin-bottom: var(--space-1);
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking);
-  text-transform: uppercase;
-  opacity: 0.7;
-}
-
-[data-field="problem"]::before {
-  content: "Problem";
-}
-
-[data-field="role"]::before {
-  content: "My role";
+.experience-band .scene-copy {
+  justify-content: center;
+  min-height: var(--art-band);
 }
 
 .employers {
   display: grid;
-  gap: var(--space-4);
-  max-width: 40rem;
+  gap: var(--space-6);
   margin: 0;
-  padding: 0;
+  padding: var(--space-5) var(--gutter-right) var(--space-6) var(--gutter-left);
   list-style: none;
+}
+
+.employer {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.employer-info {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+}
+
+.employer-logo {
+  width: var(--logo-size);
+  height: var(--logo-size);
+  padding: var(--space-1);
+  border: 1px solid var(--bone-35);
+  border-radius: var(--radius-frame);
+  background: var(--bone);
+  object-fit: contain;
+}
+
+.employer h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--size-case-title);
+  line-height: 1.2;
+}
+
+.employer-title,
+.employer-period {
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+}
+
+.employer-period {
+  color: var(--muted-foreground);
+}
+
+@media (min-width: 1280px) {
+  .employer {
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    gap: var(--space-5);
+  }
 }
 
 .employer-head {
@@ -566,28 +697,59 @@
   border: 1px solid var(--bone-35);
 }
 
-.experience-scene .scene-copy {
-  justify-content: center;
-  gap: var(--space-5);
-}
+/* ---------- the stage: one lead piece in its frame, the others smaller and overlapping it ---------- */
 
-/* ---------- pieces: one row, each large ---------- */
-
-.piece-row {
+.stage {
   min-width: 0;
 }
 
-.piece-row .pieces {
+/* below the wide layout the pieces are one row that swipes, the lead taking most of the column */
+.stage .pieces {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(280px, 1fr);
+  grid-auto-columns: var(--other-share);
   gap: var(--space-3);
   overflow-x: auto;
+  padding-bottom: var(--space-2);
   scroll-snap-type: x mandatory;
 }
 
-.piece-row .piece {
+.stage .piece {
+  min-width: 0;
   scroll-snap-align: start;
+}
+
+@media (max-width: 1279px) {
+  .stage .pieces {
+    grid-template-columns: var(--lead-share);
+  }
+}
+
+@media (min-width: 1280px) {
+  .stage .pieces {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: var(--lead-width) var(--other-width);
+    gap: 0;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .stage .piece[data-lead] {
+    grid-column: 1;
+    grid-row: 1 / span 6;
+  }
+
+  .stage .piece:not([data-lead]) {
+    grid-column: 2;
+    z-index: 1;
+    margin-left: calc(var(--space-7) * -1);
+    margin-bottom: calc(var(--space-4) * -1);
+  }
+
+  .stage .piece:nth-child(3) {
+    margin-left: calc(var(--space-4) - var(--space-7));
+  }
 }
 
 .piece-counter {
@@ -597,7 +759,7 @@
   text-align: right;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1280px) {
   .piece-counter {
     display: none;
   }
@@ -763,67 +925,103 @@
   margin-top: var(--space-4);
 }
 
-.case-toggle {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--bone-35);
-  padding: var(--space-2) var(--space-3);
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking);
-  text-transform: uppercase;
-  color: var(--bone);
-  background: transparent;
-  cursor: pointer;
-  transition:
-    background var(--motion-control) var(--ease-out),
-    transform var(--motion-control) var(--ease-out);
-}
+/* ---------- frames: near-black bezel, thin bone outline, crimson tab, grain, a tinted cast shadow ---------- */
 
-.case-toggle:hover {
-  background: var(--red);
-}
-
-.case-toggle:active {
-  transform: scale(var(--press-scale));
-}
-
-
-.piece {
+.frame {
   position: relative;
-  flex: 1 1 0;
-  min-width: 0;
   margin: 0;
-  border: 2px solid var(--bone-35);
-  border-radius: var(--radius-frame);
-  clip-path: inset(0 round var(--radius-frame));
-  overflow: hidden;
-  background: var(--ink-warm);
-  filter: contrast(1.08) saturate(0.7) brightness(0.95);
+  border: 1px solid var(--bone-35);
+  background: var(--ink);
+  box-shadow: var(--cast);
+  filter: contrast(1.08) saturate(0.75) brightness(0.95);
 }
 
-.piece .scene-media {
-  aspect-ratio: 4 / 3;
-}
-
-.piece figcaption {
-  padding: var(--space-1) var(--space-2);
+.frame-tab {
+  position: absolute;
+  top: calc(var(--space-3) * -1);
+  left: var(--space-3);
+  z-index: 2;
+  padding: 0 var(--space-2);
+  background: var(--red);
+  color: var(--bone);
   font-family: var(--font-label);
   font-size: var(--text-small);
   letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   overflow-wrap: anywhere;
+}
+
+.frame-screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.frame-screen .scene-media {
+  height: 100%;
+}
+
+.frame-screen img {
+  object-position: top;
+}
+
+.frame[data-frame="phone"] {
+  padding: var(--space-2);
+  border-radius: var(--radius-device);
+  /* the phone rises from below the fold of its stage */
+  mask-image: var(--fade-bottom);
+}
+
+.frame[data-frame="phone"] .frame-screen {
+  aspect-ratio: var(--phone-lead-ratio);
+  border-radius: var(--radius-frame);
+}
+
+.piece:not([data-lead]) .frame[data-frame="phone"] .frame-screen {
+  aspect-ratio: var(--phone-other-ratio);
+}
+
+.frame[data-frame="browser"] {
+  border-radius: var(--radius-frame);
+  overflow: hidden;
+}
+
+.frame-bar {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--bone-12);
+}
+
+.frame-bar i {
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-round);
+  background: var(--bone-35);
+}
+
+.frame[data-frame="browser"] .frame-screen {
+  aspect-ratio: var(--browser-ratio);
+}
+
+.frame[data-frame="document"] {
+  border-radius: var(--radius-frame);
+  background: var(--ink-warm);
 }
 
 .piece-text {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  min-height: 6rem;
-  padding: var(--space-2);
+  padding: var(--space-5) var(--space-3) var(--space-3);
   font-family: var(--font-label);
   font-size: var(--text-small);
+  line-height: 1.5;
   overflow-wrap: anywhere;
+}
+
+.piece[data-lead] .piece-text {
+  gap: var(--space-3);
+  font-size: 1rem;
 }
 
 .piece-text a {
@@ -841,9 +1039,6 @@
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
 }
 
-.piece .grain {
-  position: absolute;
-}
 
 
 .roll-band {
@@ -1023,21 +1218,13 @@
     white-space: nowrap;
   }
 
-  .project h3 {
+  .spread h3 {
     font-size: 2.25rem;
   }
 
-  .piece-row .pieces {
-    grid-auto-columns: 72%;
-  }
-
-  .case-body {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-3);
-  }
-
-  .case-toggle {
-    min-height: 48px;
+  .frame[data-frame="phone"] .frame-screen,
+  .piece:not([data-lead]) .frame[data-frame="phone"] .frame-screen {
+    aspect-ratio: var(--phone-other-ratio);
   }
 
   .cover-foot {
@@ -1046,6 +1233,18 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* the entrance keeps its opacity and loses its movement */
+  .spread[data-seen="true"] .spread-art,
+  .spread[data-seen="true"] .piece {
+    animation-name: fade-in;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
   .scene-media video {
     transition: none;
   }

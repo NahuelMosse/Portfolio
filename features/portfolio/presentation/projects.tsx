@@ -1,8 +1,8 @@
 import { ChapterIllustration } from "./chapter-illustration"
-import { CaseDetails } from "./case-details"
 import { projects } from "./content"
 import { Piece } from "./piece"
 import { PieceRow } from "./piece-row"
+import { ProjectSpread } from "./project-spread"
 
 // The illustration of each project, by project id.
 const ILLUSTRATIONS: Record<string, string> = {
@@ -13,41 +13,52 @@ const ILLUSTRATIONS: Record<string, string> = {
   club: "ill-club-16x9",
 }
 
-// Each project is one scene: its illustration edge to edge with the title and one line over it, then its real pieces in a row.
+const FIELDS = [
+  { key: "what", label: "What" },
+  { key: "problem", label: "Problem" },
+  { key: "role", label: "My role" },
+] as const
+
+// Each project is a spread: the illustration on a side panel that alternates, the work on a stage beside it.
 export function Projects() {
   return (
     <section data-chapter="projects" id="projects" className="projects">
       <h2 tabIndex={-1} className="chapter-heading">Projects</h2>
-      {projects.map((project) => {
+      {projects.map((project, index) => {
         const asset = ILLUSTRATIONS[project.id]
         if (!asset) throw new Error(`No illustration is mapped for project ${project.id}`)
         return (
-          <article key={project.id} id={project.id} data-project={project.id} className="project">
-            <ChapterIllustration asset={asset} className="project-scene">
+          <ProjectSpread key={project.id} id={project.id} side={index % 2 === 0 ? "left" : "right"}>
+            <ChapterIllustration asset={asset} fittedAsset={asset.replace("16x9", "4x5")} className="spread-art" />
+            <div className="spread-body">
               <h3 tabIndex={-1}>{project.name}</h3>
-              <p data-field="what">{project.what}</p>
-              {project.links.length > 0 && (
-                <div className="links">
-                  {project.links.map((link) => (
-                    <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </ChapterIllustration>
-            <div className="project-body">
+              <div className="spread-fields">
+                {FIELDS.map(({ key, label }) => (
+                  <p key={key} data-field={key}>
+                    <span data-label="">{label}</span>
+                    {project[key]}
+                  </p>
+                ))}
+              </div>
+              <div className="spread-meta">
+                <p data-stack="">{project.stack}</p>
+                {project.links.length > 0 && (
+                  <div className="links">
+                    {project.links.map((link) => (
+                      <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
               <PieceRow count={project.pieces.length}>
-                {project.pieces.map((piece) => (
-                  <Piece key={piece.caption} piece={piece} />
+                {project.pieces.map((piece, order) => (
+                  <Piece key={piece.caption} piece={piece} lead={order === 0} order={order} />
                 ))}
               </PieceRow>
-              <CaseDetails>
-                <p data-field="problem">{project.problem}</p>
-                <p data-field="role">{project.role}</p>
-              </CaseDetails>
             </div>
-          </article>
+          </ProjectSpread>
         )
       })}
     </section>

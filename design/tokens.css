@@ -70,6 +70,21 @@
   --fade-sides: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
   --text-small: 0.875rem;
 
+  /* the stage of a spread */
+  --lead-width: 560px;
+  --other-width: 240px;
+  --lead-share: 85%;
+  --other-share: 62%;
+  --art-share: 36%;
+  --art-band: 34svh;
+  --stagger: 60ms;
+  --logo-size: 56px;
+  --phone-lead-ratio: 7 / 6;
+  --phone-other-ratio: 4 / 5;
+  --browser-ratio: 16 / 10;
+  --radius-device: 28px;
+  --cast: 0 var(--space-4) var(--space-6) var(--red-20), 0 var(--space-2) var(--space-4) var(--ink-85);
+
   --font-label: "Courier Prime", monospace;
   --font-display: "Boska", serif;
   --font-text: "Courier Prime", monospace;

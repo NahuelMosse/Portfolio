@@ -1,5 +1,8 @@
 import { SceneMedia } from "@/features/film"
 import type { Piece as PieceData } from "./content"
+import { DeviceFrame, type FrameKind } from "./device-frame"
+
+type PieceProps = { piece: PieceData; lead?: boolean; order: number }
 
 function PieceBody({ piece }: { piece: PieceData }) {
   if ("video" in piece) return <SceneMedia capture poster={piece.poster} video={piece.video} alt={piece.alt} />
@@ -18,13 +21,15 @@ function PieceBody({ piece }: { piece: PieceData }) {
   )
 }
 
-// Every real piece is printed the same way: cut by a clip-path, graded, and under the grain.
-export function Piece({ piece }: { piece: PieceData }) {
+const frameOf = (piece: PieceData): FrameKind => ("frame" in piece ? piece.frame : "document")
+
+// One real piece in its frame. The lead piece is the first of its case; `order` staggers its entrance.
+export function Piece({ piece, lead, order }: PieceProps) {
   return (
-    <figure data-piece="" data-kind={piece.kind} className="piece">
-      <PieceBody piece={piece} />
-      <span data-grain="" className="grain" aria-hidden="true" />
-      <figcaption>{piece.caption}</figcaption>
-    </figure>
+    <div data-piece="" data-lead={lead ? "" : undefined} data-kind={piece.kind} className="piece" style={{ "--order": order } as React.CSSProperties}>
+      <DeviceFrame kind={frameOf(piece)} label={piece.caption}>
+        <PieceBody piece={piece} />
+      </DeviceFrame>
+    </div>
   )
 }
