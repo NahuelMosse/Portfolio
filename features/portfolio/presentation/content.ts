@@ -34,7 +34,7 @@ export type Piece =
 export type ScreenFrame = "phone" | "browser"
 
 export type Project = Story & { stack: string; links: readonly Link[]; pieces: readonly Piece[] }
-export type Employer = Story & { title: string; period: string; current?: boolean; logo?: string; pieces: readonly Piece[] }
+export type Employer = Story & { title: string; period: string; current?: boolean; logo?: string }
 
 const screen = (frame: ScreenFrame, src: string, alt: string, caption: string): Piece => ({
   kind: "screen",
@@ -169,7 +169,6 @@ export const experience: readonly Employer[] = [
     what: "A set of warehouse teams adopting AI-assisted development.",
     problem: "Each team used agents its own way, with no shared method and no review of what they produced.",
     role: "I lead the engineering enablement: the method, the training and the coaching of the teams.",
-    pieces: [],
   },
   {
     id: "grupo-st",
@@ -180,7 +179,6 @@ export const experience: readonly Employer[] = [
     what: "An AI-first delivery on a credit risk platform that manages documents and decisions.",
     problem: "Approving a credit meant moving papers by hand between people.",
     role: "As technical lead I set the architecture and run the delivery with specifications and tests.",
-    pieces: [],
   },
   {
     id: "visma",
@@ -192,7 +190,6 @@ export const experience: readonly Employer[] = [
     what: "A payroll onboarding product for a Nordic software company.",
     problem: "Setting up a new payroll customer took too long and depended on manual steps.",
     role: "I am the customer's technical contact: scope, architecture, security, cloud and mentoring.",
-    pieces: [],
   },
   {
     id: "fravega",
@@ -203,13 +200,6 @@ export const experience: readonly Employer[] = [
     what: "The warehouse system of a large retailer's online orders.",
     problem: "Packing orders and handing them to the sorter was slow and fragile.",
     role: "I built the order flow and the seller interface, and planned the critical releases.",
-    pieces: [1, 2, 3, 4].map((n) => ({
-      kind: "screen" as const,
-      frame: "browser" as const,
-      src: `/fravega-${n}.webp`,
-      alt: `Frávega warehouse screen ${n}`,
-      caption: `Screen ${n}`,
-    })),
   },
   {
     id: "justo",
@@ -220,11 +210,6 @@ export const experience: readonly Employer[] = [
     what: "A multi-warehouse system for an online supermarket.",
     problem: "Inventory lived in spreadsheets and informal knowledge across distribution centers.",
     role: "I designed the system, coordinated the team and kept it steady through the sales peaks.",
-    pieces: [
-      { kind: "screen", frame: "browser", src: "/justo-1.webp", alt: "Jüsto warehouse screen 1", caption: "Screen 1" },
-      { kind: "photo", frame: "browser", src: "/film/justo-team.webp", alt: "The Jüsto warehouse team at a presentation", caption: "The team" },
-      { kind: "screen", frame: "browser", src: "/justo-2.webp", alt: "Jüsto warehouse screen 2", caption: "Screen 2" },
-    ],
   },
 ]
 

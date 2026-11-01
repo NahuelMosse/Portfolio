@@ -668,11 +668,81 @@
   color: var(--muted-foreground);
 }
 
+/* the illustration of the employer's system in use: drawn, so it dissolves into the page instead of sitting in a frame */
+.employer-art.scene[data-has-art] {
+  min-height: 0;
+  aspect-ratio: 4 / 3;
+}
+
+.employer-art .scene-art {
+  mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent), linear-gradient(to right, transparent, #000 16%, #000 84%, transparent);
+}
+
 @media (min-width: 1280px) {
   .employer {
-    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
     gap: var(--space-5);
+    align-items: center;
   }
+
+  .employer .employer-info {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .employer .employer-art {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .employer[data-side="left"] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+  }
+
+  .employer[data-side="left"] .employer-info {
+    grid-column: 2;
+  }
+
+  .employer[data-side="left"] .employer-art {
+    grid-column: 1;
+  }
+}
+
+/* his photos at work: graded stills that fade into the dark with grain over them */
+.work-photo {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  mask-image: var(--fade-edges);
+}
+
+.work-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.08) saturate(0.75) brightness(0.95);
+}
+
+.employer-info .work-photo {
+  width: min(100%, 18rem);
+  margin-top: var(--space-3);
+}
+
+.work-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  max-width: 48rem;
+}
+
+.work-strip-label {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
 }
 
 .employer-head {
@@ -1008,11 +1078,20 @@
   background: var(--ink-warm);
 }
 
+/* a long caption wraps inside a document, so its tab joins the flow above the text instead of floating over the first line */
+.frame[data-frame="document"] .frame-tab {
+  position: static;
+  width: fit-content;
+  max-width: calc(100% - var(--space-6));
+  margin: var(--space-3) var(--space-3) 0;
+  overflow-wrap: normal;
+}
+
 .piece-text {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-5) var(--space-3) var(--space-3);
+  padding: var(--space-3);
   font-family: var(--font-label);
   font-size: var(--text-small);
   line-height: 1.5;

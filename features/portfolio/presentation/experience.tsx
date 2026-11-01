@@ -1,9 +1,50 @@
+import { Fragment } from "react"
+import { sceneAsset } from "@/features/film"
 import { ChapterIllustration } from "./chapter-illustration"
 import { experience } from "./content"
-import { Piece } from "./piece"
-import { PieceRow } from "./piece-row"
 
-// Experience: one illustration as a header band, then one block per employer; where public/ has its screens or photo they are large in a browser frame.
+const WORK_PHOTOS = {
+  "work-presenting": "Presenting the warehouse system to the Jüsto team",
+  "work-warehouse": "On site in a warehouse, in a hard hat",
+  "work-desk-a": "At the desk, building",
+  "work-desk-b": "At the desk, reviewing",
+} as const
+
+type WorkPhotoId = keyof typeof WORK_PHOTOS
+
+const WORK_STRIP: readonly WorkPhotoId[] = ["work-warehouse", "work-desk-a", "work-desk-b"]
+// The strip sits after this employer, between two blocks.
+const STRIP_AFTER = "visma"
+
+// One photo of him at work, already cropped and graded: it fades into the page and carries grain, never a bare rectangle.
+function WorkPhoto({ id }: { id: WorkPhotoId }) {
+  const src = sceneAsset(id, "webp")
+  if (!src) return null
+  return (
+    <figure data-work-photo={id} className="work-photo">
+      {/* eslint-disable-next-line @next/next/no-img-element -- a graded still of a few hundred kilobytes */}
+      <img src={src} alt={WORK_PHOTOS[id]} loading="lazy" decoding="async" />
+      <span data-grain="" className="grain" aria-hidden="true" />
+    </figure>
+  )
+}
+
+function WorkStrip() {
+  if (!WORK_STRIP.some((id) => sceneAsset(id, "webp"))) return null
+  return (
+    <li>
+      <div data-work-strip="" className="work-strip" aria-label="On the job">
+        <p className="work-strip-label">On the job</p>
+        {WORK_STRIP.map((id) => (
+          <WorkPhoto key={id} id={id} />
+        ))}
+      </div>
+    </li>
+  )
+}
+
+// Experience: an illustration as a header band, then one block per employer with the illustration of its system in use beside it.
+// No real capture of an employer's system is shown (PF-1-ASM-10): the illustrations are drawn, with wordless screens.
 export function Experience() {
   return (
     <section data-chapter="experience" id="experience" className="experience">
@@ -11,9 +52,10 @@ export function Experience() {
         <h2 tabIndex={-1} className="chapter-heading">Experience</h2>
       </ChapterIllustration>
       <ul className="employers">
-        {experience.map((employer) => (
-          <li key={employer.id}>
-              <article data-employer={employer.id} data-current={String(employer.current === true)} className="employer">
+        {experience.map((employer, index) => (
+          <Fragment key={employer.id}>
+            <li>
+              <article data-employer={employer.id} data-current={String(employer.current === true)} data-side={index % 2 === 0 ? "right" : "left"} className="employer">
                 <div className="employer-info">
                   {employer.logo && (
                     // eslint-disable-next-line @next/next/no-img-element -- a static brand mark of a few kilobytes
@@ -26,16 +68,13 @@ export function Experience() {
                   <p data-employer-title="" className="employer-title">{employer.title}</p>
                   <p data-employer-period="" className="employer-period">{employer.period}</p>
                   <p data-field="what">{employer.what}</p>
+                  {employer.id === "justo" && <WorkPhoto id="work-presenting" />}
                 </div>
-                {employer.pieces.length > 0 && (
-                  <PieceRow count={employer.pieces.length}>
-                    {employer.pieces.map((piece, order) => (
-                      <Piece key={piece.caption} piece={piece} lead={order === 0} order={order} />
-                    ))}
-                  </PieceRow>
-                )}
+                <ChapterIllustration asset={`ill-exp-${employer.id}-4x3`} className="employer-art" />
               </article>
-          </li>
+            </li>
+            {employer.id === STRIP_AFTER && <WorkStrip />}
+          </Fragment>
         ))}
       </ul>
     </section>

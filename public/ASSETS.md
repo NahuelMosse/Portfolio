@@ -179,5 +179,18 @@ One style across the set: bold brush ink, solid blacks, dry-brush texture, bone 
 | film/ill-experience-16x9.webp | Experience | Codex | delivered |
 | film/ill-offer-16x9.webp | Offer: the two doors | Codex | delivered |
 | film/ill-contact-16x9.webp | Closing: sealing the file | Codex | delivered |
+| film/ill-kit-4x5.webp, ill-grit-4x5.webp, ill-triaje-4x5.webp, ill-cebador-4x5.webp, ill-club-4x5.webp | Projects: the side panel of each spread, the dark edge toward the work | Codex, from design/art-direction.md | delivered |
+| film/ill-experience-21x9.webp | Experience: header band | Codex, from design/art-direction.md | delivered |
+| film/ill-exp-smart-warehousing-4x3.webp, ill-exp-grupo-st-4x3.webp, ill-exp-visma-4x3.webp, ill-exp-fravega-4x3.webp, ill-exp-justo-4x3.webp | Experience: each employer's system in use, drawn with wordless screens (no real capture of an employer's system is shown) | Codex, from design/art-direction.md | delivered |
+
+## His photos at work
+
+His own photos, cropped and graded so the colleagues fall into the dark, metadata stripped; shown with a fading mask and grain, never as a bare rectangle.
+
+- `film/work-presenting.webp`: presenting the WMS team at Jüsto (shown with the Jüsto block).
+- `film/work-warehouse.webp`: on site in a warehouse, in a hard hat.
+- `film/work-desk-a.webp`, `film/work-desk-b.webp`: at the desk.
+
+The last three are the "On the job" strip between the employer blocks. A missing file leaves no box.
 
 License: generated for the requester with Codex from his own photos, the requester's to publish. A missing file is a declared gap: its chapter closes over it with no box.
