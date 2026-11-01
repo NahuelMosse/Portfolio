@@ -7,10 +7,11 @@ import { doorHref, offer } from "@/features/portfolio/presentation/content"
 import { getStructuredData } from "@/lib/machine-readable"
 
 const CHAPTERS = [
-  { id: "cold-open", label: "Cold open" },
-  { id: "projects", label: "Projects" },
-  { id: "experience", label: "Experience" },
-  { id: "end-credits", label: "Contact" },
+  { id: "cold-open", label: "01 SUBJECT" },
+  { id: "projects", label: "02 PROJECTS" },
+  { id: "experience", label: "03 EXPERIENCE" },
+  { id: "end-credits", label: "04 OFFER" },
+  { id: "contact", label: "05 CONTACT", heading: "#contact-title" },
 ]
 
 export default function Home() {

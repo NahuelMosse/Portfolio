@@ -1,42 +1,26 @@
-import { SceneMedia, sceneAsset } from "@/features/film"
-import { offer, projects, type Piece as PieceData } from "./content"
-import { Piece } from "./piece"
-import { PieceRow } from "./piece-row"
+import { doorHref, offer } from "./content"
 
-// One still of each personal project that has a screen: the freelance offer recalls the volume of real work.
-const strip: readonly PieceData[] = projects.flatMap((project) => {
-  const first = project.pieces.find((piece) => piece.kind === "screen" || piece.kind === "capture")
-  if (!first) return []
-  if (first.kind !== "capture") return [first]
-  return [{ kind: "screen" as const, src: first.poster, alt: first.alt, caption: `${project.name}, ${first.caption}` }]
-})
+type Door = typeof offer.freelance | typeof offer.tpm
 
-function FolderImage() {
-  return <SceneMedia asset="pf-folder-open-4x5" poster={sceneAsset("pf-folder-open-4x5", "webp")} className="folder-media" />
+function Folder({ id, tab, card }: { id: "freelance" | "tpm"; tab: string; card: Door }) {
+  return (
+    <section data-offer-card={id} data-paper="folder" className="paper folder">
+      <p className="folder-tab">{tab}</p>
+      <h3>{card.title}</h3>
+      <p>{card.line}</p>
+      <p>{card.detail}</p>
+      {id === "tpm" && <a href="#dev-kit" className="proof-link">See the proof: the dev kit</a>}
+      <a className="door" href={doorHref(card)}>{card.door}</a>
+    </section>
+  )
 }
 
-// The offer is two open folders, each on paper under the lamp.
+// The offer is two open folders on paper, each with its door button.
 export function Offer() {
   return (
-    <div data-offer="" data-thread-stop="offer" className="offer">
-      <section data-offer-card="freelance" data-paper="folder" data-lamp-target="" className="folder">
-        <FolderImage />
-        <h3>{offer.freelance.title}</h3>
-        <p>{offer.freelance.line}</p>
-        <p>{offer.freelance.detail}</p>
-        <PieceRow count={strip.length} className="piece-strip">
-          {strip.map((piece) => (
-            <Piece key={piece.caption} piece={piece} />
-          ))}
-        </PieceRow>
-      </section>
-      <section data-offer-card="tpm" data-paper="folder" data-lamp-target="" className="folder">
-        <FolderImage />
-        <h3>{offer.tpm.title}</h3>
-        <p>{offer.tpm.line}</p>
-        <p>{offer.tpm.detail}</p>
-        <a href="#dev-kit" className="proof-link">See the proof: the dev kit</a>
-      </section>
+    <div data-offer="" data-doors="" className="offer">
+      <Folder id="freelance" tab="OPEN CASE — FREELANCE" card={offer.freelance} />
+      <Folder id="tpm" tab="OPEN CASE — COMPANIES" card={offer.tpm} />
     </div>
   )
 }

@@ -1,32 +1,25 @@
-import { Chapter, Reveal, SeamFigure } from "@/features/film"
+import { Chapter, Reveal } from "@/features/film"
 import { experience } from "./content"
 import { Piece } from "./piece"
 import { PieceRow } from "./piece-row"
 
-// Experience is a typed record on the dark: employer, period, then what, problem and role.
+// Experience is a typed record on the dark: one row per employer with its status tag, then what, problem and role.
 export function Experience() {
   return (
-    <Chapter
-      id="experience"
-      label="Experience"
-      number="03"
-      torn="right"
-      seam={<SeamFigure side="left" toward="experience" asset="pf-him-closeup" photo="close-crop" />}
-      title={<>Where I <em>served</em></>}
-    >
+    <Chapter id="experience" label="03 · EXPERIENCE" subtitle="RECORD // WHERE I LEAD" title="Experience">
       {experience.map((employer) => (
         <Reveal
           key={employer.id}
           data-employer={employer.id}
           data-current={String(employer.current === true)}
           data-thread-stop={`employer:${employer.id}`}
-          className="employer story"
+          className="employer"
         >
-          <header className="story-text">
+          <header className="employer-head" data-pin="">
             <h3>{employer.name}</h3>
-            <span className="period">{employer.period}</span>
+            <span data-employer-tag="" className="status-tag">{employer.current ? "CURRENT" : "PAST"}</span>
           </header>
-          <div>
+          <div className="employer-lines">
             <p data-field="what">{employer.what}</p>
             <p data-field="problem">{employer.problem}</p>
             <p data-field="role">{employer.role}</p>

@@ -7,11 +7,11 @@ type Point = { x: number; y: number }
 type Geometry = { width: number; height: number; trunk: string; nodes: { id: string; at: Point }[]; branches: string[]; ties: string[] }
 
 const PHONE_WIDTH = 700
-// on a phone the thread is the spine at the left edge
-const SPINE_X = 20
+// the spine at the left edge, on every width
+const SPINE_X = 28
 const TIE_REACH = 28
-const SWING = 0.06
-const DOOR_GAP = 24
+const FORK_GAP = 48
+const BRANCH_REACH = 0.15
 const BRANCHES_START = 0.9
 
 const smooth = (from: Point, to: Point) => {
@@ -19,41 +19,44 @@ const smooth = (from: Point, to: Point) => {
   return `C ${from.x} ${middle} ${to.x} ${middle} ${to.x} ${to.y}`
 }
 
-// Reads where the stops and the doors are on the page and draws one line through them,
-// splitting above the two doors.
+// Reads where the pins, the two folders and the sealed file are on the page and draws one line through them:
+// the spine down the left edge, a pin per case and per employer, a fork into the folders, and the ends tied at the sealed file.
 function measure(host: HTMLElement): Geometry | null {
   const frame = host.getBoundingClientRect()
   const locate = (el: Element) => {
     const r = el.getBoundingClientRect()
-    return { x: r.left - frame.left + r.width / 2, y: r.top - frame.top + r.height / 2, top: r.top - frame.top, bottom: r.bottom - frame.top, width: r.width }
+    return { x: r.left - frame.left + r.width / 2, y: r.top - frame.top + r.height / 2, top: r.top - frame.top, bottom: r.bottom - frame.top, left: r.left - frame.left, width: r.width }
   }
-  const envelope = host.querySelector("[data-sealed-envelope]")
+  const start = host.querySelector("[data-thread-start]")
   const file = host.querySelector("[data-sealed-file]")
-  const doors = [...host.querySelectorAll("[data-doors] a[href^='mailto:']")]
-  if (!envelope || !file || doors.length !== 2) return null
+  const folders = [...host.querySelectorAll("[data-offer-card]")]
+  if (!start || !file || folders.length !== 2) return null
 
-  const start = locate(envelope)
   const sealedFile = locate(file)
-  const doorPlaces = doors.map(locate)
+  const folderPlaces = folders.map(locate)
   const spine = frame.width < PHONE_WIDTH
   const stops = [...host.querySelectorAll("[data-thread-stop]")].map((el, index) => {
-    const place = locate(el)
-    const side = index % 2 === 0 ? SWING : 1 - SWING
-    const x = spine ? SPINE_X : frame.width * side
-    return { id: el.getAttribute("data-thread-stop") ?? String(index), at: { x, y: place.y } }
+    const place = locate(el.querySelector("[data-pin]") ?? el)
+    return { id: el.getAttribute("data-thread-stop") ?? String(index), at: { x: SPINE_X, y: place.y } }
   })
-  const forkX = spine ? SPINE_X : (doorPlaces[0].x + doorPlaces[1].x) / 2
-  const fork = { x: forkX, y: doorPlaces[0].top - DOOR_GAP * 2 }
-  const origin = { x: spine ? SPINE_X : start.x, y: start.y }
+  const origin = { x: SPINE_X, y: locate(start).y }
+  const fork = { x: SPINE_X, y: folderPlaces[0].top - FORK_GAP }
   const route = [origin, ...stops.map((s) => s.at), fork]
   const trunk = route.slice(1).reduce((d, point, i) => `${d} ${smooth(route[i], point)}`, `M ${route[0].x} ${route[0].y}`)
-  // on a phone the thread is the spine only: no branches or ties across the text and the doors
-  const branches = spine ? [] : doorPlaces.map((door) => `M ${fork.x} ${fork.y} ${smooth(fork, { x: door.x, y: door.top })}`)
-  // each branch carries on from its door and ties around the sealed file, one end on each side of the seal
-  const ties = spine ? [] : doorPlaces.map((door, index) => {
-    const end = { x: sealedFile.x + (index === 0 ? -TIE_REACH : TIE_REACH), y: sealedFile.y }
-    return `M ${door.x} ${door.bottom} ${smooth({ x: door.x, y: door.bottom }, end)}`
+  const branchEnd = (folder: (typeof folderPlaces)[number]) => ({ x: folder.left + folder.width * BRANCH_REACH, y: folder.top })
+  // on a phone the folders are stacked, so each branch leaves the spine just above its own folder
+  const branches = folderPlaces.map((folder) => {
+    const from = spine ? { x: SPINE_X, y: folder.top - FORK_GAP } : fork
+    return `M ${from.x} ${from.y} ${smooth(from, branchEnd(folder))}`
   })
+  // on a phone one end carries on down the spine to the sealed file; on wide screens each branch carries on from its folder
+  // and ties around the file, one end on each side of the seal
+  const ties = spine
+    ? [`M ${SPINE_X} ${folderPlaces[1].bottom} ${smooth({ x: SPINE_X, y: folderPlaces[1].bottom }, { x: sealedFile.left + TIE_REACH, y: sealedFile.y })}`]
+    : folderPlaces.map((folder, index) => {
+        const end = { x: sealedFile.x + (index === 0 ? -TIE_REACH : TIE_REACH), y: sealedFile.y }
+        return `M ${folder.x} ${folder.bottom} ${smooth({ x: folder.x, y: folder.bottom }, end)}`
+      })
   return { width: frame.width, height: frame.height, trunk, nodes: stops, branches, ties }
 }
 
@@ -81,28 +84,28 @@ export function CrimsonThread() {
 
   return (
     <div ref={svg} className="thread-host">
-    <svg
-      data-crimson-thread=""
-      className="crimson-thread"
-      aria-hidden="true"
-      viewBox={`0 0 ${geometry?.width ?? 1} ${geometry?.height ?? 1}`}
-      preserveAspectRatio="none"
-    >
-      {geometry && (
-        <>
-          <motion.path data-thread-path="" d={geometry.trunk} style={{ pathLength: reduced ? 1 : trunkLength }} />
-          {geometry.branches.map((d, index) => (
-            <motion.path key={index} data-thread-branch="" d={d} style={{ pathLength: reduced ? 1 : branchLength }} />
-          ))}
-          {geometry.ties.map((d, index) => (
-            <motion.path key={`tie-${index}`} data-thread-tie="" d={d} style={{ pathLength: reduced ? 1 : branchLength }} />
-          ))}
-          {geometry.nodes.map((node) => (
-            <circle key={node.id} data-thread-node={node.id} cx={node.at.x} cy={node.at.y} r={4} />
-          ))}
-        </>
-      )}
-    </svg>
+      <svg
+        data-crimson-thread=""
+        className="crimson-thread"
+        aria-hidden="true"
+        viewBox={`0 0 ${geometry?.width ?? 1} ${geometry?.height ?? 1}`}
+        preserveAspectRatio="none"
+      >
+        {geometry && (
+          <>
+            <motion.path data-thread-path="" d={geometry.trunk} style={{ pathLength: reduced ? 1 : trunkLength }} />
+            {geometry.branches.map((d, index) => (
+              <motion.path key={index} data-thread-branch="" d={d} style={{ pathLength: reduced ? 1 : branchLength }} />
+            ))}
+            {geometry.ties.map((d, index) => (
+              <motion.path key={`tie-${index}`} data-thread-tie="" d={d} style={{ pathLength: reduced ? 1 : branchLength }} />
+            ))}
+            {geometry.nodes.map((node) => (
+              <circle key={node.id} data-thread-node={node.id} cx={node.at.x} cy={node.at.y} r={4} />
+            ))}
+          </>
+        )}
+      </svg>
     </div>
   )
 }

@@ -5,25 +5,25 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 
 type ChapterProps = {
   id: string
+  // typed over the title, e.g. "02 · PROJECTS"
   label: string
-  // two digits, shown on the thread at the left edge on phones
-  number: string
+  // typed beside the title, e.g. "EVIDENCE // WHAT I BUILT"
+  subtitle: string
   title: ReactNode
-  // the photo of him that stands on this chapter's top edge (a server-rendered SeamFigure)
-  seam: ReactNode
-  // side of the torn scrap on this chapter's bottom edge; none on the last chapter
-  torn?: "left" | "right"
   className?: string
   children: ReactNode
 }
 
-export function Chapter({ id, label, number, title, seam, torn, className, children }: ChapterProps) {
+const DRIFT = 16
+
+// A chapter typed on the dark: its label, then the title at section scale with its typed subtitle, then its content.
+export function Chapter({ id, label, subtitle, title, className, children }: ChapterProps) {
   const section = useRef<HTMLElement>(null)
   const card = useRef<HTMLDivElement>(null)
   const [entered, setEntered] = useState(false)
   const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: section, offset: ["start end", "end start"] })
-  const drift = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [-80, 80])
+  const drift = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [-DRIFT, DRIFT])
 
   useEffect(() => {
     const target = card.current
@@ -39,16 +39,16 @@ export function Chapter({ id, label, number, title, seam, torn, className, child
   return (
     <section ref={section} data-chapter={id} className={`chapter ${className ?? ""}`}>
       <div data-media className="chapter-media" aria-hidden="true" />
-      <span data-spine-number="" className="spine-number" aria-hidden="true">{number}</span>
-      {seam}
-      <div ref={card} data-title-card data-entered={entered} className="title-card">
+      <div ref={card} data-title-card data-chapter-label data-entered={entered} className="title-card">
         {label}
       </div>
-      <motion.h2 data-motion tabIndex={-1} className="poster-word chapter-title" style={{ x: drift }}>
-        {title}
-      </motion.h2>
+      <div className="chapter-head">
+        <motion.h2 data-motion tabIndex={-1} className="poster-word chapter-title" style={{ x: drift }}>
+          {title}
+        </motion.h2>
+        <p data-chapter-subtitle className="chapter-subtitle">{subtitle}</p>
+      </div>
       {children}
-      {torn && <div data-transition data-side={torn} className="chapter-transition" aria-hidden="true" />}
     </section>
   )
 }
