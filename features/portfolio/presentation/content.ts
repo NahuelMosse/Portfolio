@@ -99,10 +99,11 @@ export const projects: readonly Project[] = [
     stack: "Flutter · Riverpod · SQLite",
     links: [],
     pieces: [
-      screen("phone", "grit-today", "Grit, the today screen of a training day", "Today"),
-      screen("phone", "grit-live", "Grit, a live training session", "A live session"),
-      screen("phone", "grit-progress", "Grit, the progress screen", "Progress"),
-      screen("browser", "grit-lab", "Grit design lab, the exercise illustrations", "The design lab"),
+      screen("phone", "grit-hoy", "Grit's Hoy screen with the active training session", "Today"),
+      screen("phone", "grit-serie", "Grit's set entry screen, with 80 kg typed in", "Logging a set"),
+      screen("phone", "grit-descanso", "Grit's rest timer counting down between sets", "Rest timer"),
+      screen("phone", "grit-completado", "Grit's summary of the completed session", "Session summary"),
+      screen("phone", "grit-ejercicio", "Grit's exercise detail with a 60 kg record", "Exercise detail"),
     ],
   },
   {

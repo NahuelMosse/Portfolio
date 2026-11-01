@@ -159,7 +159,7 @@ Captured or fetched by the session from the live pages and repositories of the o
 
 - `film/pieces/cebador-1280.webm`, `cebador-390.webm` and their posters: screen captures of https://nahuelmosse.github.io/cebador-landing/ at 1280 and 390.
 - `film/pieces/club-*.webp`: the README screens docs/capturas 01-login, 03-sedes, 05-horarios and 07-listo of github.com/NahuelMosse/ClubNahuelMosse.
-- `film/pieces/grit-*.webp`: screens of the app and its design lab from the private repository Grit.
+- `film/pieces/grit-*.webp`: screens of the app, rendered by its golden tests in the private Grit repository.
 - `film/pieces/triaje-*.webp`: captures of https://nahuelmosse.itch.io/triaje.
 - `film/justo-team.webp`: the "Equipo WMS Justo" presentation photo, resized, metadata stripped.
 - The photos of the owner (cover, close crop, profile, identification front and profile): shot by the owner, published as treated copies with metadata stripped; until they arrive each is a declared gap.
