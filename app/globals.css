@@ -651,16 +651,20 @@
   --field: var(--spot-grit);
 }
 
+/* on the bright fields (teal, pink, lime) the poster ink is black; on crimson and blue it is bone */
 .spread[data-project="guardia"] {
   --field: var(--spot-triaje);
+  --on: var(--ink);
 }
 
 .spread[data-project="cebador"] {
   --field: var(--spot-cebador);
+  --on: var(--ink);
 }
 
 .spread[data-project="club"] {
   --field: var(--spot-club);
+  --on: var(--ink);
 }
 
 /* the backdrop fills the whole section under everything, its illustration covering the box; a scrim of the ink darkens the
@@ -674,11 +678,31 @@
   pointer-events: none;
 }
 
+/* the world's illustration is a quiet texture under the plate: the product's color stays the loudest thing on the poster */
 .backdrop img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0.3;
+}
+
+/* the ink plate: black on white paper, multiplied over the field so the drawing is printed on it */
+.plate {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.plate img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
 }
 
 .backdrop {
@@ -693,33 +717,14 @@
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(to bottom, var(--shade), transparent 16%),
-    linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--shade) 25%, transparent),
-      color-mix(in srgb, var(--shade) 62%, transparent) 38%,
-      color-mix(in srgb, var(--shade) 88%, transparent)
-    );
+  background: linear-gradient(to bottom, var(--shade-soft), transparent 24%);
 }
 
+/* the second composition mirrors both pictures, so the drawing sits on the right and the words on the left or the other way */
 @media (min-width: 1280px) {
-  .backdrop::after {
-    background:
-      linear-gradient(to bottom, var(--shade), transparent 13%),
-      linear-gradient(to top, var(--shade), transparent 22%),
-      linear-gradient(to right, var(--shade), color-mix(in srgb, var(--shade) 80%, transparent) 28%, transparent 56%);
-  }
-
-  .spread[data-composition="b"] .backdrop img {
+  .spread[data-composition="b"] .backdrop img,
+  .spread[data-composition="b"] .plate img {
     transform: scaleX(-1);
-  }
-
-  .spread[data-composition="b"] .backdrop::after {
-    background:
-      linear-gradient(to bottom, var(--shade), transparent 13%),
-      linear-gradient(to top, var(--shade), transparent 22%),
-      linear-gradient(to left, var(--shade), color-mix(in srgb, var(--shade) 80%, transparent) 28%, transparent 56%);
   }
 }
 
@@ -747,12 +752,11 @@
   color: var(--on);
 }
 
-/* the numeral is an outline in the ink of the field: it crosses the art without covering it, and reads on any backdrop */
+/* the numeral is the field sunk into the ink, printed under the word: a second plate of the same poster */
 .poster-numeral {
-  margin-bottom: var(--space-3);
+  margin-bottom: calc(var(--space-4) * -1);
   font-size: var(--poster-numeral-size-phone);
-  color: transparent;
-  -webkit-text-stroke: 2px var(--on);
+  color: color-mix(in srgb, var(--field) 70%, var(--ink));
 }
 
 /* fine small type along the top: maker, case number, a hairline and a four-point star */
@@ -796,13 +800,13 @@
 
 @media (min-width: 1280px) {
   .poster-word {
-    margin: var(--space-5) var(--gutter-left) calc(var(--space-5) * -1 - 0.2em);
-    font-size: min(var(--poster-word-size), calc(66vw / (var(--chars) * 0.55)));
+    margin: var(--space-5) var(--gutter-left) calc(var(--space-5) * -1 - 0.34em);
+    font-size: min(var(--poster-word-size), calc(94vw / (var(--chars) * 0.55)));
     text-align: left;
     color: var(--on);
   }
 
-  /* the word sits on the margin opposite the numeral */
+  /* the second composition puts the word on the right margin and the numeral on the left */
   .spread[data-composition="b"] .poster-word {
     text-align: right;
   }
@@ -812,26 +816,13 @@
     padding-top: var(--space-7);
   }
 
-  /* a phone stands tall in the middle: the word sits clear above it instead of being cut by its top edge */
-  .spread:has([data-device="phone"]) .poster-word {
-    margin-bottom: var(--space-4);
-  }
-
-  /* the numeral hangs at the top corner, clear of the fixed action at the bottom right */
+  /* the numeral is half the width of the page, printed behind the word and cut by the top edge of the poster */
   .poster-numeral {
     position: absolute;
-    top: var(--space-7);
+    top: calc(var(--space-4) * -1);
     right: var(--gutter-right);
     margin: 0;
     font-size: var(--poster-numeral-size);
-  }
-
-  /* the second composition outlines the word and puts the numeral on the other side; the word only touches the device's top edge */
-  .spread[data-composition="b"] .poster-word {
-    z-index: 2;
-    color: color-mix(in srgb, var(--field) 20%, transparent);
-    -webkit-text-stroke: 3px var(--on);
-    paint-order: stroke fill;
   }
 
   .spread[data-composition="b"] .poster-numeral {
@@ -861,8 +852,12 @@
   width: var(--stage-phone-width-phone);
 }
 
+/* the interface sits in a thick ink bezel with a hard offset shadow: a printed object, never a floating window */
 .lead-device .frame {
   mask-image: none;
+  border: 6px solid var(--ink);
+  box-shadow: var(--space-3) var(--space-3) 0 var(--ink);
+  filter: none;
 }
 
 .lead-device .grain {
@@ -870,7 +865,8 @@
 }
 
 .lead-device .frame-tab {
-  color: var(--ink);
+  background: var(--ink);
+  color: var(--bone);
 }
 
 .lead-device .frame[data-frame="phone"] .frame-screen {
@@ -1131,10 +1127,37 @@
   }
 }
 
+/* the words of a project are a label printed on an ink slab: bone on black reads over any drawing */
 .project-text h3 {
+  width: fit-content;
+  padding: var(--space-2) var(--space-3);
+  background: var(--ink);
   text-transform: uppercase;
-  line-height: var(--poster-leading);
-  color: var(--on);
+  line-height: 1;
+  color: var(--bone);
+}
+
+.spread .project-details {
+  padding-block: var(--space-4);
+  background: var(--ink);
+  color: var(--bone);
+}
+
+@media (min-width: 1280px) {
+  .spread .project-details {
+    padding-inline: var(--space-4);
+  }
+}
+
+.spread .project-details .links a,
+.spread .project-details .links a:hover {
+  color: var(--bone);
+  text-decoration-color: var(--field);
+  text-decoration-thickness: 3px;
+}
+
+.spread .project-details .stack li {
+  border-bottom-width: 3px;
 }
 
 .spread .project-text,

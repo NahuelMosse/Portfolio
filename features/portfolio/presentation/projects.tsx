@@ -8,7 +8,7 @@ import { KitPiece } from "./kit-piece";
 import { KIT_STEPS } from "./kit-step-icon";
 import { Piece } from "./piece";
 import { PieceRow } from "./piece-row";
-import { ProjectBackdrop } from "./project-backdrop";
+import { ProjectBackdrop, ProjectPlate } from "./project-backdrop";
 import { ProjectSpread } from "./project-spread";
 
 // The device each project shows, which sizes the poster around it: a phone, or a wide screen.
@@ -184,6 +184,7 @@ export function Projects() {
         return (
           <ProjectSpread key={project.id} id={project.id} composition={composition}>
             <ProjectBackdrop name={backdrop} />
+            <ProjectPlate name={backdrop} />
             <PosterDetail numeral={numeral} total={projects.length} />
             <p data-poster-numeral="" className="poster-numeral" aria-hidden="true">
               {numeral}

@@ -6,7 +6,7 @@ import { identity } from "./content"
 // who he is and the door. On a phone the sheet, the line and the door follow the illustration in flow.
 export function HeroPoster() {
   return (
-    <section data-chapter="cold-open" className="cold-open">
+    <section data-chapter="cold-open" id="cold-open" className="cold-open">
       <ChapterIllustration asset="ill-cover-16x9" tallAsset="ill-cover-9x16" eager className="cover-scene">
         <div className="cover-title">
           <h1 data-layer="mark" tabIndex={-1} className="mark">{identity.mark}</h1>

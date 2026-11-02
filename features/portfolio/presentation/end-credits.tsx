@@ -24,7 +24,7 @@ export function EndCredits() {
         <Offer />
       </ChapterIllustration>
       <ChapterIllustration asset="ill-contact-16x9" className="contact-scene">
-        <div className="contact">
+        <div className="contact" id="contact">
           <ChapterWord id="contact" heading="h3" headingId="contact-title" numeral="04" note={identity.base}>Let&rsquo;s talk</ChapterWord>
           <ul className="contact-rows">
             {contactRows.map((row) => (

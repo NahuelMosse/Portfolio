@@ -1,0 +1,38 @@
+{
+  "name": "Nawi · Nahuel Mosse",
+  "wordmark": {
+    "font": "Boska",
+    "style": "normal, uppercase, weight 700, no variable axes",
+    "minimumSize": "3rem on the phone, 15vw at the scale of a poster word",
+    "settings": "line-height 0.82 to 0.9, tracking -0.02em to -0.04em"
+  },
+  "text": "General Sans",
+  "fonts": ["Boska", "General Sans", "Courier Prime"],
+  "fontRoles": {
+    "Boska": "posters: NAWI, chapter words, project words and numerals; never below 3rem",
+    "General Sans": "all running text, buttons and navigation, 16px or more",
+    "Courier Prime": "short uppercase labels of the file only (ten characters or so)"
+  },
+  "palette": {
+    "ink": "#0c0c0b",
+    "inkWarm": "#1a0b09",
+    "bone": "#ede4d0",
+    "crimson": "#d2231b",
+    "kit": "#b3261e",
+    "grit": "#1f55d6",
+    "guardia": "#36d1a8",
+    "cebador": "#f0a8ac",
+    "club": "#cdeb3a"
+  },
+  "rules": {
+    "ground": "ink or a product color; bone only as type and as the lit edge of a drawing",
+    "accent": "crimson is the only accent outside a project; inside a project the product color replaces it",
+    "illustration": "screen-printed noir, three flat inks (ink, bone, one spot color), see design/art-direction.md"
+  },
+  "icon": "the word NAWI in Boska; clear space equal to the cap height",
+  "voice": [
+    "First person, short: 'I build it, I ship it.'",
+    "Concrete: names the product, the problem and his role, never a figure",
+    "Dry: no exclamation marks, no adjectives that sell"
+  ]
+}
