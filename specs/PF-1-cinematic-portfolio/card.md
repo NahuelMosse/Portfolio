@@ -1,7 +1,7 @@
 # PF-1 · cinematic portfolio for freelance and Technical Project Manager work
 
 status: proposed
-cap: 1200 min
+cap: 2400 min
 sources: requirement as text in the session (5 messages, 2026-10-31 and 2026-11-01); cv/CV.tex as the source of experience; lib/content.ts as the current content
 not_read: none; the "Equipo WMS Justo" photo is .media-source/justo-team-presentation.jpg (from the requester's Downloads, git-ignored)
 
@@ -254,3 +254,4 @@ motion: node .claude/tools/motion-audit.mjs $APP_URL
 - L130 · 2026-11-02 · T6 · ASM-26 backdrops: e2e/project-backdrop.spec.ts -> 1 passed at APP_URL; tsc exit 0; eslint exit 0 (2 warnings in other files fixed or pre-existing: designer-line BODY_FLOOR); captures .validation/cap/bd-<d|m>-<kit|grit|guardia|cebador|club>.png
 - L131 · 2026-11-02 · T6 · note: e2e/project-poster-art.spec.ts (ASM-26 ink panel, multiply, perspective corners, 5-step kit diagram) is contradicted by the backdrop layout and stays declared replaced by L129; replaced by e2e/project-backdrop.spec.ts; drawn-scene, scene-art, kit-art and domain/screen-matrix removed
 - L132 · 2026-11-02 · kit updated 1f7a63008cc41925cc8cec7d7a923013795d1f7e → e0573417b1358dc251b5284d513e461313edfdda · the person asked for the kit 6.40 design round (taste, palettes, brand sheet) to redo the project posters
+- L133 · 2026-11-02 · requester: cap raised to 2400 min by the person to redo the project posters with the kit 6.40 design round («Subir el tope de PF-1»)
