@@ -9,7 +9,7 @@
   --flip: 1;
   --mirror: 1;
   --p: 0;
-  --shade-deep: color-mix(in srgb, var(--field) 20%, var(--ink));
+  --shade-deep: color-mix(in srgb, var(--field) 11%, var(--ink));
   position: relative;
   height: calc(100svh + (var(--beats) - 1) * var(--beat-run));
   background: var(--field);
@@ -134,7 +134,9 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  min-width: var(--show-strip);
   min-height: var(--show-strip);
+  white-space: nowrap;
   color: color-mix(in srgb, var(--on) 62%, var(--field));
   text-decoration: none;
 }
@@ -656,7 +658,7 @@
   position: absolute;
   z-index: 4;
   left: 50%;
-  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4));
+  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-6));
   translate: -50% 0;
   transition: left var(--token-travel) var(--ease-out);
 }
@@ -692,7 +694,7 @@
 
 .kit-card-head b {
   font-weight: 400;
-  color: var(--spot-kit);
+  color: var(--ink);
 }
 
 .kit-card-title,
@@ -802,12 +804,13 @@
 
 /* the stamp of the pull request, pressed on the card when the walk ends */
 .kit-stamp {
+  --stamp-ink: color-mix(in srgb, var(--spot-kit) 62%, var(--ink));
   position: absolute;
   right: var(--space-3);
   bottom: var(--space-3);
   padding: var(--space-1) var(--space-3);
-  border: var(--space-1) solid var(--spot-kit);
-  color: var(--spot-kit);
+  border: var(--space-1) solid var(--stamp-ink);
+  color: var(--stamp-ink);
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--size-scene-title-phone);
@@ -830,7 +833,7 @@
   z-index: 5;
   left: var(--gutter-right-phone);
   right: var(--gutter-right-phone);
-  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4) + var(--card-width) * 1.4 + var(--space-4));
+  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-6) + var(--card-width) * 1.4 + var(--space-4));
   display: flex;
   margin: 0;
   padding: 0;
@@ -891,7 +894,7 @@
 
 .kit-token {
   position: absolute;
-  top: calc(var(--space-3) - var(--space-2));
+  top: calc(var(--space-2) * -1);
   left: calc((var(--station) + 0.5) * 100% / 6);
   width: var(--space-3);
   height: var(--space-4);

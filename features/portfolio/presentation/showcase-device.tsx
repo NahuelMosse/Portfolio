@@ -20,7 +20,7 @@ function Face({ piece, on, role }: { piece: Piece; on: boolean; role: "main" | "
         <img
           src={piece.kind === "capture" ? piece.poster : piece.src}
           alt={role === "main" ? piece.alt : ""}
-          loading="lazy"
+          loading={on && role === "main" ? "eager" : "lazy"}
           decoding="async"
         />
       )}
