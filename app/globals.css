@@ -796,16 +796,32 @@
 
 @media (min-width: 1280px) {
   .poster-word {
-    margin: var(--space-5) var(--gutter-left) calc(var(--space-5) * -1 - 0.14em);
-    font-size: var(--poster-word-size);
-    text-align: center;
+    margin: var(--space-5) var(--gutter-left) calc(var(--space-5) * -1 - 0.2em);
+    font-size: min(var(--poster-word-size), calc(66vw / (var(--chars) * 0.55)));
+    text-align: left;
     color: var(--on);
   }
 
+  /* the word sits on the margin opposite the numeral */
+  .spread[data-composition="b"] .poster-word {
+    text-align: right;
+  }
+
+  /* the kit has no tall stage: its text starts below the word instead of rising into it */
+  .spread[data-project="dev-kit"] .spread-main {
+    padding-top: var(--space-7);
+  }
+
+  /* a phone stands tall in the middle: the word sits clear above it instead of being cut by its top edge */
+  .spread:has([data-device="phone"]) .poster-word {
+    margin-bottom: var(--space-4);
+  }
+
+  /* the numeral hangs at the top corner, clear of the fixed action at the bottom right */
   .poster-numeral {
     position: absolute;
+    top: var(--space-7);
     right: var(--gutter-right);
-    bottom: var(--space-5);
     margin: 0;
     font-size: var(--poster-numeral-size);
   }

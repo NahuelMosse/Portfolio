@@ -1,0 +1,646 @@
+{
+ "version": 1,
+ "at": "2026-11-02T20:55:36.438Z",
+ "seed": 1617751363,
+ "redraws": 0,
+ "input": {
+  "brief": "freelance and technical project manager portfolio told as a noir case file; each project a type poster in its product color",
+  "sector": "personal-portfolio",
+  "tone": "bold",
+  "have": [
+   "illustration",
+   "product-ui"
+  ],
+  "keep": [
+   "palette",
+   "type"
+  ],
+  "avoid": [],
+  "sections": [
+   "work",
+   "about",
+   "contact"
+  ],
+  "direction": "pinned-poster",
+  "disrupt": false
+ },
+ "imagery": "atmosphere",
+ "allow": [],
+ "direction": {
+  "id": "pinned-poster",
+  "name": "The pinned poster",
+  "sectors": [
+   "culture",
+   "music",
+   "event",
+   "fashion",
+   "personal-portfolio",
+   "studio-portfolio",
+   "physical-product",
+   "ecommerce",
+   "hospitality",
+   "consumer-app"
+  ],
+  "tones": [
+   "bold",
+   "editorial"
+  ],
+  "needs": [],
+  "idea": "Something stays put while everything else changes. A title holds its place across the viewport and the images beneath it swap; the name is split to two opposite corners and the page passes between the halves; a single frame stays centred while its contents change. Every scroll step is a new cover of the same magazine. The idea suits subjects that are a series (a book of portraits, a line-up, a collection, a set of projects): the fixed element says what the series is, the changing element shows its members.",
+  "composition": "A sticky layer holds the fixed element for the height of two to three viewports: usually the title at 10–14vw across the middle or top of the screen, or two words pinned to the top-left and bottom-right corners. Under it, a stack of full-height panels scrolls by, each a single large photograph (portrait 4:5, centred, 40–50% of the viewport wide) with one line of caption at the same small size everywhere. The title sits above the images in the stacking order and uses `mix-blend-mode: difference` or a solid colour that reads on every panel. When the pinned run ends, the page releases into ordinary flowing sections with a narrow measure. Build with `position: sticky`; never hijack the scroll.",
+  "typography": "The pinned title is the only large type on the page. Captions and body share one small size (15–17px). Tight tracking and solid weight so the title reads over photographs.",
+  "typeClasses": [
+   "grotesk-tight",
+   "condensed-heavy",
+   "heavy-black",
+   "extended-heavy"
+  ],
+  "colour": "One strong title colour against a pale or dark ground. Each panel may take its own flat ground colour sampled from its photograph.",
+  "paletteTags": [
+   "two-tone",
+   "photographic-neutral",
+   "single-field"
+  ],
+  "imagery": "A series of photographs with the same crop ratio and the same framing (all portraits, all objects, all rooms), so that swapping them reads as one image changing. Five to eight in the pinned run.",
+  "sectionTags": [
+   "photo-led",
+   "poster",
+   "type-led"
+  ],
+  "motion": "pinned-story",
+  "richness": "Repetition with change. The fixed title makes each new photograph feel like an event, so the photographs must be good and consistent.",
+  "pitfalls": "If the title is not legible over every panel, the idea fails: test each one. Keep the pinned run under six viewports or it feels like a trap. On a phone the title shrinks to 16–18vw and stays pinned at the top; panels become full-width. A pin longer than three screens, or one where the screens under it are nearly empty, read in blind tests as a stuck page. Every screen under the pin needs its own content, and nothing may pass over the pinned words.",
+  "seenIn": [
+   "opl-city-of-angels",
+   "aww-normal-is-boring",
+   "aww-glitch-grit",
+   "aww-revelatio-studio"
+  ],
+  "allow": [],
+  "needsPictures": true
+ },
+ "deal": {
+  "seed": 1617751363,
+  "input": {
+   "brief": "freelance and technical project manager portfolio told as a noir case file; each project a type poster in its product color",
+   "sector": "personal-portfolio",
+   "tone": "bold",
+   "have": [
+    "illustration",
+    "product-ui"
+   ],
+   "keep": [
+    "palette",
+    "type"
+   ],
+   "avoid": [],
+   "sections": [
+    "work",
+    "about",
+    "contact"
+   ],
+   "direction": "pinned-poster",
+   "disrupt": false
+  },
+  "history": [
+   {
+    "at": "2026-11-02T20:26:54.990Z",
+    "direction": "one-motif",
+    "type": "bricolage-contrast",
+    "palette": "mint-breath",
+    "hero": "striped-card-beside-room",
+    "sector": "health",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T18:43:49.189Z",
+    "kind": "app",
+    "style": "pastel-consumer",
+    "shell": "icon-rail"
+   },
+   {
+    "at": "2026-11-02T18:38:25.545Z",
+    "direction": "graphite-product",
+    "type": "geist-single",
+    "palette": "graphite-night",
+    "hero": "gradient-heading-product",
+    "sector": "saas",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T17:34:30.186Z",
+    "direction": "graphite-product",
+    "type": "manrope-single",
+    "palette": "graphite-paper",
+    "hero": "gradient-heading-product",
+    "sector": "saas",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T17:32:53.343Z",
+    "direction": "graphite-product",
+    "type": "geist-single",
+    "palette": "graphite-night",
+    "hero": "gradient-heading-product",
+    "sector": "saas",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T16:12:21.743Z",
+    "direction": "quiet-instrument",
+    "type": "switzer-roman",
+    "palette": "stone-blueprint",
+    "hero": "navigation-on-the-midline",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T16:12:09.625Z",
+    "direction": "split-stage",
+    "type": "rokkitt-literata",
+    "palette": "warm-black-gold",
+    "hero": "inset-photo-wordmark-crossing",
+    "sector": "restaurant",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T16:12:07.000Z",
+    "direction": "page-is-the-object",
+    "type": "barlow-condensed",
+    "palette": "burgundy-bubblegum",
+    "hero": "card-over-dim-room",
+    "sector": "restaurant",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T16:11:41.338Z",
+    "direction": "quiet-instrument",
+    "type": "clash-grotesk-regular",
+    "palette": "carbon-ultraviolet-button",
+    "hero": "control-reads-the-page",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T16:11:29.602Z",
+    "direction": "product-performs",
+    "type": "jost-caps",
+    "palette": "ivory-forest-aqua",
+    "hero": "fragment-on-shaped-stage",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T16:11:28.797Z",
+    "direction": "quiet-instrument",
+    "type": "archivo-regular",
+    "palette": "ledger-mint",
+    "hero": "navigation-on-the-midline",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T16:11:11.581Z",
+    "direction": "type-only-statement",
+    "type": "anton-work",
+    "palette": "blue-black-cornflower",
+    "hero": "colour-field-two-ink-statement",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T14:38:43.085Z",
+    "direction": "dark-room",
+    "type": "panchang-switzer",
+    "palette": "blue-black-cornflower+purple-black",
+    "hero": "counter-object-wide-wordmark",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T14:38:38.363Z",
+    "direction": "type-only-statement",
+    "type": "archivo-compressed",
+    "palette": "blue-black-cornflower+purple-black",
+    "hero": "controls-on-the-sentence",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T14:38:29.688Z",
+    "direction": "one-motif",
+    "type": "franklin-source",
+    "palette": "white-navy-tab+orange-cream",
+    "hero": "tabbed-folder-stack",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T14:38:29.204Z",
+    "direction": "product-performs",
+    "type": "hanken-medium",
+    "palette": "white-mint-tiles",
+    "hero": "fragment-on-shaped-stage",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T14:38:28.837Z",
+    "direction": "quiet-instrument",
+    "type": "jost-caps",
+    "palette": "cool-grey-cobalt",
+    "hero": "column-on-one-line",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T14:38:28.310Z",
+    "direction": "editorial-report",
+    "type": "schibsted-heavy",
+    "palette": "blue-black-cornflower+purple-black",
+    "hero": "narrow-talk-wide-headline",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T14:36:12.892Z",
+    "direction": "dark-room",
+    "type": "work-sans-light",
+    "palette": "blue-black-cornflower+purple-black",
+    "hero": "counter-object-wide-wordmark",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T14:25:50.550Z",
+    "direction": "type-only-statement",
+    "type": "bricolage-contrast",
+    "palette": "blue-black-cornflower+purple-black",
+    "hero": "controls-on-the-sentence",
+    "sector": "finance",
+    "scenes": []
+   },
+   {
+    "at": "2026-11-02T14:15:06.955Z",
+    "direction": "split-stage",
+    "type": "erode-sharp",
+    "palette": "burgundy-bubblegum",
+    "hero": "striped-card-beside-room",
+    "sector": "restaurant",
+    "scenes": []
+   }
+  ]
+ },
+ "hero": {
+  "id": "pinned-title-over-portraits",
+  "name": "Pinned title over portraits",
+  "archetype": "pinned-stage",
+  "directions": [
+   "pinned-poster",
+   "name-as-monument"
+  ],
+  "needs": [],
+  "blueprint": "A pale flat ground. The title runs on one line of extra-bold uppercase at clamp(90px, 10vw, 160px), centred, spanning about 82% of the width, its cap line 120px from the top. It lives in a sticky layer (`position: sticky; top: 0; height: 100svh`) stacked above the images and set in one saturated ink that reads on both ground and photograph. Beneath it a single portrait photograph, 2:3, sits centred on columns 5–8 (about 37% of the width) and runs from 90px below the top edge down to the bottom edge, so the title crosses its upper quarter and the middle letters sit on the image. The wordmark sits top-left at 24px in 15px bold; one 'Menu' word sits top-right. Bottom-left on columns 1–3: the supporting sentence as a narrow column at 16px bold, max 26ch, its last line 32px above the bottom edge. Bottom-right: the single action as a solid rectangular button. As the page scrolls, further portraits of identical ratio and position replace the first, five to eight in all, each bringing its own flat ground colour sampled from the photograph, before the layer releases.",
+  "mobile": "The title stays pinned at the top at 17vw on one line, or two lines at 15vw if longer than ten characters. Each portrait becomes full width minus 16px margins at 2:3 and starts behind the lower half of the title. The supporting sentence follows the first portrait at 16px. The action button is fixed to the bottom-right corner, 16px in. The wordmark shrinks to a monogram top-left.",
+  "headline": "The title of the series, or the name: one uppercase line of up to about 14 characters at 10vw, two short lines on a phone.",
+  "motion": "pinned-story",
+  "seenIn": [
+   "opl-city-of-angels",
+   "aww-glitch-grit"
+  ]
+ },
+ "type": null,
+ "palette": null,
+ "photos": {
+  "set": "object-still",
+  "title": "Objects",
+  "note": "single objects seen close: instruments, tools, cameras, books",
+  "treatment": null,
+  "others": [
+   "architecture",
+   "fog-and-quiet",
+   "hands-and-making",
+   "people"
+  ],
+  "photos": [
+   {
+    "id": 63,
+    "alt": "Cup of coffee seen from above on a bright red surface",
+    "tone": "mid",
+    "colours": [
+     "bright red",
+     "white",
+     "brown"
+    ],
+    "mono": false,
+    "calm": "right",
+    "quality": 5,
+    "ratio": 1.78,
+    "by": "Justin Leibow",
+    "page": "https://unsplash.com/photos/ZJsseAxEcqM"
+   },
+   {
+    "id": 113,
+    "alt": "Steam rising from a metal mug with blurred blue background",
+    "tone": "mid",
+    "colours": [
+     "steel blue",
+     "white",
+     "grey"
+    ],
+    "mono": false,
+    "calm": "top",
+    "quality": 4,
+    "ratio": 1.69,
+    "by": "Zugr",
+    "page": "https://unsplash.com/photos/yZf1quatKCA"
+   },
+   {
+    "id": 39,
+    "alt": "Close-up of a turntable tonearm resting on a vinyl record",
+    "tone": "light",
+    "colours": [
+     "white",
+     "black",
+     "warm grey"
+    ],
+    "mono": false,
+    "calm": "top",
+    "quality": 4,
+    "ratio": 1.5,
+    "by": "Luke Chesser",
+    "page": "https://unsplash.com/photos/pFqrYbhIAXs"
+   },
+   {
+    "id": 535,
+    "alt": "Colourful shirts on wooden hangers along a metal pipe rail",
+    "tone": "dark",
+    "colours": [
+     "charcoal",
+     "orange",
+     "green"
+    ],
+    "mono": false,
+    "calm": "none",
+    "quality": 4,
+    "ratio": 0.75,
+    "by": "Jeff Sheldon",
+    "page": "https://unsplash.com/photos/Lj1S1_KD61k"
+   },
+   {
+    "id": 175,
+    "alt": "Close-up of an analogue clock face in black and white",
+    "tone": "mid",
+    "colours": [
+     "white",
+     "black",
+     "grey"
+    ],
+    "mono": true,
+    "calm": "none",
+    "quality": 4,
+    "ratio": 1.49,
+    "by": "petradr",
+    "page": "https://unsplash.com/photos/8hgm6mKK04U"
+   },
+   {
+    "id": 687,
+    "alt": "Coin-operated viewing binoculars facing a pale sea and sky",
+    "tone": "light",
+    "colours": [
+     "white",
+     "pale blue",
+     "silver grey"
+    ],
+    "mono": false,
+    "calm": "right",
+    "quality": 4,
+    "ratio": 1.51,
+    "by": "davide ragusa",
+    "page": "https://unsplash.com/photos/3WbWLC6QHBg"
+   },
+   {
+    "id": 24,
+    "alt": "Open book lying on a wooden table in soft light",
+    "tone": "light",
+    "colours": [
+     "cream",
+     "warm brown"
+    ],
+    "mono": false,
+    "calm": "top",
+    "quality": 4,
+    "ratio": 2.69,
+    "by": "Alejandro Escamilla",
+    "page": "https://unsplash.com/photos/cZhUxIQjILg"
+   },
+   {
+    "id": 80,
+    "alt": "Pine cones resting on weathered wood in black and white",
+    "tone": "mid",
+    "colours": [
+     "grey",
+     "charcoal"
+    ],
+    "mono": true,
+    "calm": "top",
+    "quality": 4,
+    "ratio": 1.5,
+    "by": "Sonja Langford",
+    "page": "https://unsplash.com/photos/Y2PYfopoz-k"
+   }
+  ]
+ },
+ "motion": {
+  "id": "pinned-story",
+  "name": "Pinned story",
+  "description": "One element holds its place with `position: sticky` (a title, a frame, a product fragment) while the items that belong to it scroll past or swap inside it. The page's ordinary scrolling does the work; nothing is hijacked. Hold it for about one screen per step and three screens at most, two held stages per page at most, with a line of text on every held screen. Recipe: 'Pinned story' in references/motion.md."
+ },
+ "sections": [
+  {
+   "id": "work-names-pass-a-held-square",
+   "role": "work",
+   "name": "Names passing a held square",
+   "shape": "index",
+   "tags": [
+    "type-led",
+    "photo-led",
+    "poster"
+   ],
+   "directions": [
+    "name-as-monument",
+    "loud-flat-poster",
+    "pinned-poster",
+    "specimen-catalogue"
+   ],
+   "needs": [],
+   "blueprint": "A flat ground and one centred column of very large names: eight to fourteen project or product names in condensed capitals at clamp(96px, 14vw, 200px), leading 0.85, one per line and each line centred, so long names run nearly to the margins and short ones leave wide ground either side. A square frame 450px across (31vw), square corners, holds at the centre of the viewport behind the list: a sticky element (`position: sticky; top: calc(50svh - 225px)`) at the head of the list with a negative bottom margin equal to its height, centred, below the names in the stacking order, so the passing names cross the picture and are never hidden by it. Choose pictures with a calm centre, or lay a flat 30% scrim inside the frame, so the crossing name keeps 3:1. In the study the picture sits on top of the names; here nothing lies on top of large type. It shows the picture of whichever name is crossing its centre (an IntersectionObserver with a thin root margin at the viewport's middle sets the current name) and swaps with a 200ms crossfade. Level with the frame's middle, 48px to its left and right, two facts about the current item sit at 16px, the kind of work on the left and the year or price on the right, changing with it. The heading opens the list as its first line, at the same size in the soft ink, two words at most. Every name is a link. The section runs about three screens, so each name holds the centre for about a quarter of a screen.",
+   "mobile": "Names drop to 15vw and may wrap to two lines, still centred. The frame shrinks to a 60vw square and stays sticky at the centre; the two facts move into one row at 16px directly under it. The heading line stays first.",
+   "seenIn": [
+    "aww-decathlon-yestalgia"
+   ]
+  },
+  {
+   "id": "about-pinned-title-portraits",
+   "role": "about",
+   "name": "Pinned title, portraits pass",
+   "shape": "pinned",
+   "tags": [
+    "photo-led",
+    "poster",
+    "type-led"
+   ],
+   "directions": [
+    "pinned-poster",
+    "name-as-monument",
+    "loud-flat-poster",
+    "dark-room",
+    "uneven-photographs"
+   ],
+   "needs": [],
+   "blueprint": "A wrapper tall enough for its portraits: about 90svh per person, up to six people. A `position: sticky; top: 0` layer of 100svh holds the heading, two words at clamp(88px, 12vw, 180px), leading 0.85, centred at mid-height, in white with `mix-blend-mode: difference` so it reads over ground and photographs alike. Beneath it in the stacking order, portraits scroll past in normal flow: each a 4:5 photograph 26–30vw wide, alternately starting at column 2 and ending at column 11, 60svh apart, so each one passes behind a different half of the heading. Under each portrait's left corner: the name at 18px, the role at 14px in the soft ink, and one sentence of up to 30 words in a 280px measure. The last portrait is followed by 40svh of empty ground before the heading releases. Square corners. Nothing else is on screen.",
+   "mobile": "The heading shrinks to 17vw and pins 16px from the top instead of at mid-height. Portraits become 72% wide, alternating between the left and right margins, 48px apart, each with name, role and sentence beneath at the portrait's width.",
+   "seenIn": [
+    "aww-glitch-grit",
+    "opl-the-deep-end"
+   ]
+  },
+  {
+   "id": "contact-email-display",
+   "role": "contact",
+   "name": "The email as display type",
+   "shape": "statement",
+   "tags": [
+    "type-led",
+    "poster"
+   ],
+   "directions": [
+    "name-as-monument",
+    "type-only-statement",
+    "dark-room",
+    "pinned-poster",
+    "sentence-as-layout"
+   ],
+   "needs": [],
+   "blueprint": "The section is 100svh in the inverse of the page's colours. A single email address is set as one line of display type spanning the content width: the font-size is fitted so the address runs from margin to margin (about 7–9vw for 20 characters; break after the @ onto two lines if it is longer than 26), light or regular weight, tight tracking, sitting on a baseline 12vh above the bottom edge. It is a `mailto:` link; on hover the whole line takes the accent ink. In the top-left corner, a sentence of up to 12 words at 20–22px says what to write about. In the two bottom corners at 14px: phone and city at the left, two or three social links at the right. No heading and no form. For a pinned ending, make the section `position: sticky; bottom: 0` beneath the page so the previous section lifts off it.",
+   "mobile": "The address breaks after the @ onto two lines at 11.5vw, left-aligned, sitting at 55% of an 86svh screen. The sentence sits at the top-left at 18px. Phone, city and social links stack at the bottom-left at 15px with 12px between them.",
+   "seenIn": [
+    "aww-bleibtgleich26"
+   ]
+  }
+ ],
+ "references": [
+  {
+   "id": "aww-glitch-grit",
+   "name": "Glitch&Grit",
+   "url": "https://glitchandgrit.com/",
+   "source": "Awwwards Site of the Day",
+   "kind": "agency",
+   "score": 7.5,
+   "idea": "Every screen is one project: two half-width footage columns with the project name stacked dead centre across their seam in a single flat pastel that changes per project.",
+   "mood": [
+    "loud",
+    "cinematic",
+    "confident",
+    "nocturnal"
+   ],
+   "archetype": "type-poster",
+   "hero": "Black viewport split down its vertical centre. The left half holds a huge flat grey flower silhouette bleeding off the left and bottom edges; the right half is black with a few tiny video thumbnails drifting through. Dead centre, straddling the split, sits a two-line uppercase title in mint green, about 11vw per line, lines almost touching, spanning roughly 70% of the width. Two tiny category lines sit directly above it and a tiny 'view full project' link directly below, all in the same green. Navigation is six small bold white words pinned to the frame: three links across the top edge, the three-part studio name across the bottom edge.",
+   "type": "Elza only, weight 900, uppercase, tracking -0.05em so letters nearly collide, line-height under 1. Just two sizes exist: roughly 158px project titles and 12px bold caps for nav, tags and links, a 13:1 jump with nothing in between.",
+   "colour": "#000000 #999999 #9ae187 #93f1f7 #dcc8ff #fbb060 — Black ground and dark-graded footage. The only flat colour is the title lock-up, which takes a new candy pastel per project: mint, cyan, lilac, cornflower, lemon, orange.",
+   "imagery": "Client film footage in two half-width columns per screen, cropped tight, graded dark, square edges, the two columns vertically offset against each other. One flat grey cut-out flower shape opens the sequence.",
+   "layout": "No margins or containers. Each project is a full viewport cut into two equal media columns with one centred title lock-up. Fixed corner navigation frames every screen; fourteen screens repeat the same slide with different footage and title colour.",
+   "sections": [
+    {
+     "role": "work",
+     "description": "Each scroll stop is a project slide. Two half-width media columns fill the viewport edge to edge and travel vertically at different offsets, so their top and bottom seams never align. Centred over the join: a two-line 11vw uppercase title in one flat pastel, with two or three 12px tag lines stacked above and a 12px 'view full project' or 'coming soon' line beneath. Title colour changes on every slide; nothing else does."
+    },
+    {
+     "role": "footer",
+     "description": "There is no footer block. The last screen is simply another project slide, and the studio name fixed along the bottom edge in three pieces (first word bottom-left, ampersand bottom-centre, last word bottom-right) does the footer's job on every screen, mirroring the three nav words fixed along the top edge at the same size and weight."
+    }
+   ],
+   "steal": [
+    "Break the studio name into three words pinned bottom-left, bottom-centre and bottom-right, mirroring three nav links across the top, so the viewport frame itself is the logo.",
+    "Give each project slide one flat pastel used only for its title and tags, so a colour change is the sole signal that the project changed.",
+    "Split the viewport into two media columns that scroll at different offsets and set the title across the seam so the type stitches the halves together."
+   ],
+   "media": "Media fills the whole first screen: a flat grey cut-out flower on the left half and a scatter of small thumbnails on the right that grows into a collage round the title. Then video is the main medium: each project is two full 720x900 half panes of muted, looping footage moving in opposite directions, with the title straddling the seam; about 24 pieces of footage or illustration across twelve projects.",
+   "motion": "After a 10.7s load the thumbnail grid fills the right half by 1.2s and scales into a cluster by 4.5s, and Lenis then runs 40 scrubbed ScrollTriggers on empty 855px track divs: per project the left pane and half-title travel one way and the right ones the other (titles ±270px, panes ±180px), lining up only at the centre, and the scroll resets for an endless loop. Panes grow from an edge by scaleY over 0.5s, tags slide on y over 0.5s power2, and there is no reduced-motion rule."
+  },
+  {
+   "id": "opl-city-of-angels",
+   "name": "City of Angels",
+   "url": "https://cityxofxangels.com",
+   "source": "One Page Love",
+   "kind": "culture",
+   "score": 7.6,
+   "idea": "A fixed poster: the book title stays pinned across the viewport while portraits and press quotes swap underneath it, so every scroll step is a new cover.",
+   "mood": [
+    "bold",
+    "sunny",
+    "street",
+    "editorial",
+    "direct"
+   ],
+   "archetype": "giant-wordmark",
+   "hero": "Pale icy-blue page. The title runs as one line of extra-bold uppercase grotesk at 10vw, centred, spanning about 82% of the width in saturated cyan, 120px from the top. A single portrait photograph, 37% of the viewport wide and nearly full height, is centred beneath; the title crosses over its upper quarter, so the middle letters sit on the image. The author name sits top-centre in small bold caps, a two-bar menu icon top-right. Bottom-left, a 13-line bold paragraph in a narrow 340px column; bottom-right, a solid black five-point star about 70px wide.",
+   "type": "ABC Diatype throughout: weight 800 uppercase for the 144px title, bold copy around 20-24px with leading near 1.0; Founders Grotesk Mono in tiny caps for quote attributions. Two sizes plus a label. The final frame catches title letters slanting to oblique.",
+   "colour": "#e4f8fd #06aeef #0a0a0a #c8b59d — The page colour is a pale tint of the title's cyan; cyan appears only on the title, the opening words and quotation marks. Text and star are black. The digest records one solid cyan section.",
+   "imagery": "Full-length street-style portraits, all vertical at about 2:3, saturated natural light, subject standing centre. One image at a time, square corners, centred on the page with the title overprinting it.",
+   "layout": "One pinned composition repeated for seven screens: central image column, fixed title, and a single text block that alternates between the left and right gutters and shifts height each step. Margins about 46px; nothing else on screen.",
+   "sections": [
+    {
+     "role": "proof",
+     "description": "Each scroll step keeps the pinned title and swaps the central portrait. One press quote sits in a column 180-340px wide in an outer gutter, alternating right, left, right, and placed at a different height each time (upper, middle, lower). Quotes are bold black with tight leading and cyan quotation marks; the source follows in tiny underlined or mono caps. The black star stays bottom-right and is caught at different rotation angles."
+    },
+    {
+     "role": "list",
+     "description": "Not captured in the shots, but the digest records four stacked, centred, uppercase links at 144px (10vw) in the same extra-bold grotesk, plus a solid cyan section: navigation reuses the title's exact type size, one link per line, so the menu is another poster rather than a small list."
+    }
+   ],
+   "steal": [
+    "Pin one giant title across the viewport and let a single centred image change beneath it, with the type overprinting the photo's top quarter.",
+    "Use a pale tint of the accent colour as the page background so the saturated title and the background read as one hue.",
+    "Give each scroll step one text block and move it between left and right gutters at varying heights instead of stacking sections."
+   ]
+  },
+  {
+   "id": "aww-julien-calot",
+   "name": "Julien Calot",
+   "url": "https://www.juliencalot.com",
+   "source": "Awwwards Site of the Day",
+   "kind": "personal-portfolio",
+   "score": 7.4,
+   "idea": "Each series of paintings is a full-screen close crop of one canvas, with the series title, year and piece count strung along a single line at mid-height like a museum wall label.",
+   "mood": [
+    "vivid",
+    "immersive",
+    "naive",
+    "gallery-like"
+   ],
+   "archetype": "fullbleed-media-overlay",
+   "hero": "A painting detail fills the viewport edge to edge, a face in the centre with saturated landscape shapes around it and the canvas weave visible. All text is white and small, with no scrim. Top-left: the artist's name in bold condensed capitals about 45px tall, the largest type on screen. The same top row holds a two-item filter at 29% across and two small stacked link groups at 75% and 95%. On the vertical midline a single row reads: year at the far left, series title in condensed black caps at 1.6vw about 10% in, and a piece count preceded by a short dash at the far right. No button.",
+   "type": "FF DIN Pro Condensed Black in uppercase with +0.02em tracking for the wordmark and series titles (23px); Doner, a wide bold sans, for tiny uppercase nav and meta at about 9-10px. Only two text sizes besides the wordmark; type is kept deliberately small against the art.",
+   "colour": "#c76802 #2f7fc9 #2e7d3a #7a4fa0 #fafafa #bdbdbd — The interface has no colour of its own: white type over whichever painting is on screen, so each panel takes the painting's oranges, blues, greens or violets. The single-series view switches to flat light grey.",
+   "imagery": "Photographed paintings in a saturated naive style, used two ways: enormous full-bleed crops showing brushwork and weave, and small complete canvases with linen edges and soft drop shadows in a horizontal row on grey.",
+   "layout": "A stack of full-viewport panels, one per series, identical in structure: fixed header along the top, one label row at mid-height, nothing else. Margins are about 20px. Opening a series swaps the crop for a grey wall with one row of evenly spaced small canvases.",
+   "sections": [
+    {
+     "role": "work",
+     "description": "Six or more consecutive full-screen panels, each a different painting cropped far tighter than its frame so a detail fills the screen. The same three-part label row sits at exactly 50% height on every panel: date range at the left edge, series title in condensed caps starting about 10% in, count of pieces at the right edge. The fixed header overlays all of them unchanged, so scrolling reads like turning plates in a book."
+    },
+    {
+     "role": "gallery",
+     "description": "Flat light-grey viewport. A single horizontal row of small portrait canvases, each about 11% of the viewport wide and 24% tall, photographed with their fabric edges and a soft shadow, spaced roughly 5% apart and vertically centred; the row runs off both sides. The series label row overlaps the first canvas. About 70% of the screen is empty grey."
+    }
+   ],
+   "steal": [
+    "Crop artwork far past its edges to fill the screen and keep all text under 2vw, so the image does the shouting and the type behaves like a wall label.",
+    "Run a panel's metadata along one horizontal line at mid-height: date at the far left, title a tenth in, count at the far right, repeated identically on every panel.",
+    "Contrast full-bleed immersion with a sparse detail view: tiny complete works in a single row on flat grey with 70% of the screen left empty."
+   ]
+  }
+ ],
+ "scenes": []
+}
