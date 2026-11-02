@@ -1,18 +1,19 @@
-# T6 handoff
+# PF-1 T6 handoff (ASM-26 poster art)
 
-Committed: designer line (NAWI over the cover head, poster chapter words, ruled sheet, rectangles, General Sans), the dev-kit lines in content.ts (L115), the ASSETS.md cover entry, the radius line in design/line.md.
+## Done (written, not yet verified green)
+- RED committed: e2e/project-poster-art.spec.ts (3865001). Failed on an assertion (dev-kit "real interface or diagram in the frame").
+- features/portfolio/domain/screen-matrix.ts (rule): `screenMatrix({width,height,corners})` -> matrix3d string, validates input.
+- presentation/scene-art.ts: per-project art data (crop, quad per image, handHeld on grit and club), `imageStyle`, `panelStyle`, `imagePixels`, `KIT_ART`.
+- presentation/drawn-scene.tsx (client): panel `[data-printed-art]` with two `img[data-art]`, overlay `[data-scene-screen]` mapped by ResizeObserver, `data-mapped`.
+- presentation/kit-diagram.tsx (client, useInView), kit-step-icon.tsx, kit-piece.tsx, kit-art.tsx.
+- presentation/projects.tsx rewritten (Stage, Others, KitArt first in the kit spread); content.ts lost `documents` and the kit screenshot pieces (`pieces: []`); poster-device.tsx deleted (git rm).
+- app/globals.css: old `.poster-device`/`.scene-document` rules replaced by `.spread-stage`, `.drawn-stage`, `.drawn-screen`, kit plate, kit-art, draw-on keyframes (reduced motion keeps the final state); design/tokens.css gets `--check-green`.
 
-Passing: designer-line, project-glance-dev-kit-line, phone-glance, hero-flow (5 passed); tsc --noEmit clean. App up at http://127.0.0.1:50793 (restart with `node .claude/tools/app.mjs up` after each CSS change).
-
-## Not covered (turn budget)
-
-All of these are *could not run*; a fresh builder takes only these:
-
-1. ID sheet at 1440: the two photos overlap the "IDENTIFICATION SHEET" label. Lay the label and photos out so nothing collides (`.sheet-head`, `.sheet-photos` in app/globals.css).
-2. The difference blend turns the N stem navy over the lamp light. No hue outside ink, bone and red: neutralize the color (for example a grayscale or contrast filter on the art under NAWI) or use another device that stays bone or ink.
-2b. At 390 the blue cast also shows in the A over his hair (same fix as item 2). The top 130 px under the bar are empty black and NAWI starts at y near 215: lift NAWI and the name line (the phone `.cover-title` offset `calc(var(--space-7) + var(--space-3))` in app/globals.css) so there is no dead band, with NAWI edge to edge at 390; designer-line must stay green.
-3. Project titles keep the red rule and a modest title-case heading. Give them the poster treatment: own scale, case numeral 01-05 in Boska, fine small-type detail, no red rule. Keep what 739aac6 committed (AI line, stack chips, link).
-4. At 1440 the projects piece row starts at y near 800, cut by the fold under the PROJECTS word. The first case must show its lead and pieces within the viewport, or the word takes less height there.
-5. T6 Log line (`node .claude/tools/log.mjs specs/PF-1-cinematic-portfolio "T6 · ..."`), `reuses:`/`new:` under T6 for features/portfolio/presentation/chapter-word.tsx, eslint on the changed files only (explicit file list, not the folders: folder runs time out), formatter.
-6. In the background, report each as passed, failed or could not run, without fixing old-layout failures: e2e fonts.spec, fonts-two-faces.spec, case-file-layout-contracts.
-7. Rerun designer-line, project-glance-dev-kit-line, phone-glance, hero-flow; recapture `node D:/tmp/ill3/cover.cjs <url>` and `node D:/tmp/ill3/walk.cjs <url>`, look at them, commit.
+## Not covered (turn budget), each *could not run*
+- tsc (`npx tsc --noEmit -p .`) and eslint on the changed files: a background run was started, its log `.validation/tsc.log` was empty at the last look.
+- The gate `APP_URL=http://127.0.0.1:55879 npx playwright test e2e/project-poster-art.spec.ts --timeout=120000` (log `.validation/green.log` if the background run finished): result unread.
+- Captures at 1440 and 390 (D:/tmp/ill3/walk-b.cjs plus a zoom per drawn screen) and looking at them: the crops, the kit plate and art placement, the fade widths and the pieces' `margin-top` on phone scenes are unverified guesses.
+- Old e2e/project-poster.spec.ts still references `[data-poster-device]`: replace or drop it (superseded by project-poster-art.spec.ts) and log the replacement.
+- card.md: `reuses:`/`new:` lines under the T6 production tasks, layer marks, the Log line (`node .claude/tools/log.mjs specs/PF-1-cinematic-portfolio "T6 · ..."`), docs/features page update.
+- The illustrations in public/film (ill-scene-*, ill-kit-*) are untracked: add the ones used (grit 4x5, triaje 16x9/4x5, cebador 16x9/4x5, club 16x9, kit 16x9/4x5) to the commit.
+- App is left up; do not run `app.mjs down`.

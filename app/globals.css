@@ -768,71 +768,262 @@
   }
 }
 
-/* the device: a plain frame drawn by code around the real interface. The screen's width is --sw; the bezel adds around it. */
-.poster-device {
-  --sw: var(--stage-wide-width-phone);
+/* the stage: a panel that prints one ink illustration on the field, with the real interface over the screen the drawing
+   shows. The panel creates no stacking context, so the multiplied image blends with the field itself; the interface is a
+   later, unblended sibling. The panel is cropped to the part of the drawing that matters and sized from its screen. */
+.spread-stage {
   position: relative;
-  z-index: 1;
-  box-sizing: content-box;
-  width: min(var(--sw), var(--stage-wide-cap));
-  margin-inline: auto;
-  padding: var(--device-bezel);
-  background: var(--ink);
-  border-radius: var(--radius-frame);
-  box-shadow: 0 var(--space-4) var(--space-6) var(--ink-35);
+  min-width: 0;
 }
 
-.poster-device[data-device="phone"] {
-  --sw: var(--stage-phone-width-phone);
-  width: var(--sw);
-  border-radius: var(--radius-phone);
-}
-
-.poster-bar {
-  display: flex;
-  gap: var(--space-1);
-  padding: 0 0 var(--space-2) var(--space-1);
-}
-
-.poster-bar i {
-  width: var(--space-2);
-  height: var(--space-2);
-  border-radius: var(--radius-round);
-  background: var(--bone-35);
-}
-
-.poster-screen {
-  position: relative;
+.drawn-stage {
   overflow: hidden;
   width: 100%;
-  aspect-ratio: var(--poster-wide-ratio);
+  max-width: 36rem;
+  margin-inline: auto;
+  aspect-ratio: var(--mobile-aspect);
+}
+
+.drawn-stage img[data-art] {
+  position: absolute;
+  left: var(--art-left);
+  top: var(--art-top);
+  width: var(--art-width);
+  max-width: none;
+  height: auto;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, transparent var(--crop-top), #000 calc(var(--crop-top) + var(--edge-fade)), #000 calc(var(--crop-bottom) - var(--edge-fade)), transparent var(--crop-bottom));
+}
+
+.drawn-stage img[data-art="desktop"] {
+  display: none;
+}
+
+/* the drawn screen: the interface keeps its own size and is carried onto the screen's four corners by a matrix set from the panel's size */
+.drawn-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  overflow: hidden;
   background: var(--ink);
-  border-radius: calc(var(--radius-frame) / 2);
+  transform-origin: 0 0;
+  visibility: hidden;
 }
 
-.poster-device[data-device="phone"] .poster-screen {
-  aspect-ratio: var(--phone-capture-ratio);
-  border-radius: calc(var(--radius-phone) - var(--device-bezel));
+.drawn-screen[data-mapped] {
+  visibility: visible;
 }
 
-.poster-screen .scene-media {
+.drawn-screen .scene-media {
   width: 100%;
   height: 100%;
 }
 
-.poster-screen img,
-.poster-screen video {
+.drawn-screen img,
+.drawn-screen video {
   object-fit: cover;
   object-position: top;
 }
 
 @media (min-width: 1280px) {
-  .poster-device {
-    --sw: var(--stage-wide-width);
+  .drawn-stage {
+    max-width: none;
+    margin-inline: 0;
+    aspect-ratio: var(--desktop-aspect);
   }
 
-  .poster-device[data-device="phone"] {
-    --sw: calc(var(--stage-phone-height) * var(--phone-capture-ratio));
+  .drawn-stage img[data-art="desktop"] {
+    display: block;
+  }
+
+  .drawn-stage img[data-art="mobile"] {
+    display: none;
+  }
+
+  /* the side that faces the words fades into the field; the other side bleeds off the poster */
+  .drawn-stage[data-side="right"] img[data-art="desktop"] {
+    mask-image:
+      linear-gradient(to right, transparent var(--crop-left), #000 calc(var(--crop-left) + var(--side-fade))),
+      linear-gradient(to bottom, transparent var(--crop-top), #000 calc(var(--crop-top) + var(--edge-fade)), #000 calc(var(--crop-bottom) - var(--edge-fade)), transparent var(--crop-bottom));
+    mask-composite: intersect;
+  }
+
+  .drawn-stage[data-side="left"] img[data-art="desktop"] {
+    mask-image:
+      linear-gradient(to left, transparent calc(100% - var(--crop-right)), #000 calc(100% - var(--crop-right) + var(--side-fade))),
+      linear-gradient(to bottom, transparent var(--crop-top), #000 calc(var(--crop-top) + var(--edge-fade)), #000 calc(var(--crop-bottom) - var(--edge-fade)), transparent var(--crop-bottom));
+    mask-composite: intersect;
+  }
+
+  /* a wide screen's panel is sized by the width its screen must have, a phone's by the height */
+  .spread-main[data-device="wide"] .drawn-stage {
+    width: calc(var(--stage-wide-width) * var(--desktop-by-width));
+  }
+
+  .spread-main[data-device="phone"] .drawn-stage {
+    width: calc(var(--stage-phone-height) * var(--desktop-by-height) * var(--desktop-aspect));
+  }
+}
+
+/* the kit's diagram is drawn on an ink plate; its illustration is printed behind it */
+.kit-plate {
+  width: var(--stage-wide-width-phone);
+  margin-inline: auto;
+  aspect-ratio: 1000 / 560;
+  background: var(--ink);
+}
+
+.kit-diagram {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.kit-stroke,
+.kit-stroke-red,
+.kit-stroke-green,
+.kit-ring,
+.kit-path {
+  fill: none;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kit-stroke,
+.kit-ring {
+  stroke: var(--bone);
+}
+
+.kit-stroke-red,
+.kit-path {
+  stroke: var(--red);
+}
+
+.kit-stroke-green {
+  stroke: var(--check-green);
+}
+
+.kit-path {
+  stroke-width: 10;
+}
+
+.kit-ring {
+  stroke-width: 5;
+}
+
+.kit-fill-red {
+  fill: var(--red);
+}
+
+.kit-word {
+  fill: var(--bone);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 46px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+[data-draw="stroke"] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+[data-draw="pop"] {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* the diagram stands drawn; with motion allowed it is hidden until it comes into view, then draws itself station by station */
+@media (prefers-reduced-motion: no-preference) {
+  .kit-diagram [data-draw] {
+    opacity: 0;
+  }
+
+  .kit-diagram[data-drawn="true"] [data-draw] {
+    animation: kit-draw var(--motion-section) var(--ease-out) both;
+    animation-delay: calc(var(--n) * 160ms);
+  }
+}
+
+@keyframes kit-draw {
+  from {
+    opacity: 0;
+    stroke-dashoffset: 1;
+    transform: scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    stroke-dashoffset: 0;
+    transform: scale(1);
+  }
+}
+
+.kit-piece svg {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--ink);
+}
+
+.kit-art {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 46%;
+  display: none;
+}
+
+.kit-art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, transparent, #000 12%);
+}
+
+.kit-art img[data-art="desktop"] {
+  display: none;
+}
+
+/* a phone closes the kit's poster with its illustration, as a band after the pieces */
+@media (max-width: 1279px) {
+  .kit-art {
+    position: relative;
+    inset: auto;
+    display: block;
+    order: 9;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (min-width: 1280px) {
+  .kit-art {
+    display: block;
+  }
+
+  .kit-art img[data-art="desktop"] {
+    display: block;
+    mask-image:
+      linear-gradient(to right, transparent, #000 30%),
+      linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+    mask-composite: intersect;
+  }
+
+  .kit-art img[data-art="mobile"] {
+    display: none;
+  }
+
+  .kit-plate {
+    width: var(--stage-wide-width);
+    margin-inline: 0;
   }
 }
 
@@ -856,7 +1047,7 @@
   margin-inline: var(--gutter-left) var(--gutter-right);
 }
 
-.spread-main > .poster-device {
+.spread-main > .spread-stage {
   order: 2;
 }
 
@@ -891,27 +1082,38 @@
     grid-row: 2;
   }
 
+  /* a wide screen's panel bleeds off the right edge, the words keep the left gutter */
+  .spread-main[data-device="wide"] {
+    grid-template-columns: minmax(0, var(--stage-text-width)) max-content;
+    justify-content: space-between;
+    padding-left: var(--gutter-left);
+  }
+
   .spread-main[data-device="phone"] {
     grid-template-columns: minmax(0, var(--stage-text-width)) max-content var(--other-width);
   }
 
   /* the phone hangs from the top of its row, so the word above it dips over its top edge */
-  .spread-main[data-device="phone"] > .poster-device {
+  .spread-main[data-device="phone"] > .spread-stage {
     align-self: start;
   }
 
+  /* the pieces start below the drawing's margin above its screen, so each one is in view with the interface */
   .spread-main[data-device="phone"] > .scene-pieces {
     grid-column: 3;
     grid-row: 1;
     align-self: start;
+    margin-top: calc(var(--stage-phone-height) * 0.12);
   }
 
   /* the second composition mirrors the first: the words on the right, the device and the pieces to their left */
   .spread[data-composition="b"] .spread-main[data-device="wide"] {
     grid-template-columns: max-content minmax(0, var(--stage-text-width));
+    padding-left: 0;
+    padding-right: var(--gutter-left);
   }
 
-  .spread[data-composition="b"] .spread-main[data-device="wide"] > .poster-device {
+  .spread[data-composition="b"] .spread-main[data-device="wide"] > .spread-stage {
     grid-column: 1;
     grid-row: 1;
   }
@@ -929,7 +1131,7 @@
     grid-column: 1;
   }
 
-  .spread[data-composition="b"] .spread-main[data-device="phone"] > .poster-device {
+  .spread[data-composition="b"] .spread-main[data-device="phone"] > .spread-stage {
     grid-column: 2;
     grid-row: 1;
   }
@@ -954,39 +1156,6 @@
   }
 }
 
-.scene-document {
-  display: grid;
-  align-content: start;
-  gap: var(--space-3);
-  height: 100%;
-  padding: var(--space-3);
-  color: var(--bone);
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  line-height: 1.4;
-  overflow: hidden;
-}
-
-@media (min-width: 1280px) {
-  .scene-document {
-    gap: var(--space-4);
-    padding: var(--space-4);
-    font-size: 1.0625rem;
-  }
-}
-
-.scene-document p {
-  margin: 0 0 var(--space-1);
-  color: var(--field);
-}
-
-.scene-document span {
-  display: block;
-  padding-left: var(--space-2);
-  border-left: 2px solid var(--field);
-  overflow-wrap: anywhere;
-}
-
 .project-text h3 {
   text-transform: uppercase;
   line-height: var(--poster-leading);
@@ -994,7 +1163,6 @@
 }
 
 .spread .project-text,
-.spread .poster-device,
 .spread .scene-pieces {
   position: relative;
   z-index: 1;
@@ -1011,13 +1179,6 @@
 @media (max-width: 767px) {
   .spread .project-text h3 {
     font-size: var(--size-scene-title-phone);
-  }
-
-  /* the drawn screen is short on a phone: the kit shows its card, two lines of it */
-  .scene-document div:nth-child(n + 2),
-  .scene-document p,
-  .scene-document span:nth-of-type(n + 3) {
-    display: none;
   }
 }
 

@@ -1,14 +1,20 @@
 import type { CSSProperties } from "react";
-import { SceneMedia } from "@/features/film";
+import { SceneMedia, sceneAsset } from "@/features/film";
 import { projects, type Project } from "./content";
 import { ChapterWord } from "./chapter-word";
+import { DrawnScene } from "./drawn-scene";
+import { KitArt } from "./kit-art";
+import { KitDiagram } from "./kit-diagram";
+import { KitPiece } from "./kit-piece";
+import { KIT_STEPS } from "./kit-step-icon";
 import { Piece } from "./piece";
 import { PieceRow } from "./piece-row";
-import { PosterDevice, type DeviceKind } from "./poster-device";
 import { ProjectSpread } from "./project-spread";
+import { KIT_ART, SCENE_ART, type SceneArt } from "./scene-art";
 
-// The device each project's lead interface sits in: a phone for an app, a browser for a page or a game.
-const DEVICES: Record<string, DeviceKind> = {
+// The device the illustration of each project draws, which sizes the poster around it: a phone, or a wide screen.
+// The kit draws no device: its lead is a diagram and its illustration is printed behind it.
+const DEVICES: Record<string, "phone" | "wide"> = {
   "dev-kit": "wide",
   grit: "phone",
   guardia: "wide",
@@ -19,22 +25,18 @@ const DEVICES: Record<string, DeviceKind> = {
 // The word set at poster scale; the kit's title is a sentence, so it has a short word of its own.
 const POSTER_WORDS: Record<string, string> = { "dev-kit": "Dev kit", club: "Club" };
 
-// What the frame shows: the kit's typed documents, or the project's lead piece.
-function ScreenContent({ project }: { project: Project }) {
-  if (project.documents) {
-    return (
-      <div data-document="" className="scene-document">
-        {project.documents.map((document) => (
-          <div key={document.caption}>
-            <p>{document.caption}</p>
-            {document.lines.map((line) => (
-              <span key={line}>{line}</span>
-            ))}
-          </div>
-        ))}
-      </div>
-    );
-  }
+const DEV_KIT = "dev-kit";
+
+// The image files of an illustration at both widths; an undelivered file is an error, not a poster without its art.
+function printed(files: { desktop: string; mobile: string }) {
+  const sources = { desktop: sceneAsset(files.desktop, "webp"), mobile: sceneAsset(files.mobile, "webp") };
+  if (!sources.desktop || !sources.mobile)
+    throw new Error(`The illustration ${files.desktop} or ${files.mobile} is not delivered`);
+  return { desktop: sources.desktop, mobile: sources.mobile };
+}
+
+// The lead piece of a project: the real interface that goes inside the drawn screen.
+function LeadMedia({ project }: { project: Project }) {
   const [lead] = project.pieces;
   if ("video" in lead)
     return (
@@ -126,9 +128,49 @@ function ProjectText({ project }: { project: Project }) {
   );
 }
 
-// Each project is a type poster: a field of the product's own color, its real interface large in a plain frame, its case
-// numeral and word at poster scale crossing the frame, then its title, line, stack and link and its other pieces in view
-// with it. The cases alternate their composition.
+// The stage of a project: the dev kit's diagram, or the real interface set in the screen its illustration draws.
+function Stage({
+  project,
+  art,
+  composition,
+}: {
+  project: Project;
+  art: SceneArt | undefined;
+  composition: "a" | "b";
+}) {
+  if (project.id === DEV_KIT) return <KitDiagram />;
+  if (!art) throw new Error(`No illustration is mapped for project ${project.id}`);
+  const sources = printed({ desktop: art.desktop.file, mobile: art.mobile.file });
+  return (
+    <DrawnScene art={art} sources={sources} composition={composition}>
+      <LeadMedia project={project} />
+    </DrawnScene>
+  );
+}
+
+// The pieces beside the lead: real screens for a project with an interface, close-ups of the path's steps for the kit.
+function Others({ project }: { project: Project }) {
+  if (project.id === DEV_KIT)
+    return (
+      <PieceRow count={KIT_STEPS.length}>
+        {KIT_STEPS.map((step, order) => (
+          <KitPiece key={step.id} step={step} order={order + 1} />
+        ))}
+      </PieceRow>
+    );
+  const others = project.pieces.slice(1);
+  return (
+    <PieceRow count={others.length}>
+      {others.map((piece, order) => (
+        <Piece key={piece.caption} piece={piece} order={order + 1} />
+      ))}
+    </PieceRow>
+  );
+}
+
+// Each project is a type poster: a field of the product's own color with its ink illustration printed on it, its real
+// interface large inside the screen that illustration draws, its case numeral and word at poster scale crossing it, then
+// its title, line, stack and link and its other pieces in view with it. The cases alternate their composition.
 export function Projects() {
   return (
     <section data-chapter="projects" id="projects" className="projects">
@@ -145,33 +187,21 @@ export function Projects() {
         if (!device)
           throw new Error(`No device is mapped for project ${project.id}`);
         const numeral = String(index + 1).padStart(2, "0");
-        const others = project.pieces.slice(project.documents ? 0 : 1);
+        const composition = index % 2 === 0 ? "a" : "b";
+        const art = SCENE_ART[project.id];
         return (
-          <ProjectSpread
-            key={project.id}
-            id={project.id}
-            composition={index % 2 === 0 ? "a" : "b"}
-          >
+          <ProjectSpread key={project.id} id={project.id} composition={composition}>
+            {project.id === DEV_KIT && <KitArt sources={printed(KIT_ART)} />}
             <PosterDetail numeral={numeral} total={projects.length} />
             <p data-poster-numeral="" className="poster-numeral" aria-hidden="true">
               {numeral}
             </p>
             <PosterWord word={POSTER_WORDS[project.id] ?? project.name} />
-            <div className="spread-main" data-device={device}>
+            <div className="spread-main" data-device={device} data-hand-held={art?.handHeld ? "" : undefined}>
               <ProjectText project={project} />
-              <PosterDevice device={device}>
-                <ScreenContent project={project} />
-              </PosterDevice>
+              <Stage project={project} art={art} composition={composition} />
               <div className="scene-pieces" data-has-scene="">
-                <PieceRow count={others.length}>
-                  {others.map((piece, order) => (
-                    <Piece
-                      key={piece.caption}
-                      piece={piece}
-                      order={order + 1}
-                    />
-                  ))}
-                </PieceRow>
+                <Others project={project} />
               </div>
             </div>
           </ProjectSpread>

@@ -32,14 +32,10 @@ export type Piece =
 // What the piece is shown in: an app screen in a phone frame, a web page in a browser frame.
 export type ScreenFrame = "phone" | "browser"
 
-// A typed document of the kit, shown inside its drawn monitor.
-export type KitDocument = { caption: string; lines: readonly string[] }
-
 export type Project = Story & {
   line: string
   stack: readonly string[]
   links: readonly Link[]
-  documents?: readonly KitDocument[]
   pieces: readonly Piece[]
 }
 export type Employer = Story & { title: string; period: string; current?: boolean; logo?: string }
@@ -76,27 +72,8 @@ export const projects: readonly Project[] = [
       { label: "http-attack", href: "https://github.com/NahuelMosse/http-attack" },
       { label: "migrations-safe", href: "https://github.com/NahuelMosse/migrations-safe" },
     ],
-    documents: [
-      {
-        caption: "A real card: the requirement frozen, one spec per sentence",
-        lines: ["PF-1 · S19 · “los primeros 5 segundos son los mas importantes”", "PF-1 · S27 · “para TPM mucho que se usar IA”", "status: proposed"],
-      },
-      {
-        caption: "Its tagged tests, one per spec",
-        lines: [
-          "@PF-1-S19 by second 5 the name, the offer and a door are in view",
-          "@PF-1-S27 the TPM offer and its door name how he delivers with AI",
-          "@PF-1-ASM-17 a failed video keeps its poster",
-        ],
-      },
-    ],
-    pieces: [
-      screen("browser", "kit-report", "The Playwright HTML report of this portfolio's end-to-end run", "The e2e report"),
-      screen("browser", "kit-report-test", "One test of the report open, with its tagged title and its steps", "A tagged test, step by step"),
-      screen("browser", "kit-skill-motion-audit", "The motion-audit skill's page on GitHub", "motion-audit"),
-      screen("browser", "kit-skill-http-attack", "The http-attack skill's page on GitHub", "http-attack"),
-      screen("browser", "kit-skill-migrations-safe", "The migrations-safe skill's page on GitHub", "migrations-safe"),
-    ],
+    // its lead and its pieces are drawn by code (kit-diagram, kit-piece), not captured
+    pieces: [],
   },
   {
     id: "grit",
