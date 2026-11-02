@@ -4,7 +4,7 @@ import { useRef } from "react"
 import { useInView } from "motion/react"
 import { KIT_STEPS, KitStepIcon } from "./kit-step-icon"
 
-const STATION_X = [100, 300, 500, 700, 900]
+const STATION_X = [130, 315, 500, 685, 870]
 const STATION_Y = 240
 
 // The kit's lead: the path a card walks, drawn by code on an ink plate, from the requirement frozen to the merged pull
@@ -20,7 +20,7 @@ export function KitDiagram() {
         data-kit-diagram=""
         data-drawn={seen}
         className="kit-diagram"
-        viewBox="0 0 1000 560"
+        viewBox="0 0 1000 480"
         role="img"
         aria-label="A card walks from the requirement frozen, through tests that fail, agents that build and checks that pass, to the merged pull request"
       >
@@ -31,9 +31,6 @@ export function KitDiagram() {
               <circle className="kit-ring" r="84" />
               <KitStepIcon step={step.id} />
             </g>
-            <text data-draw="pop" style={{ "--n": index + 1 } as React.CSSProperties} className="kit-word" y="160" textAnchor="middle">
-              {step.word}
-            </text>
           </g>
         ))}
       </svg>

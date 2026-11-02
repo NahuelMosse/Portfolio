@@ -793,7 +793,10 @@
   height: auto;
   mix-blend-mode: multiply;
   pointer-events: none;
-  mask-image: linear-gradient(to bottom, transparent var(--crop-top), #000 calc(var(--crop-top) + var(--edge-fade)), #000 calc(var(--crop-bottom) - var(--edge-fade)), transparent var(--crop-bottom));
+  mask-image:
+    linear-gradient(to right, transparent var(--crop-left), #000 calc(var(--crop-left) + var(--far-fade)), #000 calc(var(--crop-right) - var(--far-fade)), transparent var(--crop-right)),
+    linear-gradient(to bottom, transparent var(--crop-top), #000 calc(var(--crop-top) + var(--edge-fade)), #000 calc(var(--crop-bottom) - var(--edge-fade)), transparent var(--crop-bottom));
+  mask-composite: intersect;
 }
 
 .drawn-stage img[data-art="desktop"] {
@@ -845,14 +848,14 @@
   /* the side that faces the words fades into the field; the other side bleeds off the poster */
   .drawn-stage[data-side="right"] img[data-art="desktop"] {
     mask-image:
-      linear-gradient(to right, transparent var(--crop-left), #000 calc(var(--crop-left) + var(--side-fade))),
+      linear-gradient(to right, transparent var(--crop-left), #000 calc(var(--crop-left) + var(--side-fade)), #000 calc(var(--crop-right) - var(--far-fade)), transparent var(--crop-right)),
       linear-gradient(to bottom, transparent var(--crop-top), #000 calc(var(--crop-top) + var(--edge-fade)), #000 calc(var(--crop-bottom) - var(--edge-fade)), transparent var(--crop-bottom));
     mask-composite: intersect;
   }
 
   .drawn-stage[data-side="left"] img[data-art="desktop"] {
     mask-image:
-      linear-gradient(to left, transparent calc(100% - var(--crop-right)), #000 calc(100% - var(--crop-right) + var(--side-fade))),
+      linear-gradient(to right, transparent var(--crop-left), #000 calc(var(--crop-left) + var(--far-fade)), #000 calc(var(--crop-right) - var(--side-fade)), transparent var(--crop-right)),
       linear-gradient(to bottom, transparent var(--crop-top), #000 calc(var(--crop-top) + var(--edge-fade)), #000 calc(var(--crop-bottom) - var(--edge-fade)), transparent var(--crop-bottom));
     mask-composite: intersect;
   }
@@ -871,7 +874,7 @@
 .kit-plate {
   width: var(--stage-wide-width-phone);
   margin-inline: auto;
-  aspect-ratio: 1000 / 560;
+  aspect-ratio: 1000 / 480;
   background: var(--ink);
 }
 
@@ -1023,7 +1026,7 @@
 
   .kit-plate {
     width: var(--stage-wide-width);
-    margin-inline: 0;
+    margin-inline: 0 var(--gutter-right);
   }
 }
 

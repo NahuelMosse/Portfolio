@@ -54,6 +54,8 @@ export const imagePixels = ({ ratio }: ArtImage) => PIXELS[ratio]
 // how much of the crop a fade takes, on the side that faces the text and at the top and bottom
 const SIDE_FADE = 0.14
 const EDGE_FADE = 0.04
+// the side that faces away from the text fades too, narrowly, so no edge of the panel shows as a rectangle
+const FAR_FADE = 0.05
 
 // Where the whole image sits inside a panel that keeps only its crop, and where its edges fade: the fades are in the
 // image's own percentages, so they land on the panel's edges and not on the edges of the cropped-away image.
@@ -68,6 +70,7 @@ export function imageStyle({ crop: [left, top, right, bottom] }: ArtImage): CSSP
     "--crop-top": percent(top),
     "--crop-bottom": percent(bottom),
     "--side-fade": percent(SIDE_FADE * (right - left)),
+    "--far-fade": percent(FAR_FADE * (right - left)),
     "--edge-fade": percent(EDGE_FADE * (bottom - top)),
   } as CSSProperties
 }

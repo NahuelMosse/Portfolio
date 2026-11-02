@@ -93,12 +93,26 @@ test("at 390 and 1440 each project is a full-bleed field of its product color wi
       await expect.poll(async () => (await shownArt(spread))!.loaded, `${project} illustration loaded`).toBe(true)
       expect(art.blend, `${project} illustration is printed on the field`).toBe("multiply")
       expect(art.masked, `${project} illustration fades at its edges`).toBe(true)
-      const textBox = (await spread.locator("[data-project-text]").boundingBox())!
-      const textArea = overlap(art.panel as Box, textBox)
+      // on a phone the text wrapper has no box of its own (its title and details sit around the stage): the box is theirs together
+      const textParts = (await spread.locator("[data-project-text]").evaluate((el) => {
+        const parts = getComputedStyle(el).display === "contents" ? [...el.children] : [el]
+        return parts.map((part) => part.getBoundingClientRect().toJSON())
+      })) as Box[]
+      const textBox = {
+        x: Math.min(...textParts.map((box) => box.x)),
+        y: Math.min(...textParts.map((box) => box.y)),
+        width: Math.max(...textParts.map((box) => box.x + box.width)) - Math.min(...textParts.map((box) => box.x)),
+        height: Math.max(...textParts.map((box) => box.y + box.height)) - Math.min(...textParts.map((box) => box.y)),
+      }
+      const textArea = textParts.reduce((sum, part) => sum + overlap(art.panel as Box, part), 0)
       expect(textArea, `${project} illustration does not cover the text`).toBe(0)
       const hitsText = await spread.locator("[data-project-text] h3").evaluate((h3, id) => {
+        // a spread taller than the screen leaves its title out of view: bring it in before asking what is on top of it
+        const scrolled = window.scrollY
+        h3.scrollIntoView({ block: "center" })
         const box = h3.getBoundingClientRect()
         const top = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)
+        window.scrollTo(0, scrolled)
         return h3.contains(top) && !!top && document.querySelector(`[data-project="${id}"]`)!.contains(top)
       }, project)
       expect(hitsText, `${project} the title is the top element at its center`).toBe(true)
@@ -115,7 +129,7 @@ test("at 390 and 1440 each project is a full-bleed field of its product color wi
         expect(quad, `${project} measured corners for ${art.file}`).toBeDefined()
         const corners = await screen.evaluate((el) => {
           const matrix = new DOMMatrix(getComputedStyle(el).transform)
-          const origin = (el.offsetParent as HTMLElement).getBoundingClientRect()
+          const origin = ((el as HTMLElement).offsetParent as HTMLElement).getBoundingClientRect()
           const w = (el as HTMLElement).offsetWidth
           const h = (el as HTMLElement).offsetHeight
           return {
