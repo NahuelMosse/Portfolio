@@ -61,13 +61,13 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, realp
 import { cpus } from 'node:os';
 import { delimiter, isAbsolute, join, relative, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { asOneArg, cardFiles, commandDir, oneRound, originOf, ownBase, currentCard, cardStart, existedAt, fileMapLines, git, keyOf, IS_CODE, RAW_COLOR, RAW_DURATION, RAW_LAYOUT, DECLARES_TOKEN } from './card.mjs';
+import { asOneArg, cardFiles, commandDir, oneRound, originOf, ownBase, currentCard, cardStart, existedAt, fileMapLines, git, keyOf, IS_CODE, IS_TEST, RAW_COLOR, RAW_DURATION, RAW_LAYOUT, DECLARES_TOKEN } from './card.mjs';
 import { active, addedOf, isPoc } from './kit.mjs';
 import { expandScripts, launchesPlaywright, takeLock } from './browser-lock.mjs';
 import { endsWithLine } from './final-line.mjs';
 import { logPath, readRecord, withTestTimeout, writeRecord } from './once.mjs';
 import { QUALITY, missing, mutationRequired, splitPending, writeSessionLines } from './required.mjs';
-import { CARD_FILE, readCard, requirementOf, riskOf, sectionOf } from './card-doc.mjs';
+import { CARD_FILE, cardIdOf, fencedBlocks, readCard, requirementOf, riskOf, sectionOf } from './card-doc.mjs';
 import { cardChecks, noVisualCheck, probeRecords, removeOnlyOf, screenChecks, specsCheck, visualInstruments } from './gate-checks.mjs';
 import { detectIn } from './signals.mjs';
 import { affected } from './affected.mjs';
@@ -291,11 +291,14 @@ let coreCount;
 const cores = () => (coreCount ??= cpus().length);
 export const mutationWorkers = (n = cores()) => Math.max(1, Math.floor(n / 2));
 
-// The tests the card's files can break, quoted for the shell; empty when the card touched no code a test reaches.
-// A command that starts with `cd <dir> &&` gets them from that folder, and only those inside it.
-export const affectedOf = (base, root = process.cwd(), dir = '') => {
+// The tests the card's files can break, plus every test file that carries the card's own tags, quoted for the shell; empty
+// only when neither exists. A command that starts with `cd <dir> &&` gets them from that folder, and only those inside it.
+export const affectedOf = (base, root = process.cwd(), dir = '', cardDir = null) => {
   const touched = cardFiles(root, base).filter((f) => !f.startsWith('specs/') && existsSync(join(root, f)));
-  const tests = touched.length ? affected(root, touched) : [];
+  const id = cardDir ? cardIdOf(cardDir) : null;
+  const grep = id ? spawnSync('git', ['grep', '-l', '-I', '-F', '--untracked', '-e', `@${id}-`, '--', ':(exclude)specs', ':(exclude).claude'], { cwd: root, encoding: 'utf8' }) : null;
+  const tagged = (grep?.stdout ?? '').split('\n').filter((f) => f && IS_TEST.test(f));
+  const tests = [...new Set([...(touched.length ? affected(root, touched) : []), ...tagged])].sort();
   const local = dir ? tests.filter((f) => f.startsWith(`${dir}/`)).map((f) => f.slice(dir.length + 1)) : tests;
   return local.map((f) => `"${f}"`).join(' ');
 };
@@ -303,10 +306,10 @@ export const affectedOf = (base, root = process.cwd(), dir = '') => {
 export const planCommands = (plan, { base, cardDir }, heading = 'Verification') => {
   const section = plan.split(/^## /m).find((s) => s.startsWith(heading));
   if (!section) return null;
-  const block = section.match(/```[^\n]*\n([\s\S]*?)```/);
-  if (!block) return null;
+  const blocks = fencedBlocks(section);
+  if (!blocks.length) return null;
   const equivalents = relative(process.cwd(), join(cardDir, 'equivalents.md')).split('\\').join('/');
-  return block[1].split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#') && !ENVIRONMENT_LINE.test(l)).map((l) => {
+  return blocks.join('\n').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#') && !ENVIRONMENT_LINE.test(l)).map((l) => {
     const i = l.indexOf(':');
     // `name [timeout 30 min]: command` sets the limit of that line; without it, see limitMin.
     const limit = l.slice(0, i).match(TIMEOUT_TAG);
@@ -316,8 +319,10 @@ export const planCommands = (plan, { base, cardDir }, heading = 'Verification') 
     // `{affected}` is the tests the card's files can break (affected.mjs over the card's diff): the gate runs those, the CI of the
     // PR runs the whole suite. A card that changes a line does not pay the whole suite on every gate round.
     if (command.includes('{affected}')) {
-      const tests = affectedOf(base, process.cwd(), commandDir(command));
-      command = tests ? command.replaceAll('{affected}', tests) : 'node -e "console.log(\'no test reaches the files of the card\')"';
+      const tests = affectedOf(base, process.cwd(), commandDir(command), cardDir);
+      // No test to hand it is a line that cannot run, never one that passes by printing why.
+      if (!tests) return { name, command, cannotRun: 'no test reaches the files of the card and no test file carries its tags' };
+      command = command.replaceAll('{affected}', tests);
     }
     // An `attacks` line asks for a refused foreign Host only in production or when the card speaks of the host.
     if (/^attacks$/i.test(name) && /attack\.mjs\s+\S+/.test(command) && !/--strict-host/.test(command) && wantsStrictHost(plan)) command = command.replace(/(attack\.mjs\s+\S+)/, '$1 --strict-host');
@@ -340,6 +345,8 @@ export const planCommands = (plan, { base, cardDir }, heading = 'Verification') 
 // The commands a line runs at its top level: its segments split by `&&`, `||` or `;` outside quotes, and
 // the body of each npm script it calls, down its sub-scripts. A command inside quotes or given as an
 // argument (`mutate.mjs … --test "node --test x"`) is not one the line runs itself.
+// A line that chains commands (`&&`, `||`, `;`, a pipe) outside quotes.
+export const isCompound = (command) => /&&|\|\||;|\|/.test(String(command).replace(/"(?:\\.|[^"\\])*"|'[^']*'/g, ''));
 const topLevel = (command, scripts, depth = 0) => {
   const parts = [];
   let current = '';
@@ -989,7 +996,8 @@ const run = (line, logsDir) => new Promise((done) => {
     } else {
       // Any test line, not only `suite`: a scenarios line that runs a frozen test the Log declares replaced counts its swap too.
       // replacedFailures answers only when every failing test it reads has a replacement that holds.
-      const swapped = exit !== 0 && !timedOut && !/^mutate\b/i.test(name) && !MUTATOR.test(command) ? replacedFailures(process.cwd(), output) : null;
+      // Only a single command: in a chain the failing step may have kept the next one from ever running.
+      const swapped = exit !== 0 && !timedOut && !/^mutate\b/i.test(name) && !MUTATOR.test(command) && !isCompound(command) ? replacedFailures(process.cwd(), output) : null;
       if (swapped) {
         exit = 0;
         replaced = swapped.map((r) => ({ test: r.name, file: r.file, by: r.by, byName: r.byName, why: r.why }));
@@ -1087,9 +1095,9 @@ export const verify = async (root) => {
   if (appLine) {
     const stateFile = join(root, '.validation', 'app.json');
     const pidBefore = readState(stateFile)?.pid;
-    // app.mjs waits KIT_APP_START_TIMEOUT_S (180 s by default) for the app, then runs the seed: this cut leaves it 90 s beyond its own wait.
+    // app.mjs waits KIT_APP_START_TIMEOUT_S (180 s by default) for the app, then up to 120 s for the seed: the cut leaves 30 s beyond both.
     const startS = Number(process.env.KIT_APP_START_TIMEOUT_S) > 0 ? Number(process.env.KIT_APP_START_TIMEOUT_S) : 180;
-    const up = spawnSync('node', [join(import.meta.dirname, 'app.mjs'), 'up'], { cwd: root, encoding: 'utf8', timeout: Math.max(150_000, (startS + 90) * 1000), maxBuffer: 1 << 26 });
+    const up = spawnSync('node', [join(import.meta.dirname, 'app.mjs'), 'up'], { cwd: root, encoding: 'utf8', timeout: appUpCutMs(startS), maxBuffer: 1 << 26 });
     const state = readState(stateFile);
     if (up.status !== 0 || !state) return { error: `The \`app:\` line could not start the app (exit ${up.status}): ${(up.stderr || up.stdout || '').trim().split('\n').slice(-6).join(' ⏎ ')}` };
     startedApp = state.pid !== pidBefore;
@@ -1104,11 +1112,13 @@ export const verify = async (root) => {
   }
 };
 
+// The seed's own limit in app.mjs (startApp); app.mjs runs its CLI on import, so the number is repeated here.
+const APP_SEED_S = 120;
+export const appUpCutMs =(startS) => Math.max(150, startS + APP_SEED_S + 30) * 1000;
 const readState = (file) => { try { return JSON.parse(readFileSync(file, 'utf8')); } catch { return null; } };
 const hasAppLine = (doc, heading) => {
   const section = doc.split(/^## /m).find((s) => s.startsWith(heading));
-  const block = section?.match(/```[^\n]*\n([\s\S]*?)```/)?.[1] ?? '';
-  return block.split('\n').some((l) => /^app:/.test(l.trim()));
+  return fencedBlocks(section).join('\n').split('\n').some((l) => /^app:/.test(l.trim()));
 };
 
 const PROBE_LANES = 3;
@@ -1134,7 +1144,9 @@ const verifyLines = async (root, { cardDir, single, planned, logsDir }) => {
   const { exempt } = active(root);
   const map = fileMapLines(cardDir) ?? [];
   const skipped = planned.flatMap((c) => { const reason = skippedBy(c, exempt, map, root); return reason ? [{ name: c.name, reason }] : []; });
-  const graded = planned.filter((c) => !skipped.some((s) => s.name === c.name));
+  const gradedAll = planned.filter((c) => !skipped.some((s) => s.name === c.name));
+  const unrunnable = gradedAll.filter((c) => c.cannotRun);
+  const graded = gradedAll.filter((c) => !c.cannotRun);
   // A line another line already includes is not run twice: `covered by <line>`, and once that line
   // passes the covered one gets its own record, so what looks for evidence of it finds it.
   const covered = containedCommands(graded, root).map(({ inner, outer }) => ({ inner: graded.find((c) => c.name === inner), outer }));
@@ -1176,7 +1188,11 @@ const verifyLines = async (root, { cardDir, single, planned, logsDir }) => {
   const together = fast.filter((c) => !alone.includes(c));
   const slowAlone = slow.filter(serialOf);
   const limit = Math.max(2, Math.floor(cores() / 2));
-  const results = [];
+  const results = unrunnable.map((c) => ({ name: c.name, command: c.command, exit: 125, notRun: true, reason: c.cannotRun, flaky: [], tail: '' }));
+  for (const c of unrunnable) {
+    say(`could not run ${c.name}: ${c.cannotRun}`);
+    writeRecord(root, { name: c.name, command: c.command, exit: 125, minutes: 0 });
+  }
   const treeBefore = snapshot(root);
   // A mutation that exits 3 found nothing to mutate in the file: required.mjs accepts it as well.
   const failed = (r) => r.exit !== 0 && !(r.exit === 3 && MUTATOR.test(r.command));
@@ -1245,7 +1261,9 @@ const verifyLines = async (root, { cardDir, single, planned, logsDir }) => {
   }
 
   const actions = results.filter(failed)
-    .map((r) => (r.notRun
+    .map((r) => (r.notRun && r.reason
+      ? `${r.name} · could not run: ${r.reason} · close: tag the card's tests with its spec tags, or name the tests in the line instead of \`{affected}\``
+      : r.notRun
       ? `${r.name} · could not run: not started because ${r.blockedBy.join(', ')} failed first, and the lines that drive a browser start only after the fast ones pass · close: fix those, then \`node ${TOOLS}/verify.mjs\` again`
       : r.timedOut
       ? `${r.name} · could not run: timeout after ${r.minutes} min, killed: ${r.tail} · log: ${relative(root, r.log)} · close: \`${r.command}\` ends by itself within the limit (a server is started and stopped by the command). To raise the limit of this line write \`${r.name} [timeout <N> min]: …\` in the plan's \`## Verification\` (the name, then the tag), or set \`VERIFY_TIMEOUT_MIN\` for every line; without either, the limit is the greater of 20 min and 4 times the last measured run of the command, and a killed run counts as its limit, so the next run gets more room`
@@ -1331,7 +1349,7 @@ Exit: 0 nothing to fix, 1 actions, 2 no commands in the gate, 3 not run from the
     // card.md: one line per check, and the fixed final line (endsWithLine) at the end.
     for (const x of r.results.sort((a, b) => a.name.localeCompare(b.name))) {
       const state = x.exit === 0 ? (x.replaced?.length ? 'passed with replaced' : x.flaky?.length ? 'passed with flaky' : 'passed') : x.notRun ? 'could not run' : x.timedOut ? 'could not run' : r.failed(x) ? 'failed' : 'passed';
-      const why = x.notRun ? `not started, ${x.blockedBy.join(', ')} failed first` : x.timedOut ? `timeout after ${x.minutes} min` : x.tail;
+      const why = x.notRun && x.reason ? x.reason : x.notRun ? `not started, ${x.blockedBy.join(', ')} failed first` : x.timedOut ? `timeout after ${x.minutes} min` : x.tail;
       console.log(state === 'passed with replaced' ? `${x.name}: passed with replaced ${x.replaced.length}: ${x.replaced.map((f) => f.test).join(' | ')}`
         : state === 'passed with flaky' ? `${x.name}: passed with flaky` : state === 'passed' && x.cached ? `${x.name}: passed (cached ${x.cached.slice(0, 16)})` : lineOf(x.name, state, why));
     }

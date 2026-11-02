@@ -10,7 +10,7 @@ maxTurns: 25
 You judge the look of a screen with fresh eyes. You did not build it and you do not read how the designer reasoned: never open
 `rondas.md` or the `## Direction`. You are given the path of `specs/<card>/card.md` and the URL of the running app.
 
-**Write only `specs/<card>/critique.md`.** `Write` is for that file and no other. Never edit code, styles, tests or the card.
+**Write only `specs/<card>/critique.md`.** `Write` is for that file and no other; commit it alone (`git add specs/<card>/critique.md && git commit`), since the close dates it against the screen. Never edit code, styles, tests or the card.
 
 **Look.**
 1. Run `node .claude/tools/design-round.mjs <url> --gpu --out specs/<card>/critique` and `Read` 6 to 10 key captures at both widths, and the captures of
@@ -73,6 +73,11 @@ Blockers for a product screen: a decision of `## Information` that takes a scrol
 
 **Blockers cap the total at 6:** a dead click, a pasted image, a drawn shape standing for an object, a fake-looking 3D, an asset in a typeface or palette outside the brand sheet. Name the blocker with its capture, as a line `**Blocker:** <text>` in `## Scores`. A blocker about a product image cites a real photo of the same object (a path in `ref/` or a URL) and says what differs from it (proportions, finish, color, scale of details): without that photo it is not a blocker the designer can fix.
 The model judge filters and a person decides: do not round up.
+
+**A product shown inside a landing** (a window of the app, a feature card, a demo with a cursor) is judged against the closest
+`ref/` capture of the product or its category, at the size it is shown, with the pairs of `reference/showcase.md` (The product
+shown inside the page). Say the one difference. A fragment that is sparser, flatter or smaller than its gold, or that could be any product in its
+category, is a level difference. Each pair it fails is a polish defect, with its frame.
 
 **Imagery.** For each image ask «does it look part of the page or pasted on top?», and check against `.claude/reference/assets.md`:
 one photographic genre across the page, and cutouts with halos. A pasted-on image, a second genre or a halo is a polish defect.

@@ -185,7 +185,7 @@ const measureContrast = ([selectors, withStatus]) => {
     for (let node = el; node; node = node.parentElement) {
       const s = getComputedStyle(node);
       const layer = rgba(s.backgroundColor);
-      if (s.backgroundImage !== 'none') approximate = true;
+      if (!/^none(\s*,\s*none)*$/.test(s.backgroundImage)) approximate = true;
       if (layer[3] > 0) layers.push(layer);
       if (layer[3] === 1) break;
     }
@@ -289,8 +289,11 @@ const run = async (page, step, appUrl, ctx) => {
   else if ('type-markup' in step) { await loc(step['type-markup']).fill(MARKUP, { timeout: STEP_TIMEOUT_MS }); ctx.found.typed = true; }
   else if ('goto' in step) {
     const target = new URL(step.goto, appUrl).href;
-    const why = await wallOf(page, await page.goto(target, { waitUntil: 'load', timeout: STEP_TIMEOUT_MS * 3 }), target);
+    const response = await page.goto(target, { waitUntil: 'load', timeout: STEP_TIMEOUT_MS * 3 });
+    const why = await wallOf(page, response, target);
     if (why) throw new BotWall(target, why);
+    // A local error page is a failed step, not a page to probe.
+    if (response && response.status() >= 400) throw new Error(`${target} answered HTTP ${response.status()}`);
     const notProduct = await productRefOf(page, target);
     if (notProduct) throw new BotWall(target, null, notProduct);
   } else if ('fill' in step) await loc(step.fill).fill(step.value ?? '', { timeout: STEP_TIMEOUT_MS });
@@ -350,11 +353,6 @@ export const probe = async (argv, root = process.cwd()) => {
   const parsed = parseSteps(list, appUrl);
   if (parsed.error) { console.error(parsed.error); return 2; }
 
-  const pw = playwright();
-  if (!pw) { console.error('could not run: Playwright is not installed here nor at KIT_PLAYWRIGHT_ROOT'); return 2; }
-  const axePath = axe ? axeFile() : null;
-  if (axe && !axePath) { console.error('could not run --axe: axe-core is not installed here nor at KIT_PLAYWRIGHT_ROOT, and AXE_CORE does not name an axe.min.js'); return 2; }
-
   const out = resolve(root, outFlag ?? DEFAULT_OUT);
   // `--out` is emptied before writing: the repo root, a folder above it or one holding `.git` or `specs` is never a probe folder.
   const rel = relative(out, resolve(root));
@@ -362,6 +360,10 @@ export const probe = async (argv, root = process.cwd()) => {
     console.error(`--out ${out} is the repo, a folder above it or one with .git or specs: it is emptied before writing; pick a folder of its own`);
     return 2;
   }
+  const pw = playwright();
+  if (!pw) { console.error('could not run: Playwright is not installed here nor at KIT_PLAYWRIGHT_ROOT'); return 2; }
+  const axePath = axe ? axeFile() : null;
+  if (axe && !axePath) { console.error('could not run --axe: axe-core is not installed here nor at KIT_PLAYWRIGHT_ROOT, and AXE_CORE does not name an axe.min.js'); return 2; }
   rmSync(out, { recursive: true, force: true });
   mkdirSync(out, { recursive: true });
   const browser = await (pw.chromium ?? pw.default.chromium).launch();

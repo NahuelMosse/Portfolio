@@ -59,6 +59,8 @@ export const CAPPED = new Set(['builder', 'grunt', 'designer', 'design-critic'])
 // Whether a hook has nothing to say about this call, from what the hook itself would read first and end on
 // with exit 0 and no output. Each rule repeats the early exit of its hook; none of them changes a verdict.
 // Never when another kit's version of the hook would take the call over (`delegationTarget`).
+// A git subcommand outside the everyday built-ins, which publish resolves in case it is an alias of push.
+const MAY_BE_ALIAS = /\bgit(?:\s+-\S+(?:\s+[^-\s]\S*)?)*\s+(?!(?:status|log|diff|show|add|commit|switch|checkout|branch|fetch|pull|rev-parse|config|remote|stash|restore|reset|rm|mv|tag|init|clone|worktree|grep|ls-files|merge|rebase|cherry-pick|symbolic-ref|blame|describe)\b)[a-z]/i;
 export const skips = (name, input, card, hookUrl) => {
   try {
     if (!['shell-writes', 'commit-why', 'time-cap', 'context-cap', 'turn-budget', 'require-at-close', 'publish', 'trim-output'].includes(name)) return false;
@@ -71,8 +73,10 @@ export const skips = (name, input, card, hookUrl) => {
       // reads writes nothing (it is skipped before and after, so no snapshot is left behind).
       case 'shell-writes': return !input.agent_id || READ_ONLY.test(command);
       case 'commit-why': return !/\bgit\s+(?:[^|;&\n"']*?\s)?commit\b/.test(command);
-      // publish judges a shell line only where a `git push` or a `gh` call sits, bare or inside a wrapper; a Jira comment always.
-      case 'publish': return ['Bash', 'PowerShell'].includes(input.tool_name) && !/\bgh\b|\bpush\b/i.test(command);
+      // publish judges a shell line only where a push, a gh call or a git command that may be an alias sits, bare or inside a
+      // wrapper; quotes and backslashes are dropped first, since `pu''sh` and `\git` reach the program unquoted. A Jira comment always.
+      case 'publish': return ['Bash', 'PowerShell'].includes(input.tool_name) && !/\bgh\b|\bpush\b/i.test(command.replace(/['"\\]/g, '')) &&
+        !MAY_BE_ALIAS.test(command.replace(/['"\\]/g, ''));
       // trim-output leaves alone what runs in the background and what only reads.
       case 'trim-output': return Boolean(data.run_in_background) || READ_ONLY.test(command);
       case 'time-cap': {
@@ -107,14 +111,19 @@ const runHook = (dir, name, raw, deadline) => new Promise((resolve) => {
   };
   try {
     worker = new Worker(new URL('./hook-worker.mjs', import.meta.url), {
-      workerData: { raw, hook: pathToFileURL(join(dir, `${name}.mjs`)).href }, stdout: true, stderr: true,
+      workerData: { raw, hook: pathToFileURL(join(dir, `${name}.mjs`)).href, name, seconds, deadlineAt: Date.now() + seconds * 1000 }, stdout: true, stderr: true,
     });
   } catch (e) { result.why = `could not start (${e.message})`; resolve(result); return; }
   worker.stdout.on('data', (d) => { result.out += d; });
   worker.stderr.on('data', (d) => { result.err += d; });
   worker.on('error', (e) => { result.why = `threw: ${e?.message ?? e}`; });
   worker.on('exit', (code) => { result.code = code; done(); });
-  timer = setTimeout(() => { result.why = `did not finish in ${seconds} s`; worker.terminate().then(() => done(), () => done()); }, seconds * 1000);
+  // A thread blocked in a spawnSync ignores terminate(): hook-worker.mjs gives every child process the time that is left, and a
+  // hook whose child is killed by it ends with exit 2 and names the deadline. This timer covers a hook that hangs in JS.
+  timer = setTimeout(() => {
+    result.why = `did not finish in ${seconds} s`;
+    worker.terminate().then(() => done(), () => done());
+  }, seconds * 1000);
 });
 
 // The answers that are JSON —updatedInput, additionalContext— merge; anything else is joined as text.

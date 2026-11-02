@@ -130,7 +130,8 @@ vitals: npm run verify:vitals
 load: npm run verify:load
 ```
 
-`attacks:` runs `attack.mjs` against `APP_URL`, the app `verify.mjs` started with `app:`. `npm run motion` starts its own app on a free port, runs
+`attacks:` runs `attack.mjs` against `APP_URL`, the app `verify.mjs` started with `app:`; the probes, rule ids and exit codes are the
+vendored skill's (`.claude/skills/http-attack/SKILL.md`, profile backend). `npm run motion` starts its own app on a free port, runs
 the audit and stops it by PID, with `node .claude/tools/motion-audit.mjs <url>
 --only <selectors of what the card added> --cpu 4`, or over `design/components/gallery.html` when
 the card changed the set. What uses a browser or starts the app goes one at a time; the rest, in
@@ -214,7 +215,7 @@ thousand tokens; a long full page, ten.
 | T11 | `npx c8 --include <production files in the diff> --check-coverage --lines 80 node --test <unit-tests>` |
 | S12 | `npx @lizenz/checker --production --onlyAllow "MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;0BSD;Unlicense;CC0-1.0;Zlib"` (successor of `license-checker-rseidelsohn`), or `npx licensee --production --errors-only` with a `.licensee.json`; the repo's own list if `docs/technical/dependencies.md` overrides it. Fonts, icons, images and copied fragments: **scancode-toolkit** or the inventory in the notices. A command not verified on this machine: **Untested on this machine** |
 | S17 | **OWASP ZAP** in baseline mode, against the running app: `zap-baseline.py -t http://127.0.0.1:<port>` — needs Docker or Java. Untested on this machine. Once per card, at the end; not rerun after fixes |
-| P4 · P12 | PostgreSQL: `npx squawk-cli <migrations>/*.sql`; MySQL: every `ALTER TABLE` of the card declares `ALGORITHM` (`rg -n "ALTER TABLE" <migrations> \| rg -v "ALGORITHM"` is empty). Untested on this machine |
+| P4 · P12 | `node .claude/skills/migrations-safe/scripts/migration-lint.mjs --history` (module data): the migrations new in the branch, plus the history checks (an applied file edited, two branches that collide or sort out of order); runner (Prisma, Drizzle, Knex, Atlas, goose, dbmate…) and dialect (PostgreSQL, SQLite, MySQL, SQL Server, Oracle, Db2) detected from the project, `--dialect` to override. Exit 2 is could not run, never a pass |
 | W8 | `npx @redocly/cli lint docs/api/openapi.yaml` or `npx @stoplight/spectral-cli lint docs/api/openapi.yaml`; AsyncAPI: `npx @asyncapi/cli validate docs/api/asyncapi.yaml` (the validator for AsyncAPI 3 must be confirmed, [NV]); GraphQL: the schema printed from the code against the committed one. Untested on this machine |
 | W9 | a test in the suite that compares the registered routes with the spec paths in both directions and validates the responses of the HTTP tests (the `contract:` line); alternative `schemathesis run docs/api/openapi.yaml --url http://127.0.0.1:<port>`, one at a time. Untested on this machine |
 | W1 · W7 · W10 | the generator's strict build (Docusaurus with `onBrokenLinks: 'throw'`, `mkdocs build --strict`, Starlight with `starlight-links-validator`), or `lychee --offline docs README.md`, or `npx markdown-link-check` (the `docs:` line). Diagrams as code, one render per source through `once.mjs`: `npx -p @mermaid-js/mermaid-cli mmdc -i <file.mmd|page.md> -o <out>`, `d2 <file.d2> <out.svg>`, `likec4 build`, a request to Kroki, `node archify/bin/archify.mjs validate <name>.archify.json` [NV subcommand]. Untested on this machine; the flags of `mmdc`, `d2`, `likec4` and `archify` are [NV] |

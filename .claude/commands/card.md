@@ -26,7 +26,6 @@ lenses and stacks only the section a question needs (`Grep -n "^## "`, then `Rea
 4. **One round of questions.** What the card does not say (the empty case, duplicates, validation, limits, permissions, states, error,
    order, concurrency, what must be stamped now) is `$1-AMB-NN · <date> · open · <question in the business's language, no IDs>` in
    `specs/$1-<slug>/ambiguities.md`. With Jira, all of them go in **one** comment on the card, posted without asking approval, each with
-   the option assumed if nobody answers (`.claude/AUTONOMY.md`). Read the answers before the tests; what is unanswered becomes an
-   `$1-ASM-NN` line of `## Specs`, with its planned test. Never a second round.
-5. Commit `card.md` alone. **Closes with:** `git diff --name-only <hash>..HEAD -- specs/$1-<slug>/card.md` (`<hash>`, the commit of `card.md`) lists nothing you
-   did not mean; report the specs, the open questions, `not_read:` and the `risk:` line.
+   the option assumed if nobody answers (`.claude/AUTONOMY.md`). The main thread reads the answers once, before RED; what is unanswered becomes an
+   `$1-ASM-NN` line of `## Specs`, with its planned test. A later answer goes in the Log and the PR; it does not reopen RED. Never a second round.
+5. Commit `card.md` alone. **Closes with:** `git show --name-only --format= HEAD` lists only `specs/$1-<slug>/card.md`; report the specs, the open questions, `not_read:` and the `risk:` line.

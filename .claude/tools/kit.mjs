@@ -31,11 +31,11 @@
 // at poc, which only keeps off what a person turned off. Nobody lowers the grade or chooses poc either.
 // Importing this file never writes anything.
 import { createHash } from 'node:crypto';
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync, appendFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync, appendFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { cardFiles, cardStart, currentCard, fileMapLines, git, originOf, ownBase, pathTokens } from './card.mjs';
-import { rolesOf } from './card-doc.mjs';
+import { nextLogNumber, requirementOf, rolesOf } from './card-doc.mjs';
 import { describe, detect, detectIn, evidenceOf, kindOf } from './signals.mjs';
 
 export const KIT_JSON = '.claude/kit.json';
@@ -300,7 +300,28 @@ export const coreFiles = (map, all, stack) => {
   return forStack(map, all.filter((f) => !owned.has(f)), stack);
 };
 
-export const sha256 = (path) => createHash('sha256').update(readFileSync(path)).digest('hex');
+// Text files are hashed with CRLF read as LF: a clone with core.autocrlf=true holds the same files byte for byte only in LF.
+export const TEXT_FILE = /\.(md|json|mjs|js|ya?ml|txt|css|html)$/;
+export const shaOf = (content, rel) => {
+  const bytes = Buffer.isBuffer(content) ? content : Buffer.from(content);
+  return createHash('sha256').update(TEXT_FILE.test(rel) ? Buffer.from(bytes.toString('utf8').replace(/\r\n/g, '\n')) : bytes).digest('hex');
+};
+export const sha256 = (path) => shaOf(readFileSync(path), path);
+
+// What the installer renders into the kit's files: `E2E=` in METHOD.md and the `paths:` of the rules.
+export const RULE_PATHS = /^paths:\s*(\[.*\])\s*$/m;
+export const render = (rel, text, { e2e, rulePaths } = {}) => {
+  if (rel === '.claude/METHOD.md' && e2e) return text.replace(/^E2E=\S+/m, () => `E2E=${e2e}`);
+  const rule = rel.match(/^\.claude\/rules\/([\w-]+)\.md$/)?.[1];
+  if (rule && rulePaths?.[rule]) return text.replace(RULE_PATHS, () => `paths: ${JSON.stringify(rulePaths[rule])}`);
+  return text;
+};
+
+// The content a source file takes in the target: rendered if it is text, as it is otherwise.
+export const rendered = (srcPath, rel, settings) => {
+  const raw = readFileSync(srcPath);
+  return TEXT_FILE.test(rel) ? Buffer.from(render(rel, raw.toString('utf8'), settings)) : raw;
+};
 
 // Removes an installed file and the folders it leaves empty, up to the root of the repo.
 const removeInstalled = (root, file) => {
@@ -314,17 +335,18 @@ const removeInstalled = (root, file) => {
 
 // Copies `files` from one repo to another. A file already there that differs from the source is a
 // local edition: it is kept and listed, never overwritten, unless `overwrite`.
-export const copyFiles = (from, to, files, { overwrite = false } = {}) => {
+export const copyFiles = (from, to, files, { overwrite = false, settings } = {}) => {
   const copied = [];
   const kept = [];
   for (const f of files) {
     const target = join(to, f);
+    const content = rendered(join(from, f), f, settings);
     if (existsSync(target) && !overwrite) {
-      if (sha256(target) !== sha256(join(from, f))) kept.push(f);
+      if (sha256(target) !== shaOf(content, f)) kept.push(f);
       continue;
     }
     mkdirSync(dirname(target), { recursive: true });
-    copyFileSync(join(from, f), target);
+    writeFileSync(target, content);
     copied.push(f);
   }
   return { copied, kept };
@@ -371,8 +393,10 @@ export const cardSignals = (root, cardDir, { diff = false } = {}) => {
   const sections = text.split(/^## /m).filter((s) => /^(Tasks|Gate|File map|Changes to existing behavior|Verification)\b/.test(s));
   const files = (fileMapLines(cardDir) ?? []).flatMap(pathTokens);
   const found = detectIn({ files, texts: sections });
-  if (text) {
-    const asked = detectIn({ asks: [text] }).i18n;
+  // Only the frozen requirement can ask for a language: the titles of the tests and the plan's words are not the person's.
+  const requirement = requirementOf(text);
+  if (requirement) {
+    const asked = detectIn({ asks: [requirement] }).i18n;
     if (asked) merge(found, { i18n: asked });
   }
   if (diff) {
@@ -411,15 +435,28 @@ export const LATE_ADVICE = (mod, grade = 'production') => (grade === 'poc'
 
 const today = () => new Date().toISOString().slice(0, 10);
 
-// `<ID>-ASM-NN · <date> · <what>` at the end of the card's ambiguities.md; the number is the next free one.
+// `- <ID>-ASM-NN · <what> · <date>` at the end of `## Specs` of the card's card.md, where the gate reads the assumptions
+// from. The number is the next free one across card.md and ambiguities.md. A card with no `## Specs` keeps the line in
+// ambiguities.md.
 const appendAssumption = (cardDir, what) => {
+  const doc = join(cardDir, 'card.md');
   const path = join(cardDir, 'ambiguities.md');
-  const text = existsSync(path) ? readFileSync(path, 'utf8') : '';
+  const read = (p) => (existsSync(p) ? readFileSync(p, 'utf8') : '');
+  const card = read(doc);
+  const text = read(path);
   const folder = cardDir.split(/[\\/]/).pop();
   const id = folder.match(/^[A-Za-z][A-Za-z0-9]*-\d+[A-Za-z0-9]*/)?.[0] ?? folder;
-  const next = Math.max(0, ...[...text.matchAll(/-ASM-(\d+)/g)].map((m) => Number(m[1]))) + 1;
-  const line = `${id}-ASM-${String(next).padStart(2, '0')} · ${today()} · ${what}`;
-  appendFileSync(path, `${text && !text.endsWith('\n') ? '\n' : ''}${line}\n`);
+  const next = Math.max(0, ...[...(card + '\n' + text).matchAll(/-ASM-(\d+)/g)].map((m) => Number(m[1]))) + 1;
+  const line = `${id}-ASM-${String(next).padStart(2, '0')} · ${what} · ${today()}`;
+  const heading = /^## Specs\b.*\n/m.exec(card);
+  if (!heading) {
+    appendFileSync(path, `${text && !text.endsWith('\n') ? '\n' : ''}${line}\n`);
+    return line;
+  }
+  const from = heading.index + heading[0].length;
+  const nextHeading = card.slice(from).search(/^## /m);
+  const end = nextHeading < 0 ? card.length : from + nextHeading;
+  writeFileSync(doc, card.slice(0, end).replace(/\s+$/, '') + '\n- ' + line + '\n' + (nextHeading < 0 ? '' : '\n' + card.slice(end)));
   return line;
 };
 
@@ -553,6 +590,8 @@ const turnGrade = (root, target, reason) => {
   if (change.lines.length) console.log(`${change.raising ? 'Now required, and not before (the debt to close)' : 'No longer required'}:\n${change.lines.join('\n')}`);
 };
 
+const settingsOf = (manifest) => ({ e2e: manifest.e2e, rulePaths: manifest.rulePaths });
+
 const turnOn = (root, name) => {
   const state = requireManifest(root);
   moduleArg(state, name);
@@ -562,7 +601,7 @@ const turnOn = (root, name) => {
   // What the card brings that the decision to turn it off did not see, read while it is still off.
   const brought = card && state.off.has(name) ? (lateSignals(root, card, { diff: true })[name] ?? []) : [];
   const files = filesOfModule(sourceMap, name, listKit(source));
-  const { copied, kept } = copyFiles(source, root, files);
+  const { copied, kept } = copyFiles(source, root, files, { settings: settingsOf(state.manifest) });
   const manifest = state.manifest;
   manifest.modules[name] = { state: 'on', version: sourceMap.modules[name].version, since: `kit.mjs on ${today()}` };
   manifest.files ??= {};
@@ -633,14 +672,15 @@ const turnProfile = (root, mode, name, reason, cardOpen = '') => {
     for (const m of [...p.modules, ...p.modulesIfSignal.filter((x) => evidenceOf(found, sourceMap.modules[x].signals).length)]) turnOn(root, m);
     const manifest = readManifest(root);
     const files = filesOfProfile(sourceMap, name, listKit(source));
-    const { copied, kept } = copyFiles(source, root, files);
+    const { copied, kept } = copyFiles(source, root, files, { settings: settingsOf(manifest) });
     manifest.files ??= {};
     for (const f of [...copied, ...files.filter((x) => !kept.includes(x) && existsSync(join(root, x)))]) manifest.files[f] = { module: `profile:${name}`, sha256: sha256(join(root, f)) };
     for (const { from, to } of copiesOfProfile(sourceMap, name, root)) {
       const dest = join(root, to);
-      if (existsSync(dest)) { if (sha256(dest) !== sha256(join(source, from))) kept.push(to); else manifest.files[to] = { module: `profile:${name}`, sha256: sha256(dest) }; continue; }
+      const content = rendered(join(source, from), to, settingsOf(manifest));
+      if (existsSync(dest)) { if (sha256(dest) !== shaOf(content, to)) kept.push(to); else manifest.files[to] = { module: `profile:${name}`, sha256: sha256(dest) }; continue; }
       mkdirSync(dirname(dest), { recursive: true });
-      copyFileSync(join(source, from), dest);
+      writeFileSync(dest, content);
       copied.push(to);
       manifest.files[to] = { module: `profile:${name}`, sha256: sha256(dest) };
     }
@@ -650,7 +690,7 @@ const turnProfile = (root, mode, name, reason, cardOpen = '') => {
     if (open) {
       const doc = join(open, 'card.md');
       const text = existsSync(doc) ? readFileSync(doc, 'utf8') : '';
-      const n = (text.match(/^\s*[-*]\s*L\d+\b/gm) ?? []).length + 1;
+      const n = nextLogNumber(text);
       if (existsSync(doc)) appendFileSync(doc, `${text.endsWith('\n') ? '' : '\n'}- L${n} · ${today()} · profile ${name} on with the card open · ${why}\n`);
     }
     console.log(`Profile ${name} is on: ${copied.length} file(s) copied${kept.length ? `; ${kept.length} already there with local changes, left as they are: ${kept.join(', ')}` : ''}${Object.keys(mcp).length ? `; ${MCP_JSON}: ${Object.keys(mcp).join(', ')} added` : ''}.`);
@@ -706,8 +746,13 @@ const setE2e = (root, given) => {
   const method = join(root, '.claude', 'METHOD.md');
   const hasMethodLine = existsSync(method) && /^E2E=\S+/m.test(readFileSync(method, 'utf8'));
   if ((!manifest || manifest.invalid) && !hasMethodLine) fail('There is no kit.json and no `E2E=` line in .claude/METHOD.md to change.');
-  if (manifest && !manifest.invalid) writeManifest(root, { ...manifest, e2e: path });
   if (hasMethodLine) writeFileSync(method, readFileSync(method, 'utf8').replace(/^E2E=\S+/m, () => `E2E=${path}`));
+  if (manifest && !manifest.invalid) {
+    // METHOD.md changed on purpose: its recorded hash follows, or the next update reports it as edited by the team.
+    const recorded = manifest.files?.['.claude/METHOD.md'];
+    const files = recorded && hasMethodLine ? { ...manifest.files, '.claude/METHOD.md': { ...recorded, sha256: sha256(method) } } : manifest.files;
+    writeManifest(root, { ...manifest, e2e: path, ...(files ? { files } : {}) });
+  }
   console.log(`The scenario tests folder is ${path}.`);
 };
 
@@ -722,13 +767,13 @@ const repair = (root) => {
     ...[...state.on].flatMap((name) => filesOfModule(sourceMap, name, all)),
     ...profilesOn.flatMap((name) => filesOfProfile(sourceMap, name, all)),
   ];
-  const { copied, kept } = copyFiles(source, root, wanted.filter((f) => !existsSync(join(root, f))));
+  const { copied, kept } = copyFiles(source, root, wanted.filter((f) => !existsSync(join(root, f))), { settings: settingsOf(state.manifest) });
   state.manifest.files ??= {};
   for (const f of copied) state.manifest.files[f] = { module: modulesOfFile(sourceMap, f, all)[0] ?? (profileOfFile(sourceMap, f, profilesOn) ? `profile:${profileOfFile(sourceMap, f, profilesOn)}` : 'core'), sha256: sha256(join(root, f)) };
   for (const { from, to } of profilesOn.flatMap((name) => copiesOfProfile(sourceMap, name, root))) {
     if (existsSync(join(root, to))) continue;
     mkdirSync(dirname(join(root, to)), { recursive: true });
-    copyFileSync(join(source, from), join(root, to));
+    writeFileSync(join(root, to), rendered(join(source, from), to, settingsOf(state.manifest)));
     copied.push(to);
     state.manifest.files[to] = { module: `profile:${profileOfFile(sourceMap, to, profilesOn)}`, sha256: sha256(join(root, to)) };
   }

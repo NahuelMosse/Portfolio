@@ -122,6 +122,64 @@ click, and compare what moved against the rule.
 *Measured: a globe from the catalog passed the judge's frames and the motion audit; the user dragged
 it once and it spun far more than the hand.*
 
+## The product shown inside the page
+
+A landing proves a product by showing it at work: a window of the app, a feature card, a cursor that
+does the task. That fragment is a faux UI built in the page's code, and it is read at reading size, so
+it is judged as a product screen, not as decoration.
+
+1. **Start from a gold and prove the still.** The gold is the `ref/` capture closest to what the fragment
+   shows: the product's own UI, or its category's in `design-refs.md`. Build the opening and the payoff
+   as stills first. Put each one beside the gold at the size it is shown, at 390 and 1440, and say the one
+   difference. If yours is the sparser, flatter or smaller one, fix that before any motion.
+2. **It answers this product, not its category.** A window floating whole with even margins, or the same
+   phone framing on every page, could be any product.
+3. **Framing.** One gutter, and the window bleeds off at least one edge. Filler may run off the crop. A
+   title, an action, a value or a chip is either whole or out of frame. No corner of the frame is empty
+   without a reason.
+4. **Density.** The subject is real words and values. Placeholder bars go only beside it and where the
+   crop cuts. A list in frame has no more placeholder rows than worded ones. A pane has no void under its
+   list. Rows sit at their own pitch, padded 12 px (8 px dense), never spread out to fill the pane.
+5. **Each beat looked at frame by frame.** Extract every press, entrance, exit, hand-off and loop seam
+   from the showreel's `.webm` at 20 fps or more (`ffmpeg -ss <s> -t 1 -i <reel>.webm -vf fps=25 beat-%02d.png`).
+   Matching end frames prove nothing about the frames between them.
+
+The pairs below are each the same scene twice, with one thing wrong. Find the one that looks like the
+defect and do what the right column says.
+
+| Still: what you see | What the good one does |
+|---|---|
+| Text at 9–10 px to fit more rows | Names at 13–14 px, metadata at 11–12 px, and fewer rows |
+| Every row carries a hash, author, duration and badge | Real detail only on the row the story is about |
+| A colored glow on the card, button or status | One soft neutral shadow |
+| A violet-to-pink ground, gradient text, a tinted card | The product's own neutrals and one accent on what matters |
+| Sparkles, wands or a gradient «AI» chip | The product's own mark, or a plain label that says what happens |
+| Filled and outline icons side by side, an emoji as an icon | One pack, one stroke, color only where it carries a state |
+| An icon in translucent ink that darkens where strokes cross | One opaque color; a lighter opaque gray for a quieter icon |
+| A one-letter tile in a brand color beside a real company | The company's mark, or its name alone |
+| A stat's unit wrapped onto its own line | The number and its unit on one line |
+| Words closer than 8 px to the edge of a card or row | 12 px inset, and the same inset carried round the bottom |
+| Four equal tiles, each a heading over bars | One tile leads, and each tile is a specific moment with its words |
+| A whole app scaled down into a small slot | Crop to the useful content at reading size, and let the chrome run off |
+| A desktop screen shrunk to the phone | Reflow before shrinking; nothing under 10 px at 390 |
+
+| Motion: what you see | What the good one does |
+|---|---|
+| A label replaced in one frame | A stable control; the old words leave while the new ones enter |
+| The result appears before the press | The press and the surface respond first, then the state changes |
+| A new row shoves its neighbors in one frame | The container's height animates and carries the rows below |
+| An icon swapped for another (plus to close) | The same strokes rotate, so the shapes keep their relation |
+| A message removed with no exit | It stays mounted for its exit, then leaves |
+| An interrupted highlight restarts from the start | It retargets from where it is |
+| A flying object lands a few pixels off | Measure the target itself, not its padded wrapper |
+| A loop resets and erases what was built | The reset has a visible cause (a press on Clear) |
+| A spinner starts turning after it appears | It is already turning when it fades in, and keeps turning while it fades out |
+| Related changes start in the same frame | Starts offset, movements overlapping |
+| A chart fades in whole | The line draws from its start, the area follows, the end dot lands when the line arrives |
+
+A checker can flag a jump and still miss a wrong path, an implausible gesture or an unreadable crop.
+The report says which frames were looked at, and what no frame covered.
+
 ## What does not change in a showcase
 
 - Only `transform`, `opacity` and `filter` animate; never layout properties.

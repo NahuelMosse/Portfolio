@@ -3,7 +3,7 @@
 // Run from the repo root.
 //
 // Runs the command, unless it already passed on exactly this same code. “The same code” is the
-// content of the repo's files, without documentation or screenshots (`keyOf`, in card.mjs).
+// content of the repo's tracked files and of its untracked source files (`keyOf`, in card.mjs).
 // If it passed, it is not repeated: it says when it passed and returns 0. If it failed, or if
 // something changed, it runs again. A failure is never remembered as a result: it always runs again.
 //

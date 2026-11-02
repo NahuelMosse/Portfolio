@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-// design-round.mjs <url> --out <dir> [--steps <steps.json>] [--widths 1440x900,1280x800,1024x768,768x1024,390x844] [--gpu] [--grain baked|none] [--brand <brand.json|card.md>] [--intent <collage|statement|grid|pinned-media|card.md>] [--kind <product|card.md>] [--scrub]
-// `--brand` reads the fonts of the brand sheet (`brand.json` or the `## Brand` block of card.md): a text family outside them fails the
-// row «brand: fonts»; with no sheet the fonts used are only reported.
+// design-round.mjs <url> --out <dir> [--steps <steps.json>] [--widths 1440x900,1280x800,1024x768,768x1024,390x844] [--gpu] [--grain baked|none] [--brand <direction.json|DESIGN.md|brand.json|card.md>] [--intent <collage|statement|grid|pinned-media|card.md>] [--kind <product|card.md>] [--scrub]
+// `--brand` reads the brand sheet (`brand.json`, the `## Brand` block of card.md, a DESIGN.md or the dealt `direction.json`): a text family
+// outside its fonts, or a primary action or page background off its colors, fails a «brand:» row. round.json records the sheet, and the
+// gate fails a round run without one (gate-checks.mjs `brand`).
 // `--grain baked` (also what a card's `## Look` declares when the grain is baked into the image files) makes the grain rule pass
 // without a global layer and prints «grain: baked (declared)»; `--grain none` declares that the page has no grain (a paper texture or an image is the texture).
 // `--intent` (or the `intent:` line of the card's `## Look`) is what a section family is on purpose: under it the focal share, competing
@@ -34,7 +35,7 @@
 // the motion times mean nothing. --gpu launches Chromium with `--use-angle=d3d11 --enable-gpu-rasterization
 // --ignore-gpu-blocklist` on Windows (the last two elsewhere).
 // Hero video: each autoplaying looping `video` in the first viewport must last 8 s or more and its last frame must look like its
-// first when it is one continuous shot (a montage with cuts passes: its restart is one more cut) (SSIM 0.85 or more, measured with ffmpeg on the file).
+// first when it is one continuous shot (a montage with cuts passes: its restart is one more cut) (the restart seam jumps no more than 1.5 times the video's own frame-to-frame step, measured with ffmpeg on the file).
 // A page that answers a bot wall or an error page (status 400 or more, «Just a moment», a captcha) is not captured: exit 2.
 // By window class (`.claude/reference/responsive-classes.md`): widths under 600 (compact) measure tap targets under 44x44,
 // hover-only reveals, inputs under 16 px, document overflow, media queries (min-width against max-width), the share of the viewport
@@ -57,13 +58,13 @@ import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { createRequire } from 'node:module';
 import { mkdirSync, readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { isAbsolute, join, relative, resolve } from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 import { parseSteps } from './probe.mjs';
 import { wallOf, wallMessage } from './bot-wall.mjs';
-import { DPR, FRAME_MAX, LCP_INIT, collectFonts, collectPalette, collectTextBoxes, crossWidthRows, loadBrand, loadIntent, loadProduct, measureProduct, mergePainted, paintedTexts, PASTED_MARGIN, designRows, frameFlags, frameReports, frameTable, markVisibleAtT0, measureFrame, measureImages, measureLayout, pickCta, sampleCanvases, sweepDeadClicks, sweepsWidth, typographyOf } from './design-checks.mjs';
+import { DPR, FRAME_MAX, LCP_INIT, collectFonts, collectPalette, collectTextBoxes, crossWidthRows, loadBrand, loadIntent, loadProduct, measureProduct, mergePainted, paintedTexts, PASTED_MARGIN, designRows, frameFlags, frameReports, frameTable, markVisibleAtT0, measureFrame, measureImages, measureLayout, pickCta, sampleCanvases, sheetHashOf, sweepDeadClicks, sweepsWidth, typographyOf } from './design-checks.mjs';
 
-const USAGE = 'usage: node design-round.mjs <url> --out <dir> [--steps <steps.json>] [--widths 1440x900,1280x800,1024x768,768x1024,390x844] [--gpu] [--grain baked|none] [--cta <selector>] [--brand <brand.json|card.md>] [--intent <name|card.md>] [--kind <product|card.md>] [--scrub]';
+const USAGE = 'usage: node design-round.mjs <url> --out <dir> [--steps <steps.json>] [--widths 1440x900,1280x800,1024x768,768x1024,390x844] [--gpu] [--grain baked|none] [--cta <selector>] [--brand <direction.json|DESIGN.md|brand.json|card.md>] [--intent <name|card.md>] [--kind <product|card.md>] [--scrub]';
 const LOAD_MARKS = [0, 600, 2000];
 const STEP_TIMEOUT_MS = 5000;
 // Thresholds of the hero loop: a hero loop is 8 s or more (4 s when its seam is
@@ -106,7 +107,7 @@ export const measureResponsive = () => {
   const interactive = [...document.querySelectorAll('a[href], button, input:not([type=hidden]), select, textarea, summary, [role=button], [tabindex]:not([tabindex="-1"])')]
     .filter((el) => shown(el) && !(el.tagName === 'A' && getComputedStyle(el).display === 'inline'));
   const tapSmall = interactive.filter((el) => rectOf(el).width < 44 || rectOf(el).height < 44).map(size);
-  const clickSmall = interactive.filter((el) => rectOf(el).width < 24 || rectOf(el).height < 24).map(size);
+  const clickSmall = interactive.filter((el) => rectOf(el).width <= 24 || rectOf(el).height <= 24).map(size);
   // A card that is a button as a whole (a plan, a product) is not a control: past 64 px tall it is left out of the median.
   const heights = interactive.filter((el) => el.matches('button, [role=button], input[type=submit], input[type=button]')).map((el) => rectOf(el).height)
     .filter((h) => h <= 64).sort((a, b) => a - b);
@@ -178,7 +179,7 @@ export const responsiveRules = (m) => {
   if (m.width >= 840) out.push(row('hamburger, expanded', m.nav.hamburger ? 'yes' : 'no', 'no', !m.nav.hamburger));
   if (m.width >= 1200) {
     out.push(
-      row('clicks under 24x24', m.clickSmall.length, '0', m.clickSmall.length === 0, m.clickSmall),
+      row('clicks of 24x24 or less', m.clickSmall.length, '0', m.clickSmall.length === 0, m.clickSmall),
       row('median button height', m.medianButton ?? 'no buttons', '< 48 (all 48+ is a stretched mobile)', m.medianButton == null || m.medianButton < 48),
     );
   }
@@ -536,7 +537,10 @@ export const round = async (argv) => {
   const launchArgs = a.gpu ? (process.platform === 'win32' ? ['--use-angle=d3d11', '--enable-gpu-rasterization', '--ignore-gpu-blocklist'] : ['--enable-gpu-rasterization', '--ignore-gpu-blocklist']) : [];
   const launch = (args) => pw.chromium.launch({ channel: 'chromium', args }).catch(() => pw.chromium.launch({ args }));
   let browser = await launch(launchArgs);
-  const result = { url: a.url, intent, kind: look ? 'product' : 'landing', gpu: a.gpu, path: a.gpu ? 'gpu' : 'non-gpu', cta: {}, renderer: null, software: null, widths: {}, console: [], captures: [], load: null, motion: null };
+  // The sheet the round was held to, for the gate: relative to the working directory (the repo root) when it lies inside it.
+  const sheetPath = a.brandFile ? relative(process.cwd(), resolve(a.brandFile)) : null;
+  const held = brand ? { file: (sheetPath.startsWith('..') || isAbsolute(sheetPath) ? resolve(a.brandFile) : sheetPath).replace(/\\/g, '/'), ...brand, sheetHash: sheetHashOf(resolve(a.brandFile)) } : null;
+  const result = { url: a.url, intent, kind: look ? 'product' : 'landing', brand: held, gpu: a.gpu, path: a.gpu ? 'gpu' : 'non-gpu', cta: {}, renderer: null, software: null, widths: {}, console: [], captures: [], load: null, motion: null };
   try {
     for (let vi = 0; vi < a.viewports.length; vi++) {
       const { width, height } = a.viewports[vi];

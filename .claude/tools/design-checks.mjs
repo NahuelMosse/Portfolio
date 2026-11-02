@@ -3,6 +3,7 @@
 // Page functions run in the browser (`page.evaluate`), so they take their numbers as arguments and capture nothing.
 import { join } from 'node:path';
 import { mkdirSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 
 // Ranges of `.claude/reference/composition.md`, calibrated on 49 Awwwards winners, 2025-2026. The first two frames are the strict ones: they carry the first look.
 export const FRAME_MAX = 12;
@@ -609,7 +610,7 @@ export const collectPalette = () => {
     const layers = [];
     for (let e = el; e; e = e.parentElement) {
       const cs = getComputedStyle(e);
-      if (cs.backgroundImage !== 'none') return null;
+      if (!/^none(\s*,\s*none)*$/.test(cs.backgroundImage)) return null;
       const c = rgba(cs.backgroundColor);
       if (c[3] > 0) { layers.push(c); if (c[3] >= 1) break; }
     }
@@ -621,7 +622,19 @@ export const collectPalette = () => {
   const CTL = 'a, button, [role=button], input[type=submit], .btn, .cta, [data-cta]';
   const fillOf = (el) => {
     const cs = getComputedStyle(el);
-    if (cs.backgroundImage !== 'none') return null;
+    if (!/^none(\s*,\s*none)*$/.test(cs.backgroundImage)) return null;
+    const c = rgba(cs.backgroundColor);
+    if (c[3] < 0.5) return null;
+    const under = el.parentElement ? surface(el.parentElement) : [255, 255, 255];
+    return under ? over(c, under) : c.slice(0, 3);
+  };
+  // The paint of a control under a gradient: its first stop that covers (alpha 0.5 or more), in any color syntax; with only
+  // translucent stops (a glare, a fade from transparent), the background color under them.
+  const STOP = /(?:rgba?|hsla?|oklch|oklab|lch|lab|color)\([^()]*(?:\([^()]*\)[^()]*)*\)|#[0-9a-f]{3,8}\b/gi;
+  const paintOf = (el, cs) => {
+    if (/^none(\s*,\s*none)*$/.test(cs.backgroundImage)) return null;
+    const opaque = (cs.backgroundImage.match(STOP) ?? []).map(rgba).find((c) => c[3] >= 0.5);
+    if (opaque) return opaque.slice(0, 3);
     const c = rgba(cs.backgroundColor);
     if (c[3] < 0.5) return null;
     const under = el.parentElement ? surface(el.parentElement) : [255, 255, 255];
@@ -630,7 +643,7 @@ export const collectPalette = () => {
   const controls = [...document.querySelectorAll(CTL)].filter(shown).map((el) => {
     const cs = getComputedStyle(el);
     const bw = parseFloat(cs.borderTopWidth);
-    return { el, label: label(el), fill: fillOf(el), under: el.parentElement ? surface(el.parentElement) : null, color: rgba(cs.color).slice(0, 3), border: bw > 0 && cs.borderTopStyle !== 'none' ? rgba(cs.borderTopColor).slice(0, 3) : null };
+    return { el, label: label(el), fill: fillOf(el), paint: paintOf(el, cs), under: el.parentElement ? surface(el.parentElement) : null, color: rgba(cs.color).slice(0, 3), border: bw > 0 && cs.borderTopStyle !== 'none' ? rgba(cs.borderTopColor).slice(0, 3) : null };
   });
   const pickPrimary = (list) => {
     const marked = list.find((c) => c.el.matches('[data-cta], [data-primary], .cta, .btn-primary') && c.fill);
@@ -667,7 +680,10 @@ export const collectPalette = () => {
     const o = byKey.get(key) || { fg, bg, fs, large, chars: 0, ctl: Boolean(el.closest(CTL)), sample: label(el) };
     o.chars += t.length; byKey.set(key, o);
   }
-  return { primary: primary ? { label: primary.label, fill: primary.fill, under: primary.under } : null, controls: controls.map(({ el, ...c }) => ({ ...c, primary: primary ? el === primary.el : false })), variants, texts: [...byKey.values()].slice(0, 300) };
+  // The color the brand check reads: the tagged CTA's fill, or the paint of its gradient.
+  const taggedCtl = controls.find((c) => c.el === tagged);
+  const action = taggedCtl ? (taggedCtl.fill ?? taggedCtl.paint) : primary?.fill ?? null;
+  return { primary: primary ? { label: primary.label, fill: primary.fill, under: primary.under } : null, action, controls: controls.map(({ el, ...c }) => ({ ...c, primary: primary ? el === primary.el : false })), variants, texts: [...byKey.values()].slice(0, 300) };
 };
 
 // Pure: the rows of the palette from what `collectPalette` read. A row with no data to measure is left out, never passed.
@@ -936,13 +952,71 @@ export const canvasRows = (samples) => {
   return [{ rule: 'canvas-nonblank', value: `${blank.length} blank of ${samples.length} samples`, range: `0 uniform canvases (sd < ${UNIFORM_SD}) at t0+2 s and after a scroll`, pass: blank.length === 0, detail: blank.map((s) => `${s.label} · ${s.when} · sd ${s.sd}`) }];
 };
 
-// The brand sheet of a card: `brand.json` (`fonts`, `wordmark`, `palette`, `icon`, `voice`) or the `## Brand` block of card.md (a line `fonts: A, B`).
+// The brand sheet of a card. Four kinds: `brand.json` (`fonts`, `wordmark`, `palette`, `icon`, `voice`; its `palette` gives the colors),
+// the direction the taste skill dealt for a page (`direction.json`: `type` and `palette`) or for an app screen (`kind: app`, `style.tokens`),
+// and a Markdown file, whose `## Brand` block gives `fonts:` (and its colors, the hex of its lines, when there is no front matter) and whose
+// front matter, in a DESIGN.md, gives the colors under a `colors:` map (at any depth, `theme: colors:` too) and the `fontFamily` of each type style.
+// `actions` are the colors a primary action may take: the dealt accent, or the DESIGN.md colors whose key path names primary, accent,
+// brand, cta or action and no state, text or on-color segment (a terracotta CTA is not Airbnb's error red; `brand-pink` is a brand color).
+const HEX = /#(?:[0-9a-f]{6}|[0-9a-f]{3})\b/gi;
+const hex6 = (h) => (h.length === 4 ? `#${[...h.slice(1)].map((c) => c + c).join('')}` : h);
+const hexesIn = (v) => [...new Set((JSON.stringify(v ?? null).match(HEX) ?? []).map(hex6))];
+const firstFamily = (stack) => String(stack).replace(/^\s*\[|\]\s*$/g, '').split(',')[0].trim().replace(/^["'`]+|["'`]+$/g, '');
+const ACTION_SEGMENT = /^(?:primary|accent|brand|cta|action)$/i;
+const NOT_BACKGROUND_SEGMENT = /^(?:text|ink|on|foreground|fg|border|outline|stroke|icon)$/i;
+const NOT_ACTION_SEGMENT =/^(?:error|danger|destructive|disabled|text|ink|on|foreground|fg|muted|subtle|border|outline|bg|background|surface|hover|active|pressed|focus|light|lighter|dark|darker)$/i;
+// The colors of a YAML front matter with their key paths (`colors.primary.base`), read by indentation.
+const frontColors = (front) => {
+  const stack = []; const out = [];
+  for (const line of front.split(/\r?\n/)) {
+    const m = line.match(/^(\s*)(?:-\s+)?["']?([\w.-]+)["']?\s*:\s*(.*)$/);
+    if (!m) continue;
+    const indent = m[1].length;
+    while (stack.length && stack.at(-1).indent >= indent) stack.pop();
+    const path = [...stack.map((s) => s.key), m[2]];
+    const value = m[3].replace(/(?:^|\s+)#\s.*$/, '').trim();
+    if (!value) { stack.push({ indent, key: m[2] }); continue; }
+    if (!path.slice(0, -1).some((k) => /^(?:colou?rs|palette)$/i.test(k))) continue;
+    for (const h of value.match(HEX) ?? []) out.push({ path, hex: hex6(h) });
+  }
+  return out;
+};
+// sha256 of the sheet's text with line endings normalised: the round records it, the gate hashes the sheet again.
+export const sheetHashOf = (file) => createHash('sha256').update(readFileSync(file, 'utf8').replace(/^﻿/, '').replace(/\r\n/g, '\n')).digest('hex');
 export const loadBrand = (file) => {
-  const raw = readFileSync(file, 'utf8');
-  if (/\.json$/i.test(file)) { const b = JSON.parse(raw); return { fonts: [b.wordmark?.font, b.text, ...(b.fonts ?? [])].filter(Boolean) }; }
+  const raw = readFileSync(file, 'utf8').replace(/^﻿/, '');
+  if (/\.json$/i.test(file)) {
+    const b = JSON.parse(raw);
+    if (b.kind === 'app' && b.style?.tokens) {
+      const t = b.style.tokens;
+      return { fonts: [...new Set([t.font?.family, t.font?.second && firstFamily(t.font.second)].filter(Boolean))], colors: hexesIn([t.ground, t.surface, t.raised, t.active, t.text, t.muted, t.accent]), actions: hexesIn([t.accent]), backgrounds: hexesIn([t.ground, t.surface, t.raised, t.active]) };
+    }
+    if (b.palette && b.type) {
+      const p = b.palette;
+      return { fonts: [...new Set([b.type.display?.family, b.type.text?.family].filter(Boolean))], colors: hexesIn([p.bg, p.surface, p.ink, p.muted, p.accent, p.accentInk, p.fields]), actions: hexesIn([p.accent]), backgrounds: hexesIn([p.bg, p.surface, (p.fields ?? []).map((f) => f?.bg)]) };
+    }
+    const fonts = [b.wordmark?.font, b.text, ...(b.fonts ?? [])].filter(Boolean);
+    const colors = hexesIn(b.palette ?? {});
+    return colors.length ? { fonts, colors } : { fonts };
+  }
+  const front = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
   const block = raw.split(/^## /m).find((x) => /^Brand\b/.test(x));
+  const found = frontColors(front);
+  if (!found.length && block) for (const m of block.matchAll(/^\s*[-*]?\s*([\w .-]+?)\s*:\s*(.*)$/gm)) for (const h of m[2].match(HEX) ?? []) found.push({ path: ['palette', ...m[1].trim().split(/\s+/)], hex: hex6(h) });
+  // A DESIGN.md with no front matter (the Spotify template) lists its colours as `- **Name** (`#hex`): role` bullets under a Color heading.
+  if (!found.length) {
+    const section = raw.match(/^## [^\n]*colou?r[^\n]*\n([\s\S]*?)(?=^## |(?![\s\S]))/im)?.[1] ?? '';
+    for (const m of section.matchAll(/^\s*[-*]\s+\*\*([^*]+)\*\*\s*\(`?(#(?:[0-9a-f]{6}|[0-9a-f]{3}))`?\)\s*:?\s*(.*)$/gim)) found.push({ path: ['palette', ...m[1].trim().split(/\s+/), ...(/^primary\b/i.test(m[3]) ? ['primary'] : [])], hex: hex6(m[2]) });
+  }
+  const colors = [...new Set(found.map((c) => c.hex))];
+  const segmentsOf = (path) => path.flatMap((k) => k.split(/[-_.]/)).filter(Boolean);
+  const actions = [...new Set(found.filter(({ path }) => segmentsOf(path).some((s) => ACTION_SEGMENT.test(s)) && !segmentsOf(path).some((s) => NOT_ACTION_SEGMENT.test(s))).map((c) => c.hex))];
+  const backgrounds = [...new Set(found.filter(({ path }) => !segmentsOf(path).some((s) => NOT_BACKGROUND_SEGMENT.test(s))).map((c) => c.hex))];
+  const stacks = [...front.matchAll(/^\s*fontFamily:\s*(.+)$/gm)].map((m) => firstFamily(m[1].trim().replace(/^"|"$/g, '')));
+  if (!front) stacks.push(...[...(raw.match(/^#{2,3} Font Families[^\n]*\n([\s\S]*?)(?=^#{2,3} |(?![\s\S]))/im)?.[1] ?? '').matchAll(/^\s*[-*]\s+\*\*[^*]+\*\*\s*:\s*`([^`]+)`/gm)].map((m) => m[1]));
   const line = block?.match(/^\s*[-*]?\s*fonts:\s*(.+)$/im);
-  return { fonts: line ? line[1].split(',').map((f) => f.trim().replace(/^["'`]|["'`]$/g, '')).filter(Boolean) : [] };
+  const fonts = line ? line[1].split(',').map((f) => f.trim().replace(/^["'`]|["'`]$/g, '')).filter(Boolean) : [...new Set(stacks)];
+  return colors.length ? { fonts, colors, ...(actions.length ? { actions } : {}), ...(backgrounds.length && backgrounds.length < colors.length ? { backgrounds } : {}) } : { fonts };
 };
 
 // Runs in the page: the first family of the computed font-family of every shown text element, with its count and a sample.
@@ -960,15 +1034,40 @@ export const collectFonts = () => {
   return [...found.values()];
 };
 
-// Pure: the brand row. With a brand sheet, a family outside its fonts fails; with no sheet, or a sheet with no fonts, the fonts are only reported.
-export const brandRows = (fonts, brand) => {
+// Pure: the brand rows. With a brand sheet, a family outside its fonts fails; with no sheet, or a sheet with no fonts, the fonts are only reported.
+// A sheet with colors also holds the primary action and the page background to them: a model left to choose its own palette returns the
+// same default on every project (a cream canvas, a terracotta action), whatever the business.
+// The action may sit over a translucent layer: it is held to 0.06 OKLab. On a light background what reads is the tint, not the lightness:
+// it is held to 0.008 of OKLab chroma and 0.03 of lightness (a cream #fbf4ea is 0.015 of tint from the gray #f7f7f7; #fffdf8 is 0.007 from white).
+export const BRAND_COLOR_DE = { action: 0.06, backgroundTint: 0.008, backgroundL: 0.03 };
+const oklab = (rgb) => { const k = toOklch(rgb); const r = (k.h * Math.PI) / 180; return [k.L, k.C * Math.cos(r), k.C * Math.sin(r)]; };
+const rgbOf = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const gapTo = (rgb, h) => { const a = oklab(rgb); const b = oklab(rgbOf(h)); return { h, d: Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]), dL: Math.abs(a[0] - b[0]), tint: Math.hypot(a[1] - b[1], a[2] - b[2]) }; };
+const inSheet = { action: (g) => g.d <= BRAND_COLOR_DE.action, background: (g) => g.tint <= BRAND_COLOR_DE.backgroundTint && g.dL <= BRAND_COLOR_DE.backgroundL };
+const nearestBrand = (rgb, colors, role) => colors.map((h) => gapTo(rgb, h)).sort((a, b) => (inSheet[role](b) - inSheet[role](a)) || a.d - b.d)[0];
+export const brandRows = (fonts, brand, palette = null) => {
   if (!fonts?.length) return [];
   const row = (rule, value, range, pass, detail = [], report = false) => ({ rule, value, range, pass, detail, ...(report ? { report: true } : {}) });
   const used = fonts.map((f) => `${f.family} x${f.count} (${f.sample})`);
-  if (!brand?.fonts?.length) return [row('brand: fonts', fonts.length, 'report only: no brand sheet with fonts', true, used, true)];
-  const allowed = brand.fonts.map((f) => f.toLowerCase());
-  const off = fonts.filter((f) => !allowed.includes(f.family.toLowerCase()));
-  return [row('brand: fonts in the brand sheet', off.length, `0 families outside ${brand.fonts.join(', ')}`, off.length === 0, off.map((f) => `${f.family} x${f.count} (${f.sample})`))];
+  const out = [];
+  if (!brand?.fonts?.length) out.push(row('brand: fonts', fonts.length, 'report only: no brand sheet with fonts', true, used, true));
+  else {
+    const allowed = brand.fonts.map((f) => f.toLowerCase());
+    const off = fonts.filter((f) => !allowed.includes(f.family.toLowerCase()));
+    out.push(row('brand: fonts in the brand sheet', off.length, `0 families outside ${brand.fonts.join(', ')}`, off.length === 0, off.map((f) => `${f.family} x${f.count} (${f.sample})`)));
+  }
+  if (brand?.colors?.length && palette) {
+    const texts = palette.painted?.length ? palette.painted : (palette.texts ?? []);
+    const body = [...texts].filter((t) => !t.ctl).sort((a, b) => b.chars - a.chars)[0];
+    const roles = [['primary action', palette.action ?? palette.primary?.fill, 'action', `<= ${BRAND_COLOR_DE.action} OKLab from an action color of the sheet`],
+      ['page background', body?.bg, 'background', `tint <= ${BRAND_COLOR_DE.backgroundTint} and lightness <= ${BRAND_COLOR_DE.backgroundL} from a background color of the sheet`]].filter(([, c]) => c);
+    for (const [name, c, role, range] of roles) {
+      const own = role === 'action' ? brand.actions : brand.backgrounds;
+      const n = nearestBrand(c, own?.length ? own : brand.colors, role);
+      out.push(row(`brand: ${name} color in the brand sheet`, +(role === 'action' ? n.d : n.tint).toFixed(3), range, inSheet[role](n), [`${name} ${hex(c)}, nearest ${n.h} (ΔL ${n.dL.toFixed(3)}, tint ${n.tint.toFixed(3)})`]));
+    }
+  }
+  return out;
 };
 
 // A product screen (`ref-kind: product` in `## Look`: a dashboard, a list, a tool) is read by another class than a landing: the ranges of
@@ -1177,6 +1276,6 @@ export const designRows = ({ sweep, frames, width, images, palette, fonts, brand
         : row('LCP image', 'not an image', 'n/a', true),
     );
   }
-  out.push(...(look ? productRows(product, width, look) : layoutHeroRows(layout, width)), ...canvasRows(canvas), ...paletteRows(palette), ...brandRows(fonts, brand));
+  out.push(...(look ? productRows(product, width, look) : layoutHeroRows(layout, width)), ...canvasRows(canvas), ...paletteRows(palette), ...brandRows(fonts, brand, palette));
   return out;
 };

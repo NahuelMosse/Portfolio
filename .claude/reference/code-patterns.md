@@ -169,7 +169,7 @@ Exceptions where the pattern **is not discussed** because it is a requirement of
 
 **Patterns an AI agent tends to put in without need.** The frequency is the study's judgment, not a measured figure; the kit measured in its runs that agents overdesign (“What not to do” exists for that) and that agent code leaves unused symbols (K5).
 
-The gate's `overdesign` check (`gate-checks.mjs`) fails what the card adds of A1 (one implementation, no fake in the repo), A3 (a method that forwards with the same arguments) and A11 (empty layer folders, a folder with one tiny file), and reports the same in code that was already there; the plan asks `why-layer:` for the rest.
+The gate's `overdesign` check (`gate-checks.mjs`) fails what the card adds of A1 (one implementation, no fake in the repo), A3 (a method that forwards with the same arguments) and A11 (a folder with one tiny file; empty layer folders of a slice are expected, not flagged), and reports the same in code that was already there; the plan asks `why-layer:` for the rest.
 
 | # | Pattern put in without need | How it looks | Detection | Instead |
 |---|---|---|---|---|

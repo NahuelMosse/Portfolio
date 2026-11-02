@@ -53,7 +53,13 @@ const inside = (cwd, root) => typeof cwd === 'string' && [root].flat().some((r) 
 // several cards, or runs one in a worktree from the main checkout, shares its transcript among them; a message counts for
 // the card when its cwd is the card's checkout or it names the card, and a subagent whose prompt names it counts whole
 // (a `card-runner`, the card's `builder`). Without `card` every message of the repo counts.
-const names = (value, card) => { const text = JSON.stringify(value ?? '').toLowerCase().replace(/\\\\/g, '/'); return card.names.some((n) => text.includes(n)); };
+// A name counts as a whole token: CRM-12 is not in CRM-123 nor in XCRM-12.
+const wholeToken = new Map();
+const tokenOf = (n) => {
+  if (!wholeToken.has(n)) wholeToken.set(n, new RegExp(`(?<![\\w-])${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?!\\w)`));
+  return wholeToken.get(n);
+};
+const names = (value, card) => { const text = JSON.stringify(value ?? '').toLowerCase().replace(/\\\\/g, '/'); return card.names.some((n) => tokenOf(n).test(text)); };
 const promptOf = (lines) => {
   for (const line of lines) {
     let entry;

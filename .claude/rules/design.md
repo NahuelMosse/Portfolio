@@ -9,13 +9,14 @@ repo with its own design system uses it: where this rule names a font, token or 
 (`ref:`, `behavior:`, `tokens:`) is the brief; this is how it is built.
 
 ## Before
+- Whoever designs a screen (the `designer`, or the thread when no designer runs) first reads the skill `design-taste-frontend`, deals the palette and the type with its `draw.mjs` instead of choosing them, runs every design round with `--brand` on that sheet (the gate's `brand` check blocks without it), takes a DESIGN.md from `.claude/templates/design-md/` as the token system when the repo has none of its own, and starts every component the set lacks from the gallery (`agents/designer.md`, «Taste and a design system»).
 - Build against the `ref:` of `## Look`: copy its system (hierarchy, density, depth, motion), not its pixels.
 - The reference sets the level (quality, depth, motion, type); the composition is yours. `## Direction` names 3 layout decisions that differ from it.
 - One visual direction in two lines (tone, density, a memorable trait). One focal point per screen.
 
 ## Tokens, in one place
 - Colors, fonts, spacing, radii, shadows, easings and durations are CSS variables or the theme file. No loose value in a component.
-- The `tokens:` of `## Look` picks a display font with character, from Google Fonts or the repo's; never only the system font.
+- The `tokens:` of `## Look` fixes no font family unless the brand or the requester gives one; the designer picks a display font with character (Google Fonts or the repo's) in `## Direction`; never only the system font.
 - Two font families with character, one for display and one for text. Never Inter, Roboto, Arial or the system font as identity.
 - Six to eight font sizes in a fixed scale, within the ceiling of `.claude/reference/excellence.md` (at most nine in the first viewport); at most three weights.
 - Spacing on a scale (4 8 12 16 24 32 48 64 96); no margin or padding outside it.

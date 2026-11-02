@@ -1,7 +1,6 @@
 # Notices
 
-No third-party text or code is included. `scripts/motion-audit.mjs` is original code from the SDD kit (its motion audit
-and frame tracer), rewritten to run standalone.
+No third-party text or code is included. `skills/motion-audit/scripts` is original code (a motion audit and frame tracer).
 
 Ideas that also appear in published work, credited here:
 

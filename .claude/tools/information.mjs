@@ -41,7 +41,9 @@ export const numberOf = (text) => {
   else for (const sep of ['.', ',']) {
     if (!s.includes(sep)) continue;
     const groups = s.split(sep);
-    s = groups.length > 2 || groups[1].length === 3 ? groups.join('') : groups.join('.');
+    // A group of three after a lone separator is thousands (1.250), except after a leading zero (0.125).
+    const thousands = groups.length > 2 || (groups[1].length === 3 && !/^-?0$/.test(groups[0]));
+    s = thousands ? groups.join('') : groups.join('.');
   }
   const n = Number(s);
   return Number.isFinite(n) ? n : null;

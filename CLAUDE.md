@@ -44,7 +44,7 @@ Hooks block, and block also when they fail; they reach subagents too. If one sto
 - `delegate-code`: production code is written by the `builder`, the `grunt`, or the main thread on a small card after the RED commit.
 - `review-cap`: judges by `risk.json` (none in low and medium; one plan judge before building in high), no code judge and no correction round. `require-bar`: cap, Specs, Tasks, Gate.
 - `time-cap`: warns, then stops new agents and suites. `context-cap`: caps the builder, grunt, designer and design-critic (commit, `handoff.md`, a fresh one); the main thread compacts at 200k.
-- `require-at-close` and `publish`: no close without gate, mutation, at high `judge.md` with its ACT closed; publish pushes any branch but main and merges a PR whose checks passed; never force or `--admin` unless the user's last message orders it.
+- `require-at-close` and `publish`: no close without mutation, linter of tests and scope, at high `judge.md` with its ACT closed (the gate, `close.mjs`); publish pushes any branch but main and merges a PR whose checks passed; never force or `--admin` unless the user's last message orders it.
 
 ## If the task is, it goes to
 

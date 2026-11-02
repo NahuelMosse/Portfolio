@@ -31,7 +31,8 @@ and a folder costs nothing to keep.
 - Extracting duplicated logic (see «Duplicated logic») is not abstraction; a **new pattern** is, and it is justified or removed.
 
 The gate checks it: `overdesign` fails a pass-through method, an interface or abstract class with one implementation, a folder with one
-tiny file outside the layer folders and an empty layer folder that the card added, and reports the ones already in the repo;
+tiny file outside the layer folders that the card added, and reports the ones already in the repo; empty layer folders of a slice are
+expected and never flagged;
 `plan.mjs` asks `why-layer:` for a factory, strategy, adapter, bus or `I<Name>` interface file. A finding the card keeps on
 purpose (the port a use case depends on so it does not import the repository) goes in the Log as
 `declared · overdesign · <file> · <the rule that asks for it>`: it stays a note and the close lists it for a person.

@@ -50,6 +50,7 @@ import { spawnSync } from 'node:child_process';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { finalLineOf } from './final-line.mjs';
+import { STALE_MINUTES, agentDead } from './agents-running.mjs';
 
 const MAX_S = 570;
 const MONITOR_S = 1790;
@@ -203,6 +204,7 @@ for (const raw of agents) {
       return { code: 0, line: `agent ${id} finished after ${elapsed()} s, background work still running: ${shown}${work.length > 5 ? `; and ${work.length - 5} more` : ''} (matched by the paths of its background commands; remote jobs, containers and children that share nothing with their launcher are not visible)` };
     },
     over: () => `agent ${id} has not finished`,
+    dead: () => { const file = metaOf(id); return file ? agentDead(file) : false; },
   });
 }
 
@@ -317,6 +319,12 @@ for (;;) {
     writeSync(1, `[HB ${clock()}] ${Math.round((Date.now() - start) / 60000)} min · ${where}\n`);
   }
   pause();
+}
+// A dead agent will never report: waiting again is not the advice.
+const gone = targets.filter((t) => !done.has(t) && t.dead?.());
+if (gone.length) {
+  console.log(`timed out after ${max} s: ${gone.map((t) => t.name).join(', ')} ended without a result (it never finished and its meta has not changed for ${STALE_MINUTES} min). Do not wait again: read what it wrote and relaunch it if the work is missing.`);
+  process.exit(1);
 }
 if (!several) {
   const [t] = targets;

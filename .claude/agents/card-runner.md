@@ -17,6 +17,10 @@ by a session that manages several cards: it reads only your last message, and it
   You may launch the method's agents, as in METHOD.md's table.
 - **Questions:** the card's single round goes on Jira as METHOD.md says; you never ask the session that launched you.
 - **Publish:** branch, PR, CI and the merge as `/close` says, from your worktree.
+- **The worktree in every command.** Each Bash call starts in the session's cwd, not in your worktree: every command runs as
+  `cd <worktree> && …` or with absolute paths.
+- **Stopping early** (turn or context cap, a crash you see coming): write `specs/<card>/runner-handoff.md` with what is done,
+  what is left and the next command, and commit it. A relaunch with `continue from specs/<card>/runner-handoff.md` reads it first.
 
 Your last message is the report, whole, in this order: the card key and its worktree; `passed`, `failed` or `could not
 run` with the gate's line; the PR URL and whether it merged; the ASM list; what is in `## Needs a person`; the `Cost:` line

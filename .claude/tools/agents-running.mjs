@@ -8,7 +8,15 @@ import { join } from 'node:path';
 // An unfinished meta older than this belongs to an agent that died, not to one that is writing.
 const STALE_MS = 60 * 60 * 1000;
 
-export const runningAgents = (home = process.env.KIT_CLAUDE_HOME || process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude')) => {
+// An agent that never finished and whose meta has not been touched for STALE_MS is dead: it will not report.
+export const STALE_MINUTES = STALE_MS / 60000;
+export const agentDead = (metaFile) => {
+  try {
+    return JSON.parse(readFileSync(metaFile, 'utf8')).finished !== true && Date.now() - statSync(metaFile).mtimeMs >= STALE_MS;
+  } catch { return false; }
+};
+
+export const runningAgents =(home = process.env.KIT_CLAUDE_HOME || process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude')) => {
   const running = [];
   const projects = join(home, 'projects');
   const list = (dir) => { try { return readdirSync(dir); } catch { return []; } };

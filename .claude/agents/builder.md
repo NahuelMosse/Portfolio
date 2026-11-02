@@ -20,17 +20,17 @@ path of `specs/<card>/card.md`, your task IDs with their `S#`, and the gate comm
 2. **RED.** The tests the `tests:` of each task plans (one per `S#`), tagged `@<ID>-S<n>` in its title (`@<ID>-S1`); an assumption its `ASM` names is tagged
    `@<ID>-ASM-NN`. Add the attack or edge a task names, no matrices, no case repeated at every layer. Run them: they fail
    for the right reason; a module that does not exist yet gets an empty stub first, so the RED fails on an assertion and does not hang on the import. A screen's tests are one per spec with its cases in a table; what the gate measures (axe, overflow, contrast) is not repeated. A public function with an object parameter validates it and is tested with `fn(null)`, `fn({})` and `fn()`, at any risk. **Commit them before any code**: once committed, a guard refuses any edit of them.
-   **Search before writing** (`rules/architecture.md`, «Before writing a new piece»): for each task that writes production code, fill `reuses: <file> <symbol>` or `new: <why nothing fits>` under its T line in `card.md`; `plan.mjs` refuses a production task with neither.
+   **Search before writing** (`rules/architecture.md`, «Before writing a new piece»): each production task's `reuses:` or `new:` line under its T line in `card.md` (`risk.mjs` required it before freezing) says what to use; read it and follow it.
 3. **Code**, file by file, against the tests; identifiers, file names and comments in English from the first line (the `code-language` check fails Spanish names, and renaming after RED re-edits frozen tests). Validate what comes from outside on the way in; a key of a closed enumeration that
    is missing is an error, not a default; what the interface shows of a member of an enumeration comes from its position, not its name.
-4. **Gate**: `node .claude/tools/verify.mjs` (or the command you were given), once per group of tasks and in the background (see below). Between fixes run only the command of the line that failed (from `## Gate`) and your test file. Fix until green, or until two laps pass without
+4. **Gate.** Groups run in sequence. A builder that is not the last group's runs its own test files and the `lint` / `mutate` lines of its files from `## Gate`; only the last group's builder runs `node .claude/tools/verify.mjs` (or the command you were given), once and in the background (see below). Between fixes run only the command of the line that failed (from `## Gate`) and your test file. Fix until green, or until two laps pass without
    progress: then write what fails, with its output, in the `## Log` (`- L<n> · <date> · gate red · <line> · <output>`) and return; the close declares it in `## Could not run`. Before it, the lines `## Gate` needs by the lenses of `risk.json` (the card plans them already; write the steps files they name):
    - `visual`: one steps file and one `probe <state>: node .claude/tools/app.mjs probe <steps>.json --axe --contrast "<status selectors>" --out .validation/probe/<state>`
      line for **each state `## Specs` names** (`state: …`), the transient ones too (sending, loading), with the route held
      (`--route "POST /x=hold"`) so the state stays on screen while contrast and axe are taken.
    - `contract` (profile backend): `attacks: node .claude/tools/attack.mjs --json --body-limit <bytes the card sets> --write "POST /path a=1" --read "/path"`;
      the tool takes `APP_URL`, and also tries a body that never ends, a multibyte body above the limit, `//`, `%`, the content type and invalid UTF-8. A read with a
-     free-text filter adds `--search "/path <param>"`.
+     free-text filter adds `--search "/path <param>"`. A `FAIL` row names its rule id; the fix per rule is in `.claude/skills/http-attack/references/fixes.md` (profile backend).
 5. **Log.** Append to the end of `## Log` of card.md one line per task, `- L<n> · <date> · T<n> · <evidence: the command and what it
    returned>`, with `node .claude/tools/log.mjs specs/<card> "T<n> · <evidence>"` (it numbers and dates the line, without reading
    card.md). `## Log` only grows; no other heading, and never `L1`, is touched.
@@ -48,8 +48,7 @@ path of `specs/<card>/card.md`, your task IDs with their `S#`, and the gate comm
 (`verify.mjs`, `mutate.mjs`, a browser suite) goes in the background to a log (`.validation/<name>.log`); wait as the hook prints (`wait.mjs`, which ends on the tool's final line `<tool>: exit <N>`), never with `sleep` loops, `Monitor`, `until` or `tail -f`. If the card has `app:`, run `node .claude/tools/app.mjs down` when you finish. A live mutant is killed with a test; one that changes
 nothing is declared in `specs/<card>/equivalents.md`. Same survivors after two rounds: stop and return them.
 
-**Layers.** The `## Tasks` of card.md mark each file `(rule)`, `(data)` or `(presentation)`; if one is unmarked, mark it there (a `Write`
-on the Tasks line is a layout of yours, not a decision). SQL and db access live only in `(data)` files; validation and calculations are
+**Layers.** The `## Tasks` of card.md mark each file `(rule)`, `(data)` or `(presentation)` (`risk.mjs` required it); read them. SQL and db access live only in `(data)` files; validation and calculations are
 pure functions in a `(rule)` file (no `fetch`, `fs`, `process.env`, `console`, `document`, clock or random); the HTTP handler or the screen
 only calls them. The gate's `layers` line fails otherwise.
 

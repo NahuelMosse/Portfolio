@@ -90,7 +90,9 @@ export const asmsOf = (text) => [...new Set((sectionOf(text, 'Specs') ?? '').mat
 export const hasTasksSection = (text) => sectionOf(text, 'Tasks') !== null;
 
 // The commands of the first code block of `## Gate`.
-export const gateBlock = (text) => sectionOf(text, 'Gate')?.match(/```[^\n]*\n([\s\S]*?)```/)?.[1] ?? null;
+// Every fenced block of the section, in order: a gate split in two blocks runs both.
+export const fencedBlocks = (section) => [...String(section ?? '').matchAll(/```[^\n]*\n([\s\S]*?)```/g)].map((m) => m[1]);
+export const gateBlock = (text) => { const blocks = fencedBlocks(sectionOf(text, 'Gate')); return blocks.length ? blocks.join('\n') : null; };
 
 // The words of the card's own text —its specs and the verbatim requirement L1— that bring risk with them.
 // Whole words, with boundaries that hold for accents (`\b` does not); `rol`, `roles` and `role` do not count as the
@@ -211,4 +213,5 @@ export const actHold = (a, doc = null) => {
 export const actsHolding = (text, doc = null) => actsOf(text).filter((a) => actHold(a, doc));
 
 // The line `install.mjs --update --card-open` leaves in the card's `## Log`.
-export const kitLogLine = (text, from, to, reason) => `- L${(String(text).match(/^\s*[-*]\s*L\d+\b/gm) ?? []).length + 1} · ${new Date().toISOString().slice(0, 10)} · kit updated ${from} → ${to} · ${reason}\n`;
+export const nextLogNumber = (text) => Math.max(0, ...[...String(text).matchAll(/^\s*[-*]\s*L(\d+)\b/gm)].map((m) => Number(m[1]))) + 1;
+export const kitLogLine = (text, from, to, reason) => `- L${nextLogNumber(text)} · ${new Date().toISOString().slice(0, 10)} · kit updated ${from} → ${to} · ${reason}\n`;

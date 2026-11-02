@@ -14,7 +14,8 @@ frontmatter—** on 21/09/2026.
 | `apple-design`, `find-animation-opportunities`, `review-animations` | `emilkowalski/skills` | MIT, Emil Kowalski (`LICENSE` copied into each) | manual copy, 06/10/2026 |
 | `shadcn` (module ui) | `shadcn-ui/ui` (its skills/shadcn folder, commit `4233ed1caded`; without its images, evals and OpenAI agent file) | MIT, shadcn (`LICENSE.md` copied) | manual copy, 29/10/2026 |
 | `build-awwwards-quality-sites`, `cinematic-gsap-lenis-motion-system` | `MengTo/skills` (`agent-skills/web-design/`) | MIT, Meng To (`LICENSE` copied into each) | manual copy, 07/10/2026 |
-| `http-attack` (profile backend), `migrations-safe` (module data), `motion-audit` (profile web) | `NahuelMosse/http-attack`, `NahuelMosse/migrations-safe`, `NahuelMosse/motion-audit` (private, one repo each) | our own; third-party ideas credited in each `NOTICES.md` | `npx skills add` → `skills-lock.json` with hash |
+| `design-taste-frontend` (module ui) | `Leonxlnx/taste-skill` | MIT, Leonxlnx (`LICENSE` copied) | `npx skills add Leonxlnx/taste-skill`, copied 01/11/2026 |
+| `http-attack` (profile backend), `migrations-safe` (module data), `motion-audit` (profile web) | `NahuelMosse/http-attack`, `NahuelMosse/migrations-safe`, `NahuelMosse/motion-audit` (public, one repo each; also on npm under the same names), the folder `skills/<name>` of `main` | MIT, Nahuel Mosse (`LICENSE` in each folder); third-party ideas credited in each `NOTICES.md` | `npx skills add NahuelMosse/<name> -a claude-code -y --copy` → `skills-lock.json` with hash, recomputed by the kit's own suite |
 
 | Command | Upstream | License |
 |---|---|---|
@@ -30,11 +31,13 @@ need to look for them here.
 | File | From where | License |
 |---|---|---|
 | `.claude/templates/asvs-level-1.md` and `asvs-level-2.md` | **OWASP ASVS 5.0.0**, the level 1 requirements and those level 2 adds, unmodified, from the official CSV at `github.com/OWASP/ASVS` | **CC BY-SA 4.0** — if the text of the requirements is modified, the modified version is published under the same license |
+| `.claude/templates/design-md/` (module ui): 12 DESIGN.md of real brands | `VoltAgent/awesome-design-md`, copied 01/11/2026 | MIT, VoltAgent (`LICENSE` copied) |
 | `.claude/tools/mutate.mjs` | our own | — |
 | `.claude/tools/once.mjs` | our own | — |
-| `.claude/tools/attack.mjs` (profile backend) | our own | — |
+| `.claude/tools/attack.mjs` (profile backend), `.claude/tools/motion-audit.mjs` (profile web) | our own: the kit's entry to the vendored engine of `http-attack` and `motion-audit` | — |
 | The coverage and duplication thresholds of the gate (`stacks/`) | the **Sonar way** quality gate of SonarQube: no new issues, security hotspots reviewed, coverage of 80 % or more and duplication of 3 % or less over the new code | — |
 | The gate's static-analysis line with Semgrep | Semgrep Community Edition rules use the *Semgrep Rules License v1.0*: internal use, not for competing nor for a SaaS service | the kit ships its own rules (`.claude/rules/semgrep/sdd.yml`) and never redistributes registry rules; registry packs are for internal use only, with `--metrics=off` |
+| «The product shown inside the page» in `.claude/reference/showcase.md` (module ui): the gold-first still and the pairs of faults | the ideas are from **stageshow** (`benjitaylor/skills`, folder `stageshow`, commit `80205740`, MIT, Benji Taylor), from its `references/teaching.md`, `rehearse.md` and `verify.md`; the wording is our own, and nothing of its code or assets is copied (its app icons are not MIT) | — |
 | The ladder of `.claude/rules/architecture.md` —reuse, standard library, platform, installed dependency— | the idea is from **Ponytail** (`github.com/DietrichGebert/ponytail`); the wording is our own and leaves out its testing doctrine | — |
 
 **`design-review`** is the one from `claude-code-kit`; **`interface-design`**, the one from
@@ -62,7 +65,7 @@ copied by hand, the row goes here.
 It is not enough for the frontmatter to declare a license: a case was seen pointing to a
 `LICENSE.txt` that did not exist anywhere. **The file is verified, not the promise.**
 
-`skills-lock.json` only covers what was installed with the tool —today 4 of 13—, so **this
+`skills-lock.json` only covers what was installed with the tool —4 of 13—, so **this
 document is the record, not the lockfile.**
 
 ## Component libraries: installed per project, never copied here

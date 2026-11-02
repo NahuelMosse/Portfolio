@@ -44,13 +44,17 @@ const measure = ({ selectors }) => {
   const hasText = (el) => [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
   for (const root of roots) {
     for (const el of [root, ...root.querySelectorAll('*')]) {
-      if (seen.has(el) || !hasText(el)) continue;
-      seen.add(el);
+      if (seen.has(el)) continue;
       const cs = getComputedStyle(el);
-      if (cs.display === 'none' || cs.visibility === 'hidden') continue;
       const scrollsX = /auto|scroll/.test(cs.overflowX);
       const scrollsY = /auto|scroll/.test(cs.overflowY);
       const clips = /hidden|clip/.test(cs.overflowX) || /hidden|clip/.test(cs.overflowY);
+      // A box that clips is measured whichever node holds the text (a span inside a button): its own
+      // scroll size includes what its children push out.
+      const clipsText = (clips || cs.textOverflow === 'ellipsis') && el.textContent.trim();
+      if (!hasText(el) && !clipsText) continue;
+      seen.add(el);
+      if (cs.display === 'none' || cs.visibility === 'hidden') continue;
       const ellipsis = cs.textOverflow === 'ellipsis' || /-webkit-line-clamp|line-clamp/.test(el.getAttribute('style') ?? '') || cs.getPropertyValue('-webkit-line-clamp') !== 'none' && cs.getPropertyValue('-webkit-line-clamp') !== '';
       const label = `${name(el)} “${el.textContent.trim().slice(0, 30)}”`;
       if (el.scrollWidth > el.clientWidth + 1 && !scrollsX) {
@@ -87,7 +91,9 @@ export const check = async (url, { selectors = [], factor = 1.4 } = {}) => {
     for (const width of WIDTHS) {
       for (const mode of ['real text', 'pseudo-localized']) {
         const page = await browser.newPage({ viewport: { width, height: 900 }, deviceScaleFactor: 1 });
-        await page.goto(url, { waitUntil: 'load', timeout: 45000 });
+        const response = await page.goto(url, { waitUntil: 'load', timeout: 45000 });
+        // An error page is not the page to measure: nothing was audited.
+        if (response && response.status() >= 400) throw new Error(`${url} answered HTTP ${response.status()}: the page did not load, nothing was measured.`);
         await page.waitForTimeout(400);
         if (mode !== 'real text') await page.evaluate(lengthen, { selectors, factor, source: pseudo.toString() });
         for (const f of await page.evaluate(measure, { selectors })) problems.push(`${width} px · ${mode} · ${f}`);

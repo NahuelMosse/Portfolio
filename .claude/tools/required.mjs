@@ -112,7 +112,7 @@ const hasRole = (lines, file, root, role) => namedIn(lines, file, root).some((l)
 const isDomain = (lines, file, root) => /(^|\/)domain\//.test(file) || hasRole(lines, file, root, 'rule');
 
 // `declared · mutate · <file> · <why>` in the Log: the card leaves that file unmutated on purpose; the close lists it for a person.
-export const DECLARED_MUTATE = /declared\s*·\s*mutate\s*·\s*([^\s·]+)\s*·\s*(.+?)\s*$/;
+export const DECLARED_MUTATE = /declared\s*·\s*mutate\s*·\s*`?([^\s·`]+)`?\s*·\s*(.+?)\s*$/;
 export const declaredUnmutated = (cardDir) => new Map((String(readCard(cardDir) ?? '').split(/^## Log\b.*$/m)[1] ?? '').split('\n')
   .map((l) => l.match(DECLARED_MUTATE)).filter(Boolean).map((m) => [m[1].replaceAll('\\', '/'), m[2]]));
 

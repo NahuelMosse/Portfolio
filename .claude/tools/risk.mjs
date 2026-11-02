@@ -31,6 +31,9 @@ import { IS_CODE, IS_TEST, NOT_PRODUCTION, cardFiles, cardStart, fileMapLines, g
 import { AUTH_OR_PAYMENT, hasTasksSection, readCard, requirementOf, riskWordsIn, sectionOf, tasksOf } from './card-doc.mjs';
 import { planProblems } from './plan.mjs';
 import { noVisualOf } from './gate-checks.mjs';
+
+// A component or page file logs someone in as much as a .ts does: a risk word weighs on it too.
+const IS_RISK_CODE = (f) => IS_CODE.test(f) || /\.(vue|svelte|astro|html?)$/i.test(f);
 import { IS_SCREEN, detectIn } from './signals.mjs';
 
 const SIZE_LIMIT = 200_000;
@@ -54,7 +57,7 @@ export const classify = ({ files, taskCount, text, root, securityL2On = false, n
     data: Boolean(found.schema || found['data-dependency'] || files.some((f) => DATA_PATH.test(f))),
   };
   // A risk word weighs only on a card that writes production code: docs, specs and tests do not log anyone in.
-  const writesCode = files.some((f) => IS_CODE.test(f) && !IS_TEST.test(f) && !NOT_PRODUCTION.test(f));
+  const writesCode = files.some((f) => IS_RISK_CODE(f) && !IS_TEST.test(f) && !NOT_PRODUCTION.test(f));
   const words = writesCode ? [...new Set(riskWordsIn(text).map((w) => w.toLowerCase()))] : [];
   const touched = Object.keys(modules).filter((m) => modules[m]);
   const securityTouched = securityL2On && Boolean(found['auth-dependency']);
@@ -126,7 +129,7 @@ export const escalate = (root, cardArg) => {
   if (isPoc(root)) return { code: 0, escalated: null, line: 'risk: poc, the classification does not change' };
   const map = fileMapLines(cardDir) ?? [];
   const base = cardStart(root, cardDir);
-  const outside = cardFiles(root, base).filter((f) => IS_CODE.test(f) && !NOT_PRODUCTION.test(f) && !IS_TEST.test(f) && !namedIn(map, f, root).length);
+  const outside = cardFiles(root, base).filter((f) => IS_RISK_CODE(f) && !NOT_PRODUCTION.test(f) && !IS_TEST.test(f) && !namedIn(map, f, root).length);
   const current = frozen.escalated ?? { review: frozen.review, lenses: frozen.lenses, why: [] };
   const why = [];
   let review = RANK[current.review] >= RANK[frozen.review] ? current.review : frozen.review;
