@@ -51,10 +51,6 @@ export function EndCredits() {
           <h3>Certifications</h3>
           <ul>{credits.certifications.map((item) => <li key={item.text}>{item.text}</li>)}</ul>
         </section>
-        <section>
-          <h3>Off duty</h3>
-          <p data-off-duty="">{identity.offDuty}</p>
-        </section>
       </div>
       <CreditsRoll bands={bands} />
       <footer className="end-of-file">© Nahuel Mosse — NAWI · END OF FILE</footer>
