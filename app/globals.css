@@ -681,20 +681,34 @@
   object-fit: cover;
 }
 
+.backdrop {
+  --shade: color-mix(in srgb, var(--field) 30%, var(--ink));
+  --shade-soft: color-mix(in srgb, var(--field) 16%, transparent);
+}
+
+/* the scrim is the product's own color sunk into the ink, not a neutral black: the hue stays in the shadow, so the section
+   keeps its identity where the words and the interface sit. On a phone it deepens toward the text and the diagram below;
+   on a wide screen it holds the band the words sit on and the strips top and bottom, and lets the art run free. */
 .backdrop::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to bottom, rgb(12 12 11 / 0.7), transparent 14%),
-    linear-gradient(to bottom, rgb(12 12 11 / 0.35), rgb(12 12 11 / 0.35));
+    linear-gradient(to bottom, var(--shade), transparent 16%),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--shade) 25%, transparent),
+      color-mix(in srgb, var(--shade) 62%, transparent) 38%,
+      color-mix(in srgb, var(--shade) 88%, transparent)
+    );
 }
 
 @media (min-width: 1280px) {
   .backdrop::after {
     background:
-      linear-gradient(to bottom, rgb(12 12 11 / 0.7), transparent 12%),
-      linear-gradient(to right, rgb(12 12 11 / 0.9), rgb(12 12 11 / 0.72) 30%, transparent 58%);
+      linear-gradient(to bottom, var(--shade), transparent 13%),
+      linear-gradient(to top, var(--shade), transparent 22%),
+      linear-gradient(to right, var(--shade), color-mix(in srgb, var(--shade) 80%, transparent) 28%, transparent 56%);
   }
 
   .spread[data-composition="b"] .backdrop img {
@@ -703,8 +717,9 @@
 
   .spread[data-composition="b"] .backdrop::after {
     background:
-      linear-gradient(to bottom, rgb(12 12 11 / 0.7), transparent 12%),
-      linear-gradient(to left, rgb(12 12 11 / 0.9), rgb(12 12 11 / 0.72) 30%, transparent 58%);
+      linear-gradient(to bottom, var(--shade), transparent 13%),
+      linear-gradient(to top, var(--shade), transparent 22%),
+      linear-gradient(to left, var(--shade), color-mix(in srgb, var(--shade) 80%, transparent) 28%, transparent 56%);
   }
 }
 
@@ -729,13 +744,15 @@
 .poster-word {
   /* an uppercase Boska letter is about 0.55em wide: 90% of the viewport over the letters of the word */
   font-size: calc(90vw / (var(--chars) * 0.55) * 0.93);
-  color: color-mix(in srgb, var(--field) 45%, var(--on));
+  color: var(--on);
 }
 
+/* the numeral is an outline in the ink of the field: it crosses the art without covering it, and reads on any backdrop */
 .poster-numeral {
   margin-bottom: var(--space-3);
   font-size: var(--poster-numeral-size-phone);
-  color: var(--tone);
+  color: transparent;
+  -webkit-text-stroke: 2px var(--on);
 }
 
 /* fine small type along the top: maker, case number, a hairline and a four-point star */
@@ -782,7 +799,7 @@
     margin: var(--space-5) var(--gutter-left) calc(var(--space-5) * -1 - 0.14em);
     font-size: var(--poster-word-size);
     text-align: center;
-    color: var(--tone);
+    color: var(--on);
   }
 
   .poster-numeral {
@@ -796,8 +813,9 @@
   /* the second composition outlines the word and puts the numeral on the other side; the word only touches the device's top edge */
   .spread[data-composition="b"] .poster-word {
     z-index: 2;
-    color: transparent;
-    -webkit-text-stroke: 2px var(--on);
+    color: color-mix(in srgb, var(--field) 20%, transparent);
+    -webkit-text-stroke: 3px var(--on);
+    paint-order: stroke fill;
   }
 
   .spread[data-composition="b"] .poster-numeral {
