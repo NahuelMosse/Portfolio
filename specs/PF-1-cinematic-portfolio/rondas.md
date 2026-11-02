@@ -33,3 +33,10 @@ Motion grammar: unchanged from the card (view scrub of the heading, kit diagram 
 3. Depth and color: no change after round 2 captures; contrast of words checked by eye at 1440.
 4. Composition: Guardia's word is now 885px wide at the left margin, no longer collides with the 03.
 5. Open: the kit's icons repeat in the piece row; the committed spec asserts three `[data-pieces] [data-piece] svg`, so the row stays until that test is replaced.
+
+## Round 4 (`rondas/r5`, 390 first, then 1440; 18 FAIL rows)
+1. Character: each project carries a one-ink plate drawn with Codex (barbell and chalk hand, hospital corridor with gurney and monitor line, kiosk awning with mate and sodas, floodlight with padel racket and ball), printed over the product color by multiply; the field now reads as a screen print, not a wallpaper.
+2. Hierarchy and typography: words on the bright fields (Guardia, Cebador, Club) are bone with a hard ink shadow, since an ink word vanished into the plate's black masses; Grit and Kit stay bone.
+3. Depth and color: experience, offer and contact leave the shared black slide: employer bands with a crimson case number and a hard crimson offset under an ink slab, the offer as a bone panel and a crimson panel with inverted doors, contact as a crimson field with the word at 26vw (390) and 16.5vw (1440) and the e-mail as a display line.
+4. Composition: the second composition keeps a left gutter, so Cebador's interface is no longer cut at the edge; tap targets raised (wordmark, index links, proof link to 44px).
+5. Motion: unchanged. Open rows: text contrast 21/28, text over images 29/39, image widths 7/33, pasted boxes 2/3, brand page background 0.171, CTA separation.

@@ -24,12 +24,16 @@ export function ProjectBackdrop({ name }: BackdropProps) {
 // The ink plate of a project: black ink on white paper, printed over the product's color by multiply, so the drawn objects
 // are cut by the frame and the words cross them like a screen-printed poster.
 export function ProjectPlate({ name }: BackdropProps) {
-  const wide = sceneAsset(`plate-${name}-16x9`, "webp")
-  const tall = sceneAsset(`plate-${name}-9x16`, "webp")
+  // his portrait in the product's world is the plate when both shapes are delivered; else the still life of the world alone
+  const himWide = sceneAsset(`him-${name}-16x9`, "webp")
+  const himTall = sceneAsset(`him-${name}-9x16`, "webp")
+  const portrait = Boolean(himWide && himTall)
+  const wide = portrait ? himWide : sceneAsset(`plate-${name}-16x9`, "webp")
+  const tall = portrait ? himTall : sceneAsset(`plate-${name}-9x16`, "webp")
   // a plate still being drawn is a declared gap: the section keeps its field and backdrop
   if (!wide || !tall) return null
   return (
-    <picture data-plate={name} className="plate">
+    <picture data-plate={name} data-portrait={portrait ? "" : undefined} className="plate">
       <source media="(min-width: 1280px)" srcSet={wide} />
       <img src={tall} alt="" loading="lazy" decoding="async" />
     </picture>

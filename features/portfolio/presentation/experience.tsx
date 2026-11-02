@@ -58,6 +58,7 @@ export function Experience() {
             <li>
               <article data-employer={employer.id} data-current={String(employer.current === true)} data-side={index % 2 === 0 ? "right" : "left"} className="employer">
                 <div className="employer-info">
+                  <span className="employer-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                   {employer.logo && (
                     // eslint-disable-next-line @next/next/no-img-element -- a static brand mark of a few kilobytes
                     <img data-employer-logo="" className="employer-logo" src={employer.logo} alt={`${employer.name} logo`} width={56} height={56} loading="lazy" />
