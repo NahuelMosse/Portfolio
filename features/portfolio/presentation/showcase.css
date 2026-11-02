@@ -946,10 +946,12 @@
   .kit-show[data-beat="4"] { --x: 75%; }
   .kit-show[data-beat="5"] { --x: 92%; }
 
+  /* the card rides above the copy's shade, so no part of it is cut */
   .kit-rig {
+    z-index: 8;
     left: clamp(calc(var(--gutter-left) + 7rem), var(--x, 9.5%), calc(100% - 8rem));
     top: auto;
-    bottom: calc(var(--track-rise) + var(--space-2));
+    bottom: calc(var(--track-rise) - var(--space-6));
   }
 
   .kit-card {
@@ -969,6 +971,7 @@
     width: auto;
     display: grid;
     grid-template-columns: 24rem 28rem minmax(0, 1fr);
+    grid-template-rows: min-content 1fr;
     column-gap: var(--space-5);
     align-items: start;
     padding: 0;
@@ -992,18 +995,18 @@
 
   .kit-show .show-beats {
     grid-column: 2;
-    grid-row: 1;
+    grid-row: 1 / 3;
     margin-top: 0;
   }
 
   .kit-show .show-ticks {
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 3;
   }
 
   .kit-show .show-meta {
     grid-column: 3;
-    grid-row: 1;
+    grid-row: 1 / 3;
     display: grid;
     justify-items: start;
     margin-top: 0;
