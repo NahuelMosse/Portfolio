@@ -653,17 +653,59 @@
 
 .spread[data-project="guardia"] {
   --field: var(--spot-triaje);
-  --on: var(--ink);
 }
 
 .spread[data-project="cebador"] {
   --field: var(--spot-cebador);
-  --on: var(--ink);
 }
 
 .spread[data-project="club"] {
   --field: var(--spot-club);
-  --on: var(--ink);
+}
+
+/* the backdrop fills the whole section under everything, its illustration covering the box; a scrim of the ink darkens the
+   side the words sit on and the strip along the top, so bone type reads on any product color. The second composition
+   mirrors the picture, so its calm zone is on the left and its words on the right. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+}
+
+.backdrop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgb(12 12 11 / 0.7), transparent 14%),
+    linear-gradient(to bottom, rgb(12 12 11 / 0.35), rgb(12 12 11 / 0.35));
+}
+
+@media (min-width: 1280px) {
+  .backdrop::after {
+    background:
+      linear-gradient(to bottom, rgb(12 12 11 / 0.7), transparent 12%),
+      linear-gradient(to right, rgb(12 12 11 / 0.9), rgb(12 12 11 / 0.72) 30%, transparent 58%);
+  }
+
+  .spread[data-composition="b"] .backdrop img {
+    transform: scaleX(-1);
+  }
+
+  .spread[data-composition="b"] .backdrop::after {
+    background:
+      linear-gradient(to bottom, rgb(12 12 11 / 0.7), transparent 12%),
+      linear-gradient(to left, rgb(12 12 11 / 0.9), rgb(12 12 11 / 0.72) 30%, transparent 58%);
+  }
 }
 
 /* the numeral and the word, set at poster scale. On a phone they are rows above the title: the numeral, then the word as one
@@ -768,125 +810,68 @@
   }
 }
 
-/* the stage: a panel that prints one ink illustration on the field, with the real interface over the screen the drawing
-   shows. The panel creates no stacking context, so the multiplied image blends with the field itself; the interface is a
-   later, unblended sibling. The panel is cropped to the part of the drawing that matters and sized from its screen. */
 .spread-stage {
   position: relative;
   min-width: 0;
 }
 
-.drawn-stage {
-  overflow: hidden;
-  width: 100%;
-  max-width: 36rem;
+/* the lead interface: a plain frame drawn by code, large, with no blend, no perspective and no grain over its glass. A
+   phone is sized by its height on a wide screen and by its width on a phone; a browser by its width. */
+.lead-device {
+  --chrome: calc(var(--space-2) * 2 + 2px);
+  width: var(--stage-wide-width-phone);
   margin-inline: auto;
-  aspect-ratio: var(--mobile-aspect);
 }
 
-.drawn-stage img[data-art] {
-  position: absolute;
-  left: var(--art-left);
-  top: var(--art-top);
-  width: var(--art-width);
-  max-width: none;
-  height: auto;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-  mask-image:
-    linear-gradient(to right, transparent var(--crop-left), #000 calc(var(--crop-left) + var(--far-fade)), #000 calc(var(--crop-right) - var(--far-fade)), transparent var(--crop-right)),
-    linear-gradient(to bottom, transparent var(--crop-top), #000 calc(var(--crop-top) + var(--edge-fade)), #000 calc(var(--crop-bottom) - var(--edge-fade)), transparent var(--crop-bottom));
-  mask-composite: intersect;
+.lead-device[data-lead-frame="phone"] {
+  width: var(--stage-phone-width-phone);
 }
 
-.drawn-stage img[data-art="desktop"] {
+.lead-device .frame {
+  mask-image: none;
+}
+
+.lead-device .grain {
   display: none;
 }
 
-/* the drawn screen: the interface keeps its own size and is carried onto the screen's four corners by a matrix set from the panel's size */
-.drawn-screen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  overflow: hidden;
-  background: var(--ink);
-  transform-origin: 0 0;
-  visibility: hidden;
+.lead-device .frame-tab {
+  color: var(--ink);
 }
 
-.drawn-screen[data-mapped] {
-  visibility: visible;
-}
-
-.drawn-screen .scene-media {
-  width: 100%;
-  height: 100%;
-}
-
-.drawn-screen img,
-.drawn-screen video {
-  object-fit: cover;
-  object-position: top;
+.lead-device .frame[data-frame="phone"] .frame-screen {
+  aspect-ratio: var(--phone-capture-ratio);
 }
 
 @media (min-width: 1280px) {
-  .drawn-stage {
-    max-width: none;
+  .lead-device {
+    width: var(--stage-wide-width);
     margin-inline: 0;
-    aspect-ratio: var(--desktop-aspect);
   }
 
-  .drawn-stage img[data-art="desktop"] {
-    display: block;
-  }
-
-  .drawn-stage img[data-art="mobile"] {
-    display: none;
-  }
-
-  /* the side that faces the words fades into the field; the other side bleeds off the poster */
-  .drawn-stage[data-side="right"] img[data-art="desktop"] {
-    mask-image:
-      linear-gradient(to right, transparent var(--crop-left), #000 calc(var(--crop-left) + var(--side-fade)), #000 calc(var(--crop-right) - var(--far-fade)), transparent var(--crop-right)),
-      linear-gradient(to bottom, transparent var(--crop-top), #000 calc(var(--crop-top) + var(--edge-fade)), #000 calc(var(--crop-bottom) - var(--edge-fade)), transparent var(--crop-bottom));
-    mask-composite: intersect;
-  }
-
-  .drawn-stage[data-side="left"] img[data-art="desktop"] {
-    mask-image:
-      linear-gradient(to right, transparent var(--crop-left), #000 calc(var(--crop-left) + var(--far-fade)), #000 calc(var(--crop-right) - var(--side-fade)), transparent var(--crop-right)),
-      linear-gradient(to bottom, transparent var(--crop-top), #000 calc(var(--crop-top) + var(--edge-fade)), #000 calc(var(--crop-bottom) - var(--edge-fade)), transparent var(--crop-bottom));
-    mask-composite: intersect;
-  }
-
-  /* a wide screen's panel is sized by the width its screen must have, a phone's by the height */
-  .spread-main[data-device="wide"] .drawn-stage {
-    width: calc(var(--stage-wide-width) * var(--desktop-by-width));
-  }
-
-  .spread-main[data-device="phone"] .drawn-stage {
-    width: calc(var(--stage-phone-height) * var(--desktop-by-height) * var(--desktop-aspect));
+  .lead-device[data-lead-frame="phone"] {
+    width: calc((var(--stage-phone-height) - var(--chrome)) * var(--phone-capture-width) / var(--phone-capture-height) + var(--chrome));
   }
 }
 
-/* the kit's diagram is drawn on an ink plate; its illustration is printed behind it */
-.kit-plate {
+/* the kit's diagram is drawn straight on the backdrop, with no plate */
+.kit-stage {
   width: var(--stage-wide-width-phone);
   margin-inline: auto;
-  aspect-ratio: 1000 / 480;
-  background: var(--ink);
 }
 
 .kit-diagram {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 2px 6px rgb(12 12 11 / 0.85));
 }
 
 .kit-stroke,
 .kit-stroke-red,
 .kit-stroke-green,
+.kit-stroke-bone,
 .kit-ring,
 .kit-path {
   fill: none;
@@ -896,6 +881,7 @@
 }
 
 .kit-stroke,
+.kit-stroke-bone,
 .kit-ring {
   stroke: var(--bone);
 }
@@ -921,12 +907,16 @@
   fill: var(--red);
 }
 
+/* each stop is a soft dark disc, so the crimson path runs behind it and not through its shape */
+.kit-disc {
+  fill: rgb(12 12 11 / 0.82);
+}
+
 .kit-word {
   fill: var(--bone);
-  font-family: var(--font-display);
+  font-family: var(--font-label);
   font-weight: 700;
-  font-size: 46px;
-  letter-spacing: 0.04em;
+  font-size: 22px;
   text-transform: uppercase;
 }
 
@@ -956,13 +946,11 @@
   from {
     opacity: 0;
     stroke-dashoffset: 1;
-    transform: scale(0.85);
   }
 
   to {
     opacity: 1;
     stroke-dashoffset: 0;
-    transform: scale(1);
   }
 }
 
@@ -970,61 +958,11 @@
   display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: var(--ink);
-}
-
-.kit-art {
-  position: absolute;
-  inset: 0 0 0 auto;
-  width: 46%;
-  display: none;
-}
-
-.kit-art img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-  mask-image: linear-gradient(to bottom, transparent, #000 12%);
-}
-
-.kit-art img[data-art="desktop"] {
-  display: none;
-}
-
-/* a phone closes the kit's poster with its illustration, as a band after the pieces */
-@media (max-width: 1279px) {
-  .kit-art {
-    position: relative;
-    inset: auto;
-    display: block;
-    order: 9;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-  }
+  background: rgb(12 12 11 / 0.55);
 }
 
 @media (min-width: 1280px) {
-  .kit-art {
-    display: block;
-  }
-
-  .kit-art img[data-art="desktop"] {
-    display: block;
-    mask-image:
-      linear-gradient(to right, transparent, #000 30%),
-      linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-    mask-composite: intersect;
-  }
-
-  .kit-art img[data-art="mobile"] {
-    display: none;
-  }
-
-  .kit-plate {
+  .kit-stage {
     width: var(--stage-wide-width);
     margin-inline: 0 var(--gutter-right);
   }
@@ -1230,8 +1168,10 @@
 
 /* a stack item is a word under one line in the project's spot color, not a box */
 .stack li {
-  padding: var(--space-1) 0;
-  border-bottom: var(--rule) solid var(--spot);
+  padding: var(--space-1) var(--space-2);
+  border-bottom: var(--rule) solid var(--field);
+  /* a chip carries its own dark ground, so its bone type reads at AA over any backdrop and any product color */
+  background: rgb(12 12 11 / 0.88);
   color: var(--bone);
 }
 

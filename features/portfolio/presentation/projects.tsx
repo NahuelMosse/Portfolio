@@ -1,19 +1,17 @@
 import type { CSSProperties } from "react";
-import { SceneMedia, sceneAsset } from "@/features/film";
+import { SceneMedia } from "@/features/film";
 import { projects, type Project } from "./content";
 import { ChapterWord } from "./chapter-word";
-import { DrawnScene } from "./drawn-scene";
-import { KitArt } from "./kit-art";
+import { DeviceFrame } from "./device-frame";
 import { KitDiagram } from "./kit-diagram";
 import { KitPiece } from "./kit-piece";
 import { KIT_STEPS } from "./kit-step-icon";
 import { Piece } from "./piece";
 import { PieceRow } from "./piece-row";
+import { ProjectBackdrop } from "./project-backdrop";
 import { ProjectSpread } from "./project-spread";
-import { KIT_ART, SCENE_ART, type SceneArt } from "./scene-art";
 
-// The device the illustration of each project draws, which sizes the poster around it: a phone, or a wide screen.
-// The kit draws no device: its lead is a diagram and its illustration is printed behind it.
+// The device each project shows, which sizes the poster around it: a phone, or a wide screen.
 const DEVICES: Record<string, "phone" | "wide"> = {
   "dev-kit": "wide",
   grit: "phone",
@@ -22,20 +20,21 @@ const DEVICES: Record<string, "phone" | "wide"> = {
   club: "phone",
 };
 
+// The name of each project's backdrop files: bg-<name>-16x9 and bg-<name>-9x16.
+const BACKDROPS: Record<string, string> = {
+  "dev-kit": "kit",
+  grit: "grit",
+  guardia: "guardia",
+  cebador: "cebador",
+  club: "club",
+};
+
 // The word set at poster scale; the kit's title is a sentence, so it has a short word of its own.
 const POSTER_WORDS: Record<string, string> = { "dev-kit": "Dev kit", club: "Club" };
 
 const DEV_KIT = "dev-kit";
 
-// The image files of an illustration at both widths; an undelivered file is an error, not a poster without its art.
-function printed(files: { desktop: string; mobile: string }) {
-  const sources = { desktop: sceneAsset(files.desktop, "webp"), mobile: sceneAsset(files.mobile, "webp") };
-  if (!sources.desktop || !sources.mobile)
-    throw new Error(`The illustration ${files.desktop} or ${files.mobile} is not delivered`);
-  return { desktop: sources.desktop, mobile: sources.mobile };
-}
-
-// The lead piece of a project: the real interface that goes inside the drawn screen.
+// The lead piece of a project: the real interface that goes inside the frame.
 function LeadMedia({ project }: { project: Project }) {
   const [lead] = project.pieces;
   if ("video" in lead)
@@ -128,23 +127,16 @@ function ProjectText({ project }: { project: Project }) {
   );
 }
 
-// The stage of a project: the dev kit's diagram, or the real interface set in the screen its illustration draws.
-function Stage({
-  project,
-  art,
-  composition,
-}: {
-  project: Project;
-  art: SceneArt | undefined;
-  composition: "a" | "b";
-}) {
+// The stage of a project: the dev kit's diagram, or the real interface large in a plain frame drawn by code.
+function Stage({ project }: { project: Project }) {
   if (project.id === DEV_KIT) return <KitDiagram />;
-  if (!art) throw new Error(`No illustration is mapped for project ${project.id}`);
-  const sources = printed({ desktop: art.desktop.file, mobile: art.mobile.file });
+  const [lead] = project.pieces;
   return (
-    <DrawnScene art={art} sources={sources} composition={composition}>
-      <LeadMedia project={project} />
-    </DrawnScene>
+    <div data-scene-screen="" data-lead-frame={lead.frame} className="spread-stage lead-device">
+      <DeviceFrame kind={lead.frame} label={lead.caption}>
+        <LeadMedia project={project} />
+      </DeviceFrame>
+    </div>
   );
 }
 
@@ -168,9 +160,9 @@ function Others({ project }: { project: Project }) {
   );
 }
 
-// Each project is a type poster: a field of the product's own color with its ink illustration printed on it, its real
-// interface large inside the screen that illustration draws, its case numeral and word at poster scale crossing it, then
-// its title, line, stack and link and its other pieces in view with it. The cases alternate their composition.
+// Each project is a type poster: a field of the product's own color under a full-bleed illustrated backdrop, its real
+// interface large in a plain frame over the backdrop's calm zone, its case numeral and word at poster scale crossing it,
+// then its title, line, stack and link and its other pieces in view with it. The cases alternate their composition.
 export function Projects() {
   return (
     <section data-chapter="projects" id="projects" className="projects">
@@ -184,22 +176,22 @@ export function Projects() {
       </ChapterWord>
       {projects.map((project, index) => {
         const device = DEVICES[project.id];
-        if (!device)
-          throw new Error(`No device is mapped for project ${project.id}`);
+        const backdrop = BACKDROPS[project.id];
+        if (!device || !backdrop)
+          throw new Error(`No device or backdrop is mapped for project ${project.id}`);
         const numeral = String(index + 1).padStart(2, "0");
         const composition = index % 2 === 0 ? "a" : "b";
-        const art = SCENE_ART[project.id];
         return (
           <ProjectSpread key={project.id} id={project.id} composition={composition}>
-            {project.id === DEV_KIT && <KitArt sources={printed(KIT_ART)} />}
+            <ProjectBackdrop name={backdrop} />
             <PosterDetail numeral={numeral} total={projects.length} />
             <p data-poster-numeral="" className="poster-numeral" aria-hidden="true">
               {numeral}
             </p>
             <PosterWord word={POSTER_WORDS[project.id] ?? project.name} />
-            <div className="spread-main" data-device={device} data-hand-held={art?.handHeld ? "" : undefined}>
+            <div className="spread-main" data-device={device}>
               <ProjectText project={project} />
-              <Stage project={project} art={art} composition={composition} />
+              <Stage project={project} />
               <div className="scene-pieces" data-has-scene="">
                 <Others project={project} />
               </div>
