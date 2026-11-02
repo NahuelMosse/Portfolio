@@ -666,47 +666,34 @@
   --on: var(--ink);
 }
 
-/* the numeral and the word, set at poster scale in a darker tone of the field; a case with the word in front outlines it */
+/* the numeral and the word, set at poster scale. On a phone they are rows above the title: the numeral, then the word as one
+   solid line fit to the viewport. On a wide screen the numeral hangs on the field and the word sits in the free band above
+   the device, dipping over its top edge. */
 .poster-numeral,
 .poster-word {
-  position: absolute;
+  position: relative;
   z-index: 0;
-  margin: 0;
+  margin: 0 var(--gutter-right-phone) 0 var(--gutter-left-phone);
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 0.8;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  color: var(--tone);
+  white-space: nowrap;
   pointer-events: none;
   user-select: none;
 }
 
 .poster-word {
-  left: var(--gutter-left-phone);
-  top: 24%;
-  font-size: var(--poster-word-size-phone);
-}
-
-.poster-word span {
-  display: block;
+  /* an uppercase Boska letter is about 0.55em wide: 90% of the viewport over the letters of the word */
+  font-size: calc(90vw / (var(--chars) * 0.55) * 0.93);
+  color: color-mix(in srgb, var(--field) 45%, var(--on));
 }
 
 .poster-numeral {
-  right: var(--gutter-right-phone);
-  top: var(--space-6);
+  margin-bottom: var(--space-3);
   font-size: var(--poster-numeral-size-phone);
-}
-
-.spread[data-composition="b"] .poster-word {
-  top: 46%;
-}
-
-.spread[data-composition="b"] .poster-numeral {
-  top: auto;
-  right: auto;
-  bottom: var(--space-4);
-  left: var(--gutter-left-phone);
+  color: var(--tone);
 }
 
 /* fine small type along the top: maker, case number, a hairline and a four-point star */
@@ -749,40 +736,36 @@
 }
 
 @media (min-width: 1280px) {
-  /* the word is centered on the device so it crosses it, a little left of center in the first composition and right of it in the second */
   .poster-word {
-    left: 44%;
-    top: 22%;
+    margin: var(--space-5) var(--gutter-left) calc(var(--space-5) * -1 - 0.14em);
     font-size: var(--poster-word-size);
     text-align: center;
-    transform: translateX(-50%);
+    color: var(--tone);
   }
 
   .poster-numeral {
+    position: absolute;
     right: var(--gutter-right);
+    bottom: var(--space-5);
+    margin: 0;
     font-size: var(--poster-numeral-size);
   }
 
+  /* the second composition outlines the word and puts the numeral on the other side; the word only touches the device's top edge */
   .spread[data-composition="b"] .poster-word {
-    left: 36%;
-    top: 40%;
+    z-index: 2;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--on);
   }
 
   .spread[data-composition="b"] .poster-numeral {
+    right: auto;
     left: var(--gutter-left);
-    bottom: var(--space-5);
   }
 
   .poster-strip {
     inset-inline: var(--gutter-left) var(--gutter-right);
   }
-}
-
-/* the case with the word in front: outlined, so the interface stays readable under it */
-.spread[data-composition="b"] .poster-word {
-  z-index: 2;
-  color: transparent;
-  -webkit-text-stroke: 2px var(--on);
 }
 
 /* the device: a plain frame drawn by code around the real interface. The screen's width is --sw; the bezel adds around it. */
@@ -910,6 +893,11 @@
 
   .spread-main[data-device="phone"] {
     grid-template-columns: minmax(0, var(--stage-text-width)) max-content var(--other-width);
+  }
+
+  /* the phone hangs from the top of its row, so the word above it dips over its top edge */
+  .spread-main[data-device="phone"] > .poster-device {
+    align-self: start;
   }
 
   .spread-main[data-device="phone"] > .scene-pieces {

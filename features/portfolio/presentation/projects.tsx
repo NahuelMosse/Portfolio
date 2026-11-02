@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { SceneMedia } from "@/features/film";
 import { projects, type Project } from "./content";
 import { ChapterWord } from "./chapter-word";
@@ -16,7 +17,7 @@ const DEVICES: Record<string, DeviceKind> = {
 };
 
 // The word set at poster scale; the kit's title is a sentence, so it has a short word of its own.
-const POSTER_WORDS: Record<string, string> = { "dev-kit": "Dev kit" };
+const POSTER_WORDS: Record<string, string> = { "dev-kit": "Dev kit", club: "Club" };
 
 // What the frame shows: the kit's typed documents, or the project's lead piece.
 function ScreenContent({ project }: { project: Project }) {
@@ -62,13 +63,16 @@ function Title({ project }: { project: Project }) {
   );
 }
 
-// The camel-case words of a name are stacked, one per line, as on a poster.
+// The word is one line; its length sizes it to the width of the viewport.
 function PosterWord({ word }: { word: string }) {
   return (
-    <p data-poster-word="" className="poster-word" aria-hidden="true">
-      {word.split(/(?<=[a-z])(?=[A-Z])/).map((part) => (
-        <span key={part}>{part}</span>
-      ))}
+    <p
+      data-poster-word=""
+      className="poster-word"
+      aria-hidden="true"
+      style={{ "--chars": word.length } as CSSProperties}
+    >
+      {word}
     </p>
   );
 }
