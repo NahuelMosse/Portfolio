@@ -133,6 +133,24 @@
   --poster-leading: 0.82;
   --rule: 1px;
 
+  /* the pinned showcase: the scroll each beat of a story takes, the device and the card in it, the light spilling from a screen */
+  --beat-run: 70svh;
+  --device-phone-height: 54svh;
+  --device-browser-width: 92vw;
+  --device-browser-width-wide: 52vw;
+  --device-second-height: 26svh;
+  --glow-blur: 48px;
+  --card-width: 42vw;
+  --card-width-wide: 11.5rem;
+  --card-ratio: 5 / 7;
+  --show-strip: 44px;
+  --beat-fade: 420ms;
+  --token-travel: 900ms;
+  --text-lead: 1.125rem;
+  --text-title: 1.5rem;
+  /* the height of the dev kit's plate above its machines' tops, in the wide composition: 49% of a 16:9 drawing as wide as the viewport */
+  --track-rise: 27.5vw;
+
   /* semantic */
   --background: var(--ink);
   --foreground: var(--bone);

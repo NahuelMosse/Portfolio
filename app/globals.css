@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "../design/tokens.css";
+@import "../features/portfolio/presentation/showcase.css";
 
 /* the cards, tools and the catalog hold prose and snippets, not classes of the site */
 @source not "../specs";

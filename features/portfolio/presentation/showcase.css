@@ -1,0 +1,1137 @@
+/* ---------- the pinned showcase: each project is a scroll scene ---------- */
+
+/* A scene is a tall section with one sticky stage. The stage holds still while the page scrolls through it; --p (0 to 1) is how far
+   through it the visitor is, and every layer moves by its own share of it: the far art least, the device and its screen light most.
+   --on is the ink that reads on the product's field. */
+.show {
+  --field: var(--spot-kit);
+  --on: var(--bone);
+  --flip: 1;
+  --mirror: 1;
+  --p: 0;
+  --shade-deep: color-mix(in srgb, var(--field) 20%, var(--ink));
+  position: relative;
+  height: calc(100svh + (var(--beats) - 1) * var(--beat-run));
+  background: var(--field);
+}
+
+.show[data-project="grit"] {
+  --field: var(--spot-grit);
+}
+
+.show[data-project="guardia"] {
+  --field: var(--spot-triaje);
+  --on: var(--ink);
+}
+
+.show[data-project="cebador"] {
+  --field: var(--spot-cebador);
+  --on: var(--ink);
+}
+
+.show[data-project="club"] {
+  --field: var(--spot-club);
+  --on: var(--ink);
+}
+
+.show[data-composition="b"] {
+  --flip: -1;
+}
+
+@media (min-width: 1280px) {
+  .show[data-composition="b"] {
+    --mirror: -1;
+  }
+}
+
+.show-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+  isolation: isolate;
+  background: var(--field);
+  color: var(--on);
+}
+
+/* ---- the art, in depth: the world far behind, his ink plate nearer, both drifting as the page scrolls ---- */
+
+.show .backdrop,
+.show .plate {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.show .backdrop {
+  z-index: 0;
+  transform: translate3d(0, calc(var(--p) * -4svh), 0) scale(1.12);
+}
+
+.show .backdrop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+/* the plate is black ink on white paper, multiplied over the field so the drawing is printed on it */
+.show .plate {
+  z-index: 1;
+  mix-blend-mode: multiply;
+  transform: translate3d(calc(var(--p) * 4vw * var(--flip)), calc(var(--p) * -8svh), 0) scale(calc(1.1 * var(--mirror)), 1.1);
+}
+
+.show .plate img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+}
+
+.show .plate[data-portrait] img {
+  object-position: center top;
+}
+
+/* the lamp: a cone of light from the top corner that slides as the page scrolls, and the field sinking into shade at the foot */
+.show-light {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 55% at calc(8% + var(--p) * 40%) -8%, var(--bone-30), transparent 70%),
+    linear-gradient(to bottom, transparent 55%, color-mix(in srgb, var(--shade-deep) 55%, transparent));
+  mix-blend-mode: soft-light;
+}
+
+/* ---- the strip: where the visitor is among the five projects ---- */
+
+.show-index {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: calc(var(--top-bar-height) + var(--show-strip));
+  margin: 0;
+  padding: var(--top-bar-height) var(--gutter-right-phone) 0 var(--gutter-left-phone);
+  list-style: none;
+  background: var(--field);
+  border-bottom: var(--rule) solid color-mix(in srgb, var(--on) 35%, transparent);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+}
+
+.show-index a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--show-strip);
+  color: color-mix(in srgb, var(--on) 62%, var(--field));
+  text-decoration: none;
+}
+
+.show-index li[aria-current] a {
+  color: var(--on);
+}
+
+.show-index li[aria-current] b {
+  padding-bottom: var(--space-1);
+  border-bottom: var(--space-1) solid var(--on);
+}
+
+/* on the phone only the current project carries its name; the others are their numbers */
+.show-index li:not([aria-current]) span {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .show-index {
+    padding-left: var(--gutter-left);
+    padding-right: var(--gutter-right);
+    gap: var(--space-5);
+  }
+
+  .show-index li:not([aria-current]) span {
+    display: inline;
+  }
+}
+
+/* ---- the poster word, behind the device ---- */
+
+.show-word {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-3));
+  left: var(--gutter-right-phone);
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  /* an uppercase Boska letter is about 0.55em wide: the word fills the viewport's width */
+  font-size: calc(90vw / (var(--chars) * 0.55) * 0.93);
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--bone);
+  pointer-events: none;
+  user-select: none;
+  transform: translate3d(calc(var(--p) * -6vw * var(--flip)), 0, 0);
+}
+
+/* on the bright fields (teal, pink, lime) the plate's black masses would swallow an ink word: it is bone with a hard ink shadow */
+.show[data-project="guardia"] .show-word,
+.show[data-project="cebador"] .show-word,
+.show[data-project="club"] .show-word {
+  text-shadow: var(--space-1) var(--space-1) 0 var(--ink);
+}
+
+/* ---- the device: lit and shadowed by the scene it stands in ---- */
+
+.show-rig {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: calc(var(--top-bar-height) + var(--show-strip) + 17svh);
+  translate: -50% 0;
+  perspective: 1600px;
+}
+
+.show-rig[data-device="phone"] {
+  height: var(--device-phone-height);
+  aspect-ratio: 390 / 844;
+}
+
+.show-rig[data-device="browser"] {
+  width: var(--device-browser-width);
+  aspect-ratio: 16 / 10;
+}
+
+.show-device {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  margin: 0;
+  padding: var(--device-bezel);
+  background: var(--ink);
+  border-radius: var(--radius-phone);
+  box-shadow:
+    0 var(--space-5) var(--space-6) var(--ink-70),
+    0 var(--space-2) var(--space-3) var(--ink-35),
+    0 0 var(--space-6) color-mix(in srgb, var(--field) 40%, transparent);
+  transform: rotateY(calc(var(--flip) * (-12deg + var(--p) * 16deg))) rotateX(calc(4deg - var(--p) * 3deg))
+    translate3d(0, calc(var(--p) * -3svh), 0);
+  transform-style: preserve-3d;
+}
+
+.show-rig[data-device="browser"] .show-device {
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: 0;
+  border-radius: var(--space-2);
+}
+
+/* the rim of the lamp's light on the edge that faces it */
+.show-device::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: var(--rule);
+  border-radius: inherit;
+  background: linear-gradient(calc(135deg * var(--flip)), var(--bone-70), transparent 34%, transparent 70%, var(--bone-30));
+  -webkit-mask: linear-gradient(var(--ink) 0 0) content-box exclude, linear-gradient(var(--ink) 0 0);
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+/* the cast shadow falls away from the lamp, on the art behind, and slides as the lamp does */
+.show-cast {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius-phone);
+  background: var(--ink);
+  opacity: 0.5;
+  filter: blur(var(--space-3));
+  translate: calc(var(--flip) * var(--space-5) * -1) var(--space-4);
+}
+
+/* the screen's own light spilling onto the field behind it: a blurred copy of the face that is on */
+.show-glow {
+  position: absolute;
+  inset: -8%;
+  z-index: -2;
+  filter: blur(var(--glow-blur)) saturate(1.6);
+  opacity: 0.6;
+}
+
+.show-glow img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  opacity: 0;
+  transition: opacity var(--motion-section) var(--ease-out);
+}
+
+.show-glow img[data-on] {
+  opacity: 1;
+}
+
+.show-tab {
+  position: absolute;
+  top: calc(var(--space-3) * -1);
+  left: var(--space-3);
+  z-index: 4;
+  padding: 0 var(--space-2);
+  background: var(--bone);
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+}
+
+.show-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--ink);
+  border-bottom: var(--rule) solid var(--bone-12);
+}
+
+.show-bar i {
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-round);
+  background: var(--bone-30);
+}
+
+.show-glass {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--radius-phone) - var(--device-bezel));
+  background: var(--ink);
+}
+
+.show-rig[data-device="browser"] .show-glass {
+  border-radius: 0 0 var(--space-2) var(--space-2);
+}
+
+.show-screen {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translate3d(0, var(--space-3), 0) scale(1.03);
+  transition:
+    opacity var(--motion-section) var(--ease-out),
+    transform var(--motion-section) var(--ease-out);
+}
+
+.show-screen[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+.show-screen img,
+.show-screen .scene-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* the glare that crosses the glass as the page scrolls */
+.show-sheen {
+  position: absolute;
+  inset: -30%;
+  background: linear-gradient(115deg, transparent 42%, var(--bone-12) 50%, transparent 58%);
+  transform: translate3d(calc(var(--p) * 90% - 45%), 0, 0);
+  pointer-events: none;
+}
+
+/* the second device stands in the scene too: a phone leaning behind the first, or the phone that goes with a web page in front of it */
+.show[data-kind="phone"] .show-rig[data-role="second"] {
+  z-index: 3;
+  translate: calc(-50% + var(--flip) * 54%) 7svh;
+  scale: 0.84;
+  filter: brightness(0.72) saturate(0.85);
+}
+
+.show[data-kind="browser"] .show-rig[data-role="second"] {
+  z-index: 5;
+  left: auto;
+  right: var(--gutter-right-phone);
+  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-5) + var(--device-browser-width) * 0.4);
+  height: var(--device-second-height);
+  aspect-ratio: 390 / 844;
+  translate: none;
+}
+
+.show[data-kind="browser"] .show-rig[data-role="second"] .show-device {
+  transform: rotateY(calc(var(--flip) * (-8deg + var(--p) * 10deg))) rotateX(3deg);
+}
+
+.show[data-kind="browser"] .show-rig[data-role="second"][data-device="browser"] {
+  display: none;
+}
+
+.show-rig[data-role="second"] .show-device {
+  border-radius: var(--radius-phone);
+}
+
+/* ---- the captions: one beat at a time ---- */
+
+.show-copy {
+  position: absolute;
+  z-index: 6;
+  inset: auto 0 0;
+  padding: var(--space-6) var(--gutter-right-phone) calc(var(--hire-bar-height) + var(--space-2)) var(--gutter-left-phone);
+  color: var(--bone);
+}
+
+.show-copy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, var(--shade-deep) 58%, transparent);
+}
+
+.show-copy h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--size-scene-title-phone);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* the poster word is the project's name; its heading is for the page's outline and the readers that use it */
+.show:not(.kit-show) .show-copy h3 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.show-lead {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-body);
+  line-height: 1.4;
+  color: var(--bone-70);
+}
+
+.show-beats {
+  display: grid;
+  margin-top: var(--space-2);
+}
+
+.show-beat {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  opacity: 0;
+  transform: translate3d(0, var(--space-3), 0);
+  transition:
+    opacity var(--beat-fade) var(--ease-out),
+    transform var(--beat-fade) var(--ease-out),
+    visibility 0s linear var(--beat-fade);
+}
+
+.show-beat[data-on] {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.show-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--bone-70);
+}
+
+.show-label::before {
+  content: "";
+  width: var(--space-4);
+  height: var(--space-1);
+  background: var(--field);
+  outline: var(--rule) solid var(--bone-30);
+}
+
+.show-text {
+  max-width: 34ch;
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-lead);
+  line-height: 1.32;
+  color: var(--bone);
+}
+
+.show-hook {
+  max-width: 34ch;
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-body);
+  line-height: 1.35;
+  color: var(--bone-70);
+}
+
+.show-hook b {
+  font-family: var(--font-label);
+  font-weight: 400;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.show-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.show-meta .stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.show-meta .stack li {
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  color: var(--bone-70);
+}
+
+.show-meta a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--show-strip);
+  color: var(--bone);
+  text-decoration: underline;
+  text-decoration-color: var(--field);
+  text-decoration-thickness: var(--space-1);
+  text-underline-offset: var(--space-1);
+}
+
+.show-meta a:hover {
+  text-decoration-color: var(--bone);
+}
+
+/* where the story stands: one tick per beat, filling as the page scrolls */
+.show-ticks {
+  display: flex;
+  gap: var(--space-1);
+  margin: var(--space-2) 0 0;
+}
+
+.show-ticks i {
+  flex: 1;
+  height: var(--space-1);
+  background: var(--bone-30);
+  transition: background var(--beat-fade) var(--ease-out);
+}
+
+.show-ticks i[data-on] {
+  background: var(--bone);
+}
+
+/* ---- wide: the copy beside the device, mirrored in the second composition ---- */
+
+@media (min-width: 1280px) {
+  .show-word {
+    left: var(--gutter-left);
+    top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4));
+    font-size: min(calc(48vw / (var(--chars) * 0.55) * 0.93), 34vw);
+  }
+
+  .show[data-composition="b"] .show-word {
+    left: auto;
+    right: var(--gutter-right);
+  }
+
+  .show-rig {
+    left: auto;
+    right: 9vw;
+    translate: none;
+  }
+
+  .show[data-composition="b"] .show-rig {
+    right: auto;
+    left: 9vw;
+  }
+
+  .show-rig[data-device="phone"] {
+    --device-phone-height: calc(100svh - var(--top-bar-height) - var(--show-strip) - var(--space-7));
+    top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-5));
+  }
+
+  .show-rig[data-device="browser"] {
+    width: var(--device-browser-width-wide);
+    top: 50%;
+    translate: 0 -46%;
+  }
+
+  .show[data-kind="phone"] .show-rig[data-role="second"] {
+    translate: calc(var(--flip) * 62%) 6svh;
+    scale: 0.82;
+  }
+
+  .show[data-kind="browser"] .show-rig[data-role="second"] {
+    right: calc(9vw - var(--space-5));
+    top: 50%;
+    height: calc(var(--device-second-height) * 1.5);
+    translate: 0 4%;
+  }
+
+  .show[data-kind="browser"][data-composition="b"] .show-rig[data-role="second"] {
+    right: auto;
+    left: calc(9vw - var(--space-5));
+  }
+
+  .show-copy {
+    inset: auto auto var(--space-6) var(--gutter-left);
+    width: 26rem;
+    padding: 0;
+  }
+
+  .show[data-composition="b"] .show-copy {
+    inset: auto var(--gutter-right) var(--space-6) auto;
+  }
+
+  /* the copy sits on a soft shade of the field sunk into the ink, falling off toward the device */
+  .show-copy::before {
+    inset: -22svh -8vw -12svh calc(var(--gutter-left) * -1);
+    background: linear-gradient(to right, color-mix(in srgb, var(--shade-deep) 88%, transparent) 55%, transparent);
+  }
+
+  .show-copy::before {
+    mask-image: linear-gradient(to bottom, transparent, #000 30%);
+  }
+
+  .show[data-composition="b"] .show-copy::before {
+    inset: -22svh calc(var(--gutter-right) * -1) -12svh -8vw;
+    background: linear-gradient(to left, color-mix(in srgb, var(--shade-deep) 88%, transparent) 55%, transparent);
+  }
+
+  .show-text {
+    font-size: var(--text-title);
+    line-height: 1.2;
+  }
+}
+
+/* ---------- the dev kit: a card walks the method ---------- */
+
+.kit-show .show-copy h3 {
+  font-size: var(--size-scene-title-phone);
+}
+
+.kit-rig {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4));
+  translate: -50% 0;
+  transition: left var(--token-travel) var(--ease-out);
+}
+
+.kit-card {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  width: var(--card-width);
+  max-width: 15rem;
+  aspect-ratio: var(--card-ratio);
+  padding: var(--space-3);
+  background: var(--bone);
+  color: var(--ink);
+  box-shadow:
+    0 var(--space-4) var(--space-5) var(--ink-70),
+    0 0 var(--space-6) color-mix(in srgb, var(--field) 50%, transparent);
+  transform: rotate(calc(-5deg + var(--p) * 10deg)) translate3d(0, calc(var(--p) * -2svh), 0);
+}
+
+.kit-card-head {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding-bottom: var(--space-1);
+  border-bottom: var(--rule) solid var(--ink-35);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+}
+
+.kit-card-head b {
+  font-weight: 400;
+  color: var(--spot-kit);
+}
+
+.kit-card-title,
+.kit-card-line {
+  margin: 0;
+  height: var(--space-2);
+  background: var(--ink-70);
+}
+
+.kit-card-title {
+  width: 72%;
+  height: var(--space-3);
+}
+
+.kit-card-line {
+  background: var(--ink-35);
+}
+
+.kit-card-line:last-of-type {
+  width: 58%;
+}
+
+.kit-tests {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kit-tests li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity var(--beat-fade) var(--ease-out);
+}
+
+.kit-tests li:not([data-state="none"]) {
+  opacity: 1;
+}
+
+.kit-tests i {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--space-4);
+  height: var(--space-4);
+  border-radius: var(--radius-round);
+  border: var(--rule) solid var(--ink);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  transition: background var(--beat-fade) var(--ease-out);
+}
+
+.kit-tests li[data-state="red"] i {
+  background: var(--spot-kit);
+  border-color: var(--spot-kit);
+  color: var(--bone);
+}
+
+.kit-tests li[data-state="red"] i::before {
+  content: "×";
+}
+
+.kit-tests li[data-state="green"] i {
+  background: var(--check-green);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.kit-tests li[data-state="green"] i::before {
+  content: "✓";
+}
+
+/* the doubts asked once, a tag pinned to the card's corner while it waits at the questions */
+.kit-ask {
+  position: absolute;
+  top: calc(var(--space-3) * -1);
+  right: calc(var(--space-3) * -1);
+  display: grid;
+  place-items: center;
+  width: var(--space-5);
+  height: var(--space-5);
+  border-radius: var(--radius-round);
+  background: var(--spot-kit);
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--size-scene-title-phone);
+  opacity: 0;
+  transform: scale(0.6) rotate(12deg);
+  transition:
+    opacity var(--beat-fade) var(--ease-out),
+    transform var(--beat-fade) var(--ease-out);
+}
+
+.kit-ask[data-on] {
+  opacity: 1;
+  transform: rotate(12deg);
+}
+
+/* the stamp of the pull request, pressed on the card when the walk ends */
+.kit-stamp {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  border: var(--space-1) solid var(--spot-kit);
+  color: var(--spot-kit);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--size-scene-title-phone);
+  line-height: 1;
+  opacity: 0;
+  transform: scale(1.8) rotate(-14deg);
+  transition:
+    opacity var(--beat-fade) var(--ease-out),
+    transform var(--beat-fade) var(--ease-out);
+}
+
+.kit-stamp[data-on] {
+  opacity: 1;
+  transform: rotate(-14deg);
+}
+
+/* the track: six stations, each node filling as the card reaches it, and the card's token riding between them */
+.kit-track {
+  position: absolute;
+  z-index: 5;
+  left: var(--gutter-right-phone);
+  right: var(--gutter-right-phone);
+  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4) + var(--card-width) * 1.4 + var(--space-4));
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kit-track::before {
+  content: "";
+  position: absolute;
+  left: calc(100% / 12);
+  right: calc(100% / 12);
+  top: var(--space-3);
+  height: var(--rule);
+  background: color-mix(in srgb, var(--on) 40%, transparent);
+}
+
+.kit-track li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  flex: 1;
+  gap: var(--space-1);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--on) 62%, var(--field));
+}
+
+.kit-track li b {
+  display: grid;
+  place-items: center;
+  width: var(--space-5);
+  height: var(--space-5);
+  border: var(--rule) solid var(--on);
+  border-radius: var(--radius-round);
+  background: var(--field);
+  font-weight: 400;
+  transition:
+    background var(--beat-fade) var(--ease-out),
+    color var(--beat-fade) var(--ease-out);
+}
+
+.kit-track li[data-done] b,
+.kit-track li[aria-current] b {
+  background: var(--on);
+  color: var(--field);
+}
+
+.kit-track li[aria-current] {
+  color: var(--on);
+}
+
+/* only the station the card is at carries its word on the phone */
+.kit-track li:not([aria-current]) span {
+  display: none;
+}
+
+.kit-token {
+  position: absolute;
+  top: calc(var(--space-3) - var(--space-2));
+  left: calc((var(--station) + 0.5) * 100% / 6);
+  width: var(--space-3);
+  height: var(--space-4);
+  translate: -50% -50%;
+  background: var(--bone);
+  box-shadow: 0 var(--space-1) var(--space-2) var(--ink-70);
+  transition: left var(--token-travel) var(--ease-out);
+}
+
+.kit-show .plate-track {
+  z-index: 1;
+}
+
+.kit-show .plate-track img {
+  object-position: center bottom;
+}
+
+.kit-show .show-copy {
+  padding-top: var(--space-5);
+}
+
+/* on the phone the kit's copy is the station and its hook; what it is and its stack wait for the wide screen */
+.kit-show .show-lead,
+.kit-show .show-meta .stack {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  /* wide: the plate's six stations are the track; the card stands above the one it is at */
+  .kit-show .plate-track {
+    inset: auto 0 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    transform: none;
+  }
+
+  .kit-show .plate-track img {
+    object-fit: fill;
+  }
+
+  .kit-show .show-word {
+    left: 50%;
+    top: 34%;
+    translate: -50% 0;
+    font-size: 21vw;
+  }
+
+  .kit-show[data-beat="0"] { --x: 9.5%; }
+  .kit-show[data-beat="1"] { --x: 25.7%; }
+  .kit-show[data-beat="2"] { --x: 38.3%; }
+  .kit-show[data-beat="3"] { --x: 55.5%; }
+  .kit-show[data-beat="4"] { --x: 75%; }
+  .kit-show[data-beat="5"] { --x: 92%; }
+
+  .kit-rig {
+    left: clamp(calc(var(--gutter-left) + 7rem), var(--x, 9.5%), calc(100% - 8rem));
+    top: auto;
+    bottom: calc(var(--track-rise) + var(--space-2));
+  }
+
+  .kit-card {
+    width: var(--card-width-wide);
+  }
+
+  .kit-track {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: calc(var(--track-rise) - var(--space-6));
+    display: none;
+  }
+
+  .kit-show .show-copy {
+    inset: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4)) var(--gutter-right) auto var(--gutter-left);
+    width: auto;
+    display: grid;
+    grid-template-columns: 24rem 28rem minmax(0, 1fr);
+    column-gap: var(--space-5);
+    align-items: start;
+    padding: 0;
+  }
+
+  /* the kit's copy runs along the top: its shade falls downward only, so the card below it stays lit */
+  .kit-show .show-copy::before {
+    inset: calc(var(--space-6) * -1) -100vw calc(var(--space-4) * -1) -100vw;
+    background: linear-gradient(to bottom, var(--shade-deep) 70%, transparent);
+    mask-image: none;
+  }
+
+  .kit-show .show-copy > h3,
+  .kit-show .show-copy > .show-lead {
+    grid-column: 1;
+  }
+
+  .kit-show .show-lead {
+    display: block;
+  }
+
+  .kit-show .show-beats {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 0;
+  }
+
+  .kit-show .show-ticks {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .kit-show .show-meta {
+    grid-column: 3;
+    grid-row: 1;
+    display: grid;
+    justify-items: start;
+    margin-top: 0;
+  }
+
+  .kit-show .show-meta .stack {
+    display: flex;
+  }
+
+  .kit-show .show-text {
+    font-size: var(--text-lead);
+  }
+}
+
+/* ---------- reduced motion: the scene is a still ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .show {
+    height: auto;
+  }
+
+  .show-stage {
+    position: relative;
+    display: grid;
+    gap: var(--space-4);
+    height: auto;
+    min-height: 100svh;
+    padding: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4)) var(--gutter-right-phone) var(--space-5)
+      var(--gutter-left-phone);
+  }
+
+  .show .backdrop,
+  .show .plate,
+  .show-word,
+  .show-device,
+  .show-sheen,
+  .kit-card {
+    transform: none;
+  }
+
+  .show .plate {
+    scale: none;
+  }
+
+  .show-word,
+  .show-rig,
+  .show-copy,
+  .kit-rig,
+  .kit-track {
+    position: relative;
+    inset: auto;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    translate: none;
+  }
+
+  .show-rig[data-device="phone"] {
+    justify-self: center;
+  }
+
+  .show-rig[data-role="second"] {
+    display: none;
+  }
+
+  .show-screen,
+  .show-glow img {
+    transition: none;
+  }
+
+  .show-screen:not(:first-child),
+  .show-glow img:not(:first-child) {
+    display: none;
+  }
+
+  .show-screen:first-child,
+  .show-glow img:first-child {
+    opacity: 1;
+    transform: none;
+  }
+
+  .show-copy {
+    width: auto;
+    padding: 0;
+  }
+
+  .show-copy::before {
+    display: none;
+  }
+
+  .show-beats {
+    gap: var(--space-4);
+  }
+
+  .show-beat {
+    grid-area: auto;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .show-ticks {
+    display: none;
+  }
+
+  .kit-show .show-copy {
+    display: block;
+  }
+
+  .kit-tests li,
+  .kit-ask,
+  .kit-stamp,
+  .kit-token,
+  .kit-track li b {
+    transition: none;
+  }
+
+  .kit-tests li {
+    opacity: 1;
+  }
+
+  .kit-token {
+    display: none;
+  }
+
+  .kit-track li:not([aria-current]) span {
+    display: inline;
+  }
+}

@@ -21,6 +21,20 @@ export function ProjectBackdrop({ name }: BackdropProps) {
   )
 }
 
+// The dev kit's second plate: the method's six stations along one conveyor, printed over the field at the foot of the scene.
+// The phone has its own vertical drawing when it is delivered, else it shares the wide one.
+export function TrackPlate() {
+  const wide = sceneAsset("plate-track-kit-16x9", "webp")
+  if (!wide) return null
+  const tall = sceneAsset("plate-track-kit-9x16", "webp") ?? wide
+  return (
+    <picture data-plate="track" className="plate plate-track">
+      <source media="(min-width: 1280px)" srcSet={wide} />
+      <img src={tall} alt="" loading="lazy" decoding="async" />
+    </picture>
+  )
+}
+
 // The ink plate of a project: black ink on white paper, printed over the product's color by multiply, so the drawn objects
 // are cut by the frame and the words cross them like a screen-printed poster.
 export function ProjectPlate({ name }: BackdropProps) {
