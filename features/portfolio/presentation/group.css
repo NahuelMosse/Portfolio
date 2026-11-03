@@ -1,0 +1,179 @@
+/* ---------- a group of projects: the headline, then every project of it ----------
+   Narrow, or with reduced motion, the headline comes first and each project is a poster stacked under it.
+   Wide with motion, the group is one pinned scene: the headline stays on one side and the scroll carries the projects across
+   as a horizontal track, one stop each. --track (0 to count - 1) is where the track stands. */
+
+.group-head {
+  position: relative;
+  z-index: 8;
+  padding: var(--space-6) var(--gutter-right-phone) var(--space-4) var(--gutter-left-phone);
+  background: var(--ink);
+  color: var(--bone);
+}
+
+.group-word {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  /* an uppercase Boska letter is about 0.55em wide: the word fills the width */
+  font-size: min(calc(88vw / (var(--chars) * 0.62)), 8rem);
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.group-count {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.group-line {
+  max-width: 34ch;
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-body);
+  line-height: 1.35;
+  color: var(--bone-70);
+}
+
+.group-index {
+  display: none;
+}
+
+/* a poster stacked under the headline sits under no top bar */
+@media (max-width: 1279px), (prefers-reduced-motion: reduce) {
+  .group-card {
+    --top-bar-height: 0px;
+  }
+}
+
+/* the poster word is the project's name; its heading is for the outline and the readers that use it, until the word goes */
+.group-card .show-copy h4 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
+  .group {
+    position: relative;
+    height: calc(100svh + (var(--count) - 1) * 90svh);
+  }
+
+  .group-pin {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  .group-track {
+    position: absolute;
+    inset: 0;
+  }
+
+  .group-card {
+    --p: clamp(0, calc((var(--track, 0) - var(--i)) * 0.5 + 0.5), 1);
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    visibility: hidden;
+    transform: translate3d(calc((var(--i) - var(--track, 0)) * 100%), 0, 0);
+    will-change: transform;
+  }
+
+  .group-card[data-reachable] {
+    visibility: visible;
+  }
+
+  .group-card .show-word {
+    display: none;
+  }
+
+  /* the card's name is its heading, set large above the line */
+  .group-card .show-copy h4 {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--size-scene-title-phone);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .group-head {
+    position: absolute;
+    top: calc(var(--top-bar-height) + var(--space-4));
+    left: var(--space-4);
+    width: 36vw;
+    padding: var(--space-4);
+    background: color-mix(in srgb, var(--ink) 82%, transparent);
+    pointer-events: none;
+  }
+
+  .group-head .group-index {
+    pointer-events: auto;
+  }
+
+  .group[data-composition="b"] .group-head {
+    left: auto;
+    right: var(--space-4);
+    text-align: right;
+  }
+
+  .group-word {
+    font-size: min(calc(30vw / (var(--chars) * 0.55)), 10rem);
+  }
+
+  .group-index {
+    display: grid;
+    gap: var(--space-1);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-label);
+    font-size: var(--text-small);
+    letter-spacing: var(--label-tracking-fine);
+    text-transform: uppercase;
+  }
+
+  .group[data-composition="b"] .group-index {
+    justify-items: end;
+  }
+
+  .group-index button {
+    display: inline-flex;
+    gap: var(--space-2);
+    min-height: var(--space-5);
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: var(--bone-70);
+    cursor: pointer;
+    transition: color var(--beat-fade) var(--ease-out);
+  }
+
+  .group-index li[aria-current] button,
+  .group-index button:hover {
+    color: var(--bone);
+  }
+
+  .group-index li[aria-current] span {
+    border-bottom: var(--space-1) solid var(--bone);
+  }
+}

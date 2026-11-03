@@ -200,13 +200,13 @@ export const projects: readonly Project[] = [
 ]
 
 // The projects are told in chapters by kind; inside one, the visitor picks the project with a click.
-export type ProjectGroup = { id: string; label: string; projects: readonly string[] }
+export type ProjectGroup = { id: string; label: string; noun: string; line: string; projects: readonly string[] }
 
 export const groups: readonly ProjectGroup[] = [
-  { id: "apps", label: "Apps", projects: ["grit", "club"] },
-  { id: "landings", label: "Landings", projects: ["cebador", "sonria", "miga"] },
-  { id: "game", label: "Game", projects: ["guardia"] },
-  { id: "dev-kit", label: "Dev kit", projects: ["dev-kit"] },
+  { id: "apps", label: "Apps", noun: "app", line: "Mobile products I design, build and ship end to end.", projects: ["grit", "club"] },
+  { id: "landings", label: "Landings", noun: "landing", line: "Live sites that sell a product in one scroll.", projects: ["cebador", "sonria", "miga"] },
+  { id: "game", label: "Game", noun: "game", line: "A playable idea, shipped and published.", projects: ["guardia"] },
+  { id: "dev-kit", label: "Dev kit", noun: "dev kit", line: "The tools I wrote to build the rest with proof.", projects: ["dev-kit"] },
 ]
 
 export const experience: readonly Employer[] = [

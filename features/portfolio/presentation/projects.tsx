@@ -2,7 +2,7 @@ import { groups, projects, type Project } from "./content"
 import { ChapterWord } from "./chapter-word"
 import { KitScene } from "./kit-scene"
 import { ProjectBackdrop, ProjectPlate, TrackPlate } from "./project-backdrop"
-import { ProjectGroupScene, type GroupItem } from "./project-showcase"
+import { ProjectGroupScene, type GroupItem } from "./project-group"
 
 // The device each project shows its screens in: a phone, or a browser.
 const DEVICES = {
@@ -18,12 +18,7 @@ const DEVICES = {
 // the first one; each of them has its own plate when it is delivered.
 const BACKDROPS = { grit: "grit", club: "club", cebador: "cebador", sonria: "cebador", miga: "cebador", guardia: "guardia" } as const
 
-// The word set at poster scale and shown in the tab; a long name has a short word of its own.
-const SHORT_NAMES: Record<string, string> = { "dev-kit": "Dev kit", club: "Club" }
-
 const DEV_KIT = "dev-kit"
-
-const shortName = (id: string, name: string) => SHORT_NAMES[id] ?? name
 
 function projectNamed(id: string): Project {
   const project = projects.find((entry) => entry.id === id)
@@ -38,7 +33,6 @@ function groupItem(project: Project): GroupItem {
   return {
     project,
     kind,
-    word: shortName(project.id, project.name),
     art: (
       <>
         <ProjectBackdrop name={backdrop} />
@@ -79,6 +73,8 @@ export function Projects() {
             key={group.id}
             id={group.id}
             label={group.label}
+            noun={group.noun}
+            line={group.line}
             composition={order % 2 === 0 ? "a" : "b"}
             items={group.projects.map((id) => groupItem(projectNamed(id)))}
           />
