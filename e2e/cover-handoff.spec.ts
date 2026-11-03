@@ -99,3 +99,31 @@ for (const { width, height } of SIZES) {
     expect(size).toBeGreaterThanOrEqual(width * NAWI_SHARE - 1)
   })
 }
+
+for (const { width, height } of SIZES) {
+  test(`no cover text touches NAWI's glyphs and the sheet heading clears the N's foot by 12px at ${width}x${height} @PF-1-ASM-40`, async ({ page }) => {
+    await open(page, width, height)
+    await expect(page.locator("[data-cta]")).toHaveAttribute("data-visible", "true", { timeout: 6000 })
+    const m = await page.evaluate(() => {
+      const mark = document.querySelector<HTMLElement>("h1.mark")!
+      const style = getComputedStyle(mark)
+      const probe = document.createElement("span")
+      probe.style.cssText = "display:inline-block;width:0;height:0"
+      mark.append(probe)
+      const baseline = probe.getBoundingClientRect().bottom
+      probe.remove()
+      const canvas = document.createElement("canvas").getContext("2d")!
+      canvas.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`
+      const capHeight = canvas.measureText("NAWI").actualBoundingBoxAscent
+      const box = mark.getBoundingClientRect()
+      const glyphs = { left: box.left, right: box.right, top: baseline - capHeight, bottom: baseline }
+      const apart = (r: DOMRect) => r.right <= glyphs.left || glyphs.right <= r.left || r.bottom <= glyphs.top || glyphs.bottom <= r.top
+      const selectors = [".professional-name", "[data-id-sheet] .sheet-title", "[data-id-sheet] dl", ".hero-line", ".hero-door", ".corner-cta"]
+      const touching = selectors.filter((s) => [...document.querySelectorAll(s)].some((n) => !apart(n.getBoundingClientRect())))
+      const heading = document.querySelector("[data-id-sheet] .sheet-title")!.getBoundingClientRect()
+      return { touching, clearance: heading.top - baseline }
+    })
+    expect(m.touching, "cover text intersecting NAWI's glyph box").toEqual([])
+    expect(m.clearance, "space between the N's foot and the sheet heading").toBeGreaterThanOrEqual(12)
+  })
+}
