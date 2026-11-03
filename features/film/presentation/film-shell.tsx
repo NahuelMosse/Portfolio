@@ -3,6 +3,7 @@ import { ScrollProgress } from "@/components/ui/scroll-progress"
 import { CallToAction } from "./call-to-action"
 import type { ChapterLink } from "./chapter-index"
 import { HireBar } from "./hire-bar"
+import { MotionEngine } from "./motion-engine"
 import { TopBar } from "./top-bar"
 import { sceneAsset } from "./scene-asset"
 
@@ -18,6 +19,7 @@ type FilmShellProps = {
 export function FilmShell({ chapters, skipLabel, cta, hire, children }: FilmShellProps) {
   return (
     <>
+      <MotionEngine />
       <TopBar chapters={chapters} skipLabel={skipLabel} hire={hire} soundSrc={sceneAsset("pf-soundtrack", "mp3")} />
       <aside aria-label="Page controls">
         <ScrollProgress />

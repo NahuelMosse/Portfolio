@@ -991,6 +991,11 @@
     display: block;
     background: var(--ink);
     border-top: 1px solid var(--bone-30);
+    transition: transform var(--motion-control) var(--ease-out);
+  }
+
+  .hire-bar[data-yield="true"] {
+    transform: translateY(100%);
   }
 
   .hire-bar a {

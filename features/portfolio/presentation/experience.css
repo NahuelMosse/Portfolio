@@ -1,17 +1,9 @@
-/* ---------- experience: five employer posters in one scrubbed scene ----------
-   Each poster is built around its ink illustration, with the period as big numerals, the employer in the display face and the
-   problem and his role as two short lines, always visible. Wide (from 1280) the section is a tall box with one pinned stage and the
-   scroll carries a horizontal track through it by transform (--xp, 0 to 1, comes from the scroll). Narrower, each poster sticks and
-   the next slides up over it. With reduced motion the posters are still and stacked. */
+/* ---------- experience: five employers, one full scene each ----------
+   Wide with motion, one pinned stage holds the chapter word, the employer's illustration shown whole at 4:3 on the left and the copy
+   in its own column on the right; the scroll wipes one employer away with black ink and draws the next one on. Narrow with motion,
+   each employer is one scene and the next slides up over it. Without motion (or without script) the scenes are stacked and still. */
 
 .xp {
-  --xp-step: 62svh;
-  --xp-panel: 70vw;
-  --xp-gap: 3vw;
-  --xp-pad: var(--gutter-left);
-  --xp-overlap: 9rem;
-  --xp-art-cap: 46svh;
-  --xp-shift: 4%;
   --xp-period: clamp(2.6rem, 14vw, 3.4rem);
   background: var(--ink);
 }
@@ -21,60 +13,58 @@
   padding: var(--space-4) var(--gutter-right-phone) var(--space-3) var(--gutter-left-phone);
 }
 
-.xp-progress {
+.xp-foot {
   display: none;
 }
 
 .xp-track {
-  display: block;
+  display: grid;
+  gap: var(--space-5);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-/* the list item only carries the index; the poster is what sticks or moves */
 .xp-slot {
   display: contents;
-  --d: calc(var(--xp, 0) * (var(--count) - 1) - var(--i));
 }
 
-/* ---- the poster, narrow: the illustration, and under it the text lifted over its foot ---- */
 .xp-panel {
   position: relative;
-  min-height: 76svh;
+  display: grid;
+  gap: var(--space-3);
   background: var(--ink);
-  border-top: var(--rule) solid var(--bone-30);
 }
 
+/* the illustration is whole: its box is the picture's own 4:3 */
 .xp-art {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 4 / 3;
-  max-height: var(--xp-art-cap);
   width: 100%;
-}
-
-.xp-art::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, var(--ink) 0, var(--ink-70) 28%, transparent 62%);
+  aspect-ratio: 4 / 3;
 }
 
 .xp-art img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 70% 30%;
+}
+
+/* black ink that wipes the illustration away: a jagged edge climbing from the bottom (animated by the scene) */
+.xp-ink {
+  position: absolute;
+  inset: 0;
+  display: none;
+  background: var(--ink);
+  clip-path: polygon(0 100%, 25% 104%, 50% 100%, 75% 106%, 100% 102%, 100% 100%, 0 100%);
+  pointer-events: none;
 }
 
 .xp-info {
-  position: relative;
-  z-index: 1;
   display: grid;
+  align-content: start;
   gap: var(--space-2);
-  margin-top: calc(var(--xp-overlap) * -1);
+  min-width: 0;
   padding: 0 var(--gutter-right-phone) var(--space-4) var(--gutter-left-phone);
 }
 
@@ -190,32 +180,31 @@
   color: var(--bone-70);
 }
 
-/* ---- narrow with motion: each poster sticks, the next slides up over it ---- */
-@media (prefers-reduced-motion: no-preference) and (max-width: 1279px) {
-  .xp-panel {
+/* ---- narrow with motion: one scene per employer, the next slides up over the last ---- */
+@media (max-width: 899px) {
+  .has-motion .xp-track {
+    gap: 0;
+    padding-bottom: calc(var(--hire-bar-height) + var(--space-3));
+  }
+
+  .has-motion .xp-panel {
     position: sticky;
     top: 0;
+    align-content: start;
+    min-height: 100svh;
+    padding-top: var(--space-5);
+    border-top: var(--rule) solid var(--bone-30);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .xp-track {
-    display: grid;
-    gap: var(--space-4);
-  }
-}
-
-/* ---- wide: a horizontal poster, the text on the dark left of the illustration ---- */
-@media (min-width: 1280px) {
+/* ---- wide with motion: the pinned stage ---- */
+@media (min-width: 900px) {
   .xp {
-    --xp-period: clamp(3rem, 5.4vw, 5.5rem);
+    --xp-period: clamp(3rem, 5vw, 5rem);
   }
 
   .xp-head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding: calc(var(--top-bar-height) + var(--space-2)) var(--gutter-right) var(--space-3) var(--gutter-left);
+    padding: calc(var(--top-bar-height) + var(--space-2)) var(--gutter-right) var(--space-2) var(--gutter-left);
   }
 
   .xp .chapter-word,
@@ -223,125 +212,29 @@
     font-size: 8vw;
   }
 
-  .xp-track {
-    padding: 0 var(--gutter-right) var(--space-4) var(--gutter-left);
-  }
-
   .xp-panel {
-    min-height: 34rem;
-    overflow: hidden;
-    border: var(--rule) solid var(--bone-30);
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-5);
+    align-items: center;
+    padding: 0 var(--gutter-right) 0 var(--gutter-left);
   }
 
   .xp-art {
-    position: absolute;
-    inset: 0;
-    aspect-ratio: auto;
-    max-height: none;
-  }
-
-  .xp-art::after {
-    background: linear-gradient(to right, var(--ink) 0, var(--ink-85) 30%, var(--ink-35) 52%, transparent 66%);
-  }
-
-  .xp-art img {
-    position: absolute;
-    left: -7%;
-    width: 114%;
-    max-width: none;
-    object-position: right center;
+    width: min(56cqw, 133.333cqh);
   }
 
   .xp-info {
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 50%;
-    margin: 0;
-    padding: var(--space-5);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .xp-period {
-    margin-top: auto;
-  }
-
-  /* the block sits on a caption slab, so it reads over any part of the drawing */
-  .xp-slab {
-    padding: var(--space-3);
-    background: var(--ink-85);
+    padding: 0;
   }
 
   .xp-name h3 {
     font-size: clamp(1.8rem, 2.4vw, 2.6rem);
   }
-
-  .xp-what,
-  .xp-line p {
-    font-size: var(--text-body);
-  }
 }
 
-/* ---- wide with motion: the pinned stage and the sideways track ---- */
-@media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 900px) and (max-height: 780px) {
   .xp {
-    height: calc(100svh + (var(--count) - 1) * var(--xp-step));
-    --xp-travel: calc(var(--count) * var(--xp-panel) + (var(--count) - 1) * var(--xp-gap) + var(--xp-pad) + var(--gutter-right) - 100vw);
-  }
-
-  .xp-stage {
-    position: sticky;
-    top: 0;
-    display: grid;
-    grid-template-rows: auto minmax(0, 1fr);
-    height: 100svh;
-    overflow: hidden;
-  }
-
-  .xp-track {
-    display: flex;
-    gap: var(--xp-gap);
-    width: max-content;
-    height: 100%;
-    box-sizing: border-box;
-    transform: translate3d(calc(var(--xp, 0) * var(--xp-travel) * -1), 0, 0);
-    will-change: transform;
-  }
-
-  .xp-panel {
-    flex: 0 0 var(--xp-panel);
-    min-height: 0;
-  }
-
-  /* each illustration drifts against the track, by its own distance to the centre of the stage */
-  .xp-art img {
-    transform: translate3d(calc(clamp(-1.2, var(--d), 1.2) * var(--xp-shift) * -1), 0, 0);
-    will-change: transform;
-  }
-
-  .xp-progress {
-    display: block;
-    position: absolute;
-    right: var(--gutter-right);
-    bottom: var(--space-4);
-    width: 22vw;
-    height: 2px;
-    background: var(--bone-30);
-  }
-
-  .xp-progress::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--red);
-    transform: scaleX(var(--xp, 0));
-    transform-origin: left;
-  }
-}
-
-@media (min-width: 1280px) and (max-height: 780px) and (prefers-reduced-motion: no-preference) {
-  .xp {
-    --xp-period: clamp(2.4rem, 4.2vw, 3.6rem);
+    --xp-period: clamp(2.4rem, 4vw, 3.4rem);
   }
 
   .xp .chapter-word,
@@ -350,6 +243,60 @@
   }
 
   .xp-info {
-    padding: var(--space-4);
+    gap: var(--space-1);
+  }
+}
+
+@media (min-width: 900px) {
+  .has-motion .xp-stage {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .has-motion .xp-track {
+    position: relative;
+    display: block;
+    min-height: 0;
+    container-type: size;
+  }
+
+  .has-motion .xp-panel {
+    position: absolute;
+    inset: 0;
+  }
+
+  .has-motion .xp-slot:not(:first-child) .xp-panel {
+    visibility: hidden;
+  }
+
+  .has-motion .xp-ink {
+    display: block;
+  }
+
+  .has-motion .xp-foot {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-2) var(--gutter-right) var(--space-3) var(--gutter-left);
+    font-family: var(--font-label);
+    font-size: var(--text-small);
+    letter-spacing: var(--label-tracking-fine);
+  }
+
+  .xp-progress {
+    position: relative;
+    flex: 1;
+    height: 2px;
+    background: var(--bone-30);
+  }
+
+  .xp-progress i {
+    position: absolute;
+    inset: 0;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
   }
 }

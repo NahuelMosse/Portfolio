@@ -27,10 +27,15 @@ export const metadata: Metadata = {
   icons: { icon: [{ url: "/icon.svg", type: "image/svg+xml" }] },
 }
 
+const HAS_MOTION_SCRIPT =
+  "if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('has-motion')"
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
+        {/* hidden starting states exist only under .has-motion: set before the first paint, absent for reduced motion and without script */}
+        <script dangerouslySetInnerHTML={{ __html: HAS_MOTION_SCRIPT }} />
         <link rel="preload" href="/fonts/boska-700.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/courier-prime-400.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
