@@ -729,18 +729,25 @@
   background: rgb(12 12 11 / 0.88);
   color: var(--bone);
 }
-.experience-band.scene[data-has-art] {
-  min-height: var(--art-band);
+.experience-band {
+  --experience-band: 20svh;
+  margin-bottom: var(--word-clearance);
 }
 
-.experience-band {
-  margin-bottom: var(--word-clearance);
+.experience-band.scene[data-has-art] {
+  min-height: var(--experience-band);
 }
 
 .experience-band .scene-copy {
   justify-content: flex-end;
-  min-height: var(--art-band);
+  min-height: var(--experience-band);
   padding-bottom: 0;
+}
+
+@media (min-width: 1280px) {
+  .experience-band {
+    --experience-band: var(--art-band);
+  }
 }
 
 /* the timeline: a row per employer on a phone, a column each wide, a thin rule running along them */
@@ -748,23 +755,36 @@
   display: grid;
   gap: 0;
   margin: 0;
-  padding: var(--space-3) var(--gutter-right-phone) var(--space-4) var(--gutter-left-phone);
+  padding: 0 var(--gutter-right-phone) var(--space-2) var(--gutter-left-phone);
   list-style: none;
 }
 
 .employer {
   display: grid;
-  grid-template-columns: minmax(0, 7rem) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
   align-items: start;
-  padding: var(--space-3) 0;
+  padding: var(--space-2) 0 var(--space-1);
   border-top: var(--rule) solid var(--bone-30);
 }
 
+/* a phone drops the thumbnail and the number so each employer is a short row: name, role and period on a line, then the one line */
 .employer-info {
-  display: grid;
-  align-content: start;
-  gap: var(--space-1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+}
+
+.employer-head,
+.employer-line,
+.employer-more {
+  flex: 1 1 100%;
+}
+
+.employer-art,
+.employer-index {
+  display: none;
 }
 
 .employer-index {
@@ -780,8 +800,9 @@
 }
 
 .employer-more summary {
+  display: flex;
+  align-items: center;
   min-height: 44px;
-  padding-top: var(--space-2);
   cursor: pointer;
   font-family: var(--font-label);
   font-size: var(--text-small);
@@ -803,7 +824,7 @@
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--size-case-title);
+  font-size: var(--text-title);
   line-height: 1.2;
 }
 
@@ -842,8 +863,16 @@
     padding: var(--space-3) var(--gutter-right) var(--space-4) var(--gutter-left);
   }
 
-  .employer {
-    grid-template-columns: minmax(0, 1fr);
+  .employer-art,
+  .employer-index {
+    display: block;
+  }
+
+  .employer-info {
+    display: grid;
+    align-content: start;
+    align-items: start;
+    gap: var(--space-1);
   }
 }
 
@@ -868,7 +897,7 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-2);
   max-width: 40rem;
-  margin: 0 var(--gutter-right-phone) var(--space-4) var(--gutter-left-phone);
+  margin: 0 var(--gutter-right-phone) var(--space-3) var(--gutter-left-phone);
 }
 
 @media (min-width: 1280px) {
@@ -1296,15 +1325,6 @@
 }
 
 /* ---------- experience, offer and contact as posters ---------- */
-
-/* experience: each employer is a band of its own. The drawing of its system runs full height on one side and the facts sit on an
-   ink slab that overlaps it, with its case number in crimson and a hard crimson offset. */
-.employer h3 {
-  font-size: var(--text-title);
-  line-height: 0.95;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-}
 
 /* offer: two doors, two printed panels. The freelance door is bone with ink type, the company door is crimson sunk into the ink
    with bone type; each title is a poster word and the button is the inverse of its panel. */
