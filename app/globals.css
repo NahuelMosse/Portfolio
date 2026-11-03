@@ -601,10 +601,22 @@
 }
 
 @media (min-width: 701px) {
-  /* a short wide screen grows the cold open so the sheet starts below NAWI's baseline (about 0.77 of his size under the bar)
-     instead of climbing over him; the right end stays free for the corner button */
+  /* the cold open is one screen: NAWI is sized by the height as well as the width, so the sheet fits under his baseline
+     inside the screen; the right end stays free for the corner button */
   .cover-scene[data-has-art] {
-    min-height: max(100svh, calc(var(--size-nawi) * 0.8 + 29rem));
+    min-height: 0;
+    height: 100svh;
+  }
+
+  .cover-title {
+    --size-nawi: min(41vw, 52svh);
+  }
+
+  /* the sheet sits over the lit arm: a soft ink pool under it keeps its small type readable */
+  .layer-sheet {
+    margin: calc(var(--space-4) * -1) calc(var(--space-5) * -1) calc(var(--space-3) * -1) calc(var(--gutter-left) * -1);
+    padding: var(--space-4) var(--space-5) var(--space-3) var(--gutter-left);
+    background: radial-gradient(ellipse at left bottom, var(--ink-85) 30%, transparent 78%);
   }
 
   .cover-foot {
