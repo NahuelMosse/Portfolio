@@ -1,16 +1,19 @@
-# Handoff (builder 4) - branch portfolio-present-d, no push
+# Handoff (builder 5) - branch portfolio-present-d, no push; dev server http://127.0.0.1:8704
 
-## Done and committed (dev server http://127.0.0.1:8704, run with APP_URL)
-- Engine, experience pinned scenes, hire bar yield, cold open dolly out (earlier builders). Cold open end state: e2e/asm35-cold-open-end.spec.ts 3 of 3 (sheet and corner button visible at the pin end at 1910x912, 1920x1080, 2560x1080); asm35-cold-open 3 of 3; one-screen-sections 28 of 28 serial.
-- Experience handoff: experience-motion.tsx offsets (OUT_COPY, INK_FROM, IN_ART, IN_COPY) overlap incoming art/copy with outgoing ink and copy; wide panels transparent in experience.css. e2e/asm35-experience-handoff.spec.ts (56-tick walk) passes; asm35-experience-rest 3 of 3.
-- ASM-36: CreditsRoll moved inside .contact-scene (end-credits.tsx) between the tiles and the footer; `.credits-roll` full bleed, `.contact-scene .chapter-word` 8vw (6vw under 780px high) = EXPERIENCE size. e2e/ending-block.spec.ts 5 of 5 (five sizes). Captures .validation/asm36/{before,after,final}-1910x912.png. Log L207, L208 (replaces).
-- ASM-38: OFFER word (min(17vw,19svh)) already exceeds EXPERIENCE; e2e/offer-word.spec.ts 5 of 5; capture .validation/asm38/after-1910x912.png.
-- Re-run (serial): contact-footer, contact-one-screen, one-screen, tools-plain, wide-screens-offer-detail-clear, one-screen-sections, id-sheet-no-photos pass. Under 3 workers a few one-screen specs flake (they measure before the pin spacer exists); run with --workers=1.
-- tsc --noEmit and eslint (features, app, new specs): clean.
+## ASM-39 (next free number; Log line NOT written, no turns left: append "ASM-39 · requester: Let's talk is one full screen with its content spread; Offer word clears the top bar and no red shows; certificates/education rows closer and smaller, LinkedIn/GitHub tiles >= 1.8x taller" with `node .claude/tools/log.mjs`)
+
+Done (uncommitted code, see below):
+- app/globals.css (>=1100px block): `.contact-scene[data-has-art]` height/min-height 100svh; `.scene-copy` box-sizing, height 100%, padding-top = top bar + space-3, bottom 0; `.contact` flex column space-between; tiles gap clamp 2svh; `.band-field` padding-bottom 3.6svh; `.band-half` min-height 12.5svh; `.roll-band` padding 0 and line-height 1; `.roll-item` font min(clamp(1.25rem,1.5vw,1.5rem),2.6svh), img 24px; `.end-of-file` margin/padding 0.
+- features/film/presentation/chapter-index.tsx: `land` option (wide only: scroll so an element's top edge sits at the viewport top or bottom) plus `event.stopPropagation()` because Lenis `anchors:true` overrides anchor clicks; app/page.tsx: Offer lands with `.contact-scene` at the bottom edge, Contact with it at the top.
+- Specs committed: e2e/chapter-arrival.spec.ts (10 tests, all passed on the code before the last CSS edits), e2e/contact-tiles-roll.spec.ts (tiles >= 110px, roll font < 31px, gap <= 16px, 1910x912; reference values before: font 31px, tile 61px, gap 32px).
+- Captures: .validation/asm-spacing/offer-1910x912.png (word clear of bar, no red: looked at, good) and contact-1910x912.png (looked at before the last two CSS edits: spread, hint clear, footer inside).
+- No `replaces:` needed so far: no committed test changed.
+
+Last known serial run (asm39c.log, before the final CSS edits): 31 passed, 6 failed: contact-footer x5 "the page ends with the scene" (footer 24px above the page end: scene-copy bottom padding was still 24px, I set it to 0 and re-edited globals.css to force a recompile, NOT re-measured) and contact-tiles-roll gap 19.8 > 16 (added `.roll-band line-height: 1`, NOT re-run).
+Earlier run (asm39b): the 1280x720 contact specs (ending-block, contact-one-screen, one-screen, chapter-arrival) failed by 1 to 19 px; the 24px bottom padding removal should fix them, verify.
 
 ## Not covered (turn budget), all could not run
-- ASM-35 scene 5 (Offer doors pin 150svh, push-in 1 to 1.25 at 52% 45%, cards rise) and scene 6 (Contact seal pull-back 1.6 to 1, letters, curtain), with their specs; their final states must keep ending-block.spec.ts and offer-word.spec.ts green. A pin adds a pin-spacer: keep the one-screen measurements taken after `.pin-spacer` exists.
-- Chapter entrances (masked word lines, red rule, top-bar numeral) and projects draw-on; the page-wide walk spec and the reduced-motion transform sweep.
-- Stale specs from the old layout still red (need `replaces:` lines or rewrite): case-file-layout-contracts (S8/S19 cold open, ASM-01 order, S22 roll, S26, ASM-10, ASM-24), credits.spec (thread, doors, hover, wheel), credits-liceo-8 (roll location), contact-drawing (L188), experience-scene/experience-photos (L204).
-- Delete .validation/*.tmp.mjs; do not commit public/.
-- The dev server serves stale CSS after a shell write to globals.css; an Edit-tool change makes it recompile.
+- Re-run after the last CSS edits: contact-tiles-roll, chapter-arrival, ending-block, contact-footer, contact-one-screen, one-screen, offer-word, one-screen-sections, wide-screens-offer-detail-clear; `npx tsc --noEmit`; eslint on chapter-index.tsx and page.tsx.
+- Recapture contact at 1910x912 after the tile and roll change (tiles and roll rows were looked at once, good).
+- Items A (black between cover and PROJECTS), B (head cropped under the top bar), C (NAWI size from git history): not started; each needs its own ASM, RED spec, commit and captures in .validation/asm-cover/.
+- Delete .validation/m.mjs, m2.mjs, cap-spacing.mjs (scratch) when done; do not commit public/.

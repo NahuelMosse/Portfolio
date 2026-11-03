@@ -6,13 +6,14 @@ import { EndCredits } from "@/features/portfolio/presentation/end-credits"
 import { doorHref, offer } from "@/features/portfolio/presentation/content"
 import { getStructuredData } from "@/lib/machine-readable"
 
+// Offer: the screen ends where Let's talk begins, so the whole OFFER word is on screen and no red shows. Contact: its block fills the screen.
 const CHAPTERS = [
   { id: "cold-open", label: "01 SUBJECT" },
   { id: "projects", label: "02 PROJECTS" },
   { id: "experience", label: "03 EXPERIENCE" },
-  { id: "end-credits", label: "04 OFFER" },
-  { id: "contact", label: "05 CONTACT", heading: "#contact-title" },
-]
+  { id: "end-credits", label: "04 OFFER", land: { selector: ".contact-scene", edge: "bottom" } },
+  { id: "contact", label: "05 CONTACT", heading: "#contact-title", land: { selector: ".contact-scene", edge: "top" } },
+] as const
 
 export default function Home() {
   const structuredData = getStructuredData()

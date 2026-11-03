@@ -1280,20 +1280,34 @@
     margin-bottom: 0;
   }
 
+  /* the ending is exactly one screen: the top bar's strip on top, the content spread over the rest, the © line last */
   .contact-scene[data-has-art] {
-    min-height: 0;
+    height: 100svh;
+    min-height: 100svh;
   }
 
   .contact-scene[data-has-art] .scene-copy {
-    padding-block: 0;
+    box-sizing: border-box;
+    height: 100%;
+    gap: var(--space-4);
+    padding-block: calc(var(--top-bar-height) + var(--space-3)) 0;
+  }
+
+  .contact-scene .contact {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-4);
   }
 
   .contact-scene .contact-tiles {
-    gap: var(--space-2);
+    gap: clamp(var(--space-2), 2svh, var(--space-4));
   }
 
+  /* room above and below for the tilted band's corners and the copy hint */
   .contact-scene .band-field {
-    padding-block: var(--space-1);
+    padding-block: var(--space-1) clamp(var(--space-2), 3.6svh, var(--space-5));
   }
 
   .contact-scene .band {
@@ -1305,7 +1319,7 @@
   }
 
   .contact-scene .band-half {
-    min-height: 0;
+    min-height: 12.5svh;
     grid-auto-flow: column;
     align-items: center;
     align-content: center;
@@ -1338,16 +1352,22 @@
   }
 
   .roll-band {
-    padding-block: var(--space-2);
+    padding-block: 0;
+    line-height: 1;
+  }
+
+  .roll-item img {
+    width: 24px;
+    height: 24px;
   }
 
   .roll-item {
-    font-size: min(clamp(1.5rem, 3vw, 2.5rem), 3.4svh);
+    font-size: min(clamp(1.25rem, 1.5vw, 1.5rem), 2.6svh);
   }
 
   .end-of-file {
-    margin-top: var(--space-1);
-    padding-bottom: var(--space-2);
+    margin-top: 0;
+    padding-bottom: 0;
   }
 }
 
