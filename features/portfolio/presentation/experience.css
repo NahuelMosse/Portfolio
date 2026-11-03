@@ -262,9 +262,11 @@
     container-type: size;
   }
 
+  /* transparent so the outgoing art and copy stay visible under the incoming panel while it is drawn on */
   .has-motion .xp-panel {
     position: absolute;
     inset: 0;
+    background: transparent;
   }
 
   .has-motion .xp-slot:not(:first-child) .xp-panel {
