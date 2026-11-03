@@ -1222,7 +1222,7 @@
    Sizes follow the viewport height as well as its width, the drawings stay big behind translucent panels. */
 @media (min-width: 1100px) {
   .offer-scene {
-    --size-word: min(17vw, 19svh);
+    --size-word: 17vw;
     margin-top: calc(var(--size-word) * 0.6 + 2rem);
   }
 
@@ -1235,7 +1235,7 @@
   }
 
   .offer-scene .scene-art img {
-    object-position: 50% 20%;
+    object-position: 62% 20%;
   }
 
   .offer-scene .scene-copy {
@@ -1285,20 +1285,15 @@
   }
 
   .contact-scene[data-has-art] .scene-copy {
-    padding-block: var(--space-3) 0;
+    padding-block: 0;
   }
 
   .contact-scene .contact-tiles {
     gap: var(--space-2);
   }
 
-  /* the word is at least the EXPERIENCE word's size (8vw, 6vw on short screens); the tiles and the roll stay compact instead */
-  .contact-scene .chapter-word[data-chapter-word] {
-    font-size: 8vw;
-  }
-
   .contact-scene .band-field {
-    padding-block: var(--space-2);
+    padding-block: var(--space-1);
   }
 
   .contact-scene .band {
@@ -1311,8 +1306,12 @@
 
   .contact-scene .band-half {
     min-height: 0;
-    align-content: start;
-    padding-block: var(--space-3);
+    grid-auto-flow: column;
+    align-items: center;
+    align-content: center;
+    justify-content: start;
+    gap: var(--space-4);
+    padding-block: var(--space-2);
     background: color-mix(in srgb, var(--ink) 40%, transparent);
   }
 
@@ -1322,7 +1321,7 @@
   }
 
   .contact-scene .half-word {
-    font-size: min(8.4vw, 7svh);
+    font-size: min(8.4vw, 5.5svh);
   }
 
   .contact-scene .band-half .contact-arrow {
@@ -1343,18 +1342,12 @@
   }
 
   .roll-item {
-    font-size: min(clamp(1.5rem, 3vw, 2.5rem), 4svh);
+    font-size: min(clamp(1.5rem, 3vw, 2.5rem), 3.4svh);
   }
 
   .end-of-file {
-    margin-top: var(--space-2);
-    padding-bottom: var(--space-3);
-  }
-}
-
-@media (min-width: 900px) and (max-height: 780px) {
-  .contact-scene .chapter-word[data-chapter-word] {
-    font-size: 6vw;
+    margin-top: var(--space-1);
+    padding-bottom: var(--space-2);
   }
 }
 
