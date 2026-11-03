@@ -23,7 +23,8 @@ function goTo(event: MouseEvent, heading: Element | null, reduced: boolean, land
   const anchor = land && window.matchMedia(WIDE_LANDING).matches ? document.querySelector(land.selector) : null
   if (anchor) {
     const top = anchor.getBoundingClientRect().top + window.scrollY
-    window.scrollTo({ top: land!.edge === "top" ? top : top - window.innerHeight, behavior })
+    // whole pixels, rounded so the scene never ends a fraction below the screen
+    window.scrollTo({ top: Math.ceil(land!.edge === "top" ? top : top - window.innerHeight), behavior })
   } else {
     heading.scrollIntoView({ block: "start", behavior })
   }

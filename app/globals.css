@@ -912,6 +912,20 @@
   white-space: nowrap;
 }
 
+/* a one-colour brand mark: the drawing is a mask over the roll's text colour */
+.roll-mark {
+  display: block;
+  height: 1em;
+  flex: none;
+  background: currentColor;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+}
+
 .roll-item img {
   width: 32px;
   height: 32px;
@@ -1290,7 +1304,8 @@
     box-sizing: border-box;
     height: 100%;
     gap: var(--space-4);
-    padding-block: calc(var(--top-bar-height) + var(--space-3)) 0;
+    /* the 1px keeps the © line inside the screen when the page height has a fraction */
+    padding-block: calc(var(--top-bar-height) + var(--space-3)) 1px;
   }
 
   .contact-scene .contact {
@@ -1354,6 +1369,10 @@
   .roll-band {
     padding-block: 0;
     line-height: 1;
+  }
+
+  .roll-marquee {
+    padding-block: 0;
   }
 
   .roll-item img {

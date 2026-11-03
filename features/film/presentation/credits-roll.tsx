@@ -1,7 +1,8 @@
 import Image from "next/image"
 import { Marquee } from "@/components/ui/marquee"
 
-export type RollItem = { text: string; logo?: string }
+// mark: a one-colour brand drawing painted in the text colour; ratio is its width over its height
+export type RollItem = { text: string; logo?: string; mark?: { src: string; ratio: number } }
 export type RollBand = { id: string; label: string; speed: "slow" | "fast"; items: readonly RollItem[] }
 
 function RollEntries({ items }: { items: readonly RollItem[] }) {
@@ -12,6 +13,14 @@ function RollEntries({ items }: { items: readonly RollItem[] }) {
         <span data-scene-media="logo" className="roll-logo">
           <Image src={item.logo} alt="" width={32} height={32} />
         </span>
+      )}
+      {item.mark && (
+        <span
+          data-roll-mark=""
+          aria-hidden="true"
+          className="roll-mark"
+          style={{ maskImage: `url(${item.mark.src})`, WebkitMaskImage: `url(${item.mark.src})`, aspectRatio: item.mark.ratio }}
+        />
       )}
       {item.text}
     </li>

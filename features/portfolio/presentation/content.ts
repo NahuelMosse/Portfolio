@@ -324,7 +324,7 @@ export const doorHref = ({ subject, prompts }: { subject: string; prompts: reado
   return `mailto:${identity.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
-export type CreditItem ={ text: string; logo?: string }
+export type CreditItem = { text: string; logo?: string; mark?: { src: string; ratio: number } }
 
 export const credits: { studies: readonly CreditItem[]; certifications: readonly CreditItem[] } = {
   studies: [
@@ -332,8 +332,8 @@ export const credits: { studies: readonly CreditItem[]; certifications: readonly
     { text: "Técnico Electromecánico · Colegio Emaús · 2021", logo: "/logo-emaus.webp" },
   ],
   certifications: [
-    { text: "EF SET C2 Proficient" },
+    { text: "EF SET C2 Proficient", mark: { src: "/logos/efset.svg", ratio: 103 / 24 } },
     { text: "Liceo Cultural Británico · Nivel 8", logo: "/logo-liceo-cultural-britanico.webp" },
-    { text: "Arquitectura de Software Aplicada · Platzi" },
+    { text: "Arquitectura de Software Aplicada · Platzi", mark: { src: "/logos/platzi.svg", ratio: 1 } },
   ],
 }
