@@ -1,3 +1,5 @@
+import { httpAttackScreens, migrationsSafeScreens, motionAuditScreens, type TerminalScreen } from "./terminal-output"
+
 // The words of the page. Professional name stays Nahuel Mosse; the hero speaks as Nawi.
 
 export const identity = {
@@ -31,8 +33,13 @@ export type Piece =
 // What the piece is shown in: an app screen in a phone frame, a web page in a browser frame.
 export type ScreenFrame = "phone" | "browser"
 
+// A tool is shown in a terminal window instead.
+export type DeviceKind = ScreenFrame | "terminal"
+
 export type Project = Story & {
   line: string
+  // a tool is shown as the terminal it printed in, one window per beat
+  terminal?: readonly TerminalScreen[]
   stack: readonly string[]
   links: readonly Link[]
   pieces: readonly Piece[]
@@ -58,22 +65,6 @@ const wholeScreen = (frame: ScreenFrame, src: string, alt: string, caption: stri
 })
 
 export const projects: readonly Project[] = [
-  {
-    id: "dev-kit",
-    name: "The card is the specification",
-    what: "A development kit where the requirement is frozen as a card and every behavior is proven by tests tagged to it.",
-    problem: "Work built with AI agents drifts from what was asked, and nobody can tell which part was verified.",
-    role: "I designed the method, the guards and the tools, and published the skills that stand alone.",
-    line: "Claude Code agents build each card; hooks and tests keep them honest.",
-    stack: ["Node.js", "Playwright", "Claude Code"],
-    links: [
-      { label: "motion-audit", href: "https://github.com/NahuelMosse/motion-audit" },
-      { label: "http-attack", href: "https://github.com/NahuelMosse/http-attack" },
-      { label: "migrations-safe", href: "https://github.com/NahuelMosse/migrations-safe" },
-    ],
-    // its lead and its pieces are drawn by code (kit-diagram, kit-piece), not captured
-    pieces: [],
-  },
   {
     id: "grit",
     name: "Grit",
@@ -109,12 +100,57 @@ export const projects: readonly Project[] = [
     ],
   },
   {
+    id: "motion-audit",
+    name: "motion-audit",
+    what: "Measures how a running web UI moves, frame by frame, in a real browser.",
+    problem: "A stylesheet says what should animate, not what does: controls with no hover, press or focus feedback, janky transitions and broken reduced motion go unnoticed.",
+    role: "I wrote it and published it on npm, with the Claude Code skill that runs the same command.",
+    line: "It records the element on every animation frame instead of trusting what the CSS declares, and observes only: it never clicks unless told to.",
+    stack: ["Node.js","Playwright","Claude Code skill"],
+    links: [
+      { label: "npm", href: "https://www.npmjs.com/package/motion-audit" },
+      { label: "GitHub", href: "https://github.com/NahuelMosse/motion-audit" },
+    ],
+    pieces: [],
+    terminal: motionAuditScreens,
+  },
+  {
+    id: "http-attack",
+    name: "http-attack",
+    what: "Adversarial probes against an HTTP API running on this machine.",
+    problem: "Unit tests prove the handler does what you thought of; the bugs live in what you did not think of.",
+    role: "I wrote it and published it on npm, with the Claude Code skill that runs the same command.",
+    line: "Malformed input, parser errors, races, injection, database faults, missing auth, IDOR and CSRF; each failure comes with its severity and the response that would have been correct.",
+    stack: ["Node.js","No runtime dependencies","Claude Code skill"],
+    links: [
+      { label: "npm", href: "https://www.npmjs.com/package/http-attack" },
+      { label: "GitHub", href: "https://github.com/NahuelMosse/http-attack" },
+    ],
+    pieces: [],
+    terminal: httpAttackScreens,
+  },
+  {
+    id: "migrations-safe",
+    name: "migrations-safe",
+    what: "A linter, git history checks and a rehearsal for database migrations.",
+    problem: "A migration can lose data, break the code already running or lock a busy table, and nobody sees it before production.",
+    role: "I wrote it and published it on npm, with the Claude Code skill that runs the same command.",
+    line: "It lints the SQL and the history, then rehearses the migration on a copy: SQLite, PostgreSQL, MySQL, MariaDB, SQL Server, Oracle and Db2.",
+    stack: ["Node.js","SQL","Claude Code skill"],
+    links: [
+      { label: "npm", href: "https://www.npmjs.com/package/migrations-safe" },
+      { label: "GitHub", href: "https://github.com/NahuelMosse/migrations-safe" },
+    ],
+    pieces: [],
+    terminal: migrationsSafeScreens,
+  },
+  {
     id: "cebador",
     name: "Cebador",
     what: "The site of a fictional canned mate soda brand, a design piece.",
     problem: "A new brand needs an identity that is felt before it is read.",
     role: "I did the art direction, the motion and the code.",
-    line: "Built with my dev kit: Claude Code agents, every behavior tested.",
+    line: "Built with Claude Code agents; every behavior is covered by a test.",
     stack: ["Landing site", "Motion", "GitHub Pages"],
     links: [{ label: "Visit the site", href: "https://nahuelmosse.github.io/cebador-landing/" }],
     pieces: [
@@ -145,7 +181,7 @@ export const projects: readonly Project[] = [
     what: "The one-page site of a fictional neighborhood dental clinic in Caballito.",
     problem: "A clinic site has to answer a toothache at once and let people book without calling.",
     role: "I did the design, the copy and the code.",
-    line: "Built with my dev kit: Claude Code agents, every behavior tested.",
+    line: "Built with Claude Code agents; every behavior is covered by a test.",
     stack: ["HTML, CSS, JS", "Playwright", "GitHub Pages"],
     links: [
       { label: "Visit the site", href: "https://nahuelmosse.github.io/sonria/" },
@@ -166,7 +202,7 @@ export const projects: readonly Project[] = [
     what: "The site of a fictional sourdough bakery in Villa Crespo.",
     problem: "A bakery site has to show today's bread and let people order for pickup.",
     role: "I did the design, the copy and the code.",
-    line: "Built with my dev kit: Claude Code agents, every behavior tested.",
+    line: "Built with Claude Code agents; every behavior is covered by a test.",
     stack: ["HTML, CSS, JS", "Playwright", "GitHub Pages"],
     links: [
       { label: "Visit the site", href: "https://nahuelmosse.github.io/miga/" },
@@ -187,7 +223,7 @@ export const projects: readonly Project[] = [
     what: "A Flutter app with a REST API to book sports courts.",
     problem: "Reserving a court by message is slow and double reservations happen.",
     role: "I built the app and the API.",
-    line: "Built with my dev kit: specs first, then Claude Code agents.",
+    line: "Specs first, then Claude Code agents.",
     stack: ["Flutter", "REST API"],
     links: [{ label: "Repository", href: "https://github.com/NahuelMosse/ClubNahuelMosse" }],
     pieces: [
@@ -206,7 +242,13 @@ export const groups: readonly ProjectGroup[] = [
   { id: "apps", label: "Apps", noun: "app", line: "Mobile products I design, build and ship end to end.", projects: ["grit", "club"] },
   { id: "landings", label: "Landings", noun: "landing", line: "Live sites that sell a product in one scroll.", projects: ["cebador", "sonria", "miga"] },
   { id: "game", label: "Game", noun: "game", line: "A playable idea, shipped and published.", projects: ["guardia"] },
-  { id: "dev-kit", label: "Dev kit", noun: "dev kit", line: "The tools I wrote to build the rest with proof.", projects: ["dev-kit"] },
+  {
+    id: "tools",
+    label: "Tools",
+    noun: "tool",
+    line: "Three npm packages I wrote, each one also a Claude Code skill.",
+    projects: ["motion-audit", "http-attack", "migrations-safe"],
+  },
 ]
 
 export const experience: readonly Employer[] = [
@@ -298,13 +340,7 @@ export const credits: { studies: readonly CreditItem[]; certifications: readonly
   ],
   certifications: [
     { text: "EF SET C2 Proficient" },
-    { text: "Arquitectura de Software Aplicada · Platzi" },
-    { text: "Fundamentos de Arquitectura de Software · Platzi 2026" },
     { text: "Liceo Cultural Británico · Nivel 8", logo: "/logo-liceo-cultural-britanico.webp" },
-    { text: "Liceo Cultural Británico · Nivel 7", logo: "/logo-liceo-cultural-britanico.webp" },
-    { text: "Liceo Cultural Británico · Nivel 6", logo: "/logo-liceo-cultural-britanico.webp" },
-    { text: "Fundamentos de Arquitectura de Software · Platzi 2023" },
-    { text: "Fundamentos de Ingeniería de Software · Platzi" },
-    { text: "Responsive Web Design · freeCodeCamp" },
+    { text: "Arquitectura de Software Aplicada · Platzi" },
   ],
 }

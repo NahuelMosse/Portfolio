@@ -1,9 +1,8 @@
 "use client"
 
 import type { CSSProperties, ReactNode } from "react"
-import type { Piece, Project, ScreenFrame } from "./content"
+import type { DeviceKind, Piece, Project } from "./content"
 import { ShowcaseDevice } from "./showcase-device"
-import { screenAt } from "./use-scroll-beat"
 import { BEAT_RUN, BEATS_PER_PROJECT, TURN_RUN, startOf, useGroupTrack } from "./use-group-track"
 
 // The four beats of a project's story, one per step of its hold: what it is, the problem, how it was built, his part.
@@ -15,7 +14,7 @@ const BEATS = [
 ] as const
 
 // One project of a group: its content, the device its screens sit in, and the art drawn on the server where the files are known.
-export type GroupItem = { project: Project; kind: ScreenFrame; art: ReactNode }
+export type GroupItem = { project: Project; kind: DeviceKind; art: ReactNode }
 
 type GroupSceneProps = {
   id: string
@@ -28,13 +27,19 @@ type GroupSceneProps = {
 
 const numeral = (position: number) => String(position).padStart(2, "0")
 
-// The screens of the beside device: the pieces of the other frame, or the same screens one step ahead when there are none.
-function companion(pieces: readonly Piece[], kind: ScreenFrame, active: number, beat: number) {
+// The screen a beat shows: the list walks one step per beat and starts over when it runs out.
+const screenAt = (beat: number, count: number) => beat % count
+
+// The device beside the lead one: the pieces of the other frame, or the same screens one step ahead when there are none.
+function companion(pieces: readonly Piece[], kind: Piece["frame"], beat: number) {
   const others = pieces.filter((piece) => piece.frame !== kind)
-  if (others.length > 0) return { kind: others[0].frame, screens: others, active: screenAt(beat, BEATS.length, others.length) }
+  if (others.length > 0) return { kind: others[0].frame, screens: others, active: screenAt(beat, others.length) }
   const same = pieces.filter((piece) => piece.frame === kind)
-  return { kind, screens: same, active: (active + 1) % same.length }
+  return { kind, screens: same, active: (screenAt(beat, same.length) + 1) % same.length }
 }
+
+// A browser project whose phone screens are real ones: on a phone the phone is the hero and the page peeks behind it.
+const hasPhoneScreens = (pieces: readonly Piece[]) => pieces.filter((piece) => piece.frame === "phone").length >= 2
 
 type CardProps = { item: GroupItem; order: number; composition: "a" | "b"; current: boolean; reachable: boolean; beat: number }
 
@@ -43,14 +48,16 @@ type CardProps = { item: GroupItem; order: number; composition: "a" | "b"; curre
 function ProjectCard({ item, order, composition, current, reachable, beat }: CardProps) {
   const { project, kind, art } = item
   const own = project.pieces.filter((piece) => piece.frame === kind)
-  const active = screenAt(beat, BEATS.length, own.length)
-  const beside = companion(project.pieces, kind, active, beat)
+  const terminal = kind === "terminal"
+  const beside = kind === "terminal" ? null : companion(project.pieces, kind, beat)
+  const layers = kind === "browser" && hasPhoneScreens(project.pieces) ? "both" : "single"
 
   return (
     <article
       id={project.id}
       data-project={project.id}
       data-kind={kind}
+      data-layers={layers}
       data-composition={composition}
       data-beat={beat}
       data-current={current ? "" : undefined}
@@ -65,8 +72,12 @@ function ProjectCard({ item, order, composition, current, reachable, beat }: Car
         <p data-poster-word="" className="show-word" aria-hidden="true">
           {project.name}
         </p>
-        <ShowcaseDevice kind={beside.kind} screens={beside.screens} active={beside.active} role="second" />
-        <ShowcaseDevice kind={kind} screens={own} active={active} role="main" />
+        {beside && <ShowcaseDevice kind={beside.kind} screens={beside.screens} active={beside.active} role="second" />}
+        {terminal ? (
+          <ShowcaseDevice kind="terminal" panes={project.terminal ?? []} name={project.id} active={screenAt(beat, project.terminal?.length || 1)} role="main" />
+        ) : (
+          <ShowcaseDevice kind={kind} screens={own} active={screenAt(beat, own.length)} role="main" />
+        )}
         <div className="show-copy">
           <h4>{project.name}</h4>
           <div className="show-beats">
