@@ -1,203 +1,54 @@
-/* ---------- the contact tiles: bold bone panels on the crimson field ---------- */
+/* ---------- the contact block: the drawing and the parts the marquee band shares ---------- */
+
+/* the drawing covers the whole contact section edge to edge; the hand and seal sit in the right, where least type lands */
+.contact-scene[data-has-art] .scene-art {
+  inset: 0;
+}
+
+.contact-scene[data-has-art] .scene-art img {
+  object-position: 88% 55%;
+}
+
+@media (min-width: 1024px) {
+  .contact-scene[data-has-art] .scene-art img {
+    object-position: 100% 50%;
+  }
+}
 
 .contact-tiles {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
   width: 100%;
-}
-
-.tile-stack {
-  display: grid;
-  gap: var(--space-3);
-}
-
-.tile-secondary {
-  display: grid;
-}
-
-.tile {
-  --n: 0;
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  align-content: start;
-  gap: var(--space-2);
   min-width: 0;
-  padding: var(--space-4);
-  color: var(--ink);
-  text-decoration: none;
-  border-radius: var(--radius-rectangle);
-  transition:
-    transform var(--motion-control) var(--ease-out),
-    opacity var(--motion-section) var(--ease-out);
 }
 
-/* a hard ink block under the tile: the tile lifts off it on hover and focus */
-.tile::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--ink);
-  transform: translate(0, 0);
-  transition: transform var(--motion-control) var(--ease-out);
-}
-
-/* the bone panel is drawn above the ink block: both sit behind the tile's content */
-.tile::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--bone);
-}
-
-.tile-glyph {
-  width: var(--space-5);
-  height: var(--space-5);
-}
-
-.tile-handle {
-  display: block;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.2rem;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-  overflow-wrap: anywhere;
-}
-
-.tile-link {
-  color: inherit;
-  text-decoration: none;
-}
-
-.tile-link:focus-visible,
-.tile-actions button:focus-visible {
-  outline: var(--space-1) solid var(--ink);
-  outline-offset: var(--space-1);
-}
-
-.tile-line {
-  margin: 0;
-  font-size: var(--text-body);
-  line-height: 1.35;
-}
-
-.tile-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.tile-actions button {
-  min-height: var(--space-5);
-  padding: 0 var(--space-3);
-  border: var(--rule) solid var(--ink);
-  border-radius: var(--radius-rectangle);
-  background: transparent;
-  color: var(--ink);
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking);
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.tile-actions button[data-copied] {
-  background: var(--ink);
-  color: var(--bone);
-}
-
-.tile-status {
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-}
-
-.tile-arrow {
-  justify-self: end;
-  font-size: 1.75rem;
-  line-height: 1;
-  transition: transform var(--motion-control) var(--ease-out);
-}
-
-.tile:focus-visible {
+.contact-tiles :focus-visible {
   outline: var(--space-1) solid var(--bone);
   outline-offset: var(--space-2);
 }
 
-@media (hover: hover) {
-  .tile:hover {
-    transform: translate(calc(var(--space-1) * -1), calc(var(--space-1) * -1));
-  }
-
-  .tile:hover::before {
-    transform: translate(var(--space-2), var(--space-2));
-  }
-
-  .tile:hover .tile-arrow {
-    transform: translateX(var(--space-2));
-  }
+.contact-glyph {
+  width: var(--space-5);
+  height: var(--space-5);
 }
 
-.tile:focus-visible,
-.tile:focus-within {
-  transform: translate(calc(var(--space-1) * -1), calc(var(--space-1) * -1));
+.contact-arrow {
+  display: inline-block;
+  transition: transform var(--motion-control) var(--ease-out);
 }
 
-.tile:focus-visible::before,
-.tile:focus-within::before {
-  transform: translate(var(--space-2), var(--space-2));
-}
-
-@media (min-width: 1280px) {
-  .contact-tiles {
-    grid-template-columns: 2fr 1fr;
-    align-items: stretch;
-  }
-
-  .tile-email {
-    align-content: space-between;
-    padding: var(--space-5);
-  }
-
-  .tile-email .tile-handle {
-    font-size: clamp(2rem, 3.4vw, 3.5rem);
-  }
-
-  .tile-stack {
-    grid-template-rows: 1fr 1fr;
-  }
-
-  .tile-secondary > .tile {
-    height: 100%;
-  }
-}
-
-@keyframes tile-in {
-  from {
-    opacity: 0;
-    transform: translateY(var(--space-5));
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .contact-tiles[data-phase="waiting"] .tile {
-    opacity: 0;
-    transform: translateY(var(--space-5));
-  }
-
-  /* one after another; the delay belongs to the entrance only, so hover answers at once */
-  .contact-tiles[data-phase="in"] .tile {
-    animation: tile-in var(--motion-section) var(--ease-out) calc(var(--n) * 90ms) backwards;
-  }
+a:hover .contact-arrow,
+a:focus-visible .contact-arrow {
+  transform: translateX(var(--space-2));
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tile,
-  .tile::before,
-  .tile-arrow {
+  .contact-arrow {
     transition: none;
+  }
+
+  a:hover .contact-arrow,
+  a:focus-visible .contact-arrow {
     transform: none;
   }
 }

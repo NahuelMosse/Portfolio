@@ -1,0 +1,219 @@
+/* ---------- variant C: the marquee band and the two inverting halves ---------- */
+
+/* the band is wider than the page and tilted; the field clips sideways only, so the diagonal can rise and fall */
+.band-field {
+  margin-inline: calc(var(--gutter-left) * -1) calc(var(--gutter-right) * -1);
+  padding-block: var(--space-6);
+  overflow-x: clip;
+}
+
+.band {
+  display: block;
+  width: 120%;
+  margin-left: -10%;
+  padding: var(--space-3) 0;
+  border: 0;
+  background: var(--ink-70);
+  color: var(--bone);
+  overflow: hidden;
+  contain: inline-size;
+  cursor: pointer;
+  transform: rotate(-3deg);
+  transition:
+    background-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out);
+}
+
+.band[data-copied] {
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.band-track {
+  display: flex;
+  width: max-content;
+  animation: band-run var(--motion-marquee) linear infinite;
+}
+
+.band:hover .band-track,
+.band:focus-visible .band-track {
+  animation-play-state: paused;
+}
+
+.band-set {
+  display: flex;
+  flex: none;
+}
+
+.band-item {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12vw;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* the @ is a crimson block: hairline Boska strokes in red alone vanish on the ink */
+.band-at {
+  padding-inline: 0.05em;
+  background: var(--red);
+  color: var(--bone);
+}
+
+.band[data-copied] .band-at {
+  color: var(--ink);
+}
+
+.band-star {
+  color: var(--red);
+}
+
+.band-star {
+  padding-inline: var(--space-5);
+  font-size: 0.5em;
+}
+
+@keyframes band-run {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.band-hint {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.band-status {
+  min-width: var(--space-6);
+  font-weight: 700;
+}
+
+.band-mail {
+  color: var(--bone);
+  text-decoration: none;
+}
+
+.band-mail:hover {
+  text-decoration: underline;
+}
+
+/* two full-width halves that invert */
+.band-halves {
+  display: grid;
+  margin-inline: calc(var(--gutter-left) * -1) calc(var(--gutter-right) * -1);
+}
+
+.band-slot {
+  display: grid;
+}
+
+.band-half {
+  display: grid;
+  align-content: space-between;
+  justify-items: start;
+  gap: var(--space-2);
+  min-height: calc(var(--space-7) * 1.6);
+  padding: var(--space-4) var(--gutter-right) var(--space-4) var(--gutter-left);
+  background: var(--ink-70);
+  color: var(--bone);
+  text-decoration: none;
+  transition:
+    background-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out);
+}
+
+.band-slot .band-half {
+  border-top: var(--rule) solid var(--bone-70);
+}
+
+.half-word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17vw;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.half-handle {
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+}
+
+.band-half .contact-arrow {
+  font-size: 2rem;
+}
+
+.band-half:hover,
+.band-half:focus-visible {
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.band-half:focus-visible {
+  outline: var(--space-1) solid var(--red);
+  outline-offset: calc(var(--space-2) * -1);
+}
+
+@media (min-width: 1024px) {
+  .band-item {
+    font-size: 7vw;
+  }
+
+  .band-halves {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .band-slot .band-half {
+    padding-left: var(--space-6);
+    border-top: 0;
+    border-left: var(--rule) solid var(--bone-70);
+  }
+
+  .half-word {
+    font-size: 8.4vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* a still band: one address, centred, small enough to fit */
+  .band-track {
+    animation: none;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .band-set + .band-set {
+    display: none;
+  }
+
+  .band-item:not(:first-child) {
+    display: none;
+  }
+
+  .band-star {
+    display: none;
+  }
+
+  .band-item {
+    font-size: 7vw;
+  }
+
+  .band,
+  .band-half {
+    transition: none;
+  }
+}
