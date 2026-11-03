@@ -1,7 +1,14 @@
 /* ---------- a tool's window: the output it really printed ---------- */
 
+/* the window is as tall as the output on show, so it never holds an empty black half; the pane that is not on show leaves the flow */
+.show .show-rig[data-device="terminal"] {
+  height: auto;
+}
+
 .show-rig[data-device="terminal"] .show-device {
-  grid-template-rows: auto minmax(0, 1fr);
+  position: relative;
+  inset: auto;
+  grid-template-rows: auto auto;
   padding: 0;
   border-radius: var(--space-2);
 }
@@ -9,6 +16,14 @@
 .show-rig[data-device="terminal"] .show-glass {
   container-type: inline-size;
   border-radius: 0 0 var(--space-2) var(--space-2);
+}
+
+.show-rig[data-device="terminal"] .show-screen {
+  position: absolute;
+}
+
+.show-rig[data-device="terminal"] .show-screen[data-on] {
+  position: relative;
 }
 
 .terminal-title {
@@ -20,16 +35,24 @@
   color: var(--bone-70);
 }
 
-/* the type scales with the window so a line of about 54 characters always fits, and a wide window reads at 16px */
+/* the phone window wraps its lines and reads at 12px; a wide window keeps each line whole and reads at up to 16px */
 .terminal-screen {
   margin: 0;
-  padding: var(--space-2) var(--space-2) 0;
+  padding: var(--space-2) var(--space-2) var(--space-3);
   font-family: var(--font-label);
-  font-size: clamp(10.5px, calc(100cqw / 34), 16px);
+  font-size: 12px;
   line-height: 1.5;
-  white-space: pre;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   overflow: hidden;
   color: var(--bone);
+}
+
+@media (min-width: 1280px) {
+  .terminal-screen {
+    font-size: clamp(10.5px, calc(100cqw / 34), 16px);
+    white-space: pre;
+  }
 }
 
 .terminal-line {

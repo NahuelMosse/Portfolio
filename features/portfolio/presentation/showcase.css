@@ -25,7 +25,11 @@
   --shade-deep: color-mix(in srgb, var(--field) 11%, var(--ink));
   /* an uppercase Boska letter is about 0.72em wide on the phone: the word fills 88% of the viewport, never more than a fifth of it */
   --word-size: min(calc(88vw / (var(--chars, 8) * 0.72)), 20vw);
-  --hero-top: calc(var(--top-bar-height) + var(--show-strip) + var(--word-size) * 0.8 + var(--space-4));
+  /* the device rises by up to 3svh as the scene runs and its tab stands above it: both clear the word */
+  --hero-top: calc(
+    var(--top-bar-height) + var(--show-strip) + var(--word-size) * 0.8 +
+      var(--space-5) + 3svh
+  );
   --hero-width: min(calc(100vw - 2 * var(--gutter-right-phone)), 36rem);
   --hero-height: 55svh;
   position: relative;
@@ -127,7 +131,12 @@
 .show .plate {
   z-index: 1;
   mix-blend-mode: multiply;
-  transform: translate3d(calc(var(--p) * 4vw * var(--flip)), calc(var(--p) * -8svh), 0) scale(var(--mirror), 1);
+  transform: translate3d(
+      calc(var(--p) * 4vw * var(--flip)),
+      calc(var(--p) * -8svh),
+      0
+    )
+    scale(var(--mirror), 1);
 }
 
 .show .plate img {
@@ -149,8 +158,16 @@
   z-index: 3;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 55% at calc(8% + var(--p) * 40%) -8%, var(--bone-30), transparent 70%),
-    linear-gradient(to bottom, transparent 55%, color-mix(in srgb, var(--shade-deep) 55%, transparent));
+    radial-gradient(
+      ellipse 80% 55% at calc(8% + var(--p) * 40%) -8%,
+      var(--bone-30),
+      transparent 70%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 55%,
+      color-mix(in srgb, var(--shade-deep) 55%, transparent)
+    );
   mix-blend-mode: soft-light;
 }
 
@@ -165,10 +182,12 @@
   gap: var(--space-2);
   height: calc(var(--top-bar-height) + var(--show-strip));
   margin: 0;
-  padding: var(--top-bar-height) var(--gutter-right-phone) 0 var(--gutter-left-phone);
+  padding: var(--top-bar-height) var(--gutter-right-phone) 0
+    var(--gutter-left-phone);
   list-style: none;
   background: var(--field);
-  border-bottom: var(--rule) solid color-mix(in srgb, var(--on) 35%, transparent);
+  border-bottom: var(--rule) solid
+    color-mix(in srgb, var(--on) 35%, transparent);
   font-family: var(--font-label);
   font-size: var(--text-small);
   letter-spacing: var(--label-tracking-fine);
@@ -301,7 +320,8 @@
     0 var(--space-5) var(--space-6) var(--ink-70),
     0 var(--space-2) var(--space-3) var(--ink-35),
     0 0 var(--space-6) color-mix(in srgb, var(--field) 40%, transparent);
-  transform: rotateY(calc(var(--flip) * (-12deg + var(--p) * 16deg))) rotateX(calc(4deg - var(--p) * 3deg))
+  transform: rotateY(calc(var(--flip) * (-12deg + var(--p) * 16deg)))
+    rotateX(calc(4deg - var(--p) * 3deg))
     translate3d(0, calc(var(--p) * -3svh), 0);
   transform-style: preserve-3d;
 }
@@ -320,9 +340,19 @@
   z-index: 3;
   padding: var(--rule);
   border-radius: inherit;
-  background: linear-gradient(calc(135deg * var(--flip)), var(--bone-70), transparent 34%, transparent 70%, var(--bone-30));
-  -webkit-mask: linear-gradient(var(--ink) 0 0) content-box exclude, linear-gradient(var(--ink) 0 0);
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  background: linear-gradient(
+    calc(135deg * var(--flip)),
+    var(--bone-70),
+    transparent 34%,
+    transparent 70%,
+    var(--bone-30)
+  );
+  -webkit-mask:
+    linear-gradient(var(--ink) 0 0) content-box exclude,
+    linear-gradient(var(--ink) 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
   pointer-events: none;
 }
 
@@ -432,7 +462,12 @@
 .show-sheen {
   position: absolute;
   inset: -30%;
-  background: linear-gradient(115deg, transparent 42%, var(--bone-12) 50%, transparent 58%);
+  background: linear-gradient(
+    115deg,
+    transparent 42%,
+    var(--bone-12) 50%,
+    transparent 58%
+  );
   transform: translate3d(calc(var(--p) * 90% - 45%), 0, 0);
   pointer-events: none;
 }
@@ -453,7 +488,8 @@
 }
 
 .show[data-kind="browser"] .show-rig[data-role="second"] .show-device {
-  transform: rotateY(calc(var(--flip) * (-8deg + var(--p) * 10deg))) rotateX(3deg);
+  transform: rotateY(calc(var(--flip) * (-8deg + var(--p) * 10deg)))
+    rotateX(3deg);
 }
 
 .show-rig[data-role="second"] .show-device {
@@ -466,7 +502,8 @@
   position: absolute;
   z-index: 6;
   inset: auto 0 0;
-  padding: var(--space-6) var(--gutter-right-phone) calc(var(--hire-bar-height) + var(--space-2)) var(--gutter-left-phone);
+  padding: var(--space-6) var(--gutter-right-phone)
+    calc(var(--hire-bar-height) + var(--space-2)) var(--gutter-left-phone);
   color: var(--bone);
 }
 
@@ -636,11 +673,21 @@
     left: var(--gutter-left);
     top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4));
     font-size: var(--word-size);
+    transform: none;
   }
 
   .show {
-    /* wide an uppercase Boska letter is about 0.55em: the word fills 48% of the viewport, never more than a third of it */
-    --word-size: min(calc(48vw / (var(--chars, 8) * 0.55) * 0.93), 34vw);
+    /* wide the word sits in the column the device leaves free: an uppercase Boska letter is at most 0.56em, so the word fits it */
+    --column: 46vw;
+    --word-size: min(calc(var(--column) / (var(--chars, 8) * 0.56)), 34vw);
+  }
+
+  .show[data-kind="browser"] {
+    --column: 29vw;
+  }
+
+  .show[data-kind="terminal"] {
+    --column: 34vw;
   }
 
   .show[data-composition="b"] .show-word {
@@ -660,7 +707,9 @@
   }
 
   .show-rig[data-device="phone"] {
-    --device-phone-height: calc(100svh - var(--top-bar-height) - var(--show-strip) - var(--space-7));
+    --device-phone-height: calc(
+      100svh - var(--top-bar-height) - var(--show-strip) - var(--space-7)
+    );
     top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-5));
     width: auto;
     height: var(--device-phone-height);
@@ -716,12 +765,14 @@
     translate: none;
   }
 
-  .show[data-kind="browser"][data-composition="b"] .show-rig[data-role="second"] {
+  .show[data-kind="browser"][data-composition="b"]
+    .show-rig[data-role="second"] {
     right: auto;
     left: calc(3vw + var(--space-4));
   }
 
-  .show[data-kind="browser"] .show-rig[data-role="second"][data-device="browser"] {
+  .show[data-kind="browser"]
+    .show-rig[data-role="second"][data-device="browser"] {
     display: none;
   }
 
@@ -738,7 +789,11 @@
   /* the copy sits on a soft shade of the field sunk into the ink, falling off toward the device */
   .show-copy::before {
     inset: -22svh -8vw -12svh calc(var(--gutter-left) * -1);
-    background: linear-gradient(to right, color-mix(in srgb, var(--shade-deep) 88%, transparent) 55%, transparent);
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--shade-deep) 88%, transparent) 55%,
+      transparent
+    );
   }
 
   .show-copy::before {
@@ -747,7 +802,11 @@
 
   .show[data-composition="b"] .show-copy::before {
     inset: -22svh calc(var(--gutter-right) * -1) -12svh -8vw;
-    background: linear-gradient(to left, color-mix(in srgb, var(--shade-deep) 88%, transparent) 55%, transparent);
+    background: linear-gradient(
+      to left,
+      color-mix(in srgb, var(--shade-deep) 88%, transparent) 55%,
+      transparent
+    );
   }
 
   .show-text {
@@ -769,8 +828,8 @@
     gap: var(--space-4);
     height: auto;
     min-height: 100svh;
-    padding: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4)) var(--gutter-right-phone) var(--space-5)
-      var(--gutter-left-phone);
+    padding: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4))
+      var(--gutter-right-phone) var(--space-5) var(--gutter-left-phone);
   }
 
   .show .backdrop,
