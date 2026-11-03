@@ -20,6 +20,8 @@ async function measure(page: Page, y: number): Promise<Gap[]> {
         if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) < 0.05) hidden = true
       }
       if (hidden) continue
+      // the kit's wide track is a 16:9 plate anchored to the foot: its top is paper, which the multiply blend leaves as the field
+      if (el.closest(".kit-show .plate-track")) continue
       let box = el.parentElement
       while (box && box !== document.body) {
         const style = getComputedStyle(box)

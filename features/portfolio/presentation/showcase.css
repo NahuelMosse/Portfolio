@@ -79,6 +79,7 @@
   color: var(--on);
 }
 
+/* the art layers bleed past the scene by more than their travel (--bleed-x, --bleed-y), so no edge of the art ever shows inside the scene */
 /* ---- the art, in depth: the world far behind, his ink plate nearer, both drifting as the page scrolls ---- */
 
 /* the art of the project on show: a click remounts it, and it fades in over the color that slid in */
@@ -94,9 +95,11 @@
 
 .show .backdrop,
 .show .plate {
+  --bleed-x: 12vw;
+  --bleed-y: 12svh;
   animation: show-art-in var(--motion-section) var(--ease-out) both;
   position: absolute;
-  inset: 0;
+  inset: calc(var(--bleed-y) * -1) calc(var(--bleed-x) * -1);
   display: block;
   pointer-events: none;
   will-change: transform;
@@ -104,7 +107,7 @@
 
 .show .backdrop {
   z-index: 0;
-  transform: translate3d(0, calc(var(--p) * -4svh), 0) scale(1.12);
+  transform: translate3d(0, calc(var(--p) * -4svh), 0);
 }
 
 .show .backdrop img {
@@ -119,7 +122,7 @@
 .show .plate {
   z-index: 1;
   mix-blend-mode: multiply;
-  transform: translate3d(calc(var(--p) * 4vw * var(--flip)), calc(var(--p) * -8svh), 0) scale(calc(1.1 * var(--mirror)), 1.1);
+  transform: translate3d(calc(var(--p) * 4vw * var(--flip)), calc(var(--p) * -8svh), 0) scale(var(--mirror), 1);
 }
 
 .show .plate img {
@@ -403,7 +406,7 @@
   position: absolute;
   inset: 0;
   opacity: 0;
-  transform: translate3d(0, var(--space-3), 0) scale(1.03);
+  transform: scale(1.04);
   transition:
     opacity var(--motion-section) var(--ease-out),
     transform var(--motion-section) var(--ease-out);

@@ -226,15 +226,15 @@
 
   /* the art drifts against the wipe at its own depth */
   .group-card .backdrop {
-    transform: translate3d(calc(var(--d) * -8vw * var(--wx)), calc(var(--d) * -6svh * var(--wy) + var(--p) * -4svh), 0) scale(1.12);
+    transform: translate3d(calc(var(--d) * -8vw * var(--wx)), calc(var(--d) * -6svh * var(--wy) + var(--p) * -4svh), 0);
   }
 
   .group-card .plate {
     transform: translate3d(
-      calc(var(--d) * 22vw * var(--wx) + var(--p) * 4vw * var(--flip)),
-      calc(var(--d) * 14svh * var(--wy) + var(--p) * -8svh),
+      calc(var(--d) * 8vw * var(--wx) + var(--p) * 4vw * var(--flip)),
+      calc(var(--d) * 4svh * var(--wy) + var(--p) * -8svh),
       0
-    ) scale(calc(1.1 * var(--mirror)), 1.1);
+    ) scale(var(--mirror), 1);
   }
 
   /* the word leaves on the axis the wipe does not use, and the next one rises into place from the other side */

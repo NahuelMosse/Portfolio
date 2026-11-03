@@ -286,3 +286,4 @@ motion: node .claude/tools/motion-audit.mjs $APP_URL
 - L161 · 2026-11-03 · OUT · cold first pass shows one 566 ms frame at 1440 when art images first decode; preloading the group art is a data/layout change, not done
 - L162 · 2026-11-03 · T6 · experience photos: per-photo focusY + Jüsto face crop; chapter 1165@1440, 1239@390; e2e/experience-photos.spec.ts 2/2 (@PF-1-ASM-26); tsc exit 0; captures .validation/cap/x-exp-*
 - L163 · 2026-11-03 · T6 · round y: nav numerals 02-05, offer note cleared, duotone photos; experience-photos 2/2 + chapter-numerals 1/1, tsc 0; no committed spec asserted the old numerals; captures .validation/cap/y-exp-*
+- L164 · 2026-11-03 · T6 · image gaps: plate/backdrop layers now bleed 12vw/12svh past the scene with travel inside the bleed; screen swap scales 1.04 without translate; e2e/image-no-gaps.spec.ts + wipe/experience/numerals specs 10/10 passed, tsc run (ASM-26)
