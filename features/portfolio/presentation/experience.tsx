@@ -12,34 +12,32 @@ const WORK_PHOTOS = {
 
 type WorkPhotoId = keyof typeof WORK_PHOTOS
 
-const WORK_STRIP = Object.keys(WORK_PHOTOS) as WorkPhotoId[]
+// The photo of him at work that belongs to each employer's row; the desk photo serves two rows, cropped to its other half.
+const EMPLOYER_PHOTO: Record<string, { id: WorkPhotoId; crop: "left" | "right" }> = {
+  "smart-warehousing": { id: "work-desk-b", crop: "left" },
+  "grupo-st": { id: "work-desk-a", crop: "left" },
+  visma: { id: "work-desk-a", crop: "right" },
+  fravega: { id: "work-warehouse", crop: "left" },
+  justo: { id: "work-presenting", crop: "left" },
+}
 
-// One photo of him at work, already cropped and graded: it fades into the page and carries grain, never a bare rectangle.
-function WorkPhoto({ id }: { id: WorkPhotoId }) {
-  const src = sceneAsset(id, "webp")
-  if (!src) return null
+// One photo of him at work as the right side of its employer's row: printed in the page's ink (grey, then red and black by the
+// blend), screened with a halftone and faded out toward the text, so it bleeds off the edge and is never a bare rectangle.
+function RowPhoto({ employerId }: { employerId: string }) {
+  const photo = EMPLOYER_PHOTO[employerId]
+  const src = photo && sceneAsset(photo.id, "webp")
+  if (!photo || !src) return null
   return (
-    <figure data-work-photo={id} className="work-photo">
+    <figure data-work-photo={photo.id} data-crop={photo.crop} className="employer-photo">
       {/* eslint-disable-next-line @next/next/no-img-element -- a graded still of a few hundred kilobytes */}
-      <img src={src} alt={WORK_PHOTOS[id]} loading="lazy" decoding="async" />
+      <img src={src} alt={WORK_PHOTOS[photo.id]} loading="lazy" decoding="async" />
       <span data-grain="" className="grain" aria-hidden="true" />
     </figure>
   )
 }
 
-function WorkStrip() {
-  if (!WORK_STRIP.some((id) => sceneAsset(id, "webp"))) return null
-  return (
-    <div data-work-strip="" className="work-strip" aria-label="On the job">
-      {WORK_STRIP.map((id) => (
-        <WorkPhoto key={id} id={id} />
-      ))}
-    </div>
-  )
-}
-
-// Experience as one compact timeline: an illustration as a header band, then the five employers side by side (a column each on a
-// wide screen, a row each on a phone) with logo, role, period and one line, and the illustration of its system beside the text.
+// Experience as one compact ledger: an illustration as the header band, then a ruled row per employer with its number, logo, role,
+// period and one line, and a photo of him at work printed in the page's ink bleeding in from the right edge of the row.
 // The problem and his role wait behind a click. No real capture of an employer's system is shown (PF-1-ASM-10).
 export function Experience() {
   return (
@@ -51,7 +49,7 @@ export function Experience() {
         {experience.map((employer, index) => (
           <li key={employer.id}>
             <article data-employer={employer.id} data-current={String(employer.current === true)} className="employer">
-              <ChapterIllustration asset={`ill-exp-${employer.id}-4x3`} className="employer-art" />
+              <RowPhoto employerId={employer.id} />
               <div className="employer-info">
                 <span className="employer-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 <div className="employer-head">
@@ -75,7 +73,6 @@ export function Experience() {
           </li>
         ))}
       </ol>
-      <WorkStrip />
     </section>
   )
 }

@@ -1,0 +1,7380 @@
+{
+ "url": "http://127.0.0.1:50522",
+ "cpu": 0,
+ "elements": [
+  {
+   "label": "a “NAWI” [0]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “Skip intro” [1]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "background",
+     "border-color",
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200,
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "color",
+      "outline-color",
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "outline-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "text-decoration-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.96, 0, 0, 0.96, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "a.film-control.skip-intro “Skip intro”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 7,
+       "endMs": 157,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 126.92,
+         "to": 129.41,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 7
+        },
+        {
+         "prop": "width",
+         "from": 124.36,
+         "to": 119.39,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 7
+        },
+        {
+         "prop": "height",
+         "from": 44,
+         "to": 42.24,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 7
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 7
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 7
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “01 SUBJECT” [2]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "background",
+     "border-color",
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200,
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "color",
+      "outline-color",
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "outline-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "text-decoration-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.96, 0, 0, 0.96, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "a.film-control “01 SUBJECT”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 10,
+       "endMs": 160,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 275.28,
+         "to": 277.77,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 10
+        },
+        {
+         "prop": "width",
+         "from": 124.36,
+         "to": 119.39,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 10
+        },
+        {
+         "prop": "height",
+         "from": 44,
+         "to": 42.24,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 10
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 10
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 10
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “02 PROJECTS” [3]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "background",
+     "border-color",
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200,
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "color",
+      "outline-color",
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "outline-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "text-decoration-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.960003, 0, 0, 0.960003, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "a.film-control “02 PROJECTS”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 13,
+       "endMs": 196,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 407.64,
+         "to": 410.34,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 13
+        },
+        {
+         "prop": "width",
+         "from": 134.98,
+         "to": 129.59,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 13
+        },
+        {
+         "prop": "height",
+         "from": 44,
+         "to": 42.24,
+         "durationMs": 183,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": false,
+         "jumps": [],
+         "startMs": 13
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 13
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 13
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “03 EXPERIENCE” [4]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "background",
+     "border-color",
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200,
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "color",
+      "outline-color",
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "outline-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "text-decoration-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.96, 0, 0, 0.96, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "a.film-control “03 EXPERIENCE”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 5,
+       "endMs": 154,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 550.63,
+         "to": 553.75,
+         "durationMs": 149,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 5
+        },
+        {
+         "prop": "width",
+         "from": 156.25,
+         "to": 150,
+         "durationMs": 149,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 5
+        },
+        {
+         "prop": "height",
+         "from": 44,
+         "to": 42.24,
+         "durationMs": 149,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 5
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 66,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 5
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 66,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 5
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “04 OFFER” [5]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "background",
+     "border-color",
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200,
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "color",
+      "outline-color",
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "outline-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "text-decoration-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.96, 0, 0, 0.96, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "a.film-control “04 OFFER”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 12,
+       "endMs": 162,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 714.88,
+         "to": 716.94,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "width",
+         "from": 103.08,
+         "to": 98.96,
+         "durationMs": 133,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "height",
+         "from": 44,
+         "to": 42.24,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “05 CONTACT” [6]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "background",
+     "border-color",
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200,
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "color",
+      "outline-color",
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "outline-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "text-decoration-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.96, 0, 0, 0.96, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "a.film-control “05 CONTACT”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 11,
+       "endMs": 161,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 825.95,
+         "to": 828.44,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 11
+        },
+        {
+         "prop": "width",
+         "from": 124.36,
+         "to": 119.39,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 11
+        },
+        {
+         "prop": "height",
+         "from": 44,
+         "to": 42.24,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 11
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 11
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 11
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “Hire me” [7]",
+   "kind": "a",
+   "selected": false,
+   "score": 5032,
+   "transition": {
+    "properties": [
+     "background",
+     "border-color",
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200,
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "background-color",
+      "color",
+      "border-color",
+      "outline-color",
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "background-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ],
+      "border-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "outline-color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ],
+      "text-decoration-color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.96, 0, 0, 0.96, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "a.film-control.top-hire “Hire me”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 12,
+       "endMs": 162,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 989.25,
+         "to": 991.83,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "width",
+         "from": 129.03,
+         "to": 123.87,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "height",
+         "from": 39,
+         "to": 37.44,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "button “Sound off” [8]",
+   "kind": "button",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "background",
+     "border-color",
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200,
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "color",
+      "outline-color",
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "outline-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "text-decoration-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.96, 0, 0, 0.96, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "button.inline-flex.items-center “Sound off”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 12,
+       "endMs": 162,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 1142.28,
+         "to": 1144.56,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "width",
+         "from": 113.72,
+         "to": 109.17,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "height",
+         "from": 44,
+         "to": 42.24,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 12
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "box-shadow",
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "border-color",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "box-shadow": [
+       "none",
+       "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.92064 0.00169954 0.0283093 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+      ],
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “Hire me for a project” [9]",
+   "kind": "a",
+   "selected": false,
+   "score": 14749,
+   "transition": {
+    "properties": [
+     "background",
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "background-color",
+      "color",
+      "border-color",
+      "outline-color",
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "background-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ],
+      "border-color": [
+       "rgb(237, 228, 208)",
+       "rgb(210, 35, 27)"
+      ],
+      "outline-color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ],
+      "text-decoration-color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.960003, 0, 0, 0.960003, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "a.door.hero-door “Hire me for a project”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 17,
+       "endMs": 200,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 971.84,
+         "to": 977.21,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 17
+        },
+        {
+         "prop": "top",
+         "from": 829,
+         "to": 830.1,
+         "durationMs": 183,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": false,
+         "jumps": [],
+         "startMs": 17
+        },
+        {
+         "prop": "width",
+         "from": 268.16,
+         "to": 257.43,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 17
+        },
+        {
+         "prop": "height",
+         "from": 55,
+         "to": 52.8,
+         "durationMs": 133,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 17
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 17
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 17
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “01Dev kit” [10]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “02Grit” [11]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.84298 0.61098 0.550431)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “03Guardia” [12]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.84298 0.61098 0.550431)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “04Cebador” [13]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.84298 0.61098 0.550431)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “05Club” [14]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.84298 0.61098 0.550431)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “motion-audit” [15]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "text-decoration-color": [
+       "rgb(179, 38, 30)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “http-attack” [16]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "text-decoration-color": [
+       "rgb(179, 38, 30)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “migrations-safe” [17]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "text-decoration-color": [
+       "rgb(179, 38, 30)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “01Dev kit” [18]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.622431 0.68102 0.824627)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “02Grit” [19]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “03Guardia” [20]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.622431 0.68102 0.824627)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “04Cebador” [21]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.622431 0.68102 0.824627)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “05Club” [22]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.622431 0.68102 0.824627)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “01Dev kit” [23]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.109647 0.340627 0.277098)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “02Grit” [24]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.109647 0.340627 0.277098)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “03Guardia” [25]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “04Cebador” [26]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.109647 0.340627 0.277098)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “05Club” [27]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.109647 0.340627 0.277098)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “01Dev kit” [28]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.386824 0.279529 0.283059)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “02Grit” [29]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.386824 0.279529 0.283059)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “03Guardia” [30]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.386824 0.279529 0.283059)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “04Cebador” [31]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “05Club” [32]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.386824 0.279529 0.283059)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “01Dev kit” [33]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.334667 0.379373 0.113176)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “02Grit” [34]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.334667 0.379373 0.113176)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “03Guardia” [35]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.334667 0.379373 0.113176)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “04Cebador” [36]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "color(srgb 0.334667 0.379373 0.113176)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “05Club” [37]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "all"
+    ],
+    "durations": [
+     0
+    ],
+    "easings": [
+     "ease"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "all"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width",
+      "outline-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "all"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ],
+      "outline-color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “Hire me for a project” [38]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "background",
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [
+      "background-color",
+      "color",
+      "outline-color",
+      "text-decoration-color"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "background-color": [
+       "rgb(12, 12, 11)",
+       "rgb(237, 228, 208)"
+      ],
+      "color": [
+       "rgb(237, 228, 208)",
+       "rgb(12, 12, 11)"
+      ],
+      "outline-color": [
+       "rgb(237, 228, 208)",
+       "rgb(12, 12, 11)"
+      ],
+      "text-decoration-color": [
+       "rgb(237, 228, 208)",
+       "rgb(12, 12, 11)"
+      ]
+     },
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.96, 0, 0, 0.96, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "a.door “Hire me for a project”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 6,
+       "endMs": 156,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 72,
+         "to": 82.08,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 6
+        },
+        {
+         "prop": "top",
+         "from": 21626.28,
+         "to": 21627.38,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 6
+        },
+        {
+         "prop": "width",
+         "from": 504,
+         "to": 483.84,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 6
+        },
+        {
+         "prop": "height",
+         "from": 55,
+         "to": 52.8,
+         "durationMs": 133,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 6
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 6
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 6
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "background",
+      "color",
+      "transform"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  },
+  {
+   "label": "a “See the proof: the dev kit” [39]",
+   "kind": "a",
+   "selected": false,
+   "score": 0,
+   "transition": {
+    "properties": [
+     "color",
+     "transform"
+    ],
+    "durations": [
+     200,
+     200
+    ],
+    "easings": [
+     "cubic-bezier(0.16, 1, 0.3, 1)",
+     "cubic-bezier(0.16, 1, 0.3, 1)"
+    ]
+   },
+   "moments": {
+    "hover": {
+     "changed": [],
+     "pixels": false,
+     "transitioned": [
+      "color",
+      "transform"
+     ],
+     "values": {},
+     "motion": []
+    },
+    "press": {
+     "changed": [
+      "transform"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "color",
+      "transform"
+     ],
+     "values": {
+      "transform": [
+       "none",
+       "matrix(0.96, 0, 0, 0.96, 0, 0)"
+      ]
+     },
+     "motion": [
+      {
+       "label": "a.proof-link “See the proof: the dev k”",
+       "root": true,
+       "primary": "scaleX",
+       "startMs": 5,
+       "endMs": 155,
+       "moves": [
+        {
+         "prop": "left",
+         "from": 704,
+         "to": 707.59,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 5
+        },
+        {
+         "prop": "width",
+         "from": 179.53,
+         "to": 172.35,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 5
+        },
+        {
+         "prop": "height",
+         "from": 44,
+         "to": 42.24,
+         "durationMs": 150,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 5
+        },
+        {
+         "prop": "scaleX",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 5
+        },
+        {
+         "prop": "scaleY",
+         "from": 1,
+         "to": 0.96,
+         "durationMs": 67,
+         "overshootPct": 0,
+         "shape": "ease-out",
+         "settled": true,
+         "jumps": [],
+         "startMs": 5
+        }
+       ]
+      }
+     ]
+    },
+    "focus": {
+     "changed": [
+      "outline-style",
+      "outline-width"
+     ],
+     "pixels": true,
+     "transitioned": [
+      "color",
+      "transform"
+     ],
+     "values": {
+      "outline-style": [
+       "none",
+       "solid"
+      ],
+      "outline-width": [
+       "3px",
+       "2px"
+      ]
+     },
+     "motion": []
+    }
+   }
+  }
+ ],
+ "sections": [
+  {
+   "section": "Projects",
+   "animated": false
+  },
+  {
+   "section": "The card is the specification",
+   "animated": true
+  },
+  {
+   "section": "Grit",
+   "animated": true
+  },
+  {
+   "section": "Guardia",
+   "animated": true
+  },
+  {
+   "section": "Cebador",
+   "animated": true
+  },
+  {
+   "section": "ClubNahuelMosse",
+   "animated": true
+  },
+  {
+   "section": "Experience",
+   "animated": false
+  },
+  {
+   "section": "Smart Warehousing",
+   "animated": false
+  },
+  {
+   "section": "Grupo ST",
+   "animated": false
+  },
+  {
+   "section": "Visma",
+   "animated": false
+  },
+  {
+   "section": "Frávega",
+   "animated": false
+  },
+  {
+   "section": "Jüsto",
+   "animated": false
+  },
+  {
+   "section": "Offer",
+   "animated": false
+  },
+  {
+   "section": "Freelance",
+   "animated": false
+  },
+  {
+   "section": "Technical Project Manager",
+   "animated": false
+  },
+  {
+   "section": "Let’s talk",
+   "animated": false
+  },
+  {
+   "section": "Studies",
+   "animated": false
+  },
+  {
+   "section": "Certifications",
+   "animated": false
+  }
+ ],
+ "longFrames": [
+  82,
+  59
+ ],
+ "sheets": [],
+ "load": [
+  {
+   "id": 3,
+   "label": "div.space-y-4.text-center",
+   "parent": 1,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": true,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 605.22,
+     "to": 0,
+     "durationMs": 550,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3416
+    },
+    {
+     "prop": "top",
+     "from": 398,
+     "to": 0,
+     "durationMs": 550,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3416
+    },
+    {
+     "prop": "width",
+     "from": 70.28,
+     "to": 0,
+     "durationMs": 1667,
+     "overshootPct": 0,
+     "shape": "ease-in",
+     "settled": false,
+     "jumps": [],
+     "startMs": 2300
+    },
+    {
+     "prop": "height",
+     "from": 104,
+     "to": 0,
+     "durationMs": 550,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3416
+    }
+   ],
+   "startMs": 2300,
+   "endMs": 3967
+  },
+  {
+   "id": 5,
+   "label": "p.text-muted-foreground.animate-pulse “Loading...”",
+   "parent": 3,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": true,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 605.22,
+     "to": 0,
+     "durationMs": 550,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3416
+    },
+    {
+     "prop": "top",
+     "from": 478,
+     "to": 0,
+     "durationMs": 550,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3416
+    },
+    {
+     "prop": "width",
+     "from": 70.28,
+     "to": 0,
+     "durationMs": 1667,
+     "overshootPct": 0,
+     "shape": "ease-in",
+     "settled": false,
+     "jumps": [],
+     "startMs": 2300
+    },
+    {
+     "prop": "height",
+     "from": 24,
+     "to": 0,
+     "durationMs": 550,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3416
+    }
+   ],
+   "startMs": 2300,
+   "endMs": 3967
+  },
+  {
+   "id": 4,
+   "label": "div.w-16.h-16",
+   "parent": 3,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": true,
+   "fixed": false,
+   "root": false,
+   "primary": "rotate",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 608,
+     "to": 0,
+     "durationMs": 600,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3366
+    },
+    {
+     "prop": "top",
+     "from": 398,
+     "to": 0,
+     "durationMs": 600,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3366
+    },
+    {
+     "prop": "width",
+     "from": 64,
+     "to": 0,
+     "durationMs": 600,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3366
+    },
+    {
+     "prop": "height",
+     "from": 64,
+     "to": 0,
+     "durationMs": 600,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3366
+    },
+    {
+     "prop": "rotate",
+     "from": 0,
+     "to": 0,
+     "durationMs": 600,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3366
+    }
+   ],
+   "startMs": 3366,
+   "endMs": 3966
+  },
+  {
+   "id": 1,
+   "label": "main.min-h-screen.flex",
+   "parent": 2,
+   "tag": "main",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": true
+   },
+   "inFirst": true,
+   "fixed": false,
+   "root": false,
+   "primary": "width",
+   "moves": [
+    {
+     "prop": "width",
+     "from": 1280,
+     "to": 0,
+     "durationMs": 550,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3416
+    },
+    {
+     "prop": "height",
+     "from": 900,
+     "to": 0,
+     "durationMs": 550,
+     "overshootPct": 0,
+     "shape": "step",
+     "settled": false,
+     "jumps": [],
+     "startMs": 3416
+    }
+   ],
+   "startMs": 3416,
+   "endMs": 3966
+  }
+ ],
+ "scrollEntrances": [
+  {
+   "id": 18,
+   "label": "a.corner-cta “Let’s talk”",
+   "parent": 19,
+   "tag": "a",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": true,
+   "fixed": true,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "opacity",
+     "from": 0,
+     "to": 1,
+     "durationMs": 12677,
+     "overshootPct": 0,
+     "shape": "ease-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 599
+    }
+   ],
+   "startMs": 599,
+   "endMs": 13276
+  },
+  {
+   "id": 102,
+   "label": "div.kit-card",
+   "parent": 101,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "translateY",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 85.35,
+     "to": 1050.69,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1466.86,
+     "to": 4586.37,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 205.75,
+     "to": 205.75,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 272.65,
+     "to": 272.65,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "translateX",
+     "from": 0,
+     "to": 1.57,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "ease-in",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "translateY",
+     "from": -0.07,
+     "to": -17.93,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "rotate",
+     "from": -4.96,
+     "to": 5,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 103,
+   "label": "p.kit-card-head",
+   "parent": 102,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 102.15,
+     "to": 1085.42,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1484.19,
+     "to": 4603.7,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 153.69,
+     "to": 153.69,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 39.15,
+     "to": 39.15,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 104,
+   "label": "span “Card”",
+   "parent": 103,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 102.15,
+     "to": 1085.86,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1493.65,
+     "to": 4603.7,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 44.22,
+     "to": 44.22,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 24.63,
+     "to": 24.63,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 105,
+   "label": "b “PF-1”",
+   "parent": 103,
+   "tag": "b",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 211.46,
+     "to": 1194.9,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1484.19,
+     "to": 4613.24,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 44.22,
+     "to": 44.22,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 24.63,
+     "to": 24.63,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 106,
+   "label": "p.kit-card-title",
+   "parent": 102,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 103.88,
+     "to": 1083.33,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1521.74,
+     "to": 4637.57,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "height",
+     "from": 25.48,
+     "to": 25.48,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 107,
+   "label": "p.kit-card-line",
+   "parent": 102,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 105.11,
+     "to": 1081.94,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1541.97,
+     "to": 4661.48,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "height",
+     "from": 21.22,
+     "to": 21.22,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 108,
+   "label": "p.kit-card-line",
+   "parent": 102,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 105.93,
+     "to": 1080.54,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1563.43,
+     "to": 4677.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "height",
+     "from": 15.65,
+     "to": 15.65,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 110,
+   "label": "ul.kit-tests",
+   "parent": 102,
+   "tag": "ul",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 107.15,
+     "to": 1071.48,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1581.82,
+     "to": 4701.33,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 159.09,
+     "to": 159.09,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 100.91,
+     "to": 100.91,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 111,
+   "label": "li",
+   "parent": 110,
+   "tag": "li",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 107.15,
+     "to": 1077.06,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1581.82,
+     "to": 4701.33,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 153.51,
+     "to": 153.51,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "height",
+     "from": 37.16,
+     "to": 37.16,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "opacity",
+     "from": 0,
+     "to": 1,
+     "durationMs": 300,
+     "overshootPct": 0,
+     "shape": "ease-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1459
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 112,
+   "label": "i",
+   "parent": 111,
+   "tag": "i",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 107.15,
+     "to": 1077.06,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1592.89,
+     "to": 4701.33,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 26,
+     "to": 26,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 26,
+     "to": 26,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 113,
+   "label": "span “Test 1”",
+   "parent": 111,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 139.19,
+     "to": 1109.06,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1588.75,
+     "to": 4705.61,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 58.71,
+     "to": 58.71,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 25.9,
+     "to": 25.9,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 114,
+   "label": "li",
+   "parent": 110,
+   "tag": "li",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 108.79,
+     "to": 1074.27,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1613.7,
+     "to": 4733.21,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 153.51,
+     "to": 153.51,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "height",
+     "from": 37.16,
+     "to": 37.16,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "opacity",
+     "from": 0,
+     "to": 1,
+     "durationMs": 300,
+     "overshootPct": 0,
+     "shape": "ease-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1459
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 115,
+   "label": "i",
+   "parent": 114,
+   "tag": "i",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 108.79,
+     "to": 1074.27,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1624.77,
+     "to": 4733.21,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 26,
+     "to": 26,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 26,
+     "to": 26,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 116,
+   "label": "span “Test 2”",
+   "parent": 114,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 140.82,
+     "to": 1106.28,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1620.63,
+     "to": 4737.49,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 58.71,
+     "to": 58.71,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 25.9,
+     "to": 25.9,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 2892
+  },
+  {
+   "id": 117,
+   "label": "li",
+   "parent": 110,
+   "tag": "li",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 110.42,
+     "to": 1071.48,
+     "durationMs": 1983,
+     "overshootPct": 0,
+     "shape": "ease-in-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1645.58,
+     "to": 4765.09,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 153.51,
+     "to": 153.51,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "height",
+     "from": 37.16,
+     "to": 37.16,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "opacity",
+     "from": 0,
+     "to": 1,
+     "durationMs": 300,
+     "overshootPct": 0,
+     "shape": "ease-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1459
+    }
+   ],
+   "startMs": 713,
+   "endMs": 3126
+  },
+  {
+   "id": 118,
+   "label": "i",
+   "parent": 117,
+   "tag": "i",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 110.42,
+     "to": 1071.48,
+     "durationMs": 1983,
+     "overshootPct": 0,
+     "shape": "ease-in-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1656.65,
+     "to": 4765.09,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 26,
+     "to": 26,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 26,
+     "to": 26,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 3126
+  },
+  {
+   "id": 119,
+   "label": "span “Test 3”",
+   "parent": 117,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 142.46,
+     "to": 1103.49,
+     "durationMs": 1983,
+     "overshootPct": 0,
+     "shape": "ease-in-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1652.51,
+     "to": 4769.37,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 58.71,
+     "to": 58.71,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    },
+    {
+     "prop": "height",
+     "from": 25.9,
+     "to": 25.9,
+     "durationMs": 1980,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 713
+    }
+   ],
+   "startMs": 713,
+   "endMs": 3126
+  },
+  {
+   "id": 71,
+   "label": "div.show-stage",
+   "parent": 70,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1120,
+     "to": 4257.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 72,
+   "label": "picture.backdrop",
+   "parent": 71,
+   "tag": "picture",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "translateY",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1065.86,
+     "to": 4167.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "translateY",
+     "from": -0.14,
+     "to": -36,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2692
+  },
+  {
+   "id": 73,
+   "label": "img",
+   "parent": 72,
+   "tag": "img",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1065.86,
+     "to": 4167.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 74,
+   "label": "picture.plate",
+   "parent": 71,
+   "tag": "picture",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "translateY",
+   "moves": [
+    {
+     "prop": "left",
+     "from": -63.8,
+     "to": -12.8,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "top",
+     "from": 1074.71,
+     "to": 4140.42,
+     "durationMs": 1883,
+     "overshootPct": 0.1,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "translateX",
+     "from": 0.2,
+     "to": 51.2,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "translateY",
+     "from": -0.29,
+     "to": -72,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2692
+  },
+  {
+   "id": 75,
+   "label": "img",
+   "parent": 74,
+   "tag": "img",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": -63.8,
+     "to": -12.8,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "top",
+     "from": 1074.71,
+     "to": 4140.42,
+     "durationMs": 1883,
+     "overshootPct": 0.1,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2692
+  },
+  {
+   "id": 76,
+   "label": "picture.plate.plate-track",
+   "parent": 71,
+   "tag": "picture",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1300,
+     "to": 4437.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 77,
+   "label": "img",
+   "parent": 76,
+   "tag": "img",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1300,
+     "to": 4437.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 78,
+   "label": "span.show-light",
+   "parent": 71,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1120,
+     "to": 4257.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 79,
+   "label": "p.show-word “Dev kit”",
+   "parent": 71,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "translateX",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 204.92,
+     "to": 128.43,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "top",
+     "from": 1426,
+     "to": 4563.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "translateX",
+     "from": -50.31,
+     "to": -126.8,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2692
+  },
+  {
+   "id": 80,
+   "label": "ol.show-index",
+   "parent": 71,
+   "tag": "ol",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1120,
+     "to": 4257.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 81,
+   "label": "li",
+   "parent": 80,
+   "tag": "li",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1175.5,
+     "to": 4312.92,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 82,
+   "label": "a",
+   "parent": 81,
+   "tag": "a",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1175.5,
+     "to": 4312.92,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 83,
+   "label": "b “01”",
+   "parent": 82,
+   "tag": "b",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1183,
+     "to": 4320.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 84,
+   "label": "span “Dev kit”",
+   "parent": 82,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1187,
+     "to": 4324.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 85,
+   "label": "li",
+   "parent": 80,
+   "tag": "li",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1175.5,
+     "to": 4312.92,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 86,
+   "label": "a",
+   "parent": 85,
+   "tag": "a",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1175.5,
+     "to": 4312.92,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 87,
+   "label": "b “02”",
+   "parent": 86,
+   "tag": "b",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1187,
+     "to": 4324.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 88,
+   "label": "span “Grit”",
+   "parent": 86,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1187,
+     "to": 4324.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 89,
+   "label": "li",
+   "parent": 80,
+   "tag": "li",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1175.5,
+     "to": 4312.92,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 90,
+   "label": "a",
+   "parent": 89,
+   "tag": "a",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1175.5,
+     "to": 4312.92,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 91,
+   "label": "b “03”",
+   "parent": 90,
+   "tag": "b",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1187,
+     "to": 4324.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 92,
+   "label": "span “Guardia”",
+   "parent": 90,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1187,
+     "to": 4324.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 93,
+   "label": "li",
+   "parent": 80,
+   "tag": "li",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1175.5,
+     "to": 4312.92,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 94,
+   "label": "a",
+   "parent": 93,
+   "tag": "a",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1175.5,
+     "to": 4312.92,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 95,
+   "label": "b “04”",
+   "parent": 94,
+   "tag": "b",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1187,
+     "to": 4324.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 96,
+   "label": "span “Cebador”",
+   "parent": 94,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1187,
+     "to": 4324.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 97,
+   "label": "li",
+   "parent": 80,
+   "tag": "li",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1175.5,
+     "to": 4312.92,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 98,
+   "label": "a",
+   "parent": 97,
+   "tag": "a",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1175.5,
+     "to": 4312.92,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 99,
+   "label": "b “05”",
+   "parent": 98,
+   "tag": "b",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1187,
+     "to": 4324.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 100,
+   "label": "span “Club”",
+   "parent": 98,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1187,
+     "to": 4324.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 101,
+   "label": "div.kit-rig",
+   "parent": 71,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 92,
+     "to": 1060,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1474.41,
+     "to": 4611.83,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2892
+  },
+  {
+   "id": 109,
+   "label": "span.kit-ask “?”",
+   "parent": 102,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 251.58,
+     "to": 1237.13,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1457.81,
+     "to": 4591.06,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 26.76,
+     "to": 29.97,
+     "durationMs": 1883,
+     "overshootPct": 515.5,
+     "shape": "spring",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "height",
+     "from": 26.76,
+     "to": 29.97,
+     "durationMs": 1883,
+     "overshootPct": 515.5,
+     "shape": "spring",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "opacity",
+     "from": 0,
+     "to": 0,
+     "durationMs": 616,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "scaleX",
+     "from": 0.6,
+     "to": 0.6,
+     "durationMs": 549,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "scaleY",
+     "from": 0.6,
+     "to": 0.6,
+     "durationMs": 549,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2892
+  },
+  {
+   "id": 120,
+   "label": "span.kit-stamp “PR”",
+   "parent": 102,
+   "tag": "span",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "left",
+     "from": 153.3,
+     "to": 1145.36,
+     "durationMs": 1749,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "top",
+     "from": 1631.34,
+     "to": 4789.13,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "width",
+     "from": 149.98,
+     "to": 79.14,
+     "durationMs": 1800,
+     "overshootPct": 0,
+     "shape": "ease-in",
+     "settled": true,
+     "jumps": [],
+     "startMs": 909
+    },
+    {
+     "prop": "height",
+     "from": 117.69,
+     "to": 54.9,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "ease-in",
+     "settled": true,
+     "jumps": [],
+     "startMs": 809
+    },
+    {
+     "prop": "opacity",
+     "from": 0,
+     "to": 1,
+     "durationMs": 300,
+     "overshootPct": 0,
+     "shape": "ease-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 2409
+    },
+    {
+     "prop": "scaleX",
+     "from": 1.8,
+     "to": 1,
+     "durationMs": 283,
+     "overshootPct": 0,
+     "shape": "ease-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 2409
+    },
+    {
+     "prop": "scaleY",
+     "from": 1.8,
+     "to": 1,
+     "durationMs": 283,
+     "overshootPct": 0,
+     "shape": "ease-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 2409
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2892
+  },
+  {
+   "id": 121,
+   "label": "div.show-copy",
+   "parent": 71,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1244,
+     "to": 4381.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 122,
+   "label": "h3 “The card is the specific”",
+   "parent": 121,
+   "tag": "h3",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1244,
+     "to": 4381.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 123,
+   "label": "p.show-lead “A development kit where ”",
+   "parent": 121,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1280,
+     "to": 4417.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 124,
+   "label": "div.show-beats",
+   "parent": 121,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1244,
+     "to": 4381.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 125,
+   "label": "div.show-beat",
+   "parent": 124,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1244,
+     "to": 4397.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "opacity",
+     "from": 1,
+     "to": 0,
+     "durationMs": 316,
+     "overshootPct": 0,
+     "shape": "ease-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "translateY",
+     "from": 0,
+     "to": 16,
+     "durationMs": 316,
+     "overshootPct": 0,
+     "shape": "ease-out",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 126,
+   "label": "p.show-label “01 · Card”",
+   "parent": 125,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1244,
+     "to": 4397.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 127,
+   "label": "p.show-text “The request is frozen wo”",
+   "parent": 125,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1265,
+     "to": 4418.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 128,
+   "label": "p.show-text “Work built with AI agent”",
+   "parent": 125,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1327,
+     "to": 4480.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 129,
+   "label": "p.show-hook “The card and its log onl”",
+   "parent": 125,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1399.78,
+     "to": 4553.2,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 130,
+   "label": "b “Hook”",
+   "parent": 129,
+   "tag": "b",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1402.78,
+     "to": 4556.2,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 131,
+   "label": "div.show-beat",
+   "parent": 124,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1260,
+     "to": 4397.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "opacity",
+     "from": 0,
+     "to": 0,
+     "durationMs": 616,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    },
+    {
+     "prop": "translateY",
+     "from": 16,
+     "to": 16,
+     "durationMs": 616,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1143
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 132,
+   "label": "p.show-label “02 · Questions”",
+   "parent": 131,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1260,
+     "to": 4397.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 133,
+   "label": "p.show-text “Each doubt is asked once”",
+   "parent": 131,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1289,
+     "to": 4426.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 134,
+   "label": "p.show-hook “A second round of questi”",
+   "parent": 131,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1318.59,
+     "to": 4456.02,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 135,
+   "label": "b “Hook”",
+   "parent": 134,
+   "tag": "b",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1321.59,
+     "to": 4459.02,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 136,
+   "label": "div.show-beat",
+   "parent": 124,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1260,
+     "to": 4397.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "opacity",
+     "from": 0,
+     "to": 0,
+     "durationMs": 567,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1459
+    },
+    {
+     "prop": "translateY",
+     "from": 16,
+     "to": 16,
+     "durationMs": 567,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1459
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 137,
+   "label": "p.show-label “03 · Red tests”",
+   "parent": 136,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1260,
+     "to": 4397.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 138,
+   "label": "p.show-text “One failing test per beh”",
+   "parent": 136,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1289,
+     "to": 4426.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 139,
+   "label": "p.show-hook “A committed test cannot ”",
+   "parent": 136,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1340.19,
+     "to": 4477.61,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 140,
+   "label": "b “Hook”",
+   "parent": 139,
+   "tag": "b",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1343.19,
+     "to": 4480.61,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 141,
+   "label": "div.show-beat",
+   "parent": 124,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1260,
+     "to": 4397.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "opacity",
+     "from": 0,
+     "to": 0,
+     "durationMs": 667,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1759
+    },
+    {
+     "prop": "translateY",
+     "from": 16,
+     "to": 16,
+     "durationMs": 667,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 1759
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 142,
+   "label": "p.show-label “04 · Build”",
+   "parent": 141,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1260,
+     "to": 4397.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 143,
+   "label": "p.show-text “Agents write the code un”",
+   "parent": 141,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1289,
+     "to": 4426.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 144,
+   "label": "p.show-hook “Production code is writt”",
+   "parent": 141,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1340.19,
+     "to": 4477.61,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 145,
+   "label": "b “Hook”",
+   "parent": 144,
+   "tag": "b",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1343.19,
+     "to": 4480.61,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 146,
+   "label": "div.show-beat",
+   "parent": 124,
+   "tag": "div",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "opacity",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1260,
+     "to": 4397.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    },
+    {
+     "prop": "opacity",
+     "from": 0,
+     "to": 0,
+     "durationMs": 550,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 2143
+    },
+    {
+     "prop": "translateY",
+     "from": 16,
+     "to": 16,
+     "durationMs": 550,
+     "overshootPct": 0,
+     "shape": "round-trip",
+     "settled": true,
+     "jumps": [],
+     "startMs": 2143
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2693
+  },
+  {
+   "id": 147,
+   "label": "p.show-label “05 · Gate”",
+   "parent": 146,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1260,
+     "to": 4397.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 148,
+   "label": "p.show-text “The checks run. What did”",
+   "parent": 146,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1289,
+     "to": 4426.42,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  },
+  {
+   "id": 149,
+   "label": "p.show-hook “No close without the gat”",
+   "parent": 146,
+   "tag": "p",
+   "h1": {
+    "is": false,
+    "inside": false,
+    "contains": false
+   },
+   "inFirst": false,
+   "fixed": false,
+   "root": false,
+   "primary": "top",
+   "moves": [
+    {
+     "prop": "top",
+     "from": 1340.19,
+     "to": 4477.61,
+     "durationMs": 1883,
+     "overshootPct": 0,
+     "shape": "linear",
+     "settled": true,
+     "jumps": [],
+     "startMs": 793
+    }
+   ],
+   "startMs": 793,
+   "endMs": 2676
+  }
+ ],
+ "click": null,
+ "interrupt": null,
+ "scrollStory": null,
+ "roles": {
+  "cta": {
+   "label": "a “Hire me for a project” [9]",
+   "hover": null,
+   "press": {
+    "label": "a.door.hero-door “Hire me for a project”",
+    "prop": "scaleX",
+    "startMs": 17,
+    "durationMs": 67,
+    "shape": "ease-out",
+    "overshootPct": 0,
+    "jumps": 0
+   },
+   "focus": null
+  },
+  "hero": {
+   "label": "main.min-h-screen.flex",
+   "prop": "width",
+   "startMs": 3416,
+   "durationMs": 550,
+   "shape": "step",
+   "overshootPct": 0,
+   "jumps": 0,
+   "stepMs": 0,
+   "totalMs": 550,
+   "viaH1": true
+  },
+  "cards": {
+   "label": "li.roll-item “EF SET C2 Proficient”",
+   "prop": "left",
+   "startMs": 13109,
+   "durationMs": 1700,
+   "shape": "linear",
+   "overshootPct": 0,
+   "stepMs": 0,
+   "count": 9
+  },
+  "section": {
+   "label": "i.show-sheen",
+   "prop": "translateX",
+   "startMs": 6626,
+   "durationMs": 1067,
+   "shape": "linear",
+   "overshootPct": 0,
+   "jumps": 0
+  },
+  "click": null,
+  "scroll": null
+ },
+ "grammar": {
+  "durationsMs": {
+   "min": 17,
+   "median": 1150,
+   "max": 12677
+  },
+  "shapes": {
+   "step": 5,
+   "round-trip": 36,
+   "ease-out": 43,
+   "linear": 472
+  },
+  "staggerMs": 0,
+  "cursor": {
+   "hover": 0,
+   "press": 11,
+   "focus": 0,
+   "of": 40
+  }
+ }
+}

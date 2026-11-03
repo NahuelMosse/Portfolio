@@ -1,0 +1,5268 @@
+{
+ "url": "http://127.0.0.1:50522",
+ "intent": null,
+ "kind": "landing",
+ "brand": {
+  "file": "design/brand.json",
+  "fonts": [
+   "Boska",
+   "General Sans",
+   "Boska",
+   "General Sans",
+   "Courier Prime"
+  ],
+  "colors": [
+   "#0c0c0b",
+   "#1a0b09",
+   "#ede4d0",
+   "#d2231b",
+   "#b3261e",
+   "#1f55d6",
+   "#36d1a8",
+   "#f0a8ac",
+   "#cdeb3a"
+  ],
+  "sheetHash": "42ab42f32ea786c7f57edfa410038954ed47662a2bb1a1b19843124190a66bf9"
+ },
+ "gpu": true,
+ "path": "gpu",
+ "cta": {
+  "390x844": {
+   "text": "HIRE ME",
+   "selector": "aside > div.hire-bar > a",
+   "reason": "filled control, first viewport, largest"
+  },
+  "1440x900": {
+   "text": "HIRE ME FOR A PROJECT",
+   "selector": "section#cold-open.cold-open > div.cover-foot > a.door.hero-door",
+   "reason": "filled control, first viewport, largest"
+  },
+  "1024x768": {
+   "text": "HIRE ME FOR A PROJECT",
+   "selector": "section#cold-open.cold-open > div.cover-foot > a.door.hero-door",
+   "reason": "filled control, first viewport, largest"
+  },
+  "768x1024": {
+   "text": "HIRE ME FOR A PROJECT",
+   "selector": "section#cold-open.cold-open > div.cover-foot > a.door.hero-door",
+   "reason": "filled control, first viewport, largest"
+  }
+ },
+ "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 2060 (0x00001F08) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+ "software": false,
+ "widths": {
+  "390x844": {
+   "measure": {
+    "grain": true,
+    "displayPx": 167.7,
+    "ratio": 10.48,
+    "displayLineHeight": 0.82,
+    "displayTrackingEm": -0.02,
+    "displaySample": "h1.mark \"NAWI\"",
+    "displayLate": false,
+    "bodyTrackingEm": 0,
+    "sizes": [
+     14,
+     20,
+     28,
+     168
+    ],
+    "sizeCount": 4
+   },
+   "responsive": {
+    "width": 390,
+    "tapSmall": [],
+    "clickSmall": [],
+    "medianButton": 48,
+    "hoverOnly": [],
+    "smallFields": [],
+    "overflow": {
+     "scrollWidth": 390,
+     "clientWidth": 390
+    },
+    "queries": {
+     "min": 14,
+     "max": 2
+    },
+    "coveredPct": 7,
+    "cta": {
+     "name": "a 390x56",
+     "topPct": 93,
+     "bottomPct": 100,
+     "pinned": true
+    },
+    "nav": {
+     "bottomBar": true,
+     "hamburger": true,
+     "hamburgerLabeled": false
+    }
+   },
+   "rules": [
+    {
+     "rule": "display/body ratio",
+     "value": 10.48,
+     "range": "report only: winners median 2.9x, 2-9x",
+     "pass": true,
+     "report": true
+    },
+    {
+     "rule": "display line height",
+     "value": 0.82,
+     "range": "report only: winners median 1.0",
+     "pass": true,
+     "report": true
+    },
+    {
+     "rule": "display tracking (em)",
+     "value": -0.02,
+     "range": "-0.03..-0.02",
+     "pass": true
+    },
+    {
+     "rule": "body tracking (em)",
+     "value": 0,
+     "range": "0..0.02",
+     "pass": true
+    },
+    {
+     "rule": "font sizes, first viewport",
+     "value": 4,
+     "range": "<= 9",
+     "pass": true
+    },
+    {
+     "rule": "grain or noise",
+     "value": "yes",
+     "range": "a texture, or none declared",
+     "pass": true
+    },
+    {
+     "rule": "tap targets under 44x44",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "hover-only reveals",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "inputs under 16 px",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "document overflow",
+     "value": "none",
+     "range": "none",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "media queries",
+     "value": "min 14 / max 2",
+     "range": "min >= max",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "fixed layers (% of viewport, no canvas or scene)",
+     "value": 7,
+     "range": "<= 20",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "cta in first viewport (% of height)",
+     "value": "93 (pinned)",
+     "range": "inside the first viewport; lower half recommended",
+     "pass": true,
+     "detail": [
+      "a 390x56"
+     ],
+     "warn": false
+    },
+    {
+     "rule": "navigation, compact",
+     "value": "bottom bar",
+     "range": "bottom bar or labeled menu",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "dead clicks",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "frames with 2+ flags",
+     "value": 10,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "frame 1: 3 elements (4-17); 74% empty (max 70%)",
+      "frame 3: focal 9% under 18%; 12 axes (2-5); 25 elements (4-17)",
+      "frame 4: focal 9% under 18%; 14 axes (2-5); 28 elements (4-17)",
+      "frame 5: focal 9% under 18%; 12 axes (2-5); 27 elements (4-17)",
+      "frame 6: focal 8% under 18%; 12 axes (2-5); 30 elements (4-17)",
+      "frame 7: focal 66% over 44%; 4 compete (max 3); 8 axes (2-5); 25 elements (4-17)",
+      "frame 8: 4 compete (max 3); 7 axes (2-5); 19 elements (4-17)",
+      "frame 9: 4 compete (max 3); 8 axes (2-5); 23 elements (4-17)",
+      "frame 10: focal 56% over 44%; 4 compete (max 3); 9 axes (2-5); 28 elements (4-17)",
+      "frame 12: 10 axes (2-5); 19 elements (4-17)"
+     ]
+    },
+    {
+     "rule": "void frames (>70% empty, no focal)",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "image file width >= shown x 2",
+     "value": 26,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img grit-hoy.webp: file 390 px, shown 205 px (needs 410)",
+      "img grit-serie.webp: file 390 px, shown 205 px (needs 410)",
+      "img grit-descanso.webp: file 390 px, shown 205 px (needs 410)",
+      "img grit-completado.webp: file 390 px, shown 205 px (needs 410)",
+      "img grit-ejercicio.webp: file 390 px, shown 205 px (needs 410)",
+      "img grit-hoy.webp: file 390 px, shown 244 px (needs 489)",
+      "img grit-serie.webp: file 390 px, shown 244 px (needs 489)",
+      "img grit-descanso.webp: file 390 px, shown 244 px (needs 489)",
+      "img grit-completado.webp: file 390 px, shown 244 px (needs 489)",
+      "img grit-ejercicio.webp: file 390 px, shown 244 px (needs 489)",
+      "img Grit's set entry screen,: file 390 px, shown 199 px (needs 397)",
+      "img Grit's rest timer counti: file 390 px, shown 199 px (needs 397)",
+      "img Grit's summary of the co: file 390 px, shown 198 px (needs 396)",
+      "img Grit's exercise detail w: file 390 px, shown 199 px (needs 397)",
+      "img club-login.webp: file 360 px, shown 205 px (needs 410)",
+      "img club-sedes.webp: file 360 px, shown 205 px (needs 410)",
+      "img club-horarios.webp: file 360 px, shown 205 px (needs 410)",
+      "img club-listo.webp: file 360 px, shown 205 px (needs 410)",
+      "img club-login.webp: file 360 px, shown 244 px (needs 489)",
+      "img club-sedes.webp: file 360 px, shown 244 px (needs 489)",
+      "img club-horarios.webp: file 360 px, shown 244 px (needs 489)",
+      "img club-listo.webp: file 360 px, shown 244 px (needs 489)",
+      "img ClubNahuelMosse login sc: file 360 px, shown 193 px (needs 387)",
+      "img ClubNahuelMosse venue li: file 360 px, shown 199 px (needs 397)",
+      "img ClubNahuelMosse court sc: file 360 px, shown 199 px (needs 397)",
+      "img ClubNahuelMosse reservat: file 360 px, shown 198 px (needs 396)"
+     ]
+    },
+    {
+     "rule": "pasted boxes",
+     "value": 2,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img At the desk, building: 140/126/18178/4522 px of margin over a contrasting background",
+      "img Presenting the warehouse: 24/28/347/24 px of margin over a contrasting background"
+     ]
+    },
+    {
+     "rule": "repeated images",
+     "value": 18,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img grit-hoy.webp x4",
+      "img grit-serie.webp x4",
+      "img grit-descanso.webp x4",
+      "img grit-completado.webp x4",
+      "img grit-ejercicio.webp x4",
+      "img triaje-mobile.webp x2",
+      "img triaje-title.webp x2",
+      "img triaje-play-2.webp x2",
+      "img triaje-page.webp x2",
+      "img triaje-scrolled.webp x2",
+      "img cebador-390-poster.webp x2",
+      "img cebador-s2-390.webp x4",
+      "img cebador-1280-poster.webp x2",
+      "img cebador-s3-1280.webp x2",
+      "img club-login.webp x4",
+      "img club-sedes.webp x4",
+      "img club-horarios.webp x4",
+      "img club-listo.webp x4"
+     ]
+    },
+    {
+     "rule": "broken images (naturalWidth 0)",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "alt text painted as page text",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "LCP image",
+     "value": "eager, visible at t0",
+     "range": "not lazy, visible at t0",
+     "pass": true,
+     "detail": [
+      "img ill-cover-9x16.webp"
+     ]
+    },
+    {
+     "rule": "palette: CTA separation (OKLCH)",
+     "value": 0,
+     "range": ">= 1: ΔL 0.15, or ΔC 0.08, or hue 40° (both chromatic) from adjacent background, body and muted text",
+     "pass": false,
+     "detail": [
+      "CTA a \"HIRE ME\" fill #ede4d0 L 0.92",
+      "adjacent background #0c0c0b L 0.15: ΔL 0.77 ΔC 0.03 Δh 20°",
+      "body text #ede4d0 L 0.92: ΔL 0.00 ΔC 0.00 Δh 0°",
+      "muted text #acb2a1 L 0.75: ΔL 0.17 ΔC 0.00 Δh 37°"
+     ]
+    },
+    {
+     "rule": "palette: roles",
+     "value": "29 text / 69 background",
+     "range": "report only: text colors and background colors apart",
+     "pass": true,
+     "detail": [
+      "text #ede4d0 L 0.92, #0c0c0b L 0.15, #a9a395 L 0.72, #d79c8c L 0.75, #b3261e L 0.50, #b4a596 L 0.73, #b5a596 L 0.73, #afa596 L 0.72",
+      "background #0c0c0b L 0.15, #ede4d0 L 0.92, #100d0b L 0.16, #0c0b0a L 0.15, #541d19 L 0.32, #e9e0cd L 0.91, #673831 L 0.40, #b3261e L 0.50"
+     ],
+     "report": true
+    },
+    {
+     "rule": "palette: text contrast (WCAG AA)",
+     "value": 11,
+     "range": "0 pairs under 4.5:1 (3:1 large)",
+     "pass": false,
+     "detail": [
+      "b \"01\" #ede4d0 on #e9e0cd 1.04:1",
+      "span \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "b \"02\" #d79c8c on #ede4d0 1.84:1",
+      "b \"02\" #d79c8c on #b3261e 2.81:1",
+      "b \"01\" #b3261e on #ccc4b3 3.77:1",
+      "b \"02\" #b3261e on #d8cfbd 4.24:1",
+      "b \"04\" #b3261e on #d0c8b6 3.92:1",
+      "b \"01\" #9faed2 on #1f55d6 2.84:1"
+     ]
+    },
+    {
+     "rule": "palette: APCA Lc (report)",
+     "value": 0,
+     "range": "reported: body >= 75, loose text >= 30",
+     "pass": true,
+     "detail": [
+      "b \"01\" #ede4d0 on #e9e0cd Lc 0 (14px)",
+      "span \"Dev kit\" #ede4d0 on #ede4d0 Lc 0 (14px)",
+      "b \"02\" #d79c8c on #ede4d0 Lc 30 (14px)",
+      "b \"02\" #d79c8c on #b3261e Lc -34 (14px)",
+      "b \"01\" #9faed2 on #1f55d6 Lc -36 (14px)"
+     ]
+    },
+    {
+     "rule": "palette: text over images",
+     "value": 13,
+     "range": "0 of 16 texts under 3:1 against the worst tenth of the pixels behind them (a scrim or a calmer crop)",
+     "pass": false,
+     "detail": [
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "b \"01\" #b3261e on #9a9487 2.17:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "b \"02\" #b3261e on #a9a395 2.60:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "b \"04\" #b3261e on #9b9588 2.19:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "span \"Test 2\" #0c0c0b on #741c17 1.79:1"
+     ]
+    },
+    {
+     "rule": "brand: fonts in the brand sheet",
+     "value": 0,
+     "range": "0 families outside Boska, General Sans, Boska, General Sans, Courier Prime",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "brand: primary action color in the brand sheet",
+     "value": 0,
+     "range": "<= 0.06 OKLab from an action color of the sheet",
+     "pass": true,
+     "detail": [
+      "primary action #ede4d0, nearest #ede4d0 (ΔL 0.000, tint 0.000)"
+     ]
+    },
+    {
+     "rule": "brand: page background color in the brand sheet",
+     "value": 0.001,
+     "range": "tint <= 0.008 and lightness <= 0.03 from a background color of the sheet",
+     "pass": true,
+     "detail": [
+      "page background #1e0f0d, nearest #1a0b09 (ΔL 0.018, tint 0.001)"
+     ]
+    },
+    {
+     "rule": "pinned scroll",
+     "value": "5 pins, 46% of 22066 px",
+     "range": "report only: pin lengths and their share of the scroll",
+     "pass": true,
+     "report": true,
+     "detail": [
+      "pin 1 sticky div.show-stage: 1604-4558 px, 2954 px",
+      "pin 2 sticky div.show-stage: 5402-7174 px, 1772 px",
+      "pin 3 sticky div.show-stage: 8018-9790 px, 1772 px",
+      "pin 4 sticky div.show-stage: 10634-12406 px, 1772 px",
+      "pin 5 sticky div.show-stage: 13251-15023 px, 1772 px"
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "frame": 1,
+     "y": 0,
+     "n": 3,
+     "focalShare": 0.232,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 2,
+     "empty": 0.739,
+     "flags": [
+      "3 elements (4-17)",
+      "74% empty (max 70%)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 2,
+     "y": 844,
+     "n": 17,
+     "focalShare": 0.097,
+     "focalKind": "text",
+     "competing": 1,
+     "axes": 5,
+     "empty": 0.598,
+     "flags": [
+      "focal 10% under 15%"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 3,
+     "y": 1688,
+     "n": 25,
+     "focalShare": 0.085,
+     "focalKind": "text",
+     "competing": 1,
+     "axes": 12,
+     "empty": 0.57,
+     "flags": [
+      "focal 9% under 18%",
+      "12 axes (2-5)",
+      "25 elements (4-17)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 4,
+     "y": 2532,
+     "n": 28,
+     "focalShare": 0.085,
+     "focalKind": "text",
+     "competing": 1,
+     "axes": 14,
+     "empty": 0.551,
+     "flags": [
+      "focal 9% under 18%",
+      "14 axes (2-5)",
+      "28 elements (4-17)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 5,
+     "y": 3376,
+     "n": 27,
+     "focalShare": 0.085,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 12,
+     "empty": 0.613,
+     "flags": [
+      "focal 9% under 18%",
+      "12 axes (2-5)",
+      "27 elements (4-17)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 6,
+     "y": 4220,
+     "n": 30,
+     "focalShare": 0.084,
+     "focalKind": "text",
+     "competing": 3,
+     "axes": 12,
+     "empty": 0.567,
+     "flags": [
+      "focal 8% under 18%",
+      "12 axes (2-5)",
+      "30 elements (4-17)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 7,
+     "y": 5064,
+     "n": 25,
+     "focalShare": 0.66,
+     "focalKind": "media",
+     "competing": 4,
+     "axes": 8,
+     "empty": 0,
+     "flags": [
+      "focal 66% over 44%",
+      "4 compete (max 3)",
+      "8 axes (2-5)",
+      "25 elements (4-17)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 8,
+     "y": 5908,
+     "n": 19,
+     "focalShare": 0.392,
+     "focalKind": "media",
+     "competing": 4,
+     "axes": 7,
+     "empty": 0.319,
+     "flags": [
+      "4 compete (max 3)",
+      "7 axes (2-5)",
+      "19 elements (4-17)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 9,
+     "y": 6752,
+     "n": 23,
+     "focalShare": 0.392,
+     "focalKind": "media",
+     "competing": 4,
+     "axes": 8,
+     "empty": 0.328,
+     "flags": [
+      "4 compete (max 3)",
+      "8 axes (2-5)",
+      "23 elements (4-17)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 10,
+     "y": 7596,
+     "n": 28,
+     "focalShare": 0.56,
+     "focalKind": "media",
+     "competing": 4,
+     "axes": 9,
+     "empty": 0,
+     "flags": [
+      "focal 56% over 44%",
+      "4 compete (max 3)",
+      "9 axes (2-5)",
+      "28 elements (4-17)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 11,
+     "y": 8440,
+     "n": 16,
+     "focalShare": 0.308,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 9,
+     "empty": 0.438,
+     "flags": [
+      "9 axes (2-5)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 12,
+     "y": 9284,
+     "n": 19,
+     "focalShare": 0.308,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 10,
+     "empty": 0.405,
+     "flags": [
+      "10 axes (2-5)",
+      "19 elements (4-17)"
+     ],
+     "reported": []
+    }
+   ],
+   "images": {
+    "low": [
+     "img grit-hoy.webp: file 390 px, shown 205 px (needs 410)",
+     "img grit-serie.webp: file 390 px, shown 205 px (needs 410)",
+     "img grit-descanso.webp: file 390 px, shown 205 px (needs 410)",
+     "img grit-completado.webp: file 390 px, shown 205 px (needs 410)",
+     "img grit-ejercicio.webp: file 390 px, shown 205 px (needs 410)",
+     "img grit-hoy.webp: file 390 px, shown 244 px (needs 489)",
+     "img grit-serie.webp: file 390 px, shown 244 px (needs 489)",
+     "img grit-descanso.webp: file 390 px, shown 244 px (needs 489)",
+     "img grit-completado.webp: file 390 px, shown 244 px (needs 489)",
+     "img grit-ejercicio.webp: file 390 px, shown 244 px (needs 489)",
+     "img Grit's set entry screen,: file 390 px, shown 199 px (needs 397)",
+     "img Grit's rest timer counti: file 390 px, shown 199 px (needs 397)",
+     "img Grit's summary of the co: file 390 px, shown 198 px (needs 396)",
+     "img Grit's exercise detail w: file 390 px, shown 199 px (needs 397)",
+     "img club-login.webp: file 360 px, shown 205 px (needs 410)",
+     "img club-sedes.webp: file 360 px, shown 205 px (needs 410)",
+     "img club-horarios.webp: file 360 px, shown 205 px (needs 410)",
+     "img club-listo.webp: file 360 px, shown 205 px (needs 410)",
+     "img club-login.webp: file 360 px, shown 244 px (needs 489)",
+     "img club-sedes.webp: file 360 px, shown 244 px (needs 489)",
+     "img club-horarios.webp: file 360 px, shown 244 px (needs 489)",
+     "img club-listo.webp: file 360 px, shown 244 px (needs 489)",
+     "img ClubNahuelMosse login sc: file 360 px, shown 193 px (needs 387)",
+     "img ClubNahuelMosse venue li: file 360 px, shown 199 px (needs 397)",
+     "img ClubNahuelMosse court sc: file 360 px, shown 199 px (needs 397)",
+     "img ClubNahuelMosse reservat: file 360 px, shown 198 px (needs 396)"
+    ],
+    "pasted": [
+     "img At the desk, building: 140/126/18178/4522 px of margin over a contrasting background",
+     "img Presenting the warehouse: 24/28/347/24 px of margin over a contrasting background"
+    ],
+    "unknown": [],
+    "repeated": [
+     "img grit-hoy.webp x4",
+     "img grit-serie.webp x4",
+     "img grit-descanso.webp x4",
+     "img grit-completado.webp x4",
+     "img grit-ejercicio.webp x4",
+     "img triaje-mobile.webp x2",
+     "img triaje-title.webp x2",
+     "img triaje-play-2.webp x2",
+     "img triaje-page.webp x2",
+     "img triaje-scrolled.webp x2",
+     "img cebador-390-poster.webp x2",
+     "img cebador-s2-390.webp x4",
+     "img cebador-1280-poster.webp x2",
+     "img cebador-s3-1280.webp x2",
+     "img club-login.webp x4",
+     "img club-sedes.webp x4",
+     "img club-horarios.webp x4",
+     "img club-listo.webp x4"
+    ],
+    "lcp": {
+     "img": "img ill-cover-9x16.webp",
+     "lazy": false,
+     "visibleT0": true
+    },
+    "sizes": [
+     {
+      "img": "img ill-cover-9x16.webp",
+      "file": 941,
+      "shown": 390
+     },
+     {
+      "img": "img Nahuel Mosse, front",
+      "file": 640,
+      "shown": 64
+     },
+     {
+      "img": "img Nahuel Mosse, profile",
+      "file": 640,
+      "shown": 64
+     },
+     {
+      "img": "img bg-kit-9x16.webp",
+      "file": 1200,
+      "shown": 437
+     },
+     {
+      "img": "img him-kit-9x16.webp",
+      "file": 1064,
+      "shown": 429
+     },
+     {
+      "img": "img plate-track-kit-9x16.web",
+      "file": 1000,
+      "shown": 429
+     },
+     {
+      "img": "img bg-grit-9x16.webp",
+      "file": 1200,
+      "shown": 437
+     },
+     {
+      "img": "img him-grit-9x16.webp",
+      "file": 941,
+      "shown": 429
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 205
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 205
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 205
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 205
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 205
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 167
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 163
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 167
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 167
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 166
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 244
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 244
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 244
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 244
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 244
+     },
+     {
+      "img": "img Grit's Hoy screen with t",
+      "file": 390,
+      "shown": 194
+     },
+     {
+      "img": "img Grit's set entry screen,",
+      "file": 390,
+      "shown": 199
+     },
+     {
+      "img": "img Grit's rest timer counti",
+      "file": 390,
+      "shown": 199
+     },
+     {
+      "img": "img Grit's summary of the co",
+      "file": 390,
+      "shown": 198
+     },
+     {
+      "img": "img Grit's exercise detail w",
+      "file": 390,
+      "shown": 199
+     },
+     {
+      "img": "img bg-guardia-9x16.webp",
+      "file": 1200,
+      "shown": 437
+     },
+     {
+      "img": "img him-guardia-9x16.webp",
+      "file": 992,
+      "shown": 429
+     },
+     {
+      "img": "img triaje-mobile.webp",
+      "file": 360,
+      "shown": 118
+     },
+     {
+      "img": "img triaje-mobile.webp",
+      "file": 360,
+      "shown": 82
+     },
+     {
+      "img": "img triaje-title.webp",
+      "file": 1280,
+      "shown": 416
+     },
+     {
+      "img": "img triaje-play-2.webp",
+      "file": 1280,
+      "shown": 416
+     },
+     {
+      "img": "img triaje-page.webp",
+      "file": 960,
+      "shown": 416
+     },
+     {
+      "img": "img triaje-scrolled.webp",
+      "file": 960,
+      "shown": 416
+     },
+     {
+      "img": "img The title screen of the ",
+      "file": 1280,
+      "shown": 356
+     },
+     {
+      "img": "img A shift of Triaje in pla",
+      "file": 1280,
+      "shown": 365
+     },
+     {
+      "img": "img The Triaje page on itch.",
+      "file": 960,
+      "shown": 365
+     },
+     {
+      "img": "img The Triaje page on itch.",
+      "file": 960,
+      "shown": 364
+     },
+     {
+      "img": "img bg-cebador-9x16.webp",
+      "file": 1200,
+      "shown": 437
+     },
+     {
+      "img": "img him-cebador-9x16.webp",
+      "file": 941,
+      "shown": 429
+     },
+     {
+      "img": "img cebador-390-poster.webp",
+      "file": 360,
+      "shown": 118
+     },
+     {
+      "img": "img cebador-s2-390.webp",
+      "file": 390,
+      "shown": 118
+     },
+     {
+      "img": "img cebador-390-poster.webp",
+      "file": 360,
+      "shown": 82
+     },
+     {
+      "img": "img cebador-s2-390.webp",
+      "file": 390,
+      "shown": 84
+     },
+     {
+      "img": "img cebador-1280-poster.webp",
+      "file": 960,
+      "shown": 416
+     },
+     {
+      "img": "img cebador-s2-1280.webp",
+      "file": 1280,
+      "shown": 416
+     },
+     {
+      "img": "img cebador-s3-1280.webp",
+      "file": 1280,
+      "shown": 416
+     },
+     {
+      "img": "img The Cebador site scrolli",
+      "file": 960,
+      "shown": 356
+     },
+     {
+      "img": "img The Cebador site's origi",
+      "file": 1280,
+      "shown": 365
+     },
+     {
+      "img": "img The Cebador site's revie",
+      "file": 1280,
+      "shown": 364
+     },
+     {
+      "img": "img bg-club-9x16.webp",
+      "file": 1200,
+      "shown": 437
+     },
+     {
+      "img": "img him-club-9x16.webp",
+      "file": 1060,
+      "shown": 429
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 205
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 205
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 205
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 205
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 166
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 163
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 167
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 167
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 244
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 244
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 244
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 244
+     },
+     {
+      "img": "img ClubNahuelMosse login sc",
+      "file": 360,
+      "shown": 193
+     },
+     {
+      "img": "img ClubNahuelMosse venue li",
+      "file": 360,
+      "shown": 199
+     },
+     {
+      "img": "img ClubNahuelMosse court sc",
+      "file": 360,
+      "shown": 199
+     },
+     {
+      "img": "img ClubNahuelMosse reservat",
+      "file": 360,
+      "shown": 198
+     },
+     {
+      "img": "img ill-experience-21x9.webp",
+      "file": 1800,
+      "shown": 390
+     },
+     {
+      "img": "img ill-exp-smart-warehousin",
+      "file": 1448,
+      "shown": 404
+     },
+     {
+      "img": "img ill-exp-grupo-st-4x3.web",
+      "file": 1448,
+      "shown": 404
+     },
+     {
+      "img": "img ill-exp-visma-4x3.webp",
+      "file": 1448,
+      "shown": 404
+     },
+     {
+      "img": "img On site in a warehouse, ",
+      "file": 1080,
+      "shown": 124
+     },
+     {
+      "img": "img At the desk, building",
+      "file": 600,
+      "shown": 124
+     },
+     {
+      "img": "img At the desk, reviewing",
+      "file": 560,
+      "shown": 124
+     },
+     {
+      "img": "img ill-exp-fravega-4x3.webp",
+      "file": 1448,
+      "shown": 404
+     },
+     {
+      "img": "img Presenting the warehouse",
+      "file": 880,
+      "shown": 288
+     },
+     {
+      "img": "img ill-exp-justo-4x3.webp",
+      "file": 1448,
+      "shown": 404
+     },
+     {
+      "img": "img ill-offer-16x9.webp",
+      "file": 1672,
+      "shown": 390
+     },
+     {
+      "img": "img ill-contact-16x9.webp",
+      "file": 1672,
+      "shown": 390
+     }
+    ],
+    "broken": [],
+    "altShown": []
+   },
+   "sweep": {
+    "checked": 39,
+    "dead": []
+   },
+   "canvas": [],
+   "scrub": {
+    "total": 22066,
+    "pins": [
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 1604,
+      "end": 4558,
+      "length": 2954
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 5402,
+      "end": 7174,
+      "length": 1772
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 8018,
+      "end": 9790,
+      "length": 1772
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 10634,
+      "end": 12406,
+      "length": 1772
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 13251,
+      "end": 15023,
+      "length": 1772
+     }
+    ],
+    "frames": [
+     {
+      "y": 1604,
+      "name": "pin-1-1"
+     },
+     {
+      "y": 2343,
+      "name": "pin-1-2"
+     },
+     {
+      "y": 3081,
+      "name": "pin-1-3"
+     },
+     {
+      "y": 3820,
+      "name": "pin-1-4"
+     },
+     {
+      "y": 4558,
+      "name": "pin-1-5"
+     },
+     {
+      "y": 4769,
+      "name": "pin-1-after"
+     },
+     {
+      "y": 5402,
+      "name": "pin-2-1"
+     },
+     {
+      "y": 5845,
+      "name": "pin-2-2"
+     },
+     {
+      "y": 6288,
+      "name": "pin-2-3"
+     },
+     {
+      "y": 6731,
+      "name": "pin-2-4"
+     },
+     {
+      "y": 7174,
+      "name": "pin-2-5"
+     },
+     {
+      "y": 7385,
+      "name": "pin-2-after"
+     },
+     {
+      "y": 8018,
+      "name": "pin-3-1"
+     },
+     {
+      "y": 8461,
+      "name": "pin-3-2"
+     },
+     {
+      "y": 8904,
+      "name": "pin-3-3"
+     },
+     {
+      "y": 9347,
+      "name": "pin-3-4"
+     },
+     {
+      "y": 9790,
+      "name": "pin-3-5"
+     },
+     {
+      "y": 10001,
+      "name": "pin-3-after"
+     },
+     {
+      "y": 10634,
+      "name": "pin-4-1"
+     },
+     {
+      "y": 11077,
+      "name": "pin-4-2"
+     },
+     {
+      "y": 11520,
+      "name": "pin-4-3"
+     },
+     {
+      "y": 11963,
+      "name": "pin-4-4"
+     },
+     {
+      "y": 12406,
+      "name": "pin-4-5"
+     },
+     {
+      "y": 12617,
+      "name": "pin-4-after"
+     },
+     {
+      "y": 13251,
+      "name": "pin-5-1"
+     },
+     {
+      "y": 13694,
+      "name": "pin-5-2"
+     },
+     {
+      "y": 14137,
+      "name": "pin-5-3"
+     },
+     {
+      "y": 14580,
+      "name": "pin-5-4"
+     },
+     {
+      "y": 15023,
+      "name": "pin-5-5"
+     },
+     {
+      "y": 15234,
+      "name": "pin-5-after"
+     }
+    ],
+    "sharePct": 46
+   },
+   "layout": {
+    "hero": {
+     "n": 3,
+     "span": 1,
+     "widest": 1
+    },
+    "sections": [
+     {
+      "name": "#cold-open",
+      "cols": 2
+     },
+     {
+      "name": "#projects",
+      "cols": 1
+     },
+     {
+      "name": "#experience",
+      "cols": 3
+     },
+     {
+      "name": "#end-credits",
+      "cols": 29
+     }
+    ]
+   },
+   "product": null
+  },
+  "1440x900": {
+   "measure": {
+    "grain": true,
+    "displayPx": 590.4,
+    "ratio": 36.9,
+    "displayLineHeight": 0.82,
+    "displayTrackingEm": -0.02,
+    "displaySample": "h1.mark \"NAWI\"",
+    "displayLate": false,
+    "bodyTrackingEm": 0,
+    "sizes": [
+     14,
+     16,
+     28,
+     40,
+     590
+    ],
+    "sizeCount": 5
+   },
+   "responsive": {
+    "width": 1440,
+    "tapSmall": [
+     "a.film-control.top-hire 129x39"
+    ],
+    "clickSmall": [],
+    "medianButton": 44,
+    "hoverOnly": [],
+    "smallFields": [],
+    "overflow": {
+     "scrollWidth": 1440,
+     "clientWidth": 1440
+    },
+    "queries": {
+     "min": 14,
+     "max": 2
+    },
+    "coveredPct": 6,
+    "cta": {
+     "name": "a.door.hero-door 268x55",
+     "topPct": 92,
+     "bottomPct": 98,
+     "pinned": false
+    },
+    "nav": {
+     "bottomBar": true,
+     "hamburger": false,
+     "hamburgerLabeled": false
+    }
+   },
+   "rules": [
+    {
+     "rule": "display/body ratio",
+     "value": 36.9,
+     "range": "report only: winners median 2.9x, 2-9x",
+     "pass": true,
+     "report": true
+    },
+    {
+     "rule": "display line height",
+     "value": 0.82,
+     "range": "report only: winners median 1.0",
+     "pass": true,
+     "report": true
+    },
+    {
+     "rule": "display tracking (em)",
+     "value": -0.02,
+     "range": "-0.03..-0.02",
+     "pass": true
+    },
+    {
+     "rule": "body tracking (em)",
+     "value": 0,
+     "range": "0..0.02",
+     "pass": true
+    },
+    {
+     "rule": "font sizes, first viewport",
+     "value": 5,
+     "range": "<= 9",
+     "pass": true
+    },
+    {
+     "rule": "grain or noise",
+     "value": "yes",
+     "range": "a texture, or none declared",
+     "pass": true
+    },
+    {
+     "rule": "hamburger, expanded",
+     "value": "no",
+     "range": "no",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "clicks of 24x24 or less",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "median button height",
+     "value": 44,
+     "range": "< 48 (all 48+ is a stretched mobile)",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "dead clicks",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "frames with 2+ flags",
+     "value": 8,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "frame 2: focal 81% over 60%; 4 compete (max 3); 14 axes (2-9); 27 elements (5-24)",
+      "frame 3: focal 90% over 60%; 11 axes (2-9); 27 elements (5-24)",
+      "frame 4: focal 90% over 60%; 13 axes (2-9); 26 elements (5-24)",
+      "frame 5: focal 90% over 60%; 12 axes (2-9); 27 elements (5-24)",
+      "frame 6: focal 77% over 60%; 4 compete (max 3); 14 axes (2-9); 27 elements (5-24)",
+      "frame 7: 5 compete (max 3); 11 axes (2-9)",
+      "frame 8: 5 compete (max 3); 11 axes (2-9)",
+      "frame 9: focal 87% over 60%; 12 axes (2-9); 25 elements (5-24)"
+     ]
+    },
+    {
+     "rule": "void frames (>70% empty, no focal)",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "image file width >= shown x 2",
+     "value": 72,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img ill-cover-16x9.webp: file 1672 px, shown 1440 px (needs 2880)",
+      "img bg-kit-16x9.webp: file 2400 px, shown 1613 px (needs 3226)",
+      "img him-kit-16x9.webp: file 1672 px, shown 1584 px (needs 3168)",
+      "img plate-track-kit-16x9.web: file 2000 px, shown 1440 px (needs 2880)",
+      "img bg-grit-16x9.webp: file 2400 px, shown 1613 px (needs 3226)",
+      "img him-grit-16x9.webp: file 1664 px, shown 1584 px (needs 3168)",
+      "img grit-hoy.webp: file 390 px, shown 302 px (needs 605)",
+      "img grit-serie.webp: file 390 px, shown 302 px (needs 605)",
+      "img grit-descanso.webp: file 390 px, shown 302 px (needs 605)",
+      "img grit-completado.webp: file 390 px, shown 302 px (needs 605)",
+      "img grit-ejercicio.webp: file 390 px, shown 302 px (needs 605)",
+      "img grit-hoy.webp: file 390 px, shown 254 px (needs 509)",
+      "img grit-serie.webp: file 390 px, shown 248 px (needs 496)",
+      "img grit-descanso.webp: file 390 px, shown 254 px (needs 509)",
+      "img grit-completado.webp: file 390 px, shown 254 px (needs 509)",
+      "img grit-ejercicio.webp: file 390 px, shown 253 px (needs 506)",
+      "img grit-hoy.webp: file 390 px, shown 369 px (needs 738)",
+      "img grit-serie.webp: file 390 px, shown 369 px (needs 738)",
+      "img grit-descanso.webp: file 390 px, shown 369 px (needs 738)",
+      "img grit-completado.webp: file 390 px, shown 369 px (needs 738)",
+      "img grit-ejercicio.webp: file 390 px, shown 369 px (needs 738)",
+      "img Grit's Hoy screen with t: file 390 px, shown 303 px (needs 605)",
+      "img Grit's set entry screen,: file 390 px, shown 310 px (needs 621)",
+      "img Grit's rest timer counti: file 390 px, shown 310 px (needs 621)",
+      "img Grit's summary of the co: file 390 px, shown 309 px (needs 618)",
+      "img Grit's exercise detail w: file 390 px, shown 310 px (needs 621)",
+      "img bg-guardia-16x9.webp: file 2400 px, shown 1613 px (needs 3226)",
+      "img him-guardia-16x9.webp: file 1672 px, shown 1584 px (needs 3168)",
+      "img triaje-mobile.webp: file 360 px, shown 188 px (needs 376)",
+      "img triaje-title.webp: file 1280 px, shown 869 px (needs 1737)",
+      "img triaje-play-2.webp: file 1280 px, shown 869 px (needs 1737)",
+      "img triaje-page.webp: file 960 px, shown 869 px (needs 1737)",
+      "img triaje-scrolled.webp: file 960 px, shown 869 px (needs 1737)",
+      "img The title screen of the : file 1280 px, shown 745 px (needs 1489)",
+      "img A shift of Triaje in pla: file 1280 px, shown 764 px (needs 1529)",
+      "img The Triaje page on itch.: file 960 px, shown 764 px (needs 1529)",
+      "img The Triaje page on itch.: file 960 px, shown 761 px (needs 1522)",
+      "img bg-cebador-16x9.webp: file 2400 px, shown 1613 px (needs 3226)",
+      "img him-cebador-16x9.webp: file 1672 px, shown 1584 px (needs 3168)",
+      "img cebador-390-poster.webp: file 360 px, shown 188 px (needs 376)",
+      "img cebador-1280-poster.webp: file 960 px, shown 869 px (needs 1737)",
+      "img cebador-s2-1280.webp: file 1280 px, shown 869 px (needs 1737)",
+      "img cebador-s3-1280.webp: file 1280 px, shown 869 px (needs 1737)",
+      "img The Cebador site scrolli: file 960 px, shown 745 px (needs 1489)",
+      "img The Cebador site's origi: file 1280 px, shown 764 px (needs 1529)",
+      "img The Cebador site's revie: file 1280 px, shown 761 px (needs 1522)",
+      "img bg-club-16x9.webp: file 2400 px, shown 1613 px (needs 3226)",
+      "img him-club-16x9.webp: file 1672 px, shown 1584 px (needs 3168)",
+      "img club-login.webp: file 360 px, shown 302 px (needs 605)",
+      "img club-sedes.webp: file 360 px, shown 302 px (needs 605)",
+      "img club-horarios.webp: file 360 px, shown 302 px (needs 605)",
+      "img club-listo.webp: file 360 px, shown 302 px (needs 605)",
+      "img club-login.webp: file 360 px, shown 253 px (needs 507)",
+      "img club-sedes.webp: file 360 px, shown 248 px (needs 496)",
+      "img club-horarios.webp: file 360 px, shown 254 px (needs 509)",
+      "img club-listo.webp: file 360 px, shown 254 px (needs 509)",
+      "img club-login.webp: file 360 px, shown 369 px (needs 738)",
+      "img club-sedes.webp: file 360 px, shown 369 px (needs 738)",
+      "img club-horarios.webp: file 360 px, shown 369 px (needs 738)",
+      "img club-listo.webp: file 360 px, shown 369 px (needs 738)",
+      "img ClubNahuelMosse login sc: file 360 px, shown 302 px (needs 605)",
+      "img ClubNahuelMosse venue li: file 360 px, shown 310 px (needs 621)",
+      "img ClubNahuelMosse court sc: file 360 px, shown 310 px (needs 621)",
+      "img ClubNahuelMosse reservat: file 360 px, shown 309 px (needs 618)",
+      "img ill-experience-21x9.webp: file 1800 px, shown 1440 px (needs 2880)",
+      "img ill-exp-smart-warehousin: file 1448 px, shown 922 px (needs 1843)",
+      "img ill-exp-grupo-st-4x3.web: file 1448 px, shown 922 px (needs 1843)",
+      "img ill-exp-visma-4x3.webp: file 1448 px, shown 922 px (needs 1843)",
+      "img ill-exp-fravega-4x3.webp: file 1448 px, shown 922 px (needs 1843)",
+      "img ill-exp-justo-4x3.webp: file 1448 px, shown 922 px (needs 1843)",
+      "img ill-offer-16x9.webp: file 1672 px, shown 1440 px (needs 2880)",
+      "img ill-contact-16x9.webp: file 1672 px, shown 1440 px (needs 2880)"
+     ]
+    },
+    {
+     "rule": "pasted boxes",
+     "value": 5,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img triaje-mobile.webp: 1175/77/436/57 px of margin over a contrasting background",
+      "img cebador-390-poster.webp: 77/1175/436/57 px of margin over a contrasting background",
+      "img At the desk, building: 261/933/19028/4446 px of margin over a contrasting background",
+      "img At the desk, reviewing: 523/672/19028/4446 px of margin over a contrasting background",
+      "img Presenting the warehouse: 40/152/534/40 px of margin over a contrasting background"
+     ]
+    },
+    {
+     "rule": "repeated images",
+     "value": 18,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img grit-hoy.webp x4",
+      "img grit-serie.webp x4",
+      "img grit-descanso.webp x4",
+      "img grit-completado.webp x4",
+      "img grit-ejercicio.webp x4",
+      "img triaje-mobile.webp x2",
+      "img triaje-title.webp x2",
+      "img triaje-play-2.webp x2",
+      "img triaje-page.webp x2",
+      "img triaje-scrolled.webp x2",
+      "img cebador-390-poster.webp x2",
+      "img cebador-s2-390.webp x4",
+      "img cebador-1280-poster.webp x2",
+      "img cebador-s3-1280.webp x2",
+      "img club-login.webp x4",
+      "img club-sedes.webp x4",
+      "img club-horarios.webp x4",
+      "img club-listo.webp x4"
+     ]
+    },
+    {
+     "rule": "broken images (naturalWidth 0)",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "alt text painted as page text",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "LCP image",
+     "value": "lazy, hidden at t0",
+     "range": "not lazy, visible at t0",
+     "pass": false,
+     "detail": [
+      "img triaje-title.webp"
+     ]
+    },
+    {
+     "rule": "desktop hero span",
+     "value": "100%",
+     "range": "the hero content spans 50% of the width or more (widest block 100%)",
+     "pass": true,
+     "detail": [
+      "first-viewport blocks: 18"
+     ]
+    },
+    {
+     "rule": "palette: CTA separation (OKLCH)",
+     "value": 1.17,
+     "range": ">= 1: ΔL 0.15, or ΔC 0.08, or hue 40° (both chromatic) from adjacent background, body and muted text",
+     "pass": true,
+     "detail": [
+      "CTA a.door.hero-door \"HIRE ME FOR A PROJEC\" fill #ede4d0 L 0.92",
+      "adjacent background #0c0c0b L 0.15: ΔL 0.77 ΔC 0.03 Δh 20°",
+      "body text #afa496 L 0.72: ΔL 0.20 ΔC 0.00 Δh 10°",
+      "muted text #c0a797 L 0.75: ΔL 0.17 ΔC 0.01 Δh 33°"
+     ]
+    },
+    {
+     "rule": "palette: roles",
+     "value": "26 text / 90 background",
+     "range": "report only: text colors and background colors apart",
+     "pass": true,
+     "detail": [
+      "text #ede4d0 L 0.92, #0c0c0b L 0.15, #ccc2ad L 0.82, #b5ad9d L 0.75, #c0b7a5 L 0.78, #aaa395 L 0.72, #d79c8c L 0.75, #afa496 L 0.72",
+      "background #0c0c0b L 0.15, #ede4d0 L 0.92, #231e19 L 0.24, #0d0b0b L 0.15, #98866c L 0.63, #80725b L 0.56, #98866a L 0.63, #322d25 L 0.30"
+     ],
+     "report": true
+    },
+    {
+     "rule": "palette: text contrast (WCAG AA)",
+     "value": 10,
+     "range": "0 pairs under 4.5:1 (3:1 large)",
+     "pass": false,
+     "detail": [
+      "p.sheet-title \"Identification sheet\" #ede4d0 on #98866c 2.77:1",
+      "dt \"Subject\" #ccc2ad on #80725b 2.66:1",
+      "dd \"NAWI\" #ede4d0 on #98866a 2.79:1",
+      "dd \"Nahuel Mosse\" #ede4d0 on #83735a 3.64:1",
+      "dt \"Role\" #c0b7a5 on #594f40 4.05:1",
+      "b \"02\" #d79c8c on #b3261e 2.81:1",
+      "b \"01\" #9faed2 on #1f55d6 2.84:1",
+      "b \"01\" #1c5747 on #36d1a8 4.33:1"
+     ]
+    },
+    {
+     "rule": "palette: APCA Lc (report)",
+     "value": 0,
+     "range": "reported: body >= 75, loose text >= 30",
+     "pass": true,
+     "detail": [
+      "b \"03\" #0c0c0b on #122922 Lc 0 (14px)",
+      "b \"01\" #1c5747 on #122922 Lc -11 (14px)",
+      "b \"02\" #d79c8c on #b3261e Lc -34 (14px)",
+      "b \"01\" #9faed2 on #1f55d6 Lc -36 (14px)",
+      "dt \"Subject\" #ccc2ad on #80725b Lc -40 (14px)"
+     ]
+    },
+    {
+     "rule": "palette: text over images",
+     "value": 13,
+     "range": "0 of 16 texts under 3:1 against the worst tenth of the pixels behind them (a scrim or a calmer crop)",
+     "pass": false,
+     "detail": [
+      "p.sheet-title \"Identification sheet\" #ede4d0 on #c2ab8a 1.75:1",
+      "dt \"Subject\" #ccc2ad on #99876c 1.97:1",
+      "dt \"Name\" #b5ad9d on #8b7b68 1.84:1",
+      "dt \"Role\" #c0b7a5 on #7d705a 2.44:1",
+      "a.door.hero-door \"Hire me for a projec\" #0c0c0b on #0c0c0b 1.00:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "span \"Test 3\" #0c0c0b on #b3261e 2.99:1"
+     ]
+    },
+    {
+     "rule": "brand: fonts in the brand sheet",
+     "value": 0,
+     "range": "0 families outside Boska, General Sans, Boska, General Sans, Courier Prime",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "brand: primary action color in the brand sheet",
+     "value": 0,
+     "range": "<= 0.06 OKLab from an action color of the sheet",
+     "pass": true,
+     "detail": [
+      "primary action #ede4d0, nearest #ede4d0 (ΔL 0.000, tint 0.000)"
+     ]
+    },
+    {
+     "rule": "brand: page background color in the brand sheet",
+     "value": 0.001,
+     "range": "tint <= 0.008 and lightness <= 0.03 from a background color of the sheet",
+     "pass": true,
+     "detail": [
+      "page background #1e0f0d, nearest #1a0b09 (ΔL 0.018, tint 0.001)"
+     ]
+    },
+    {
+     "rule": "pinned scroll",
+     "value": "5 pins, 47% of 22880 px",
+     "range": "report only: pin lengths and their share of the scroll",
+     "pass": true,
+     "report": true,
+     "detail": [
+      "pin 1 sticky div.show-stage: 1122-4272 px, 3150 px",
+      "pin 2 sticky div.show-stage: 5172-7062 px, 1890 px",
+      "pin 3 sticky div.show-stage: 7962-9852 px, 1890 px",
+      "pin 4 sticky div.show-stage: 10752-12642 px, 1890 px",
+      "pin 5 sticky div.show-stage: 13542-15432 px, 1890 px"
+     ]
+    },
+    {
+     "rule": "desktop composition: sections recomposed from 390",
+     "value": "2 of 4",
+     "range": "2 or more sections with another number of columns at 1440x900 than at 390x844",
+     "pass": true,
+     "detail": [
+      "same: #projects 1 to 1 columns",
+      "same: #experience 3 to 3 columns"
+     ],
+     "widest": "1440x900"
+    }
+   ],
+   "frames": [
+    {
+     "frame": 1,
+     "y": 0,
+     "n": 18,
+     "focalShare": 0.686,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 7,
+     "empty": 0.217,
+     "flags": [
+      "focal 69% over 60%"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 2,
+     "y": 900,
+     "n": 27,
+     "focalShare": 0.814,
+     "focalKind": "media",
+     "competing": 4,
+     "axes": 14,
+     "empty": 0.07,
+     "flags": [
+      "focal 81% over 60%",
+      "4 compete (max 3)",
+      "14 axes (2-9)",
+      "27 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 3,
+     "y": 1800,
+     "n": 27,
+     "focalShare": 0.9,
+     "focalKind": "media",
+     "competing": 1,
+     "axes": 11,
+     "empty": 0.07,
+     "flags": [
+      "focal 90% over 60%",
+      "11 axes (2-9)",
+      "27 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 4,
+     "y": 2700,
+     "n": 26,
+     "focalShare": 0.9,
+     "focalKind": "media",
+     "competing": 1,
+     "axes": 13,
+     "empty": 0.07,
+     "flags": [
+      "focal 90% over 60%",
+      "13 axes (2-9)",
+      "26 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 5,
+     "y": 3600,
+     "n": 27,
+     "focalShare": 0.9,
+     "focalKind": "media",
+     "competing": 1,
+     "axes": 12,
+     "empty": 0.07,
+     "flags": [
+      "focal 90% over 60%",
+      "12 axes (2-9)",
+      "27 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 6,
+     "y": 4500,
+     "n": 27,
+     "focalShare": 0.766,
+     "focalKind": "media",
+     "competing": 4,
+     "axes": 14,
+     "empty": 0,
+     "flags": [
+      "focal 77% over 60%",
+      "4 compete (max 3)",
+      "14 axes (2-9)",
+      "27 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 7,
+     "y": 5400,
+     "n": 17,
+     "focalShare": 0.227,
+     "focalKind": "media",
+     "competing": 5,
+     "axes": 11,
+     "empty": 0.489,
+     "flags": [
+      "5 compete (max 3)",
+      "11 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 8,
+     "y": 6300,
+     "n": 19,
+     "focalShare": 0.227,
+     "focalKind": "media",
+     "competing": 5,
+     "axes": 11,
+     "empty": 0.482,
+     "flags": [
+      "5 compete (max 3)",
+      "11 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 9,
+     "y": 7200,
+     "n": 25,
+     "focalShare": 0.866,
+     "focalKind": "media",
+     "competing": 2,
+     "axes": 12,
+     "empty": 0,
+     "flags": [
+      "focal 87% over 60%",
+      "12 axes (2-9)",
+      "25 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 10,
+     "y": 8100,
+     "n": 16,
+     "focalShare": 0.364,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 11,
+     "empty": 0.465,
+     "flags": [
+      "11 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 11,
+     "y": 9000,
+     "n": 18,
+     "focalShare": 0.364,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 13,
+     "empty": 0.458,
+     "flags": [
+      "13 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 12,
+     "y": 9900,
+     "n": 22,
+     "focalShare": 0.364,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 13,
+     "empty": 0.449,
+     "flags": [
+      "13 axes (2-9)"
+     ],
+     "reported": []
+    }
+   ],
+   "images": {
+    "low": [
+     "img ill-cover-16x9.webp: file 1672 px, shown 1440 px (needs 2880)",
+     "img bg-kit-16x9.webp: file 2400 px, shown 1613 px (needs 3226)",
+     "img him-kit-16x9.webp: file 1672 px, shown 1584 px (needs 3168)",
+     "img plate-track-kit-16x9.web: file 2000 px, shown 1440 px (needs 2880)",
+     "img bg-grit-16x9.webp: file 2400 px, shown 1613 px (needs 3226)",
+     "img him-grit-16x9.webp: file 1664 px, shown 1584 px (needs 3168)",
+     "img grit-hoy.webp: file 390 px, shown 302 px (needs 605)",
+     "img grit-serie.webp: file 390 px, shown 302 px (needs 605)",
+     "img grit-descanso.webp: file 390 px, shown 302 px (needs 605)",
+     "img grit-completado.webp: file 390 px, shown 302 px (needs 605)",
+     "img grit-ejercicio.webp: file 390 px, shown 302 px (needs 605)",
+     "img grit-hoy.webp: file 390 px, shown 254 px (needs 509)",
+     "img grit-serie.webp: file 390 px, shown 248 px (needs 496)",
+     "img grit-descanso.webp: file 390 px, shown 254 px (needs 509)",
+     "img grit-completado.webp: file 390 px, shown 254 px (needs 509)",
+     "img grit-ejercicio.webp: file 390 px, shown 253 px (needs 506)",
+     "img grit-hoy.webp: file 390 px, shown 369 px (needs 738)",
+     "img grit-serie.webp: file 390 px, shown 369 px (needs 738)",
+     "img grit-descanso.webp: file 390 px, shown 369 px (needs 738)",
+     "img grit-completado.webp: file 390 px, shown 369 px (needs 738)",
+     "img grit-ejercicio.webp: file 390 px, shown 369 px (needs 738)",
+     "img Grit's Hoy screen with t: file 390 px, shown 303 px (needs 605)",
+     "img Grit's set entry screen,: file 390 px, shown 310 px (needs 621)",
+     "img Grit's rest timer counti: file 390 px, shown 310 px (needs 621)",
+     "img Grit's summary of the co: file 390 px, shown 309 px (needs 618)",
+     "img Grit's exercise detail w: file 390 px, shown 310 px (needs 621)",
+     "img bg-guardia-16x9.webp: file 2400 px, shown 1613 px (needs 3226)",
+     "img him-guardia-16x9.webp: file 1672 px, shown 1584 px (needs 3168)",
+     "img triaje-mobile.webp: file 360 px, shown 188 px (needs 376)",
+     "img triaje-title.webp: file 1280 px, shown 869 px (needs 1737)",
+     "img triaje-play-2.webp: file 1280 px, shown 869 px (needs 1737)",
+     "img triaje-page.webp: file 960 px, shown 869 px (needs 1737)",
+     "img triaje-scrolled.webp: file 960 px, shown 869 px (needs 1737)",
+     "img The title screen of the : file 1280 px, shown 745 px (needs 1489)",
+     "img A shift of Triaje in pla: file 1280 px, shown 764 px (needs 1529)",
+     "img The Triaje page on itch.: file 960 px, shown 764 px (needs 1529)",
+     "img The Triaje page on itch.: file 960 px, shown 761 px (needs 1522)",
+     "img bg-cebador-16x9.webp: file 2400 px, shown 1613 px (needs 3226)",
+     "img him-cebador-16x9.webp: file 1672 px, shown 1584 px (needs 3168)",
+     "img cebador-390-poster.webp: file 360 px, shown 188 px (needs 376)",
+     "img cebador-1280-poster.webp: file 960 px, shown 869 px (needs 1737)",
+     "img cebador-s2-1280.webp: file 1280 px, shown 869 px (needs 1737)",
+     "img cebador-s3-1280.webp: file 1280 px, shown 869 px (needs 1737)",
+     "img The Cebador site scrolli: file 960 px, shown 745 px (needs 1489)",
+     "img The Cebador site's origi: file 1280 px, shown 764 px (needs 1529)",
+     "img The Cebador site's revie: file 1280 px, shown 761 px (needs 1522)",
+     "img bg-club-16x9.webp: file 2400 px, shown 1613 px (needs 3226)",
+     "img him-club-16x9.webp: file 1672 px, shown 1584 px (needs 3168)",
+     "img club-login.webp: file 360 px, shown 302 px (needs 605)",
+     "img club-sedes.webp: file 360 px, shown 302 px (needs 605)",
+     "img club-horarios.webp: file 360 px, shown 302 px (needs 605)",
+     "img club-listo.webp: file 360 px, shown 302 px (needs 605)",
+     "img club-login.webp: file 360 px, shown 253 px (needs 507)",
+     "img club-sedes.webp: file 360 px, shown 248 px (needs 496)",
+     "img club-horarios.webp: file 360 px, shown 254 px (needs 509)",
+     "img club-listo.webp: file 360 px, shown 254 px (needs 509)",
+     "img club-login.webp: file 360 px, shown 369 px (needs 738)",
+     "img club-sedes.webp: file 360 px, shown 369 px (needs 738)",
+     "img club-horarios.webp: file 360 px, shown 369 px (needs 738)",
+     "img club-listo.webp: file 360 px, shown 369 px (needs 738)",
+     "img ClubNahuelMosse login sc: file 360 px, shown 302 px (needs 605)",
+     "img ClubNahuelMosse venue li: file 360 px, shown 310 px (needs 621)",
+     "img ClubNahuelMosse court sc: file 360 px, shown 310 px (needs 621)",
+     "img ClubNahuelMosse reservat: file 360 px, shown 309 px (needs 618)",
+     "img ill-experience-21x9.webp: file 1800 px, shown 1440 px (needs 2880)",
+     "img ill-exp-smart-warehousin: file 1448 px, shown 922 px (needs 1843)",
+     "img ill-exp-grupo-st-4x3.web: file 1448 px, shown 922 px (needs 1843)",
+     "img ill-exp-visma-4x3.webp: file 1448 px, shown 922 px (needs 1843)",
+     "img ill-exp-fravega-4x3.webp: file 1448 px, shown 922 px (needs 1843)",
+     "img ill-exp-justo-4x3.webp: file 1448 px, shown 922 px (needs 1843)",
+     "img ill-offer-16x9.webp: file 1672 px, shown 1440 px (needs 2880)",
+     "img ill-contact-16x9.webp: file 1672 px, shown 1440 px (needs 2880)"
+    ],
+    "pasted": [
+     "img triaje-mobile.webp: 1175/77/436/57 px of margin over a contrasting background",
+     "img cebador-390-poster.webp: 77/1175/436/57 px of margin over a contrasting background",
+     "img At the desk, building: 261/933/19028/4446 px of margin over a contrasting background",
+     "img At the desk, reviewing: 523/672/19028/4446 px of margin over a contrasting background",
+     "img Presenting the warehouse: 40/152/534/40 px of margin over a contrasting background"
+    ],
+    "unknown": [],
+    "repeated": [
+     "img grit-hoy.webp x4",
+     "img grit-serie.webp x4",
+     "img grit-descanso.webp x4",
+     "img grit-completado.webp x4",
+     "img grit-ejercicio.webp x4",
+     "img triaje-mobile.webp x2",
+     "img triaje-title.webp x2",
+     "img triaje-play-2.webp x2",
+     "img triaje-page.webp x2",
+     "img triaje-scrolled.webp x2",
+     "img cebador-390-poster.webp x2",
+     "img cebador-s2-390.webp x4",
+     "img cebador-1280-poster.webp x2",
+     "img cebador-s3-1280.webp x2",
+     "img club-login.webp x4",
+     "img club-sedes.webp x4",
+     "img club-horarios.webp x4",
+     "img club-listo.webp x4"
+    ],
+    "lcp": {
+     "img": "img triaje-title.webp",
+     "lazy": true,
+     "visibleT0": false
+    },
+    "sizes": [
+     {
+      "img": "img ill-cover-16x9.webp",
+      "file": 1672,
+      "shown": 1440
+     },
+     {
+      "img": "img Nahuel Mosse, front",
+      "file": 640,
+      "shown": 64
+     },
+     {
+      "img": "img Nahuel Mosse, profile",
+      "file": 640,
+      "shown": 64
+     },
+     {
+      "img": "img bg-kit-16x9.webp",
+      "file": 2400,
+      "shown": 1613
+     },
+     {
+      "img": "img him-kit-16x9.webp",
+      "file": 1672,
+      "shown": 1584
+     },
+     {
+      "img": "img plate-track-kit-16x9.web",
+      "file": 2000,
+      "shown": 1440
+     },
+     {
+      "img": "img bg-grit-16x9.webp",
+      "file": 2400,
+      "shown": 1613
+     },
+     {
+      "img": "img him-grit-16x9.webp",
+      "file": 1664,
+      "shown": 1584
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 302
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 302
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 302
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 302
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 302
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 254
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 248
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 254
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 254
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 253
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 369
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 369
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 369
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 369
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 369
+     },
+     {
+      "img": "img Grit's Hoy screen with t",
+      "file": 390,
+      "shown": 303
+     },
+     {
+      "img": "img Grit's set entry screen,",
+      "file": 390,
+      "shown": 310
+     },
+     {
+      "img": "img Grit's rest timer counti",
+      "file": 390,
+      "shown": 310
+     },
+     {
+      "img": "img Grit's summary of the co",
+      "file": 390,
+      "shown": 309
+     },
+     {
+      "img": "img Grit's exercise detail w",
+      "file": 390,
+      "shown": 310
+     },
+     {
+      "img": "img bg-guardia-16x9.webp",
+      "file": 2400,
+      "shown": 1613
+     },
+     {
+      "img": "img him-guardia-16x9.webp",
+      "file": 1672,
+      "shown": 1584
+     },
+     {
+      "img": "img triaje-mobile.webp",
+      "file": 360,
+      "shown": 188
+     },
+     {
+      "img": "img triaje-mobile.webp",
+      "file": 360,
+      "shown": 143
+     },
+     {
+      "img": "img triaje-title.webp",
+      "file": 1280,
+      "shown": 869
+     },
+     {
+      "img": "img triaje-play-2.webp",
+      "file": 1280,
+      "shown": 869
+     },
+     {
+      "img": "img triaje-page.webp",
+      "file": 960,
+      "shown": 869
+     },
+     {
+      "img": "img triaje-scrolled.webp",
+      "file": 960,
+      "shown": 869
+     },
+     {
+      "img": "img The title screen of the ",
+      "file": 1280,
+      "shown": 745
+     },
+     {
+      "img": "img A shift of Triaje in pla",
+      "file": 1280,
+      "shown": 764
+     },
+     {
+      "img": "img The Triaje page on itch.",
+      "file": 960,
+      "shown": 764
+     },
+     {
+      "img": "img The Triaje page on itch.",
+      "file": 960,
+      "shown": 761
+     },
+     {
+      "img": "img bg-cebador-16x9.webp",
+      "file": 2400,
+      "shown": 1613
+     },
+     {
+      "img": "img him-cebador-16x9.webp",
+      "file": 1672,
+      "shown": 1584
+     },
+     {
+      "img": "img cebador-390-poster.webp",
+      "file": 360,
+      "shown": 188
+     },
+     {
+      "img": "img cebador-s2-390.webp",
+      "file": 390,
+      "shown": 188
+     },
+     {
+      "img": "img cebador-390-poster.webp",
+      "file": 360,
+      "shown": 144
+     },
+     {
+      "img": "img cebador-s2-390.webp",
+      "file": 390,
+      "shown": 147
+     },
+     {
+      "img": "img cebador-1280-poster.webp",
+      "file": 960,
+      "shown": 869
+     },
+     {
+      "img": "img cebador-s2-1280.webp",
+      "file": 1280,
+      "shown": 869
+     },
+     {
+      "img": "img cebador-s3-1280.webp",
+      "file": 1280,
+      "shown": 869
+     },
+     {
+      "img": "img The Cebador site scrolli",
+      "file": 960,
+      "shown": 745
+     },
+     {
+      "img": "img The Cebador site's origi",
+      "file": 1280,
+      "shown": 764
+     },
+     {
+      "img": "img The Cebador site's revie",
+      "file": 1280,
+      "shown": 761
+     },
+     {
+      "img": "img bg-club-16x9.webp",
+      "file": 2400,
+      "shown": 1613
+     },
+     {
+      "img": "img him-club-16x9.webp",
+      "file": 1672,
+      "shown": 1584
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 302
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 302
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 302
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 302
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 253
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 248
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 254
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 254
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 369
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 369
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 369
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 369
+     },
+     {
+      "img": "img ClubNahuelMosse login sc",
+      "file": 360,
+      "shown": 302
+     },
+     {
+      "img": "img ClubNahuelMosse venue li",
+      "file": 360,
+      "shown": 310
+     },
+     {
+      "img": "img ClubNahuelMosse court sc",
+      "file": 360,
+      "shown": 310
+     },
+     {
+      "img": "img ClubNahuelMosse reservat",
+      "file": 360,
+      "shown": 309
+     },
+     {
+      "img": "img ill-experience-21x9.webp",
+      "file": 1800,
+      "shown": 1440
+     },
+     {
+      "img": "img ill-exp-smart-warehousin",
+      "file": 1448,
+      "shown": 922
+     },
+     {
+      "img": "img ill-exp-grupo-st-4x3.web",
+      "file": 1448,
+      "shown": 922
+     },
+     {
+      "img": "img ill-exp-visma-4x3.webp",
+      "file": 1448,
+      "shown": 922
+     },
+     {
+      "img": "img On site in a warehouse, ",
+      "file": 1080,
+      "shown": 245
+     },
+     {
+      "img": "img At the desk, building",
+      "file": 600,
+      "shown": 245
+     },
+     {
+      "img": "img At the desk, reviewing",
+      "file": 560,
+      "shown": 245
+     },
+     {
+      "img": "img ill-exp-fravega-4x3.webp",
+      "file": 1448,
+      "shown": 922
+     },
+     {
+      "img": "img Presenting the warehouse",
+      "file": 880,
+      "shown": 288
+     },
+     {
+      "img": "img ill-exp-justo-4x3.webp",
+      "file": 1448,
+      "shown": 922
+     },
+     {
+      "img": "img ill-offer-16x9.webp",
+      "file": 1672,
+      "shown": 1440
+     },
+     {
+      "img": "img ill-contact-16x9.webp",
+      "file": 1672,
+      "shown": 1440
+     }
+    ],
+    "broken": [],
+    "altShown": []
+   },
+   "sweep": {
+    "checked": 44,
+    "dead": []
+   },
+   "canvas": [],
+   "scrub": {
+    "total": 22880,
+    "pins": [
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 1122,
+      "end": 4272,
+      "length": 3150
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 5172,
+      "end": 7062,
+      "length": 1890
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 7962,
+      "end": 9852,
+      "length": 1890
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 10752,
+      "end": 12642,
+      "length": 1890
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 13542,
+      "end": 15432,
+      "length": 1890
+     }
+    ],
+    "frames": [
+     {
+      "y": 1122,
+      "name": "pin-1-1"
+     },
+     {
+      "y": 1910,
+      "name": "pin-1-2"
+     },
+     {
+      "y": 2697,
+      "name": "pin-1-3"
+     },
+     {
+      "y": 3485,
+      "name": "pin-1-4"
+     },
+     {
+      "y": 4272,
+      "name": "pin-1-5"
+     },
+     {
+      "y": 4497,
+      "name": "pin-1-after"
+     },
+     {
+      "y": 5172,
+      "name": "pin-2-1"
+     },
+     {
+      "y": 5645,
+      "name": "pin-2-2"
+     },
+     {
+      "y": 6117,
+      "name": "pin-2-3"
+     },
+     {
+      "y": 6590,
+      "name": "pin-2-4"
+     },
+     {
+      "y": 7062,
+      "name": "pin-2-5"
+     },
+     {
+      "y": 7287,
+      "name": "pin-2-after"
+     },
+     {
+      "y": 7962,
+      "name": "pin-3-1"
+     },
+     {
+      "y": 8435,
+      "name": "pin-3-2"
+     },
+     {
+      "y": 8907,
+      "name": "pin-3-3"
+     },
+     {
+      "y": 9380,
+      "name": "pin-3-4"
+     },
+     {
+      "y": 9852,
+      "name": "pin-3-5"
+     },
+     {
+      "y": 10077,
+      "name": "pin-3-after"
+     },
+     {
+      "y": 10752,
+      "name": "pin-4-1"
+     },
+     {
+      "y": 11225,
+      "name": "pin-4-2"
+     },
+     {
+      "y": 11697,
+      "name": "pin-4-3"
+     },
+     {
+      "y": 12170,
+      "name": "pin-4-4"
+     },
+     {
+      "y": 12642,
+      "name": "pin-4-5"
+     },
+     {
+      "y": 12867,
+      "name": "pin-4-after"
+     },
+     {
+      "y": 13542,
+      "name": "pin-5-1"
+     },
+     {
+      "y": 14015,
+      "name": "pin-5-2"
+     },
+     {
+      "y": 14487,
+      "name": "pin-5-3"
+     },
+     {
+      "y": 14960,
+      "name": "pin-5-4"
+     },
+     {
+      "y": 15432,
+      "name": "pin-5-5"
+     },
+     {
+      "y": 15657,
+      "name": "pin-5-after"
+     }
+    ],
+    "sharePct": 47
+   },
+   "layout": {
+    "hero": {
+     "n": 18,
+     "span": 1,
+     "widest": 1
+    },
+    "sections": [
+     {
+      "name": "#cold-open",
+      "cols": 1
+     },
+     {
+      "name": "#projects",
+      "cols": 1
+     },
+     {
+      "name": "#experience",
+      "cols": 3
+     },
+     {
+      "name": "#end-credits",
+      "cols": 28
+     }
+    ]
+   },
+   "product": null
+  },
+  "1024x768": {
+   "measure": {
+    "grain": true,
+    "displayPx": 419.84,
+    "ratio": 26.24,
+    "displayLineHeight": 0.82,
+    "displayTrackingEm": -0.02,
+    "displaySample": "h1.mark \"NAWI\"",
+    "displayLate": false,
+    "bodyTrackingEm": 0,
+    "sizes": [
+     14,
+     16,
+     28,
+     40,
+     420
+    ],
+    "sizeCount": 5
+   },
+   "responsive": {
+    "width": 1024,
+    "tapSmall": [],
+    "clickSmall": [],
+    "medianButton": 44,
+    "hoverOnly": [],
+    "smallFields": [],
+    "overflow": {
+     "scrollWidth": 1024,
+     "clientWidth": 1024
+    },
+    "queries": {
+     "min": 14,
+     "max": 2
+    },
+    "coveredPct": 8,
+    "cta": {
+     "name": "a.door.hero-door 268x55",
+     "topPct": 91,
+     "bottomPct": 98,
+     "pinned": false
+    },
+    "nav": {
+     "bottomBar": true,
+     "hamburger": false,
+     "hamburgerLabeled": false
+    }
+   },
+   "rules": [
+    {
+     "rule": "display/body ratio",
+     "value": 26.24,
+     "range": "report only: winners median 2.9x, 2-9x",
+     "pass": true,
+     "report": true
+    },
+    {
+     "rule": "display line height",
+     "value": 0.82,
+     "range": "report only: winners median 1.0",
+     "pass": true,
+     "report": true
+    },
+    {
+     "rule": "display tracking (em)",
+     "value": -0.02,
+     "range": "-0.03..-0.02",
+     "pass": true
+    },
+    {
+     "rule": "body tracking (em)",
+     "value": 0,
+     "range": "0..0.02",
+     "pass": true
+    },
+    {
+     "rule": "font sizes, first viewport",
+     "value": 5,
+     "range": "<= 9",
+     "pass": true
+    },
+    {
+     "rule": "grain or noise",
+     "value": "yes",
+     "range": "a texture, or none declared",
+     "pass": true
+    },
+    {
+     "rule": "hamburger, expanded",
+     "value": "no",
+     "range": "no",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "frames with 2+ flags",
+     "value": 9,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "frame 2: focal 82% over 60%; 10 axes (2-9)",
+      "frame 3: 15 axes (2-9); 28 elements (5-24)",
+      "frame 4: 14 axes (2-9); 27 elements (5-24)",
+      "frame 5: 14 axes (2-9); 28 elements (5-24)",
+      "frame 6: focal 76% over 60%; 15 axes (2-9); 32 elements (5-24)",
+      "frame 9: focal 86% over 60%; 11 axes (2-9); 26 elements (5-24)",
+      "frame 10: focal 76% over 60%; 11 axes (2-9)",
+      "frame 11: focal 76% over 60%; 10 axes (2-9)",
+      "frame 12: focal 82% over 60%; 13 axes (2-9)"
+     ]
+    },
+    {
+     "rule": "void frames (>70% empty, no focal)",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "image file width >= shown x 2",
+     "value": 47,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img ill-cover-16x9.webp: file 1672 px, shown 1024 px (needs 2048)",
+      "img bg-kit-9x16.webp: file 1200 px, shown 1147 px (needs 2294)",
+      "img him-kit-9x16.webp: file 1064 px, shown 1126 px (needs 2253)",
+      "img plate-track-kit-9x16.web: file 1000 px, shown 1126 px (needs 2253)",
+      "img bg-grit-9x16.webp: file 1200 px, shown 1147 px (needs 2294)",
+      "img him-grit-9x16.webp: file 941 px, shown 1126 px (needs 2253)",
+      "img grit-hoy.webp: file 390 px, shown 222 px (needs 445)",
+      "img grit-serie.webp: file 390 px, shown 222 px (needs 445)",
+      "img grit-descanso.webp: file 390 px, shown 222 px (needs 445)",
+      "img grit-completado.webp: file 390 px, shown 222 px (needs 445)",
+      "img grit-ejercicio.webp: file 390 px, shown 222 px (needs 445)",
+      "img bg-guardia-9x16.webp: file 1200 px, shown 1147 px (needs 2294)",
+      "img him-guardia-9x16.webp: file 992 px, shown 1126 px (needs 2253)",
+      "img triaje-title.webp: file 1280 px, shown 1093 px (needs 2186)",
+      "img triaje-play-2.webp: file 1280 px, shown 1093 px (needs 2186)",
+      "img triaje-page.webp: file 960 px, shown 1093 px (needs 2186)",
+      "img triaje-scrolled.webp: file 960 px, shown 1093 px (needs 2186)",
+      "img The title screen of the : file 1280 px, shown 940 px (needs 1880)",
+      "img A shift of Triaje in pla: file 1280 px, shown 966 px (needs 1931)",
+      "img The Triaje page on itch.: file 960 px, shown 966 px (needs 1931)",
+      "img The Triaje page on itch.: file 960 px, shown 962 px (needs 1924)",
+      "img bg-cebador-9x16.webp: file 1200 px, shown 1147 px (needs 2294)",
+      "img him-cebador-9x16.webp: file 941 px, shown 1126 px (needs 2253)",
+      "img cebador-1280-poster.webp: file 960 px, shown 1093 px (needs 2186)",
+      "img cebador-s2-1280.webp: file 1280 px, shown 1093 px (needs 2186)",
+      "img cebador-s3-1280.webp: file 1280 px, shown 1093 px (needs 2186)",
+      "img The Cebador site scrolli: file 960 px, shown 940 px (needs 1879)",
+      "img The Cebador site's origi: file 1280 px, shown 966 px (needs 1931)",
+      "img The Cebador site's revie: file 1280 px, shown 962 px (needs 1925)",
+      "img bg-club-9x16.webp: file 1200 px, shown 1147 px (needs 2294)",
+      "img him-club-9x16.webp: file 1060 px, shown 1126 px (needs 2253)",
+      "img club-login.webp: file 360 px, shown 187 px (needs 373)",
+      "img club-sedes.webp: file 360 px, shown 187 px (needs 373)",
+      "img club-horarios.webp: file 360 px, shown 187 px (needs 373)",
+      "img club-listo.webp: file 360 px, shown 187 px (needs 373)",
+      "img club-login.webp: file 360 px, shown 222 px (needs 445)",
+      "img club-sedes.webp: file 360 px, shown 222 px (needs 445)",
+      "img club-horarios.webp: file 360 px, shown 222 px (needs 445)",
+      "img club-listo.webp: file 360 px, shown 222 px (needs 445)",
+      "img ill-experience-21x9.webp: file 1800 px, shown 1024 px (needs 2048)",
+      "img ill-exp-smart-warehousin: file 1448 px, shown 1024 px (needs 2048)",
+      "img ill-exp-grupo-st-4x3.web: file 1448 px, shown 1024 px (needs 2048)",
+      "img ill-exp-visma-4x3.webp: file 1448 px, shown 1024 px (needs 2048)",
+      "img ill-exp-fravega-4x3.webp: file 1448 px, shown 1024 px (needs 2048)",
+      "img ill-exp-justo-4x3.webp: file 1448 px, shown 1024 px (needs 2048)",
+      "img ill-offer-16x9.webp: file 1672 px, shown 1024 px (needs 2048)",
+      "img ill-contact-16x9.webp: file 1672 px, shown 1024 px (needs 2048)"
+     ]
+    },
+    {
+     "rule": "pasted boxes",
+     "value": 3,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img At the desk, building: 261/517/17783/5645 px of margin over a contrasting background",
+      "img At the desk, reviewing: 523/256/17783/5645 px of margin over a contrasting background",
+      "img Presenting the warehouse: 24/648/417/24 px of margin over a contrasting background"
+     ]
+    },
+    {
+     "rule": "repeated images",
+     "value": 18,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img grit-hoy.webp x4",
+      "img grit-serie.webp x4",
+      "img grit-descanso.webp x4",
+      "img grit-completado.webp x4",
+      "img grit-ejercicio.webp x4",
+      "img triaje-mobile.webp x2",
+      "img triaje-title.webp x2",
+      "img triaje-play-2.webp x2",
+      "img triaje-page.webp x2",
+      "img triaje-scrolled.webp x2",
+      "img cebador-390-poster.webp x2",
+      "img cebador-s2-390.webp x4",
+      "img cebador-1280-poster.webp x2",
+      "img cebador-s3-1280.webp x2",
+      "img club-login.webp x4",
+      "img club-sedes.webp x4",
+      "img club-horarios.webp x4",
+      "img club-listo.webp x4"
+     ]
+    },
+    {
+     "rule": "broken images (naturalWidth 0)",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "alt text painted as page text",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "LCP image",
+     "value": "lazy, hidden at t0",
+     "range": "not lazy, visible at t0",
+     "pass": false,
+     "detail": [
+      "img triaje-title.webp"
+     ]
+    },
+    {
+     "rule": "palette: CTA separation (OKLCH)",
+     "value": 0,
+     "range": ">= 1: ΔL 0.15, or ΔC 0.08, or hue 40° (both chromatic) from adjacent background, body and muted text",
+     "pass": false,
+     "detail": [
+      "CTA a.door.hero-door \"HIRE ME FOR A PROJEC\" fill #ede4d0 L 0.92",
+      "adjacent background #0c0c0b L 0.15: ΔL 0.77 ΔC 0.03 Δh 20°",
+      "body text #ede4d0 L 0.92: ΔL 0.00 ΔC 0.00 Δh 0°",
+      "muted text #b3261e L 0.50: ΔL 0.42 ΔC 0.15 Δh 58°"
+     ]
+    },
+    {
+     "rule": "palette: roles",
+     "value": "32 text / 97 background",
+     "range": "report only: text colors and background colors apart",
+     "pass": true,
+     "detail": [
+      "text #ede4d0 L 0.92, #0c0c0b L 0.15, #cec3ad L 0.82, #d2c7b0 L 0.83, #c6bca8 L 0.80, #aaa395 L 0.72, #d79c8c L 0.75, #b7a596 L 0.73",
+      "background #0c0c0b L 0.15, #ede4d0 L 0.92, #1b1915 L 0.21, #0e0c0a L 0.16, #0d0b0a L 0.15, #4d4436 L 0.39, #87755c L 0.57, #0c0b0a L 0.15"
+     ],
+     "report": true
+    },
+    {
+     "rule": "palette: text contrast (WCAG AA)",
+     "value": 11,
+     "range": "0 pairs under 4.5:1 (3:1 large)",
+     "pass": false,
+     "detail": [
+      "dt \"Subject\" #cec3ad on #87755c 2.53:1",
+      "dt \"Name\" #d2c7b0 on #948266 2.21:1",
+      "dd \"Nahuel Mosse\" #ede4d0 on #8f7c5f 3.20:1",
+      "dt \"Role\" #c6bca8 on #6b5e4a 3.34:1",
+      "b \"02\" #d79c8c on #b3261e 2.81:1",
+      "b \"01\" #b3261e on #1e0f0d 2.84:1",
+      "span.kit-stamp \"PR\" #741c17 on #8c7c71 2.71:1",
+      "b \"01\" #9faed2 on #1f55d6 2.84:1"
+     ]
+    },
+    {
+     "rule": "palette: APCA Lc (report)",
+     "value": 0,
+     "range": "reported: body >= 75, loose text >= 30",
+     "pass": true,
+     "detail": [
+      "b \"03\" #0c0c0b on #122922 Lc 0 (14px)",
+      "b \"01\" #1c5747 on #122922 Lc -11 (14px)",
+      "b \"01\" #b3261e on #1e0f0d Lc -20 (14px)",
+      "span.kit-stamp \"PR\" #741c17 on #8c7c71 Lc 25 (28px)",
+      "b \"02\" #d79c8c on #b3261e Lc -34 (14px)"
+     ]
+    },
+    {
+     "rule": "palette: text over images",
+     "value": 15,
+     "range": "0 of 18 texts under 3:1 against the worst tenth of the pixels behind them (a scrim or a calmer crop)",
+     "pass": false,
+     "detail": [
+      "p.sheet-title \"Identification sheet\" #ede4d0 on #d1b993 1.50:1",
+      "dt \"Subject\" #cec3ad on #aa9577 1.65:1",
+      "dt \"Role\" #c6bca8 on #897961 2.24:1",
+      "a.door.hero-door \"Hire me for a projec\" #0c0c0b on #0c0c0b 1.00:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1"
+     ]
+    },
+    {
+     "rule": "brand: fonts in the brand sheet",
+     "value": 0,
+     "range": "0 families outside Boska, General Sans, Boska, General Sans, Courier Prime",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "brand: primary action color in the brand sheet",
+     "value": 0,
+     "range": "<= 0.06 OKLab from an action color of the sheet",
+     "pass": true,
+     "detail": [
+      "primary action #ede4d0, nearest #ede4d0 (ΔL 0.000, tint 0.000)"
+     ]
+    },
+    {
+     "rule": "brand: page background color in the brand sheet",
+     "value": 0.001,
+     "range": "tint <= 0.008 and lightness <= 0.03 from a background color of the sheet",
+     "pass": true,
+     "detail": [
+      "page background #1e0f0d, nearest #1a0b09 (ΔL 0.018, tint 0.001)"
+     ]
+    },
+    {
+     "rule": "pinned scroll",
+     "value": "5 pins, 40% of 22966 px",
+     "range": "report only: pin lengths and their share of the scroll",
+     "pass": true,
+     "report": true,
+     "detail": [
+      "pin 1 sticky div.show-stage: 953-3641 px, 2688 px",
+      "pin 2 sticky div.show-stage: 4409-6022 px, 1613 px",
+      "pin 3 sticky div.show-stage: 6789-8402 px, 1613 px",
+      "pin 4 sticky div.show-stage: 9170-10783 px, 1613 px",
+      "pin 5 sticky div.show-stage: 11551-13164 px, 1613 px"
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "frame": 1,
+     "y": 0,
+     "n": 18,
+     "focalShare": 0.596,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 7,
+     "empty": 0.266,
+     "flags": [],
+     "reported": []
+    },
+    {
+     "frame": 2,
+     "y": 768,
+     "n": 18,
+     "focalShare": 0.82,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 10,
+     "empty": 0.093,
+     "flags": [
+      "focal 82% over 60%",
+      "10 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 3,
+     "y": 1536,
+     "n": 28,
+     "focalShare": 0.247,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 15,
+     "empty": 0.568,
+     "flags": [
+      "15 axes (2-9)",
+      "28 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 4,
+     "y": 2304,
+     "n": 27,
+     "focalShare": 0.242,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 14,
+     "empty": 0.614,
+     "flags": [
+      "14 axes (2-9)",
+      "27 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 5,
+     "y": 3072,
+     "n": 28,
+     "focalShare": 0.236,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 14,
+     "empty": 0.613,
+     "flags": [
+      "14 axes (2-9)",
+      "28 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 6,
+     "y": 3840,
+     "n": 32,
+     "focalShare": 0.76,
+     "focalKind": "media",
+     "competing": 2,
+     "axes": 15,
+     "empty": 0,
+     "flags": [
+      "focal 76% over 60%",
+      "15 axes (2-9)",
+      "32 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 7,
+     "y": 4608,
+     "n": 17,
+     "focalShare": 0.453,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 9,
+     "empty": 0.392,
+     "flags": [],
+     "reported": []
+    },
+    {
+     "frame": 8,
+     "y": 5376,
+     "n": 19,
+     "focalShare": 0.453,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 8,
+     "empty": 0.398,
+     "flags": [],
+     "reported": []
+    },
+    {
+     "frame": 9,
+     "y": 6144,
+     "n": 26,
+     "focalShare": 0.86,
+     "focalKind": "media",
+     "competing": 2,
+     "axes": 11,
+     "empty": 0,
+     "flags": [
+      "focal 86% over 60%",
+      "11 axes (2-9)",
+      "26 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 10,
+     "y": 6912,
+     "n": 16,
+     "focalShare": 0.761,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 11,
+     "empty": 0.092,
+     "flags": [
+      "focal 76% over 60%",
+      "11 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 11,
+     "y": 7680,
+     "n": 18,
+     "focalShare": 0.761,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 10,
+     "empty": 0.095,
+     "flags": [
+      "focal 76% over 60%",
+      "10 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 12,
+     "y": 8448,
+     "n": 22,
+     "focalShare": 0.821,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 13,
+     "empty": 0.045,
+     "flags": [
+      "focal 82% over 60%",
+      "13 axes (2-9)"
+     ],
+     "reported": []
+    }
+   ],
+   "images": {
+    "low": [
+     "img ill-cover-16x9.webp: file 1672 px, shown 1024 px (needs 2048)",
+     "img bg-kit-9x16.webp: file 1200 px, shown 1147 px (needs 2294)",
+     "img him-kit-9x16.webp: file 1064 px, shown 1126 px (needs 2253)",
+     "img plate-track-kit-9x16.web: file 1000 px, shown 1126 px (needs 2253)",
+     "img bg-grit-9x16.webp: file 1200 px, shown 1147 px (needs 2294)",
+     "img him-grit-9x16.webp: file 941 px, shown 1126 px (needs 2253)",
+     "img grit-hoy.webp: file 390 px, shown 222 px (needs 445)",
+     "img grit-serie.webp: file 390 px, shown 222 px (needs 445)",
+     "img grit-descanso.webp: file 390 px, shown 222 px (needs 445)",
+     "img grit-completado.webp: file 390 px, shown 222 px (needs 445)",
+     "img grit-ejercicio.webp: file 390 px, shown 222 px (needs 445)",
+     "img bg-guardia-9x16.webp: file 1200 px, shown 1147 px (needs 2294)",
+     "img him-guardia-9x16.webp: file 992 px, shown 1126 px (needs 2253)",
+     "img triaje-title.webp: file 1280 px, shown 1093 px (needs 2186)",
+     "img triaje-play-2.webp: file 1280 px, shown 1093 px (needs 2186)",
+     "img triaje-page.webp: file 960 px, shown 1093 px (needs 2186)",
+     "img triaje-scrolled.webp: file 960 px, shown 1093 px (needs 2186)",
+     "img The title screen of the : file 1280 px, shown 940 px (needs 1880)",
+     "img A shift of Triaje in pla: file 1280 px, shown 966 px (needs 1931)",
+     "img The Triaje page on itch.: file 960 px, shown 966 px (needs 1931)",
+     "img The Triaje page on itch.: file 960 px, shown 962 px (needs 1924)",
+     "img bg-cebador-9x16.webp: file 1200 px, shown 1147 px (needs 2294)",
+     "img him-cebador-9x16.webp: file 941 px, shown 1126 px (needs 2253)",
+     "img cebador-1280-poster.webp: file 960 px, shown 1093 px (needs 2186)",
+     "img cebador-s2-1280.webp: file 1280 px, shown 1093 px (needs 2186)",
+     "img cebador-s3-1280.webp: file 1280 px, shown 1093 px (needs 2186)",
+     "img The Cebador site scrolli: file 960 px, shown 940 px (needs 1879)",
+     "img The Cebador site's origi: file 1280 px, shown 966 px (needs 1931)",
+     "img The Cebador site's revie: file 1280 px, shown 962 px (needs 1925)",
+     "img bg-club-9x16.webp: file 1200 px, shown 1147 px (needs 2294)",
+     "img him-club-9x16.webp: file 1060 px, shown 1126 px (needs 2253)",
+     "img club-login.webp: file 360 px, shown 187 px (needs 373)",
+     "img club-sedes.webp: file 360 px, shown 187 px (needs 373)",
+     "img club-horarios.webp: file 360 px, shown 187 px (needs 373)",
+     "img club-listo.webp: file 360 px, shown 187 px (needs 373)",
+     "img club-login.webp: file 360 px, shown 222 px (needs 445)",
+     "img club-sedes.webp: file 360 px, shown 222 px (needs 445)",
+     "img club-horarios.webp: file 360 px, shown 222 px (needs 445)",
+     "img club-listo.webp: file 360 px, shown 222 px (needs 445)",
+     "img ill-experience-21x9.webp: file 1800 px, shown 1024 px (needs 2048)",
+     "img ill-exp-smart-warehousin: file 1448 px, shown 1024 px (needs 2048)",
+     "img ill-exp-grupo-st-4x3.web: file 1448 px, shown 1024 px (needs 2048)",
+     "img ill-exp-visma-4x3.webp: file 1448 px, shown 1024 px (needs 2048)",
+     "img ill-exp-fravega-4x3.webp: file 1448 px, shown 1024 px (needs 2048)",
+     "img ill-exp-justo-4x3.webp: file 1448 px, shown 1024 px (needs 2048)",
+     "img ill-offer-16x9.webp: file 1672 px, shown 1024 px (needs 2048)",
+     "img ill-contact-16x9.webp: file 1672 px, shown 1024 px (needs 2048)"
+    ],
+    "pasted": [
+     "img At the desk, building: 261/517/17783/5645 px of margin over a contrasting background",
+     "img At the desk, reviewing: 523/256/17783/5645 px of margin over a contrasting background",
+     "img Presenting the warehouse: 24/648/417/24 px of margin over a contrasting background"
+    ],
+    "unknown": [],
+    "repeated": [
+     "img grit-hoy.webp x4",
+     "img grit-serie.webp x4",
+     "img grit-descanso.webp x4",
+     "img grit-completado.webp x4",
+     "img grit-ejercicio.webp x4",
+     "img triaje-mobile.webp x2",
+     "img triaje-title.webp x2",
+     "img triaje-play-2.webp x2",
+     "img triaje-page.webp x2",
+     "img triaje-scrolled.webp x2",
+     "img cebador-390-poster.webp x2",
+     "img cebador-s2-390.webp x4",
+     "img cebador-1280-poster.webp x2",
+     "img cebador-s3-1280.webp x2",
+     "img club-login.webp x4",
+     "img club-sedes.webp x4",
+     "img club-horarios.webp x4",
+     "img club-listo.webp x4"
+    ],
+    "lcp": {
+     "img": "img triaje-title.webp",
+     "lazy": true,
+     "visibleT0": false
+    },
+    "sizes": [
+     {
+      "img": "img ill-cover-16x9.webp",
+      "file": 1672,
+      "shown": 1024
+     },
+     {
+      "img": "img Nahuel Mosse, front",
+      "file": 640,
+      "shown": 64
+     },
+     {
+      "img": "img Nahuel Mosse, profile",
+      "file": 640,
+      "shown": 64
+     },
+     {
+      "img": "img bg-kit-9x16.webp",
+      "file": 1200,
+      "shown": 1147
+     },
+     {
+      "img": "img him-kit-9x16.webp",
+      "file": 1064,
+      "shown": 1126
+     },
+     {
+      "img": "img plate-track-kit-9x16.web",
+      "file": 1000,
+      "shown": 1126
+     },
+     {
+      "img": "img bg-grit-9x16.webp",
+      "file": 1200,
+      "shown": 1147
+     },
+     {
+      "img": "img him-grit-9x16.webp",
+      "file": 941,
+      "shown": 1126
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 187
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 187
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 187
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 187
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 187
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 150
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 146
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 150
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 150
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 150
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 222
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 222
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 222
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 222
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 222
+     },
+     {
+      "img": "img Grit's Hoy screen with t",
+      "file": 390,
+      "shown": 174
+     },
+     {
+      "img": "img Grit's set entry screen,",
+      "file": 390,
+      "shown": 179
+     },
+     {
+      "img": "img Grit's rest timer counti",
+      "file": 390,
+      "shown": 179
+     },
+     {
+      "img": "img Grit's summary of the co",
+      "file": 390,
+      "shown": 178
+     },
+     {
+      "img": "img Grit's exercise detail w",
+      "file": 390,
+      "shown": 179
+     },
+     {
+      "img": "img bg-guardia-9x16.webp",
+      "file": 1200,
+      "shown": 1147
+     },
+     {
+      "img": "img him-guardia-9x16.webp",
+      "file": 992,
+      "shown": 1126
+     },
+     {
+      "img": "img triaje-mobile.webp",
+      "file": 360,
+      "shown": 107
+     },
+     {
+      "img": "img triaje-mobile.webp",
+      "file": 360,
+      "shown": 73
+     },
+     {
+      "img": "img triaje-title.webp",
+      "file": 1280,
+      "shown": 1093
+     },
+     {
+      "img": "img triaje-play-2.webp",
+      "file": 1280,
+      "shown": 1093
+     },
+     {
+      "img": "img triaje-page.webp",
+      "file": 960,
+      "shown": 1093
+     },
+     {
+      "img": "img triaje-scrolled.webp",
+      "file": 960,
+      "shown": 1093
+     },
+     {
+      "img": "img The title screen of the ",
+      "file": 1280,
+      "shown": 940
+     },
+     {
+      "img": "img A shift of Triaje in pla",
+      "file": 1280,
+      "shown": 966
+     },
+     {
+      "img": "img The Triaje page on itch.",
+      "file": 960,
+      "shown": 966
+     },
+     {
+      "img": "img The Triaje page on itch.",
+      "file": 960,
+      "shown": 962
+     },
+     {
+      "img": "img bg-cebador-9x16.webp",
+      "file": 1200,
+      "shown": 1147
+     },
+     {
+      "img": "img him-cebador-9x16.webp",
+      "file": 941,
+      "shown": 1126
+     },
+     {
+      "img": "img cebador-390-poster.webp",
+      "file": 360,
+      "shown": 107
+     },
+     {
+      "img": "img cebador-s2-390.webp",
+      "file": 390,
+      "shown": 107
+     },
+     {
+      "img": "img cebador-390-poster.webp",
+      "file": 360,
+      "shown": 73
+     },
+     {
+      "img": "img cebador-s2-390.webp",
+      "file": 390,
+      "shown": 75
+     },
+     {
+      "img": "img cebador-1280-poster.webp",
+      "file": 960,
+      "shown": 1093
+     },
+     {
+      "img": "img cebador-s2-1280.webp",
+      "file": 1280,
+      "shown": 1093
+     },
+     {
+      "img": "img cebador-s3-1280.webp",
+      "file": 1280,
+      "shown": 1093
+     },
+     {
+      "img": "img The Cebador site scrolli",
+      "file": 960,
+      "shown": 940
+     },
+     {
+      "img": "img The Cebador site's origi",
+      "file": 1280,
+      "shown": 966
+     },
+     {
+      "img": "img The Cebador site's revie",
+      "file": 1280,
+      "shown": 962
+     },
+     {
+      "img": "img bg-club-9x16.webp",
+      "file": 1200,
+      "shown": 1147
+     },
+     {
+      "img": "img him-club-9x16.webp",
+      "file": 1060,
+      "shown": 1126
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 187
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 187
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 187
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 187
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 150
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 146
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 150
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 150
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 222
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 222
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 222
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 222
+     },
+     {
+      "img": "img ClubNahuelMosse login sc",
+      "file": 360,
+      "shown": 174
+     },
+     {
+      "img": "img ClubNahuelMosse venue li",
+      "file": 360,
+      "shown": 179
+     },
+     {
+      "img": "img ClubNahuelMosse court sc",
+      "file": 360,
+      "shown": 179
+     },
+     {
+      "img": "img ClubNahuelMosse reservat",
+      "file": 360,
+      "shown": 178
+     },
+     {
+      "img": "img ill-experience-21x9.webp",
+      "file": 1800,
+      "shown": 1024
+     },
+     {
+      "img": "img ill-exp-smart-warehousin",
+      "file": 1448,
+      "shown": 1024
+     },
+     {
+      "img": "img ill-exp-grupo-st-4x3.web",
+      "file": 1448,
+      "shown": 1024
+     },
+     {
+      "img": "img ill-exp-visma-4x3.webp",
+      "file": 1448,
+      "shown": 1024
+     },
+     {
+      "img": "img On site in a warehouse, ",
+      "file": 1080,
+      "shown": 245
+     },
+     {
+      "img": "img At the desk, building",
+      "file": 600,
+      "shown": 245
+     },
+     {
+      "img": "img At the desk, reviewing",
+      "file": 560,
+      "shown": 245
+     },
+     {
+      "img": "img ill-exp-fravega-4x3.webp",
+      "file": 1448,
+      "shown": 1024
+     },
+     {
+      "img": "img Presenting the warehouse",
+      "file": 880,
+      "shown": 288
+     },
+     {
+      "img": "img ill-exp-justo-4x3.webp",
+      "file": 1448,
+      "shown": 1024
+     },
+     {
+      "img": "img ill-offer-16x9.webp",
+      "file": 1672,
+      "shown": 1024
+     },
+     {
+      "img": "img ill-contact-16x9.webp",
+      "file": 1672,
+      "shown": 1024
+     }
+    ],
+    "broken": [],
+    "altShown": []
+   },
+   "sweep": null,
+   "canvas": [],
+   "scrub": {
+    "total": 22966,
+    "pins": [
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 953,
+      "end": 3641,
+      "length": 2688
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 4409,
+      "end": 6022,
+      "length": 1613
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 6789,
+      "end": 8402,
+      "length": 1613
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 9170,
+      "end": 10783,
+      "length": 1613
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 11551,
+      "end": 13164,
+      "length": 1613
+     }
+    ],
+    "frames": [
+     {
+      "y": 953,
+      "name": "pin-1-1"
+     },
+     {
+      "y": 1625,
+      "name": "pin-1-2"
+     },
+     {
+      "y": 2297,
+      "name": "pin-1-3"
+     },
+     {
+      "y": 2969,
+      "name": "pin-1-4"
+     },
+     {
+      "y": 3641,
+      "name": "pin-1-5"
+     },
+     {
+      "y": 3833,
+      "name": "pin-1-after"
+     },
+     {
+      "y": 4409,
+      "name": "pin-2-1"
+     },
+     {
+      "y": 4812,
+      "name": "pin-2-2"
+     },
+     {
+      "y": 5216,
+      "name": "pin-2-3"
+     },
+     {
+      "y": 5619,
+      "name": "pin-2-4"
+     },
+     {
+      "y": 6022,
+      "name": "pin-2-5"
+     },
+     {
+      "y": 6214,
+      "name": "pin-2-after"
+     },
+     {
+      "y": 6789,
+      "name": "pin-3-1"
+     },
+     {
+      "y": 7192,
+      "name": "pin-3-2"
+     },
+     {
+      "y": 7596,
+      "name": "pin-3-3"
+     },
+     {
+      "y": 7999,
+      "name": "pin-3-4"
+     },
+     {
+      "y": 8402,
+      "name": "pin-3-5"
+     },
+     {
+      "y": 8594,
+      "name": "pin-3-after"
+     },
+     {
+      "y": 9170,
+      "name": "pin-4-1"
+     },
+     {
+      "y": 9573,
+      "name": "pin-4-2"
+     },
+     {
+      "y": 9977,
+      "name": "pin-4-3"
+     },
+     {
+      "y": 10380,
+      "name": "pin-4-4"
+     },
+     {
+      "y": 10783,
+      "name": "pin-4-5"
+     },
+     {
+      "y": 10975,
+      "name": "pin-4-after"
+     },
+     {
+      "y": 11551,
+      "name": "pin-5-1"
+     },
+     {
+      "y": 11954,
+      "name": "pin-5-2"
+     },
+     {
+      "y": 12358,
+      "name": "pin-5-3"
+     },
+     {
+      "y": 12761,
+      "name": "pin-5-4"
+     },
+     {
+      "y": 13164,
+      "name": "pin-5-5"
+     },
+     {
+      "y": 13356,
+      "name": "pin-5-after"
+     }
+    ],
+    "sharePct": 40
+   },
+   "layout": {
+    "hero": {
+     "n": 18,
+     "span": 1,
+     "widest": 1
+    },
+    "sections": [
+     {
+      "name": "#cold-open",
+      "cols": 1
+     },
+     {
+      "name": "#projects",
+      "cols": 1
+     },
+     {
+      "name": "#experience",
+      "cols": 3
+     },
+     {
+      "name": "#end-credits",
+      "cols": 28
+     }
+    ]
+   },
+   "product": null
+  },
+  "768x1024": {
+   "measure": {
+    "grain": true,
+    "displayPx": 314.88,
+    "ratio": 19.68,
+    "displayLineHeight": 0.82,
+    "displayTrackingEm": -0.02,
+    "displaySample": "h1.mark \"NAWI\"",
+    "displayLate": false,
+    "bodyTrackingEm": 0,
+    "sizes": [
+     14,
+     16,
+     28,
+     40,
+     315
+    ],
+    "sizeCount": 5
+   },
+   "responsive": {
+    "width": 768,
+    "tapSmall": [],
+    "clickSmall": [],
+    "medianButton": 44,
+    "hoverOnly": [],
+    "smallFields": [],
+    "overflow": {
+     "scrollWidth": 768,
+     "clientWidth": 768
+    },
+    "queries": {
+     "min": 14,
+     "max": 2
+    },
+    "coveredPct": 6,
+    "cta": {
+     "name": "a.door.hero-door 117x118",
+     "topPct": 87,
+     "bottomPct": 98,
+     "pinned": false
+    },
+    "nav": {
+     "bottomBar": true,
+     "hamburger": false,
+     "hamburgerLabeled": false
+    }
+   },
+   "rules": [
+    {
+     "rule": "display/body ratio",
+     "value": 19.68,
+     "range": "report only: winners median 2.9x, 2-9x",
+     "pass": true,
+     "report": true
+    },
+    {
+     "rule": "display line height",
+     "value": 0.82,
+     "range": "report only: winners median 1.0",
+     "pass": true,
+     "report": true
+    },
+    {
+     "rule": "display tracking (em)",
+     "value": -0.02,
+     "range": "-0.03..-0.02",
+     "pass": true
+    },
+    {
+     "rule": "body tracking (em)",
+     "value": 0,
+     "range": "0..0.02",
+     "pass": true
+    },
+    {
+     "rule": "font sizes, first viewport",
+     "value": 5,
+     "range": "<= 9",
+     "pass": true
+    },
+    {
+     "rule": "grain or noise",
+     "value": "yes",
+     "range": "a texture, or none declared",
+     "pass": true
+    },
+    {
+     "rule": "frames with 2+ flags",
+     "value": 8,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "frame 2: focal 89% over 60%; 14 axes (2-9)",
+      "frame 3: 14 axes (2-9); 28 elements (5-24)",
+      "frame 4: 15 axes (2-9); 27 elements (5-24); 71% empty (max 70%)",
+      "frame 5: 15 axes (2-9); 28 elements (5-24); 71% empty (max 70%)",
+      "frame 6: focal 68% over 60%; 4 compete (max 3); 17 axes (2-9); 32 elements (5-24)",
+      "frame 7: 4 compete (max 3); 11 axes (2-9)",
+      "frame 8: 4 compete (max 3); 10 axes (2-9)",
+      "frame 9: focal 78% over 60%; 13 axes (2-9); 26 elements (5-24)"
+     ]
+    },
+    {
+     "rule": "void frames (>70% empty, no focal)",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "image file width >= shown x 2",
+     "value": 66,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img bg-kit-9x16.webp: file 1200 px, shown 860 px (needs 1720)",
+      "img him-kit-9x16.webp: file 1064 px, shown 845 px (needs 1690)",
+      "img plate-track-kit-9x16.web: file 1000 px, shown 845 px (needs 1690)",
+      "img bg-grit-9x16.webp: file 1200 px, shown 860 px (needs 1720)",
+      "img him-grit-9x16.webp: file 941 px, shown 845 px (needs 1690)",
+      "img grit-hoy.webp: file 390 px, shown 249 px (needs 498)",
+      "img grit-serie.webp: file 390 px, shown 249 px (needs 498)",
+      "img grit-descanso.webp: file 390 px, shown 249 px (needs 498)",
+      "img grit-completado.webp: file 390 px, shown 249 px (needs 498)",
+      "img grit-ejercicio.webp: file 390 px, shown 249 px (needs 498)",
+      "img grit-hoy.webp: file 390 px, shown 206 px (needs 412)",
+      "img grit-serie.webp: file 390 px, shown 201 px (needs 402)",
+      "img grit-descanso.webp: file 390 px, shown 206 px (needs 412)",
+      "img grit-completado.webp: file 390 px, shown 206 px (needs 412)",
+      "img grit-ejercicio.webp: file 390 px, shown 205 px (needs 411)",
+      "img grit-hoy.webp: file 390 px, shown 296 px (needs 593)",
+      "img grit-serie.webp: file 390 px, shown 296 px (needs 593)",
+      "img grit-descanso.webp: file 390 px, shown 296 px (needs 593)",
+      "img grit-completado.webp: file 390 px, shown 296 px (needs 593)",
+      "img grit-ejercicio.webp: file 390 px, shown 296 px (needs 593)",
+      "img Grit's Hoy screen with t: file 390 px, shown 239 px (needs 478)",
+      "img Grit's set entry screen,: file 390 px, shown 245 px (needs 491)",
+      "img Grit's rest timer counti: file 390 px, shown 245 px (needs 491)",
+      "img Grit's summary of the co: file 390 px, shown 244 px (needs 489)",
+      "img Grit's exercise detail w: file 390 px, shown 245 px (needs 491)",
+      "img bg-guardia-9x16.webp: file 1200 px, shown 860 px (needs 1720)",
+      "img him-guardia-9x16.webp: file 992 px, shown 845 px (needs 1690)",
+      "img triaje-title.webp: file 1280 px, shown 820 px (needs 1639)",
+      "img triaje-play-2.webp: file 1280 px, shown 820 px (needs 1639)",
+      "img triaje-page.webp: file 960 px, shown 820 px (needs 1639)",
+      "img triaje-scrolled.webp: file 960 px, shown 820 px (needs 1639)",
+      "img The title screen of the : file 1280 px, shown 701 px (needs 1403)",
+      "img A shift of Triaje in pla: file 1280 px, shown 721 px (needs 1441)",
+      "img The Triaje page on itch.: file 960 px, shown 721 px (needs 1441)",
+      "img The Triaje page on itch.: file 960 px, shown 718 px (needs 1436)",
+      "img bg-cebador-9x16.webp: file 1200 px, shown 860 px (needs 1720)",
+      "img him-cebador-9x16.webp: file 941 px, shown 845 px (needs 1690)",
+      "img cebador-1280-poster.webp: file 960 px, shown 820 px (needs 1639)",
+      "img cebador-s2-1280.webp: file 1280 px, shown 820 px (needs 1639)",
+      "img cebador-s3-1280.webp: file 1280 px, shown 820 px (needs 1639)",
+      "img The Cebador site scrolli: file 960 px, shown 701 px (needs 1403)",
+      "img The Cebador site's origi: file 1280 px, shown 721 px (needs 1441)",
+      "img The Cebador site's revie: file 1280 px, shown 718 px (needs 1436)",
+      "img bg-club-9x16.webp: file 1200 px, shown 860 px (needs 1720)",
+      "img him-club-9x16.webp: file 1060 px, shown 845 px (needs 1690)",
+      "img club-login.webp: file 360 px, shown 249 px (needs 498)",
+      "img club-sedes.webp: file 360 px, shown 249 px (needs 498)",
+      "img club-horarios.webp: file 360 px, shown 249 px (needs 498)",
+      "img club-listo.webp: file 360 px, shown 249 px (needs 498)",
+      "img club-login.webp: file 360 px, shown 205 px (needs 411)",
+      "img club-sedes.webp: file 360 px, shown 201 px (needs 401)",
+      "img club-horarios.webp: file 360 px, shown 206 px (needs 412)",
+      "img club-listo.webp: file 360 px, shown 206 px (needs 412)",
+      "img club-login.webp: file 360 px, shown 296 px (needs 593)",
+      "img club-sedes.webp: file 360 px, shown 296 px (needs 593)",
+      "img club-horarios.webp: file 360 px, shown 296 px (needs 593)",
+      "img club-listo.webp: file 360 px, shown 296 px (needs 593)",
+      "img ClubNahuelMosse login sc: file 360 px, shown 239 px (needs 478)",
+      "img ClubNahuelMosse venue li: file 360 px, shown 245 px (needs 491)",
+      "img ClubNahuelMosse court sc: file 360 px, shown 245 px (needs 491)",
+      "img ClubNahuelMosse reservat: file 360 px, shown 245 px (needs 489)",
+      "img ill-exp-smart-warehousin: file 1448 px, shown 768 px (needs 1536)",
+      "img ill-exp-grupo-st-4x3.web: file 1448 px, shown 768 px (needs 1536)",
+      "img ill-exp-visma-4x3.webp: file 1448 px, shown 768 px (needs 1536)",
+      "img ill-exp-fravega-4x3.webp: file 1448 px, shown 768 px (needs 1536)",
+      "img ill-exp-justo-4x3.webp: file 1448 px, shown 768 px (needs 1536)"
+     ]
+    },
+    {
+     "rule": "pasted boxes",
+     "value": 2,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img At the desk, building: 261/261/21751/5276 px of margin over a contrasting background",
+      "img Presenting the warehouse: 24/392/378/24 px of margin over a contrasting background"
+     ]
+    },
+    {
+     "rule": "repeated images",
+     "value": 18,
+     "range": "0",
+     "pass": false,
+     "detail": [
+      "img grit-hoy.webp x4",
+      "img grit-serie.webp x4",
+      "img grit-descanso.webp x4",
+      "img grit-completado.webp x4",
+      "img grit-ejercicio.webp x4",
+      "img triaje-mobile.webp x2",
+      "img triaje-title.webp x2",
+      "img triaje-play-2.webp x2",
+      "img triaje-page.webp x2",
+      "img triaje-scrolled.webp x2",
+      "img cebador-390-poster.webp x2",
+      "img cebador-s2-390.webp x4",
+      "img cebador-1280-poster.webp x2",
+      "img cebador-s3-1280.webp x2",
+      "img club-login.webp x4",
+      "img club-sedes.webp x4",
+      "img club-horarios.webp x4",
+      "img club-listo.webp x4"
+     ]
+    },
+    {
+     "rule": "broken images (naturalWidth 0)",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "alt text painted as page text",
+     "value": 0,
+     "range": "0",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "LCP image",
+     "value": "lazy, hidden at t0",
+     "range": "not lazy, visible at t0",
+     "pass": false,
+     "detail": [
+      "img triaje-title.webp"
+     ]
+    },
+    {
+     "rule": "palette: CTA separation (OKLCH)",
+     "value": 0,
+     "range": ">= 1: ΔL 0.15, or ΔC 0.08, or hue 40° (both chromatic) from adjacent background, body and muted text",
+     "pass": false,
+     "detail": [
+      "CTA a.door.hero-door \"HIRE ME FOR A PROJEC\" fill #ede4d0 L 0.92",
+      "adjacent background #0c0c0b L 0.15: ΔL 0.77 ΔC 0.03 Δh 20°",
+      "body text #ede4d0 L 0.92: ΔL 0.00 ΔC 0.00 Δh 0°",
+      "muted text #acb1a0 L 0.75: ΔL 0.17 ΔC 0.00 Δh 35°"
+     ]
+    },
+    {
+     "rule": "palette: roles",
+     "value": "30 text / 106 background",
+     "range": "report only: text colors and background colors apart",
+     "pass": true,
+     "detail": [
+      "text #ede4d0 L 0.92, #0c0c0b L 0.15, #d0c4ae L 0.82, #beb5a2 L 0.78, #c9bfaa L 0.81, #aaa395 L 0.72, #d79c8c L 0.75, #b3261e L 0.50",
+      "background #0c0c0b L 0.15, #ede4d0 L 0.92, #151310 L 0.19, #0e0c0b L 0.16, #0d0b0a L 0.15, #8c7a5e L 0.59, #564937 L 0.41, #514738 L 0.40"
+     ],
+     "report": true
+    },
+    {
+     "rule": "palette: text contrast (WCAG AA)",
+     "value": 12,
+     "range": "0 pairs under 4.5:1 (3:1 large)",
+     "pass": false,
+     "detail": [
+      "dt \"Subject\" #d0c4ae on #8c7a5e 2.42:1",
+      "dt \"Name\" #beb5a2 on #514738 4.46:1",
+      "dt \"Role\" #c9bfaa on #756853 2.99:1",
+      "b \"02\" #d79c8c on #b3261e 2.81:1",
+      "b \"01\" #b3261e on #ccc4b3 3.77:1",
+      "b \"02\" #b3261e on #d0c8b6 3.92:1",
+      "b \"04\" #b3261e on #d8cfbd 4.24:1",
+      "b \"06\" #b3261e on #cfc7b6 3.88:1"
+     ]
+    },
+    {
+     "rule": "palette: APCA Lc (report)",
+     "value": 34,
+     "range": "reported: body >= 75, loose text >= 30",
+     "pass": true,
+     "detail": [
+      "b \"02\" #d79c8c on #b3261e Lc -34 (14px)",
+      "b \"01\" #9faed2 on #1f55d6 Lc -36 (14px)",
+      "dt \"Subject\" #d0c4ae on #8c7a5e Lc -38 (14px)",
+      "span \"Club\" #634748 on #d5999b Lc 40 (14px)",
+      "dt \"Role\" #c9bfaa on #756853 Lc -43 (14px)"
+     ]
+    },
+    {
+     "rule": "palette: text over images",
+     "value": 17,
+     "range": "0 of 21 texts under 3:1 against the worst tenth of the pixels behind them (a scrim or a calmer crop)",
+     "pass": false,
+     "detail": [
+      "dt \"Name\" #beb5a2 on #857863 2.12:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "b \"01\" #b3261e on #9a9487 2.17:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "b \"02\" #b3261e on #9b9588 2.19:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1",
+      "b \"04\" #b3261e on #a9a395 2.60:1",
+      "p.show-word \"Dev kit\" #ede4d0 on #ede4d0 1.00:1"
+     ]
+    },
+    {
+     "rule": "brand: fonts in the brand sheet",
+     "value": 0,
+     "range": "0 families outside Boska, General Sans, Boska, General Sans, Courier Prime",
+     "pass": true,
+     "detail": []
+    },
+    {
+     "rule": "brand: primary action color in the brand sheet",
+     "value": 0,
+     "range": "<= 0.06 OKLab from an action color of the sheet",
+     "pass": true,
+     "detail": [
+      "primary action #ede4d0, nearest #ede4d0 (ΔL 0.000, tint 0.000)"
+     ]
+    },
+    {
+     "rule": "brand: page background color in the brand sheet",
+     "value": 0,
+     "range": "tint <= 0.008 and lightness <= 0.03 from a background color of the sheet",
+     "pass": true,
+     "detail": [
+      "page background #1f0f0d, nearest #1a0b09 (ΔL 0.019, tint 0.000)"
+     ]
+    },
+    {
+     "rule": "pinned scroll",
+     "value": "5 pins, 46% of 26310 px",
+     "range": "report only: pin lengths and their share of the scroll",
+     "pass": true,
+     "report": true,
+     "detail": [
+      "pin 1 sticky div.show-stage: 1186-4770 px, 3584 px",
+      "pin 2 sticky div.show-stage: 5794-7944 px, 2150 px",
+      "pin 3 sticky div.show-stage: 8968-11118 px, 2150 px",
+      "pin 4 sticky div.show-stage: 12142-14292 px, 2150 px",
+      "pin 5 sticky div.show-stage: 15317-17467 px, 2150 px"
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "frame": 1,
+     "y": 0,
+     "n": 18,
+     "focalShare": 0.342,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 7,
+     "empty": 0.474,
+     "flags": [],
+     "reported": []
+    },
+    {
+     "frame": 2,
+     "y": 1024,
+     "n": 24,
+     "focalShare": 0.892,
+     "focalKind": "media",
+     "competing": 2,
+     "axes": 14,
+     "empty": 0.061,
+     "flags": [
+      "focal 89% over 60%",
+      "14 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 3,
+     "y": 2048,
+     "n": 28,
+     "focalShare": 0.139,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 14,
+     "empty": 0.681,
+     "flags": [
+      "14 axes (2-9)",
+      "28 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 4,
+     "y": 3072,
+     "n": 27,
+     "focalShare": 0.137,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 15,
+     "empty": 0.707,
+     "flags": [
+      "15 axes (2-9)",
+      "27 elements (5-24)",
+      "71% empty (max 70%)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 5,
+     "y": 4096,
+     "n": 28,
+     "focalShare": 0.133,
+     "focalKind": "text",
+     "competing": 0,
+     "axes": 15,
+     "empty": 0.712,
+     "flags": [
+      "15 axes (2-9)",
+      "28 elements (5-24)",
+      "71% empty (max 70%)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 6,
+     "y": 5120,
+     "n": 32,
+     "focalShare": 0.678,
+     "focalKind": "media",
+     "competing": 4,
+     "axes": 17,
+     "empty": 0,
+     "flags": [
+      "focal 68% over 60%",
+      "4 compete (max 3)",
+      "17 axes (2-9)",
+      "32 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 7,
+     "y": 6144,
+     "n": 17,
+     "focalShare": 0.255,
+     "focalKind": "text",
+     "competing": 4,
+     "axes": 11,
+     "empty": 0.43,
+     "flags": [
+      "4 compete (max 3)",
+      "11 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 8,
+     "y": 7168,
+     "n": 19,
+     "focalShare": 0.255,
+     "focalKind": "text",
+     "competing": 4,
+     "axes": 10,
+     "empty": 0.421,
+     "flags": [
+      "4 compete (max 3)",
+      "10 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 9,
+     "y": 8192,
+     "n": 26,
+     "focalShare": 0.778,
+     "focalKind": "media",
+     "competing": 2,
+     "axes": 13,
+     "empty": 0,
+     "flags": [
+      "focal 78% over 60%",
+      "13 axes (2-9)",
+      "26 elements (5-24)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 10,
+     "y": 9216,
+     "n": 16,
+     "focalShare": 0.5,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 10,
+     "empty": 0.299,
+     "flags": [
+      "10 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 11,
+     "y": 10240,
+     "n": 18,
+     "focalShare": 0.5,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 12,
+     "empty": 0.286,
+     "flags": [
+      "12 axes (2-9)"
+     ],
+     "reported": []
+    },
+    {
+     "frame": 12,
+     "y": 11264,
+     "n": 17,
+     "focalShare": 0.878,
+     "focalKind": "media",
+     "competing": 3,
+     "axes": 9,
+     "empty": 0.116,
+     "flags": [
+      "focal 88% over 60%"
+     ],
+     "reported": []
+    }
+   ],
+   "images": {
+    "low": [
+     "img bg-kit-9x16.webp: file 1200 px, shown 860 px (needs 1720)",
+     "img him-kit-9x16.webp: file 1064 px, shown 845 px (needs 1690)",
+     "img plate-track-kit-9x16.web: file 1000 px, shown 845 px (needs 1690)",
+     "img bg-grit-9x16.webp: file 1200 px, shown 860 px (needs 1720)",
+     "img him-grit-9x16.webp: file 941 px, shown 845 px (needs 1690)",
+     "img grit-hoy.webp: file 390 px, shown 249 px (needs 498)",
+     "img grit-serie.webp: file 390 px, shown 249 px (needs 498)",
+     "img grit-descanso.webp: file 390 px, shown 249 px (needs 498)",
+     "img grit-completado.webp: file 390 px, shown 249 px (needs 498)",
+     "img grit-ejercicio.webp: file 390 px, shown 249 px (needs 498)",
+     "img grit-hoy.webp: file 390 px, shown 206 px (needs 412)",
+     "img grit-serie.webp: file 390 px, shown 201 px (needs 402)",
+     "img grit-descanso.webp: file 390 px, shown 206 px (needs 412)",
+     "img grit-completado.webp: file 390 px, shown 206 px (needs 412)",
+     "img grit-ejercicio.webp: file 390 px, shown 205 px (needs 411)",
+     "img grit-hoy.webp: file 390 px, shown 296 px (needs 593)",
+     "img grit-serie.webp: file 390 px, shown 296 px (needs 593)",
+     "img grit-descanso.webp: file 390 px, shown 296 px (needs 593)",
+     "img grit-completado.webp: file 390 px, shown 296 px (needs 593)",
+     "img grit-ejercicio.webp: file 390 px, shown 296 px (needs 593)",
+     "img Grit's Hoy screen with t: file 390 px, shown 239 px (needs 478)",
+     "img Grit's set entry screen,: file 390 px, shown 245 px (needs 491)",
+     "img Grit's rest timer counti: file 390 px, shown 245 px (needs 491)",
+     "img Grit's summary of the co: file 390 px, shown 244 px (needs 489)",
+     "img Grit's exercise detail w: file 390 px, shown 245 px (needs 491)",
+     "img bg-guardia-9x16.webp: file 1200 px, shown 860 px (needs 1720)",
+     "img him-guardia-9x16.webp: file 992 px, shown 845 px (needs 1690)",
+     "img triaje-title.webp: file 1280 px, shown 820 px (needs 1639)",
+     "img triaje-play-2.webp: file 1280 px, shown 820 px (needs 1639)",
+     "img triaje-page.webp: file 960 px, shown 820 px (needs 1639)",
+     "img triaje-scrolled.webp: file 960 px, shown 820 px (needs 1639)",
+     "img The title screen of the : file 1280 px, shown 701 px (needs 1403)",
+     "img A shift of Triaje in pla: file 1280 px, shown 721 px (needs 1441)",
+     "img The Triaje page on itch.: file 960 px, shown 721 px (needs 1441)",
+     "img The Triaje page on itch.: file 960 px, shown 718 px (needs 1436)",
+     "img bg-cebador-9x16.webp: file 1200 px, shown 860 px (needs 1720)",
+     "img him-cebador-9x16.webp: file 941 px, shown 845 px (needs 1690)",
+     "img cebador-1280-poster.webp: file 960 px, shown 820 px (needs 1639)",
+     "img cebador-s2-1280.webp: file 1280 px, shown 820 px (needs 1639)",
+     "img cebador-s3-1280.webp: file 1280 px, shown 820 px (needs 1639)",
+     "img The Cebador site scrolli: file 960 px, shown 701 px (needs 1403)",
+     "img The Cebador site's origi: file 1280 px, shown 721 px (needs 1441)",
+     "img The Cebador site's revie: file 1280 px, shown 718 px (needs 1436)",
+     "img bg-club-9x16.webp: file 1200 px, shown 860 px (needs 1720)",
+     "img him-club-9x16.webp: file 1060 px, shown 845 px (needs 1690)",
+     "img club-login.webp: file 360 px, shown 249 px (needs 498)",
+     "img club-sedes.webp: file 360 px, shown 249 px (needs 498)",
+     "img club-horarios.webp: file 360 px, shown 249 px (needs 498)",
+     "img club-listo.webp: file 360 px, shown 249 px (needs 498)",
+     "img club-login.webp: file 360 px, shown 205 px (needs 411)",
+     "img club-sedes.webp: file 360 px, shown 201 px (needs 401)",
+     "img club-horarios.webp: file 360 px, shown 206 px (needs 412)",
+     "img club-listo.webp: file 360 px, shown 206 px (needs 412)",
+     "img club-login.webp: file 360 px, shown 296 px (needs 593)",
+     "img club-sedes.webp: file 360 px, shown 296 px (needs 593)",
+     "img club-horarios.webp: file 360 px, shown 296 px (needs 593)",
+     "img club-listo.webp: file 360 px, shown 296 px (needs 593)",
+     "img ClubNahuelMosse login sc: file 360 px, shown 239 px (needs 478)",
+     "img ClubNahuelMosse venue li: file 360 px, shown 245 px (needs 491)",
+     "img ClubNahuelMosse court sc: file 360 px, shown 245 px (needs 491)",
+     "img ClubNahuelMosse reservat: file 360 px, shown 245 px (needs 489)",
+     "img ill-exp-smart-warehousin: file 1448 px, shown 768 px (needs 1536)",
+     "img ill-exp-grupo-st-4x3.web: file 1448 px, shown 768 px (needs 1536)",
+     "img ill-exp-visma-4x3.webp: file 1448 px, shown 768 px (needs 1536)",
+     "img ill-exp-fravega-4x3.webp: file 1448 px, shown 768 px (needs 1536)",
+     "img ill-exp-justo-4x3.webp: file 1448 px, shown 768 px (needs 1536)"
+    ],
+    "pasted": [
+     "img At the desk, building: 261/261/21751/5276 px of margin over a contrasting background",
+     "img Presenting the warehouse: 24/392/378/24 px of margin over a contrasting background"
+    ],
+    "unknown": [],
+    "repeated": [
+     "img grit-hoy.webp x4",
+     "img grit-serie.webp x4",
+     "img grit-descanso.webp x4",
+     "img grit-completado.webp x4",
+     "img grit-ejercicio.webp x4",
+     "img triaje-mobile.webp x2",
+     "img triaje-title.webp x2",
+     "img triaje-play-2.webp x2",
+     "img triaje-page.webp x2",
+     "img triaje-scrolled.webp x2",
+     "img cebador-390-poster.webp x2",
+     "img cebador-s2-390.webp x4",
+     "img cebador-1280-poster.webp x2",
+     "img cebador-s3-1280.webp x2",
+     "img club-login.webp x4",
+     "img club-sedes.webp x4",
+     "img club-horarios.webp x4",
+     "img club-listo.webp x4"
+    ],
+    "lcp": {
+     "img": "img triaje-title.webp",
+     "lazy": true,
+     "visibleT0": false
+    },
+    "sizes": [
+     {
+      "img": "img ill-cover-16x9.webp",
+      "file": 1672,
+      "shown": 768
+     },
+     {
+      "img": "img Nahuel Mosse, front",
+      "file": 640,
+      "shown": 64
+     },
+     {
+      "img": "img Nahuel Mosse, profile",
+      "file": 640,
+      "shown": 64
+     },
+     {
+      "img": "img bg-kit-9x16.webp",
+      "file": 1200,
+      "shown": 860
+     },
+     {
+      "img": "img him-kit-9x16.webp",
+      "file": 1064,
+      "shown": 845
+     },
+     {
+      "img": "img plate-track-kit-9x16.web",
+      "file": 1000,
+      "shown": 845
+     },
+     {
+      "img": "img bg-grit-9x16.webp",
+      "file": 1200,
+      "shown": 860
+     },
+     {
+      "img": "img him-grit-9x16.webp",
+      "file": 941,
+      "shown": 845
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 249
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 249
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 249
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 249
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 249
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 206
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 201
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 206
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 206
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 205
+     },
+     {
+      "img": "img grit-hoy.webp",
+      "file": 390,
+      "shown": 296
+     },
+     {
+      "img": "img grit-serie.webp",
+      "file": 390,
+      "shown": 296
+     },
+     {
+      "img": "img grit-descanso.webp",
+      "file": 390,
+      "shown": 296
+     },
+     {
+      "img": "img grit-completado.webp",
+      "file": 390,
+      "shown": 296
+     },
+     {
+      "img": "img grit-ejercicio.webp",
+      "file": 390,
+      "shown": 296
+     },
+     {
+      "img": "img Grit's Hoy screen with t",
+      "file": 390,
+      "shown": 239
+     },
+     {
+      "img": "img Grit's set entry screen,",
+      "file": 390,
+      "shown": 245
+     },
+     {
+      "img": "img Grit's rest timer counti",
+      "file": 390,
+      "shown": 245
+     },
+     {
+      "img": "img Grit's summary of the co",
+      "file": 390,
+      "shown": 244
+     },
+     {
+      "img": "img Grit's exercise detail w",
+      "file": 390,
+      "shown": 245
+     },
+     {
+      "img": "img bg-guardia-9x16.webp",
+      "file": 1200,
+      "shown": 860
+     },
+     {
+      "img": "img him-guardia-9x16.webp",
+      "file": 992,
+      "shown": 845
+     },
+     {
+      "img": "img triaje-mobile.webp",
+      "file": 360,
+      "shown": 143
+     },
+     {
+      "img": "img triaje-mobile.webp",
+      "file": 360,
+      "shown": 104
+     },
+     {
+      "img": "img triaje-title.webp",
+      "file": 1280,
+      "shown": 820
+     },
+     {
+      "img": "img triaje-play-2.webp",
+      "file": 1280,
+      "shown": 820
+     },
+     {
+      "img": "img triaje-page.webp",
+      "file": 960,
+      "shown": 820
+     },
+     {
+      "img": "img triaje-scrolled.webp",
+      "file": 960,
+      "shown": 820
+     },
+     {
+      "img": "img The title screen of the ",
+      "file": 1280,
+      "shown": 701
+     },
+     {
+      "img": "img A shift of Triaje in pla",
+      "file": 1280,
+      "shown": 721
+     },
+     {
+      "img": "img The Triaje page on itch.",
+      "file": 960,
+      "shown": 721
+     },
+     {
+      "img": "img The Triaje page on itch.",
+      "file": 960,
+      "shown": 718
+     },
+     {
+      "img": "img bg-cebador-9x16.webp",
+      "file": 1200,
+      "shown": 860
+     },
+     {
+      "img": "img him-cebador-9x16.webp",
+      "file": 941,
+      "shown": 845
+     },
+     {
+      "img": "img cebador-390-poster.webp",
+      "file": 360,
+      "shown": 143
+     },
+     {
+      "img": "img cebador-s2-390.webp",
+      "file": 390,
+      "shown": 143
+     },
+     {
+      "img": "img cebador-390-poster.webp",
+      "file": 360,
+      "shown": 104
+     },
+     {
+      "img": "img cebador-s2-390.webp",
+      "file": 390,
+      "shown": 107
+     },
+     {
+      "img": "img cebador-1280-poster.webp",
+      "file": 960,
+      "shown": 820
+     },
+     {
+      "img": "img cebador-s2-1280.webp",
+      "file": 1280,
+      "shown": 820
+     },
+     {
+      "img": "img cebador-s3-1280.webp",
+      "file": 1280,
+      "shown": 820
+     },
+     {
+      "img": "img The Cebador site scrolli",
+      "file": 960,
+      "shown": 701
+     },
+     {
+      "img": "img The Cebador site's origi",
+      "file": 1280,
+      "shown": 721
+     },
+     {
+      "img": "img The Cebador site's revie",
+      "file": 1280,
+      "shown": 718
+     },
+     {
+      "img": "img bg-club-9x16.webp",
+      "file": 1200,
+      "shown": 860
+     },
+     {
+      "img": "img him-club-9x16.webp",
+      "file": 1060,
+      "shown": 845
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 249
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 249
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 249
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 249
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 205
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 201
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 206
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 206
+     },
+     {
+      "img": "img club-login.webp",
+      "file": 360,
+      "shown": 296
+     },
+     {
+      "img": "img club-sedes.webp",
+      "file": 360,
+      "shown": 296
+     },
+     {
+      "img": "img club-horarios.webp",
+      "file": 360,
+      "shown": 296
+     },
+     {
+      "img": "img club-listo.webp",
+      "file": 360,
+      "shown": 296
+     },
+     {
+      "img": "img ClubNahuelMosse login sc",
+      "file": 360,
+      "shown": 239
+     },
+     {
+      "img": "img ClubNahuelMosse venue li",
+      "file": 360,
+      "shown": 245
+     },
+     {
+      "img": "img ClubNahuelMosse court sc",
+      "file": 360,
+      "shown": 245
+     },
+     {
+      "img": "img ClubNahuelMosse reservat",
+      "file": 360,
+      "shown": 245
+     },
+     {
+      "img": "img ill-experience-21x9.webp",
+      "file": 1800,
+      "shown": 768
+     },
+     {
+      "img": "img ill-exp-smart-warehousin",
+      "file": 1448,
+      "shown": 768
+     },
+     {
+      "img": "img ill-exp-grupo-st-4x3.web",
+      "file": 1448,
+      "shown": 768
+     },
+     {
+      "img": "img ill-exp-visma-4x3.webp",
+      "file": 1448,
+      "shown": 768
+     },
+     {
+      "img": "img On site in a warehouse, ",
+      "file": 1080,
+      "shown": 245
+     },
+     {
+      "img": "img At the desk, building",
+      "file": 600,
+      "shown": 245
+     },
+     {
+      "img": "img At the desk, reviewing",
+      "file": 560,
+      "shown": 245
+     },
+     {
+      "img": "img ill-exp-fravega-4x3.webp",
+      "file": 1448,
+      "shown": 768
+     },
+     {
+      "img": "img Presenting the warehouse",
+      "file": 880,
+      "shown": 288
+     },
+     {
+      "img": "img ill-exp-justo-4x3.webp",
+      "file": 1448,
+      "shown": 768
+     },
+     {
+      "img": "img ill-offer-16x9.webp",
+      "file": 1672,
+      "shown": 768
+     },
+     {
+      "img": "img ill-contact-16x9.webp",
+      "file": 1672,
+      "shown": 768
+     }
+    ],
+    "broken": [],
+    "altShown": []
+   },
+   "sweep": null,
+   "canvas": [],
+   "scrub": {
+    "total": 26310,
+    "pins": [
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 1186,
+      "end": 4770,
+      "length": 3584
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 5794,
+      "end": 7944,
+      "length": 2150
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 8968,
+      "end": 11118,
+      "length": 2150
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 12142,
+      "end": 14292,
+      "length": 2150
+     },
+     {
+      "kind": "sticky",
+      "label": "div.show-stage",
+      "start": 15317,
+      "end": 17467,
+      "length": 2150
+     }
+    ],
+    "frames": [
+     {
+      "y": 1186,
+      "name": "pin-1-1"
+     },
+     {
+      "y": 2082,
+      "name": "pin-1-2"
+     },
+     {
+      "y": 2978,
+      "name": "pin-1-3"
+     },
+     {
+      "y": 3874,
+      "name": "pin-1-4"
+     },
+     {
+      "y": 4770,
+      "name": "pin-1-5"
+     },
+     {
+      "y": 5026,
+      "name": "pin-1-after"
+     },
+     {
+      "y": 5794,
+      "name": "pin-2-1"
+     },
+     {
+      "y": 6332,
+      "name": "pin-2-2"
+     },
+     {
+      "y": 6869,
+      "name": "pin-2-3"
+     },
+     {
+      "y": 7407,
+      "name": "pin-2-4"
+     },
+     {
+      "y": 7944,
+      "name": "pin-2-5"
+     },
+     {
+      "y": 8200,
+      "name": "pin-2-after"
+     },
+     {
+      "y": 8968,
+      "name": "pin-3-1"
+     },
+     {
+      "y": 9506,
+      "name": "pin-3-2"
+     },
+     {
+      "y": 10043,
+      "name": "pin-3-3"
+     },
+     {
+      "y": 10581,
+      "name": "pin-3-4"
+     },
+     {
+      "y": 11118,
+      "name": "pin-3-5"
+     },
+     {
+      "y": 11374,
+      "name": "pin-3-after"
+     },
+     {
+      "y": 12142,
+      "name": "pin-4-1"
+     },
+     {
+      "y": 12680,
+      "name": "pin-4-2"
+     },
+     {
+      "y": 13217,
+      "name": "pin-4-3"
+     },
+     {
+      "y": 13755,
+      "name": "pin-4-4"
+     },
+     {
+      "y": 14292,
+      "name": "pin-4-5"
+     },
+     {
+      "y": 14548,
+      "name": "pin-4-after"
+     },
+     {
+      "y": 15317,
+      "name": "pin-5-1"
+     },
+     {
+      "y": 15855,
+      "name": "pin-5-2"
+     },
+     {
+      "y": 16392,
+      "name": "pin-5-3"
+     },
+     {
+      "y": 16930,
+      "name": "pin-5-4"
+     },
+     {
+      "y": 17467,
+      "name": "pin-5-5"
+     },
+     {
+      "y": 17723,
+      "name": "pin-5-after"
+     }
+    ],
+    "sharePct": 46
+   },
+   "layout": {
+    "hero": {
+     "n": 18,
+     "span": 1,
+     "widest": 1
+    },
+    "sections": [
+     {
+      "name": "#cold-open",
+      "cols": 1
+     },
+     {
+      "name": "#projects",
+      "cols": 1
+     },
+     {
+      "name": "#experience",
+      "cols": 3
+     },
+     {
+      "name": "#end-credits",
+      "cols": 30
+     }
+    ]
+   },
+   "product": null
+  }
+ },
+ "console": [
+  {
+   "width": "390x844",
+   "type": "warning",
+   "text": "The resource http://127.0.0.1:50522/_next/static/css/app/layout.css?v=1793660757994 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
+  },
+  {
+   "width": "390x844",
+   "type": "warning",
+   "text": "The resource http://127.0.0.1:50522/_next/static/css/app/layout.css?v=1793660757994 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
+  },
+  {
+   "width": "768x1024",
+   "type": "warning",
+   "text": "Image with src \"/logo-emaus.webp\" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: \"auto\"' or 'height: \"auto\"' to maintain the aspect ratio."
+  }
+ ],
+ "captures": [
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\load-0000ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\load-0600ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\load-2000ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-01.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-02.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-03.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-04.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-05.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-06.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-07.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-08.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-09.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-10.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\section-11.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-1-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-1-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-1-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-1-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-1-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-1-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-2-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-2-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-2-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-2-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-2-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-2-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-3-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-3-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-3-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-3-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-3-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-3-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-4-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-4-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-4-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-4-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-4-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-4-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-5-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-5-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-5-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-5-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-5-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\390x844\\scrub\\pin-5-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\load-0000ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\load-0600ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\load-2000ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-01.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-02.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-03.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-04.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-05.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-06.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-07.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-08.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-09.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-10.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\section-11.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-1-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-1-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-1-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-1-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-1-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-1-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-2-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-2-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-2-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-2-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-2-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-2-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-3-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-3-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-3-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-3-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-3-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-3-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-4-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-4-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-4-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-4-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-4-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-4-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-5-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-5-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-5-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-5-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-5-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1440x900\\scrub\\pin-5-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\load-0000ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\load-0600ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\load-2000ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-01.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-02.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-03.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-04.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-05.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-06.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-07.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-08.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-09.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-10.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\section-11.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-1-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-1-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-1-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-1-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-1-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-1-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-2-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-2-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-2-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-2-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-2-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-2-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-3-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-3-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-3-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-3-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-3-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-3-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-4-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-4-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-4-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-4-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-4-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-4-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-5-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-5-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-5-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-5-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-5-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\1024x768\\scrub\\pin-5-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\load-0000ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\load-0600ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\load-2000ms.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-01.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-02.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-03.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-04.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-05.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-06.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-07.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-08.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-09.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-10.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\section-11.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-1-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-1-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-1-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-1-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-1-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-1-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-2-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-2-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-2-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-2-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-2-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-2-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-3-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-3-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-3-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-3-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-3-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-3-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-4-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-4-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-4-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-4-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-4-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-4-after.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-5-1.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-5-2.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-5-3.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-5-4.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-5-5.png",
+  "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\768x1024\\scrub\\pin-5-after.png"
+ ],
+ "load": {
+  "waves": [],
+  "gapsMs": [],
+  "totalMs": 0,
+  "rules": [
+   {
+    "rule": "load waves",
+    "value": 0,
+    "range": "2-3",
+    "pass": false
+   },
+   {
+    "rule": "load wave gap (ms)",
+    "value": "-",
+    "range": "200-300",
+    "pass": false
+   },
+   {
+    "rule": "load total (ms)",
+    "value": 0,
+    "range": "900-2000",
+    "pass": false
+   }
+  ]
+ },
+ "motion": {
+  "report": "D:\\projects\\Portfolio-d\\specs\\PF-1-cinematic-portfolio\\rondas\\r7\\motion\\report.json",
+  "staggerMs": 0
+ }
+}
