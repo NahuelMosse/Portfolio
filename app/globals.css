@@ -587,16 +587,6 @@
   margin: 0;
 }
 
-.sheet-photos {
-  display: flex;
-  gap: var(--space-2);
-}
-
-.sheet-photo {
-  flex: 0 0 var(--sheet-photo-width);
-  aspect-ratio: 4 / 5;
-}
-
 .hero-line {
   max-width: 28rem;
   margin: 0;
@@ -785,8 +775,9 @@
   }
 }
 
+/* the footer is the last thing in the red block: nothing is left below it */
 .contact-scene {
-  margin-bottom: var(--word-clearance);
+  margin-bottom: 0;
 }
 
 .folder h3 {
@@ -1242,6 +1233,11 @@
 
   .offer-scene .folder .door {
     margin-top: var(--space-2);
+  }
+
+  /* the word's line box reaches below its glyphs: the group header starts under all of it */
+  .chapter-title[data-chapter-title="projects"] .chapter-word {
+    margin-bottom: 0.2em;
   }
 
   .contact-scene {

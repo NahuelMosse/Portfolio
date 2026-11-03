@@ -10,7 +10,7 @@ const bands: readonly RollBand[] = [
   { id: "certifications", label: "Certifications", speed: "fast", items: credits.certifications },
 ]
 
-// The offer over the two-doors illustration, Let's talk over the sealing illustration, then the roll.
+// The offer over the two-doors illustration, the roll, then Let's talk over the sealing illustration with the footer on its red ground.
 export function EndCredits() {
   return (
     <section data-chapter="end-credits" id="end-credits" className="credits">
@@ -18,14 +18,14 @@ export function EndCredits() {
         <ChapterWord id="offer" heading="h2" numeral="04" note="Two doors">Offer</ChapterWord>
         <Offer />
       </ChapterIllustration>
+      <CreditsRoll bands={bands} />
       <ChapterIllustration asset="ill-contact-16x9" className="contact-scene">
         <div className="contact" id="contact">
           <ChapterWord id="contact" heading="h3" headingId="contact-title" numeral="05" note={identity.base}>Let&rsquo;s talk</ChapterWord>
           <ContactTiles />
         </div>
+        <footer className="end-of-file">© Nahuel Mosse — NAWI · END OF FILE</footer>
       </ChapterIllustration>
-      <CreditsRoll bands={bands} />
-      <footer className="end-of-file">© Nahuel Mosse — NAWI · END OF FILE</footer>
     </section>
   )
 }

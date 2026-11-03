@@ -1,18 +1,28 @@
-# Handoff (builder, T6 ASM-29 revised, ASM-30, ASM-31, sweep)
+# Handoff (builder 2: ASM-29..34, sweep) - branch portfolio-present-d, no push
 
-## Done and committed (branch portfolio-present-d, no push)
-- ASM-28, ASM-21, ASM-27: earlier (commit 1594a7b).
-- ASM-29 first round (shrunk box): bdfa46c; replaced by the revised ASM-29 (L185, L188 replaces line for e2e/contact-drawing.spec.ts). e2e/contact-links.spec.ts replaces the links test of contact-marquee.spec.ts (L182; grep-invert "the drawing covers the section").
-- ASM-30 RED e2e/cold-open-short.spec.ts committed; CSS in app/globals.css (cover-scene min-height max(100svh, size-nawi*0.8 + 29rem), cover-foot padding-right 13rem): 5 of 5 pass.
-- ASM-29 revised and ASM-31 RED e2e/one-screen.spec.ts committed (10 tests). CSS: block "wide screens" at the end of app/globals.css (min-width 1100px) and cover fit restored in features/portfolio/presentation/contact.css. Result: 9 of 10 pass; offer 5/5 pass.
+## Done and committed
+- ASM-29: stale dev CSS was the cause (served 14svh); after touch plus .end-of-file margin space-2, e2e/one-screen.spec.ts 10 of 10 passed (before the ASM-33 move). Captures .validation/asm29/after-{1910x912,1280x720}.png checked by eye. Commit 354ab62.
+- ASM-30: captures .validation/asm30/after-{1910x912,2560x1080}.png.
+- ASM-32: RED e2e/tools-plain.spec.ts, then code: terminal removed (terminal-output.ts, terminal.css, kind "tool" in content.ts/projects.tsx/project-group.tsx/showcase-device.tsx), new features/portfolio/presentation/tool.css (plain type, link buttons), copy as ordered. tools-plain 2 of 2 pass. Captures .validation/asm32/after-{1910x912,390x844}-{2,50,98}.png.
+- ASM-33 RED committed: e2e/contact-footer.spec.ts.
+- ASM-34 RED committed: e2e/id-sheet-no-photos.spec.ts.
 
-## Open
-1. contact at 1280x720 fails by 9px (673.97 vs 665): the contact word computed 100.8px = 14svh although the CSS says min(16.5vw, 12.5svh); the dev server probably served stale CSS. Rerun `node cap2.tmp.mjs` (a scratch script, delete cap.tmp.mjs and cap2.tmp.mjs, they are not part of the product) or the test; if still over, shrink .roll-item (4svh) or .band-item (8svh) in the same block.
-2. Uncommitted: app/globals.css, contact.css, e2e specs are saved; commit them (`git add -A app features e2e specs && git commit`), captures are in .validation/asm29 (after-1910x912, after-1280x720) and .validation/asm31 (after-*); recapture ASM-29 after the new ill-contact-16x9 (1672x941) is judged by eye.
-3. ASM-30 captures at 1910x912 and 2560x1080 under .validation/asm30/ not taken.
-4. Sweep: .validation/full2.log ended with 98 failed / 111 passed but it ran while CSS was changing, so it is not valid. Rerun in background: `APP_URL=http://127.0.0.1:49315 npx playwright test --reporter=list --grep-invert "the drawing covers the section" > .validation/full3.log`, then per failing test: stale against a later Log decision means a `replaces:` Log line plus a new spec with the same tags; page wrong means fix CSS. Known before: case-file-layout-contracts (11), project-showcase (2), credits.spec.ts:293, experience-photos (replaced L166). Check also that the wide block (>=1100) did not break designer-line-rest, designer-line-words, wide-screens-clear, phone-390, contact-links, and that folder translucency did not break offer.spec / contrast tests.
-5. Gate: `npx tsc --noEmit`, `npx eslint app features e2e` (one warning: BODY_FLOOR unused in committed designer-line.spec.ts, stale file replaced by designer-line-words/rest).
+## Uncommitted (commit with `git add app features e2e specs && git commit`)
+- character-sheet.tsx: photos removed (ASM-34); .sheet-photos/.sheet-photo CSS removed from app/globals.css.
+- end-credits.tsx: roll moved between the offer and the contact scene; footer is inside .contact-scene after .contact (ASM-33, my assumption ASM: the roll goes above Let's talk so the footer can be the last thing in the red block). globals.css: .contact-scene margin-bottom 0.
+- globals.css wide block: .chapter-title[data-chapter-title="projects"] .chapter-word margin-bottom 0.2em (wide-screens "Projects word clears Apps header" at 2560+).
+- e2e/wide-screens-offer-detail.spec.ts (new, pointer-events turned on for the hit test; replaces e2e/wide-screens.spec.ts "Offer detail line is not covered", stale since titles got pointer-events none in 7ec8937).
 
-## Notes
-- Dev server http://127.0.0.1:49315 is the main thread's: do not kill it.
-- The log line L181 is a stray probe line; ignore.
+## Last results (after the moves)
+- id-sheet-no-photos and cold-open-short: not shown failing in the last run (only the lines listed below failed); confirm.
+- contact-footer: fails only on pageEnd 8px at 1280x720 (something adds ~8px below the footer after the scene; find with the ancestors margin/padding probe, cap2.tmp.mjs). Other assertions unverified.
+- one-screen.spec.ts ASM-29 test: stale after the roll moved: its `halvesClear` compares the tiles to `.credits-roll`; needs a replacing spec (new file, same tag, measure LET'S TALK to footer bottom and tiles clear of the footer) plus a `replaces:` Log line.
+- wide-screens-offer-detail still fails at 1280x720, 1536, 2560x1440, 3440x1440: something really covers the detail line; not diagnosed (page wrong or the experience cards overlap; investigate).
+
+## Not covered (turn budget), all could not run
+- Add Log lines: ASM-32 evidence, replaces lines for terminal specs (project-presentation.spec.ts:55, project-title-fit.spec.ts:118, project-presentation-terminal-height.spec.ts, content.spec.ts tool copy, project-presentation 100/122), ASM-34 replaces (case-file.spec.ts:97 and sheetPhotos checks in case-file-layout*.spec.ts, designer-line-words offer size vs ASM-31).
+- Captures .validation/asm33/after-{1910x912,390x844}.png and .validation/asm34/after-1910x912.png.
+- Full sweep: .validation/full4.log had 116 failed / 110 passed (run before ASM-33/34). Most failures are specs from earlier design directions (deities, hero-line, show-index, case-file-*, scene-media pf-* assets, fonts, project-groups dev-kit, pieces, credits roll position); none triaged to replaces lines yet. Page-wrong candidates: wide-screens offer detail (above), offer.spec (dev-kit proof absent), experience-photos (experience chapter 3132 > 1170), designer-line-rest at 1440.
+- tsc --noEmit and eslint not run after ASM-32..34.
+- Delete cap.tmp.mjs and cap2.tmp.mjs in the worktree root (last step).
+- Do not commit any png/webp under public/.
