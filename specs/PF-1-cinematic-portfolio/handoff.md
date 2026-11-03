@@ -1,19 +1,14 @@
-# Handoff (builder 5) - branch portfolio-present-d, no push; dev server http://127.0.0.1:8704
+# Handoff (builder 6) - branch portfolio-present-d, no push; dev server http://127.0.0.1:8704
 
-## ASM-39 (next free number; Log line NOT written, no turns left: append "ASM-39 · requester: Let's talk is one full screen with its content spread; Offer word clears the top bar and no red shows; certificates/education rows closer and smaller, LinkedIn/GitHub tiles >= 1.8x taller" with `node .claude/tools/log.mjs`)
+## Done and committed
+- ASM-39 complete (c86aabf RED logos, 3c14bf4 code): 78 passed serial, tsc and eslint clean, captures .validation/asm-spacing/. Platzi and EF SET marks in the roll (public/logos/, masks 1em, e2e/roll-brand-logos.spec.ts). credits.spec.ts and credits-liceo-8.spec.ts fail as before (stale, L168).
+- ASM-40 (af11e37, RED commit before it): e2e/cover-handoff.spec.ts 15 of 15. Ink wipe removed (cold-open-motion.tsx, hero-poster.tsx, globals.css .cold-ink gone); cover art starts under the top bar (.cover-scene .scene-art top, object-position 50% 0%, transform-origin 50% 0%, top mask fade removed); NAWI --size-nawi 41vw at >=701px (globals.css, cover block near line 606).
+- Scratch .validation/m.mjs, m2.mjs, cap-spacing.mjs deleted (also walk.mjs, sheet.mjs).
 
-Done (uncommitted code, see below):
-- app/globals.css (>=1100px block): `.contact-scene[data-has-art]` height/min-height 100svh; `.scene-copy` box-sizing, height 100%, padding-top = top bar + space-3, bottom 0; `.contact` flex column space-between; tiles gap clamp 2svh; `.band-field` padding-bottom 3.6svh; `.band-half` min-height 12.5svh; `.roll-band` padding 0 and line-height 1; `.roll-item` font min(clamp(1.25rem,1.5vw,1.5rem),2.6svh), img 24px; `.end-of-file` margin/padding 0.
-- features/film/presentation/chapter-index.tsx: `land` option (wide only: scroll so an element's top edge sits at the viewport top or bottom) plus `event.stopPropagation()` because Lenis `anchors:true` overrides anchor clicks; app/page.tsx: Offer lands with `.contact-scene` at the bottom edge, Contact with it at the top.
-- Specs committed: e2e/chapter-arrival.spec.ts (10 tests, all passed on the code before the last CSS edits), e2e/contact-tiles-roll.spec.ts (tiles >= 110px, roll font < 31px, gap <= 16px, 1910x912; reference values before: font 31px, tile 61px, gap 32px).
-- Captures: .validation/asm-spacing/offer-1910x912.png (word clear of bar, no red: looked at, good) and contact-1910x912.png (looked at before the last two CSS edits: spread, hint clear, footer inside).
-- No `replaces:` needed so far: no committed test changed.
-
-Last known serial run (asm39c.log, before the final CSS edits): 31 passed, 6 failed: contact-footer x5 "the page ends with the scene" (footer 24px above the page end: scene-copy bottom padding was still 24px, I set it to 0 and re-edited globals.css to force a recompile, NOT re-measured) and contact-tiles-roll gap 19.8 > 16 (added `.roll-band line-height: 1`, NOT re-run).
-Earlier run (asm39b): the 1280x720 contact specs (ending-block, contact-one-screen, one-screen, chapter-arrival) failed by 1 to 19 px; the 24px bottom padding removal should fix them, verify.
-
-## Not covered (turn budget), all could not run
-- Re-run after the last CSS edits: contact-tiles-roll, chapter-arrival, ending-block, contact-footer, contact-one-screen, one-screen, offer-word, one-screen-sections, wide-screens-offer-detail-clear; `npx tsc --noEmit`; eslint on chapter-index.tsx and page.tsx.
-- Recapture contact at 1910x912 after the tile and roll change (tiles and roll rows were looked at once, good).
-- Items A (black between cover and PROJECTS), B (head cropped under the top bar), C (NAWI size from git history): not started; each needs its own ASM, RED spec, commit and captures in .validation/asm-cover/.
-- Delete .validation/m.mjs, m2.mjs, cap-spacing.mjs (scratch) when done; do not commit public/.
+## Not covered (turn budget), all *could not run*
+- Requester decision on NAWI/sheet overlap («no tape otros textos»): keep NAWI 41vw, no text of the cover (sheet, NAHUEL MOSSE — BUENOS AIRES, I'm Nawi block, buttons) may intersect NAWI's glyph box at 1910x912, 1920x1080, 2560x1080, 1440x900, 1280x720; sheet heading starts below the N's foot with >= 12px clearance; compact the sheet (row height, padding, font a notch smaller) and/or lift NAWI's baseline (never behind the bar); hair stays uncut.
+- The 9 tests that fail now must pass AS THEY ARE (do not replace): e2e/cold-open-short.spec.ts x5, e2e/id-sheet-no-photos.spec.ts (1910x912), e2e/one-screen-sections.spec.ts sheet-clear x3 (1910x912, 1280x720, 2560x1080). First read how they measure (NAWI .mark box bottom versus the sheet top: at 1910x912 the box is ~72 to ~737 with font 783px and the sheet starts ~620, so the line box may have to be tightened: smaller line-height on .mark at >=701px, or a negative margin, before the sheet is compacted).
+- Add to e2e/cover-handoff.spec.ts (new test, same tag @PF-1-ASM-40): no cover text element intersects NAWI's glyph box.
+- Log: append a line saying the 9 tests are restored under ASM-40 (the earlier line "replaces: e2e/cold-open-short.spec.ts ... by: none yet" is superseded).
+- Re-run cover-handoff + those 9 serially (APP_URL=http://127.0.0.1:8704, --workers=1); recapture .validation/asm-cover/after-cover-1910x912.png and look at it; commit.
+- Dev server serves stale CSS after edits: a comment-only edit of app/globals.css forces the recompile.
