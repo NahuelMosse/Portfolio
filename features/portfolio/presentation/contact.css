@@ -1,17 +1,29 @@
 /* ---------- the contact block: the drawing and the parts the marquee band shares ---------- */
 
-/* the drawing covers the whole contact section edge to edge; the hand and seal sit in the right, where least type lands */
+/* the drawing is seen whole at its own 16:9, pinned to the top right where the word is and no panel reaches: the seal sits
+   at about 70% of its height, which stays above the marquee band. Its flat black left half fades into the red field. */
 .contact-scene[data-has-art] .scene-art {
-  inset: 0;
+  --art-width: 100%;
+  inset: 0 0 auto auto;
+  width: var(--art-width);
+  aspect-ratio: 16 / 9;
+  mask-image: linear-gradient(to right, transparent, #000 48%), linear-gradient(to bottom, #000 80%, transparent);
+  mask-composite: intersect;
 }
 
 .contact-scene[data-has-art] .scene-art img {
-  object-position: 88% 55%;
+  object-position: 50% 50%;
+}
+
+@media (min-width: 700px) {
+  .contact-scene[data-has-art] .scene-art {
+    --art-width: 56vw;
+  }
 }
 
 @media (min-width: 1024px) {
-  .contact-scene[data-has-art] .scene-art img {
-    object-position: 100% 50%;
+  .contact-scene[data-has-art] .scene-art {
+    --art-width: min(44vw, 860px);
   }
 }
 
