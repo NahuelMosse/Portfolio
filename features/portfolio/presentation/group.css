@@ -1,12 +1,21 @@
-/* ---------- a group of projects: the headline, then every project of it ----------
-   Narrow, or with reduced motion, the headline comes first and each project is a poster stacked under it.
-   Wide with motion, the group is one pinned scene: the headline stays on one side and the scroll carries the projects across
-   as a horizontal track, one stop each. --track (0 to count - 1) is where the track stands. */
+/* ---------- a group of projects: one continuous pinned scene ----------
+   The scroll through the section is one timeline: each project holds for its beats, then the group turns to the next one.
+   --track (0 to count - 1) is where the track stands, --hold how far through its beats the project on show is. A card reads its
+   distance to the track (--d) and moves only by transform and opacity: the field morphs to the next color, the art crosses over,
+   the word and the devices slide out and the next ones come in. With reduced motion the group is its band, then each project still. */
+
+.group {
+  --show-strip: 5.25rem;
+}
 
 .group-head {
   position: relative;
   z-index: 8;
-  padding: var(--space-6) var(--gutter-right-phone) var(--space-4) var(--gutter-left-phone);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: end;
+  column-gap: var(--space-3);
+  padding: var(--space-4) var(--gutter-right-phone) var(--space-3) var(--gutter-left-phone);
   background: var(--ink);
   color: var(--bone);
 }
@@ -15,42 +24,80 @@
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  /* an uppercase Boska letter is about 0.55em wide: the word fills the width */
-  font-size: min(calc(88vw / (var(--chars) * 0.62)), 8rem);
-  line-height: 0.85;
-  letter-spacing: -0.03em;
+  font-size: var(--text-title);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
 .group-count {
-  margin: var(--space-3) 0 0;
+  margin: 0;
+  justify-self: end;
   font-family: var(--font-label);
   font-size: var(--text-small);
   letter-spacing: var(--label-tracking);
   text-transform: uppercase;
-  color: var(--bone);
 }
 
 .group-line {
-  max-width: 34ch;
-  margin: var(--space-1) 0 0;
+  display: none;
+  margin: 0;
   font-size: var(--text-body);
-  line-height: 1.35;
   color: var(--bone-70);
 }
 
 .group-index {
+  display: flex;
+  grid-column: 1 / -1;
+  gap: var(--space-3);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+}
+
+.group-index button {
+  display: inline-flex;
+  gap: var(--space-1);
+  min-height: var(--space-5);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--bone-70);
+  cursor: pointer;
+  transition: color var(--beat-fade) var(--ease-out);
+}
+
+.group-index b {
   display: none;
 }
 
-/* a poster stacked under the headline sits under no top bar */
-@media (max-width: 1279px), (prefers-reduced-motion: reduce) {
-  .group-card {
-    --top-bar-height: 0px;
-  }
+/* each name carries its product's color as a rule under it */
+.group-index li {
+  border-bottom: var(--space-1) solid color-mix(in srgb, var(--swatch) 45%, transparent);
 }
 
-/* the poster word is the project's name; its heading is for the outline and the readers that use it, until the word goes */
+.group-index li[aria-current] {
+  border-bottom-color: var(--swatch);
+}
+
+.group-index li[aria-current] button {
+  color: var(--bone);
+}
+
+.group-index [data-project="grit"] { --swatch: var(--spot-grit); }
+.group-index [data-project="club"] { --swatch: var(--spot-club); }
+.group-index [data-project="cebador"] { --swatch: var(--spot-cebador); }
+.group-index [data-project="sonria"] { --swatch: var(--spot-sonria); }
+.group-index [data-project="miga"] { --swatch: var(--spot-miga); }
+.group-index [data-project="guardia"] { --swatch: var(--spot-triaje); }
+
 .group-card .show-copy h4 {
   position: absolute;
   width: 1px;
@@ -61,10 +108,51 @@
   white-space: nowrap;
 }
 
-@media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
+.group-field {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .group {
+    --show-strip: 4.5rem;
+  }
+
+  .group-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding-left: var(--gutter-left);
+    padding-right: var(--gutter-right);
+  }
+
+  .group-word {
+    font-size: var(--text-display, 2.75rem);
+  }
+
+  .group-count {
+    justify-self: auto;
+  }
+
+  .group-index {
+    margin: 0 0 0 auto;
+    gap: var(--space-4);
+  }
+
+  .group-index b {
+    display: inline;
+  }
+}
+
+@media (min-width: 1024px) {
+  .group-line {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
   .group {
     position: relative;
-    height: calc(100svh + (var(--count) - 1) * 90svh);
+    height: calc(100svh + var(--count) * var(--steps) * var(--beat-step) + (var(--count) - 1) * var(--turn-step));
   }
 
   .group-pin {
@@ -73,6 +161,15 @@
     height: 100svh;
     overflow: clip;
     isolation: isolate;
+    background: var(--ink);
+  }
+
+  .group-head {
+    position: absolute;
+    inset: 0 0 auto;
+    height: calc(var(--top-bar-height) + var(--show-strip));
+    padding-top: var(--top-bar-height);
+    align-items: center;
   }
 
   .group-track {
@@ -81,99 +178,71 @@
   }
 
   .group-card {
-    --p: clamp(0, calc((var(--track, 0) - var(--i)) * 0.5 + 0.5), 1);
+    --d: calc(var(--i) - var(--track, 0));
+    --near: max(var(--d), calc(var(--d) * -1));
+    --p: calc(var(--cur) * var(--hold, 0) + (1 - var(--cur)) * 0.5);
     position: absolute;
     inset: 0;
     height: 100%;
+    background: none;
     visibility: hidden;
-    transform: translate3d(calc((var(--i) - var(--track, 0)) * 100%), 0, 0);
-    will-change: transform;
   }
 
   .group-card[data-reachable] {
     visibility: visible;
   }
 
-  .group-card .show-word {
-    display: none;
-  }
-
-  /* the card's name is its heading, set large above the line */
-  .group-card .show-copy h4 {
-    position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip-path: none;
-    white-space: normal;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--size-scene-title-phone);
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
-  .group-head {
-    position: absolute;
-    top: calc(var(--top-bar-height) + var(--space-4));
-    left: var(--space-4);
-    width: 36vw;
-    padding: var(--space-4);
-    background: color-mix(in srgb, var(--ink) 82%, transparent);
+  .group-card:not([data-current]) .show-copy {
     pointer-events: none;
   }
 
-  .group-head .group-index {
-    pointer-events: auto;
-  }
-
-  .group[data-composition="b"] .group-head {
-    left: auto;
-    right: var(--space-4);
-    text-align: right;
-  }
-
-  .group-word {
-    font-size: min(calc(30vw / (var(--chars) * 0.55)), 10rem);
-  }
-
-  .group-index {
-    display: grid;
-    gap: var(--space-1);
-    margin: var(--space-3) 0 0;
-    padding: 0;
-    list-style: none;
-    font-family: var(--font-label);
-    font-size: var(--text-small);
-    letter-spacing: var(--label-tracking-fine);
-    text-transform: uppercase;
-  }
-
-  .group[data-composition="b"] .group-index {
-    justify-items: end;
-  }
-
-  .group-index button {
-    display: inline-flex;
-    gap: var(--space-2);
-    min-height: var(--space-5);
-    padding: 0;
-    border: 0;
+  .group-card .show-stage {
     background: none;
-    font: inherit;
-    letter-spacing: inherit;
-    text-transform: inherit;
-    color: var(--bone-70);
-    cursor: pointer;
-    transition: color var(--beat-fade) var(--ease-out);
   }
 
-  .group-index li[aria-current] button,
-  .group-index button:hover {
-    color: var(--bone);
+  /* the color field: the next one comes up over the one that is leaving, so the color morphs with the scroll */
+  .group-field {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--field);
+    opacity: clamp(0, calc(1 - var(--d)), 1);
   }
 
-  .group-index li[aria-current] span {
-    border-bottom: var(--space-1) solid var(--bone);
+  /* the art crosses over, and slides with its own parallax against the track */
+  .group-card .backdrop,
+  .group-card .plate {
+    opacity: clamp(0, calc(1 - var(--near)), 1);
+  }
+
+  .group-card .backdrop {
+    transform: translate3d(calc(var(--d) * -12vw), calc(var(--p) * -4svh), 0) scale(1.12);
+  }
+
+  .group-card .plate {
+    transform: translate3d(calc(var(--d) * 28vw + var(--p) * 4vw * var(--flip)), calc(var(--p) * -8svh), 0) scale(calc(1.1 * var(--mirror)), 1.1);
+  }
+
+  /* the word slides out as the next one comes in from the other side */
+  .group-card .show-word {
+    opacity: clamp(0, calc(1 - var(--near) * 1.7), 1);
+    transform: translate3d(calc(var(--d) * 85vw + var(--p) * -6vw * var(--flip)), 0, 0);
+  }
+
+  /* the devices turn and shrink away, and the next ones arrive turning the other way; the second one lags a little */
+  .group-card .show-rig {
+    --dd: var(--d);
+    opacity: clamp(0, calc(1 - max(var(--dd), calc(var(--dd) * -1)) * 1.5), 1);
+    transform: translate3d(calc(var(--dd) * 52vw), 0, 0) rotate(calc(var(--dd) * 7deg)) scale(calc(1 - max(var(--dd), calc(var(--dd) * -1)) * 0.3));
+  }
+
+  .group-card .show-rig[data-role="second"] {
+    --dd: calc(var(--d) * 1.3);
+  }
+
+  .group-card .show-copy {
+    opacity: clamp(0, calc(1 - var(--near) * 3), 1);
+    transform: translate3d(0, calc(var(--d) * 8svh), 0);
   }
 }

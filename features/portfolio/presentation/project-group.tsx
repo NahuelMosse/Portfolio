@@ -3,7 +3,16 @@
 import type { CSSProperties, ReactNode } from "react"
 import type { Piece, Project, ScreenFrame } from "./content"
 import { ShowcaseDevice } from "./showcase-device"
-import { useGroupTrack } from "./use-group-track"
+import { screenAt } from "./use-scroll-beat"
+import { BEAT_RUN, BEATS_PER_PROJECT, TURN_RUN, startOf, useGroupTrack } from "./use-group-track"
+
+// The four beats of a project's story, one per step of its hold: what it is, the problem, how it was built, his part.
+const BEATS = [
+  { label: "What it is", text: (project: Project) => project.what },
+  { label: "The problem", text: (project: Project) => project.problem },
+  { label: "How it was built", text: (project: Project) => project.line },
+  { label: "My role", text: (project: Project) => project.role },
+] as const
 
 // One project of a group: its content, the device its screens sit in, and the art drawn on the server where the files are known.
 export type GroupItem = { project: Project; kind: ScreenFrame; art: ReactNode }
@@ -17,22 +26,25 @@ type GroupSceneProps = {
   items: readonly GroupItem[]
 }
 
-// The screens of the beside device: the pieces of the other frame, or the next screen of the same one when there are none.
-function companion(pieces: readonly Piece[], kind: ScreenFrame) {
+const numeral = (position: number) => String(position).padStart(2, "0")
+
+// The screens of the beside device: the pieces of the other frame, or the same screens one step ahead when there are none.
+function companion(pieces: readonly Piece[], kind: ScreenFrame, active: number, beat: number) {
   const others = pieces.filter((piece) => piece.frame !== kind)
-  if (others.length > 0) return { kind: others[0].frame, screens: others, active: 0 }
+  if (others.length > 0) return { kind: others[0].frame, screens: others, active: screenAt(beat, BEATS.length, others.length) }
   const same = pieces.filter((piece) => piece.frame === kind)
-  return { kind, screens: same, active: same.length > 1 ? 1 : 0 }
+  return { kind, screens: same, active: (active + 1) % same.length }
 }
 
-type CardProps = { item: GroupItem; order: number; composition: "a" | "b"; reachable: boolean }
+type CardProps = { item: GroupItem; order: number; composition: "a" | "b"; current: boolean; reachable: boolean; beat: number }
 
-// A project as a poster: its field, its art, its name, its real screens, one line and its links. In the pinned group it is one stop
-// of the track; stacked, it is a poster of its own.
-function ProjectCard({ item, order, composition, reachable }: CardProps) {
+// A project as one scene of the group: its field, art, word, devices and captions. Its place on the track (--i against --track)
+// is what the stylesheet moves; a project that is not the one on show keeps the beat it left at or will open on.
+function ProjectCard({ item, order, composition, current, reachable, beat }: CardProps) {
   const { project, kind, art } = item
   const own = project.pieces.filter((piece) => piece.frame === kind)
-  const beside = companion(project.pieces, kind)
+  const active = screenAt(beat, BEATS.length, own.length)
+  const beside = companion(project.pieces, kind, active, beat)
 
   return (
     <article
@@ -40,56 +52,71 @@ function ProjectCard({ item, order, composition, reachable }: CardProps) {
       data-project={project.id}
       data-kind={kind}
       data-composition={composition}
+      data-beat={beat}
+      data-current={current ? "" : undefined}
       data-reachable={reachable ? "" : undefined}
       className="show group-card"
-      style={{ "--beats": 1, "--chars": project.name.length, "--i": order } as CSSProperties}
+      style={{ "--beats": 1, "--chars": project.name.length, "--i": order, "--cur": current ? 1 : 0 } as CSSProperties}
     >
       <div data-scene-screen="" className="show-stage">
+        <span className="group-field" aria-hidden="true" />
         <div className="show-art">{art}</div>
         <span className="show-light" aria-hidden="true" />
         <p data-poster-word="" className="show-word" aria-hidden="true">
           {project.name}
         </p>
         <ShowcaseDevice kind={beside.kind} screens={beside.screens} active={beside.active} role="second" />
-        <ShowcaseDevice kind={kind} screens={own} active={0} role="main" />
+        <ShowcaseDevice kind={kind} screens={own} active={active} role="main" />
         <div className="show-copy">
           <h4>{project.name}</h4>
           <div className="show-beats">
-            <div className="show-beat" data-on="">
-              <p className="show-text">{project.what}</p>
-              <div className="show-meta">
-                <ul data-stack="" className="stack" aria-label="Stack">
-                  {project.stack.map((entry) => (
-                    <li key={entry}>{entry}</li>
-                  ))}
-                </ul>
-                {project.links.map((link) => (
-                  <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-                    {link.label}
-                  </a>
-                ))}
+            {BEATS.map((entry, step) => (
+              <div key={entry.label} className="show-beat" data-on={step === beat ? "" : undefined}>
+                <p className="show-label">
+                  {numeral(step + 1)} · {entry.label}
+                </p>
+                <p className="show-text">{entry.text(project)}</p>
+                {step === BEATS.length - 1 && (
+                  <div className="show-meta">
+                    <ul data-stack="" className="stack" aria-label="Stack">
+                      {project.stack.map((entry) => (
+                        <li key={entry}>{entry}</li>
+                      ))}
+                    </ul>
+                    {project.links.map((link) => (
+                      <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
+            ))}
           </div>
+          <p className="show-ticks" aria-hidden="true">
+            {BEATS.map((entry, step) => (
+              <i key={entry.label} data-on={step <= beat ? "" : undefined} />
+            ))}
+          </p>
         </div>
       </div>
     </article>
   )
 }
 
-// A chapter of projects of one kind. Wide, it is one pinned scene: the headline stays on one side while the scroll carries the
-// projects across the device showcase, one stop each. Narrow, or with reduced motion, it is the headline and then each project
-// stacked as a poster. The index of the pinned scene is a shortcut; the scroll alone shows every project.
+// A chapter of projects of one kind as one continuous pinned scene. Each project holds for its four beats, its screens swapping in
+// its device; between two projects the scroll turns the scene: the field morphs to the next color, the art crosses over, the word
+// and the devices slide out and the next ones come in. The index in the top band follows; it is a shortcut, the scroll alone shows
+// every project. With reduced motion the group is its band and then each project as a still.
 export function ProjectGroupScene({ id, label, noun, line, composition, items }: GroupSceneProps) {
   const count = items.length
-  const { scene, nearest } = useGroupTrack(count)
+  const { scene, project: current, beat } = useGroupTrack(count)
 
   const goTo = (position: number) => {
     const node = scene.current
     if (!node) return
     const top = node.getBoundingClientRect().top + window.scrollY
-    const run = node.offsetHeight - window.innerHeight
-    window.scrollTo({ top: top + (run * position) / Math.max(1, count - 1) })
+    window.scrollTo({ top: top + (node.offsetHeight - window.innerHeight) * startOf(position, count) })
   }
 
   return (
@@ -100,7 +127,7 @@ export function ProjectGroupScene({ id, label, noun, line, composition, items }:
       data-count={count}
       data-composition={composition}
       className="group"
-      style={{ "--count": count, "--chars": label.length } as CSSProperties}
+      style={{ "--count": count, "--beat-step": `${BEAT_RUN}svh`, "--turn-step": `${TURN_RUN}svh`, "--steps": BEATS_PER_PROJECT - 1 } as CSSProperties}
     >
       <div className="group-pin">
         <header className="group-head">
@@ -113,9 +140,9 @@ export function ProjectGroupScene({ id, label, noun, line, composition, items }:
           {count > 1 && (
             <ol className="group-index" aria-label={`${label} projects`}>
               {items.map((item, order) => (
-                <li key={item.project.id} aria-current={order === nearest ? "step" : undefined}>
+                <li key={item.project.id} data-project={item.project.id} aria-current={order === current ? "step" : undefined}>
                   <button type="button" onClick={() => goTo(order)}>
-                    <b>{String(order + 1).padStart(2, "0")}</b>
+                    <b>{numeral(order + 1)}</b>
                     <span>{item.project.name}</span>
                   </button>
                 </li>
@@ -124,9 +151,21 @@ export function ProjectGroupScene({ id, label, noun, line, composition, items }:
           )}
         </header>
         <div className="group-track">
-          {items.map((item, order) => (
-            <ProjectCard key={item.project.id} item={item} order={order} composition={composition} reachable={Math.abs(order - nearest) <= 1} />
-          ))}
+          {items.map((item, order) => {
+            const isCurrent = order === current
+            const cardBeat = isCurrent ? beat : order < current ? BEATS_PER_PROJECT - 1 : 0
+            return (
+              <ProjectCard
+                key={item.project.id}
+                item={item}
+                order={order}
+                composition={composition}
+                current={isCurrent}
+                reachable={Math.abs(order - current) <= 1}
+                beat={cardBeat}
+              />
+            )
+          })}
         </div>
       </div>
     </section>
