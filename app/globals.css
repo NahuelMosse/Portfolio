@@ -635,6 +635,25 @@
   }
 }
 
+/* black ink that hands the cold open off to the projects: it only exists while the page is in motion */
+.cold-ink {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: #000;
+  clip-path: polygon(0 100%, 25% 104%, 50% 100%, 75% 106%, 100% 102%, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+
+.has-motion .cold-ink {
+  display: block;
+}
+
+.has-motion .cover-scene .scene-art img {
+  transform-origin: 50% 40%;
+}
+
 /* the backdrop fills the whole section under everything, its illustration covering the box; a scrim of the ink darkens the
    side the words sit on and the strip along the top, so bone type reads on any product color. The second composition
    mirrors the picture, so its calm zone is on the left and its words on the right. */

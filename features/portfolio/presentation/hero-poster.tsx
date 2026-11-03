@@ -1,5 +1,6 @@
 import { CharacterSheet } from "./character-sheet"
 import { ChapterIllustration } from "./chapter-illustration"
+import { ColdOpenMotion } from "./cold-open-motion"
 import { identity } from "./content"
 
 // The cold open: his illustration with the sealed envelope, NAWI over its dark top, the identification sheet,
@@ -29,6 +30,8 @@ export function HeroPoster() {
           Hire me for a project
         </a>
       </div>
+      <span className="cold-ink" aria-hidden="true" />
+      <ColdOpenMotion />
     </section>
   )
 }
