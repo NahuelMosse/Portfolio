@@ -611,6 +611,12 @@
 }
 
 @media (min-width: 701px) {
+  /* a short wide screen grows the cold open so the sheet starts below NAWI's baseline (about 0.77 of his size under the bar)
+     instead of climbing over him; the right end stays free for the corner button */
+  .cover-scene[data-has-art] {
+    min-height: max(100svh, calc(var(--size-nawi) * 0.8 + 29rem));
+  }
+
   .cover-foot {
     position: absolute;
     inset: auto 0 0 0;
@@ -618,6 +624,7 @@
     grid-template-columns: 24rem 1fr auto;
     align-items: end;
     gap: var(--space-5);
+    padding-right: 13rem;
     padding-bottom: var(--space-3);
   }
 
@@ -1181,6 +1188,129 @@
     margin-left: calc(var(--gutter-left) * -1 + var(--space-1));
     font-size: 16.5vw;
     white-space: nowrap;
+  }
+}
+
+/* ---------- wide screens: the offer, the contact, the roll and the footer each fit one screen ----------
+   Sizes follow the viewport height as well as its width, the drawings stay big behind translucent panels. */
+@media (min-width: 1100px) {
+  .offer-scene {
+    --size-word: min(17vw, 19svh);
+    margin-top: calc(var(--size-word) * 0.6 + 2rem);
+  }
+
+  .offer-scene[data-has-art] {
+    min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.6 - 2rem);
+  }
+
+  .offer-scene .scene-art {
+    mask-image: none;
+  }
+
+  .offer-scene .scene-art img {
+    object-position: 50% 20%;
+  }
+
+  .offer-scene .scene-copy {
+    justify-content: flex-end;
+    padding-top: 0;
+  }
+
+  .offer-scene .offer {
+    margin-top: 0;
+  }
+
+  .offer-scene .folder {
+    --panel: var(--ink);
+    --panel-ink: var(--bone);
+    --glass: color-mix(in srgb, var(--ink) 45%, transparent);
+    padding: var(--space-4) var(--space-5) var(--space-4) var(--gutter-left);
+    background: var(--glass);
+    color: var(--bone);
+  }
+
+  .offer-scene .folder[data-offer-card="tpm"] {
+    --panel: color-mix(in srgb, var(--red) 78%, var(--ink));
+    --glass: color-mix(in srgb, var(--red) 45%, transparent);
+    padding-left: var(--space-5);
+    padding-right: var(--gutter-right);
+  }
+
+  .offer-scene .folder h3 {
+    font-size: min(4vw, 7svh);
+  }
+
+  .offer-scene .folder .door {
+    margin-top: var(--space-2);
+  }
+
+  .contact-scene {
+    margin-bottom: 0;
+  }
+
+  .contact-scene[data-has-art] {
+    min-height: 0;
+  }
+
+  .contact-scene[data-has-art] .scene-copy {
+    padding-block: var(--space-3) var(--space-2);
+  }
+
+  .contact-scene .contact-tiles {
+    gap: var(--space-2);
+  }
+
+  .contact-scene .chapter-word[data-chapter-word] {
+    font-size: min(16.5vw, 12.5svh);
+  }
+
+  .contact-scene .band-field {
+    padding-block: var(--space-2);
+  }
+
+  .contact-scene .band {
+    background: color-mix(in srgb, var(--ink) 45%, transparent);
+  }
+
+  .contact-scene .band-item {
+    font-size: min(7vw, 8svh);
+  }
+
+  .contact-scene .band-half {
+    min-height: 0;
+    align-content: start;
+    padding-block: var(--space-3);
+    background: color-mix(in srgb, var(--ink) 40%, transparent);
+  }
+
+  .contact-scene .band-half:hover,
+  .contact-scene .band-half:focus-visible {
+    background: var(--bone);
+  }
+
+  .contact-scene .half-word {
+    font-size: min(8.4vw, 7svh);
+  }
+
+  .contact-scene .band-half .contact-arrow {
+    font-size: 1.25rem;
+  }
+
+  .credits-roll {
+    margin-top: var(--space-3);
+  }
+
+  .roll-band {
+    padding-block: var(--space-2);
+  }
+
+  .roll-item {
+    font-size: min(clamp(1.5rem, 3vw, 2.5rem), 4svh);
+  }
+
+  .end-of-file {
+    margin-top: var(--space-3);
+    padding-bottom: var(--space-3);
   }
 }
 
