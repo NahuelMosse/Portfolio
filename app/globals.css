@@ -3,6 +3,8 @@
 @import "../design/tokens.css";
 @import "../features/portfolio/presentation/showcase.css";
 @import "../features/portfolio/presentation/group.css";
+@import "../features/portfolio/presentation/terminal.css";
+@import "../features/portfolio/presentation/contact.css";
 
 /* the cards, tools and the catalog hold prose and snippets, not classes of the site */
 @source not "../specs";
@@ -268,8 +270,7 @@
 
 .film-control:active,
 .corner-cta:active,
-.door:active,
-.contact-rows a:active {
+.door:active {
   transform: scale(var(--press-scale));
 }
 
@@ -404,24 +405,6 @@
 
 .chapter-title[data-chapter-title="projects"] .chapter-word {
   margin-left: calc(var(--gutter-left) * -1);
-}
-
-/* experience: flush to the right edge, dropping below the band into the first employer */
-.experience-band .chapter-title {
-  align-self: flex-end;
-  align-items: flex-end;
-  width: max-content;
-  margin-right: calc(var(--gutter-right) * -1);
-}
-
-.experience-band .chapter-detail {
-  padding-right: var(--gutter-right);
-}
-
-/* the last letter's serif overhangs its advance, so it keeps a little room before the edge */
-.experience-band .chapter-word {
-  padding-right: var(--space-3);
-  transform: translateY(var(--poster-drop));
 }
 
 /* offer: outlined, flush left, the whole title rising across the top edge of its illustration */
@@ -730,10 +713,6 @@
   background: rgb(12 12 11 / 0.88);
   color: var(--bone);
 }
-.experience-band {
-  --experience-band: 20svh;
-  margin-bottom: var(--word-clearance);
-}
 
 /* the offer word rises across the top of its scene: its note needs room above the last employer */
 .experience {
@@ -744,240 +723,6 @@
   .experience {
     margin-bottom: calc(var(--size-word) * 0.4);
   }
-}
-
-.experience-band.scene[data-has-art] {
-  min-height: var(--experience-band);
-}
-
-.experience-band .scene-copy {
-  justify-content: flex-end;
-  min-height: var(--experience-band);
-  padding-bottom: 0;
-}
-
-@media (min-width: 1280px) {
-  .experience-band {
-    --experience-band: var(--art-band);
-  }
-}
-
-/* the timeline: a row per employer on a phone, a column each wide, a thin rule running along them */
-.employers {
-  display: grid;
-  gap: 0;
-  margin: 0;
-  padding: 0 var(--gutter-right-phone) var(--space-2) var(--gutter-left-phone);
-  list-style: none;
-}
-
-.employer {
-  position: relative;
-  isolation: isolate;
-  padding: var(--space-2) 0 var(--space-1);
-  border-top: var(--rule) solid var(--bone-30);
-}
-
-/* his photo at work is the row's right side: grey, printed red and black by the blend, screened with a halftone, and faded out
-   toward the text. It runs off the page's edge and sits behind the type. */
-.employer-photo {
-  position: absolute;
-  z-index: -1;
-  inset: 0 calc(var(--gutter-right-phone) * -1) 0 30%;
-  margin: 0;
-  overflow: hidden;
-  mask-image: linear-gradient(to right, transparent, rgb(0 0 0 / 0.4) 30%, #000 75%), linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
-  mask-composite: intersect;
-  opacity: 0.8;
-}
-
-.employer-photo img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% var(--photo-y, 28%);
-  filter: grayscale(1) contrast(1.45) brightness(1.2) url(#work-duotone);
-}
-
-.employer-photo[data-crop="right"] img {
-  transform: scaleX(-1);
-}
-
-/* the presenting photo shows only him, mirrored so he sits on the visible right: the slide beside him is cropped out and cannot be read */
-.employer-photo[data-crop="face"] img {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: 330%;
-  max-width: none;
-  height: auto;
-  transform: translateY(-27%) scaleX(-1);
-}
-
-/* the halftone dots over the duotone, light enough to keep the face readable */
-.employer-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: radial-gradient(circle, var(--ink) 30%, transparent 33%) 0 0 / var(--space-2) var(--space-2);
-  mix-blend-mode: multiply;
-  opacity: 0.22;
-}
-
-.employer-photo .grain {
-  z-index: 2;
-}
-
-/* a phone drops the thumbnail and the number so each employer is a short row: name, role and period on a line, then the one line */
-.employer-info {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-3);
-}
-
-.employer-head,
-.employer-line,
-.employer-more {
-  flex: 1 1 100%;
-}
-
-.employer-index {
-  display: none;
-}
-
-.employer-index {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-title);
-  line-height: 0.8;
-  color: var(--red);
-}
-
-.employer-line {
-  margin: 0;
-}
-
-.employer-more summary {
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  cursor: pointer;
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking-fine);
-  text-transform: uppercase;
-}
-
-.employer-logo {
-  width: var(--logo-size);
-  height: var(--logo-size);
-  padding: var(--space-1);
-  border: 1px solid var(--bone-35);
-  border-radius: var(--radius-frame);
-  background: var(--bone);
-  object-fit: contain;
-}
-
-.employer h3 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-title);
-  line-height: 1.2;
-}
-
-.employer-title,
-.employer-period {
-  margin: 0;
-}
-
-.employer-title {
-  font-size: var(--text-body);
-  font-weight: 500;
-}
-
-.employer-period {
-  color: var(--muted-foreground);
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking-fine);
-  text-transform: uppercase;
-}
-
-/* wide: a ledger of ruled rows, the number in the margin, the photo taking the right half of each and running off the edge */
-@media (min-width: 1280px) {
-  .employers {
-    padding: var(--space-3) var(--gutter-right) var(--space-4) var(--gutter-left);
-  }
-
-  .employer {
-    padding: var(--space-3) 0;
-  }
-
-  .employer-photo {
-    inset: 0 calc(var(--gutter-right) * -1) 0 44%;
-    opacity: 1;
-  }
-
-  /* the number, then who and when, then what and the click for more */
-  .employer-info {
-    display: grid;
-    grid-template-columns: 4.5rem 19rem minmax(0, 22rem);
-    column-gap: var(--space-3);
-    row-gap: var(--space-1);
-    align-items: start;
-  }
-
-  .employer-index {
-    display: block;
-    grid-row: 1 / span 3;
-    font-size: 3.5rem;
-    line-height: 0.85;
-  }
-
-  .employer-head,
-  .employer-title,
-  .employer-period {
-    grid-column: 2;
-  }
-
-  .employer-line {
-    grid-column: 3;
-    grid-row: 1 / span 2;
-  }
-
-  .employer-more {
-    grid-column: 3;
-    grid-row: 3;
-  }
-}
-
-.employer-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-3);
-}
-
-.status-tag {
-  display: inline-block;
-  padding: 0 var(--space-2);
-  background: var(--bone);
-  color: var(--ink);
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking-fine);
-  text-transform: uppercase;
-}
-
-.employer[data-current="false"] .status-tag {
-  background: transparent;
-  color: var(--bone);
-  border: 1px solid var(--bone-35);
 }
 
 /* ---------- the offer and the closing ---------- */
@@ -1062,72 +807,6 @@
 .hero-door {
   display: inline-block;
   margin: 0;
-}
-
-.contact-rows {
-  max-width: 28rem;
-  margin: var(--space-4) 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: var(--text-body);
-}
-
-.contact-rows li {
-  border-top: 1px solid var(--bone-30);
-}
-
-.contact-rows li:last-child {
-  border-bottom: 1px solid var(--bone-30);
-}
-
-.contact-rows a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 48px;
-  transition:
-    color var(--motion-control) var(--ease-out),
-    transform var(--motion-control) var(--ease-out);
-}
-
-.contact-rows a:hover {
-  color: var(--red);
-}
-
-.row-arrow {
-  color: var(--red);
-}
-
-.credits-sheet {
-  display: grid;
-  gap: var(--space-4);
-  padding: var(--space-6) var(--gutter-right) var(--space-4) var(--gutter-left);
-  font-size: var(--text-body);
-  line-height: 1.6;
-}
-
-@media (min-width: 700px) {
-  .credits-sheet {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.credits-sheet h3 {
-  margin: 0 0 var(--space-2);
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  text-transform: uppercase;
-}
-
-.credits-sheet ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.credits-sheet li,
-.credits-sheet p {
-  margin: 0 0 var(--space-2);
 }
 
 .end-of-file {
@@ -1343,15 +1022,13 @@
 
   .film-control,
   .corner-cta,
-  .door,
-  .contact-rows a {
+  .door {
     transition: none;
   }
 
   .film-control:active,
   .corner-cta:active,
-  .door:active,
-  .contact-rows a:active {
+  .door:active {
     transform: none;
   }
 
@@ -1485,41 +1162,6 @@
 
 .contact-scene .chapter-detail i {
   border-color: var(--bone);
-}
-
-.contact-rows {
-  max-width: none;
-  margin-top: var(--space-5);
-}
-
-.contact-rows li,
-.contact-rows li:last-child {
-  border-color: var(--bone);
-}
-
-.contact-rows a {
-  min-height: var(--space-6);
-  font-size: var(--text-body);
-  letter-spacing: var(--label-tracking-fine);
-  text-transform: uppercase;
-}
-
-.contact-rows a[data-contact="email"] {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(1.25rem, 5.4vw, 4rem);
-  letter-spacing: 0;
-  text-transform: none;
-  overflow-wrap: anywhere;
-}
-
-.contact-rows a:hover {
-  background: var(--bone);
-  color: var(--ink);
-}
-
-.row-arrow {
-  color: inherit;
 }
 
 @media (min-width: 1280px) {

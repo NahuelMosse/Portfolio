@@ -1,0 +1,63 @@
+/* ---------- a tool's window: the output it really printed ---------- */
+
+.show-rig[data-device="terminal"] .show-device {
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: 0;
+  border-radius: var(--space-2);
+}
+
+.show-rig[data-device="terminal"] .show-glass {
+  container-type: inline-size;
+  border-radius: 0 0 var(--space-2) var(--space-2);
+}
+
+.terminal-title {
+  margin-left: var(--space-2);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  font-weight: 400;
+  letter-spacing: var(--label-tracking-fine);
+  color: var(--bone-70);
+}
+
+/* the type scales with the window so a line of about 54 characters always fits, and a wide window reads at 16px */
+.terminal-screen {
+  margin: 0;
+  padding: var(--space-2) var(--space-2) 0;
+  font-family: var(--font-label);
+  font-size: clamp(10.5px, calc(100cqw / 34), 16px);
+  line-height: 1.5;
+  white-space: pre;
+  overflow: hidden;
+  color: var(--bone);
+}
+
+.terminal-line {
+  display: block;
+  color: var(--bone);
+}
+
+.terminal-line b {
+  margin-right: 1ch;
+  font-weight: 400;
+}
+
+.terminal-line[data-tone="cmd"] {
+  font-weight: 700;
+}
+
+.terminal-line[data-tone="cmd"] b {
+  color: var(--check-green);
+}
+
+.terminal-line[data-tone="err"] {
+  color: color-mix(in srgb, var(--red) 55%, var(--bone));
+}
+
+.terminal-line[data-tone="warn"] {
+  color: var(--spot-miga);
+}
+
+.terminal-line[data-tone="note"] {
+  color: color-mix(in srgb, var(--bone) 55%, transparent);
+}

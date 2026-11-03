@@ -23,6 +23,11 @@
   --mirror: 1;
   --p: 0;
   --shade-deep: color-mix(in srgb, var(--field) 11%, var(--ink));
+  /* an uppercase Boska letter is about 0.72em wide on the phone: the word fills 88% of the viewport, never more than a fifth of it */
+  --word-size: min(calc(88vw / (var(--chars, 8) * 0.72)), 20vw);
+  --hero-top: calc(var(--top-bar-height) + var(--show-strip) + var(--word-size) * 0.8 + var(--space-4));
+  --hero-width: min(calc(100vw - 2 * var(--gutter-right-phone)), 36rem);
+  --hero-height: 55svh;
   position: relative;
   height: calc(100svh + (var(--beats) - 1) * var(--beat-run));
   background: var(--field);
@@ -240,13 +245,12 @@
 .show-word {
   position: absolute;
   z-index: 2;
-  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-3));
+  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-2));
   left: var(--gutter-right-phone);
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  /* an uppercase Boska letter is about 0.55em wide: the word fills the viewport's width */
-  font-size: calc(90vw / (var(--chars) * 0.55) * 0.93);
+  font-size: var(--word-size);
   line-height: 0.8;
   letter-spacing: -0.03em;
   text-transform: uppercase;
@@ -272,19 +276,16 @@
   position: absolute;
   z-index: 4;
   left: 50%;
-  top: calc(var(--top-bar-height) + var(--show-strip) + 17svh);
+  top: var(--hero-top);
+  width: var(--hero-width);
+  height: var(--hero-height);
   translate: -50% 0;
   perspective: 1600px;
 }
 
-.show-rig[data-device="phone"] {
-  height: var(--device-phone-height);
-  aspect-ratio: 390 / 844;
-}
-
+/* a browser on its own is a wide band; a phone and a terminal are cropped to the same region, their screens cut at the top */
 .show-rig[data-device="browser"] {
-  width: var(--device-browser-width);
-  aspect-ratio: 16 / 10;
+  --hero-height: 40svh;
 }
 
 .show-device {
@@ -342,6 +343,7 @@
   position: absolute;
   inset: -8%;
   z-index: -2;
+  overflow: hidden;
   filter: blur(var(--glow-blur)) saturate(1.6);
   opacity: 0.6;
 }
@@ -436,29 +438,22 @@
 }
 
 /* the second device stands in the scene too: a phone leaning behind the first, or the phone that goes with a web page in front of it */
-.show[data-kind="phone"] .show-rig[data-role="second"] {
-  z-index: 3;
-  translate: calc(-50% + var(--flip) * 54%) 7svh;
-  scale: 0.84;
-  filter: brightness(0.72) saturate(0.85);
+.show[data-kind] .show-rig[data-role="second"] {
+  display: none;
 }
 
-.show[data-kind="browser"] .show-rig[data-role="second"] {
+/* on the phone a page with real phone screens puts the phone in front, and the page peeks above it as a strip */
+.show[data-layers="both"] .show-rig[data-role="second"] {
+  display: block;
   z-index: 5;
-  left: auto;
-  right: var(--gutter-right-phone);
-  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-5) + var(--device-browser-width) * 0.4);
-  height: var(--device-second-height);
+  top: calc(var(--hero-top) + 12svh);
+  width: auto;
+  height: 46svh;
   aspect-ratio: 390 / 844;
-  translate: none;
 }
 
 .show[data-kind="browser"] .show-rig[data-role="second"] .show-device {
   transform: rotateY(calc(var(--flip) * (-8deg + var(--p) * 10deg))) rotateX(3deg);
-}
-
-.show[data-kind="browser"] .show-rig[data-role="second"][data-device="browser"] {
-  display: none;
 }
 
 .show-rig[data-role="second"] .show-device {
@@ -640,7 +635,12 @@
   .show-word {
     left: var(--gutter-left);
     top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4));
-    font-size: min(calc(48vw / (var(--chars) * 0.55) * 0.93), 34vw);
+    font-size: var(--word-size);
+  }
+
+  .show {
+    /* wide an uppercase Boska letter is about 0.55em: the word fills 48% of the viewport, never more than a third of it */
+    --word-size: min(calc(48vw / (var(--chars, 8) * 0.55) * 0.93), 34vw);
   }
 
   .show[data-composition="b"] .show-word {
@@ -662,34 +662,72 @@
   .show-rig[data-device="phone"] {
     --device-phone-height: calc(100svh - var(--top-bar-height) - var(--show-strip) - var(--space-7));
     top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-5));
+    width: auto;
+    height: var(--device-phone-height);
+    aspect-ratio: 390 / 844;
   }
 
   .show-rig[data-device="browser"] {
     width: var(--device-browser-width-wide);
+    height: auto;
+    aspect-ratio: 16 / 10;
     top: 50%;
     translate: 0 -46%;
   }
 
-  .show[data-kind="phone"] .show-rig[data-role="second"] {
-    translate: calc(var(--flip) * 62%) 6svh;
-    scale: 0.82;
+  .show-rig[data-device="terminal"] {
+    width: 56vw;
+    height: 60svh;
+    top: 50%;
+    translate: 0 -46%;
   }
 
+  .show-rig[data-device="browser"],
+  .show-rig[data-device="terminal"] {
+    right: 3vw;
+  }
+
+  .show[data-composition="b"] .show-rig[data-device="browser"],
+  .show[data-composition="b"] .show-rig[data-device="terminal"] {
+    right: auto;
+    left: 3vw;
+  }
+
+  .show[data-kind="phone"] .show-rig[data-role="second"] {
+    display: block;
+    z-index: 3;
+    width: auto;
+    height: var(--device-phone-height);
+    aspect-ratio: 390 / 844;
+    translate: calc(var(--flip) * 62%) 6svh;
+    scale: 0.82;
+    filter: brightness(0.72) saturate(0.85);
+  }
+
+  /* the phone that goes with the page stands inside its lower corner */
   .show[data-kind="browser"] .show-rig[data-role="second"] {
-    right: calc(9vw - var(--space-5));
-    top: 50%;
+    display: block;
+    z-index: 5;
+    top: calc(50% - 6svh);
+    right: calc(3vw + var(--space-4));
+    width: auto;
     height: calc(var(--device-second-height) * 1.5);
-    translate: 0 4%;
+    aspect-ratio: 390 / 844;
+    translate: none;
   }
 
   .show[data-kind="browser"][data-composition="b"] .show-rig[data-role="second"] {
     right: auto;
-    left: calc(9vw - var(--space-5));
+    left: calc(3vw + var(--space-4));
+  }
+
+  .show[data-kind="browser"] .show-rig[data-role="second"][data-device="browser"] {
+    display: none;
   }
 
   .show-copy {
     inset: auto auto var(--space-6) var(--gutter-left);
-    width: 26rem;
+    width: 28rem;
     padding: 0;
   }
 
@@ -713,7 +751,7 @@
   }
 
   .show-text {
-    font-size: var(--text-title);
+    font-size: 1.75rem;
     line-height: 1.2;
   }
 }
@@ -770,7 +808,8 @@
     justify-self: center;
   }
 
-  .show-rig[data-role="second"] {
+  .show[data-kind] .show-rig[data-role="second"],
+  .show[data-kind][data-layers] .show-rig[data-role="second"] {
     display: none;
   }
 

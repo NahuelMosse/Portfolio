@@ -6,15 +6,16 @@
    transforms move, and text blocks never share the screen. With reduced motion the group is its band, then each project still. */
 
 .group {
-  --show-strip: 5.25rem;
+  --show-strip: 2.5rem;
 }
 
+/* narrow, the head is one slim line: the chapter word and the project numerals */
 .group-head {
   position: relative;
   z-index: 8;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: end;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   column-gap: var(--space-3);
   padding: var(--space-4) var(--gutter-right-phone) var(--space-3) var(--gutter-left-phone);
   background: var(--ink);
@@ -25,13 +26,14 @@
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--text-title);
+  font-size: 1.5rem;
   line-height: 0.9;
   letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
 .group-count {
+  display: none;
   margin: 0;
   justify-self: end;
   font-family: var(--font-label);
@@ -49,9 +51,8 @@
 
 .group-index {
   display: flex;
-  grid-column: 1 / -1;
   gap: var(--space-3);
-  margin: var(--space-2) 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
   font-family: var(--font-label);
@@ -75,8 +76,14 @@
   transition: color var(--beat-fade) var(--ease-out);
 }
 
-.group-index b {
-  display: none;
+/* narrow: the numerals are what shows, the name is still read by the button */
+.group-index span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* each name carries its product's color as a rule under it */
@@ -98,6 +105,23 @@
 .group-index [data-project="sonria"] { --swatch: var(--spot-sonria); }
 .group-index [data-project="miga"] { --swatch: var(--spot-miga); }
 .group-index [data-project="guardia"] { --swatch: var(--spot-triaje); }
+.group-index [data-project="motion-audit"] { --swatch: var(--spot-kit); }
+.group-index [data-project="http-attack"] { --swatch: var(--spot-grit); }
+.group-index [data-project="migrations-safe"] { --swatch: var(--spot-miga); }
+
+/* the three tools take the product colors of the apps they were born in */
+.show[data-project="motion-audit"] {
+  --field: var(--spot-kit);
+}
+
+.show[data-project="http-attack"] {
+  --field: var(--spot-grit);
+}
+
+.show[data-project="migrations-safe"] {
+  --field: var(--spot-miga);
+  --on: var(--ink);
+}
 
 .group-card .show-copy h4 {
   position: absolute;
@@ -114,13 +138,8 @@
 }
 
 @media (min-width: 768px) {
-  .group {
-    --show-strip: 4.5rem;
-  }
-
   .group-head {
-    display: flex;
-    align-items: baseline;
+    justify-content: flex-start;
     gap: var(--space-4);
     padding-left: var(--gutter-left);
     padding-right: var(--gutter-right);
@@ -130,21 +149,30 @@
     font-size: var(--text-display, 2.75rem);
   }
 
-  .group-count {
-    justify-self: auto;
-  }
-
   .group-index {
-    margin: 0 0 0 auto;
+    margin-left: auto;
     gap: var(--space-4);
   }
 
-  .group-index b {
-    display: inline;
+  .group-index span {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
+  .group {
+    --show-strip: 4.5rem;
+  }
+
+  .group-count {
+    display: block;
+    justify-self: auto;
+  }
+
   .group-line {
     display: block;
   }
@@ -224,6 +252,12 @@
     background: var(--field);
   }
 
+  /* the art bleeds past the stage by more than the wipe and the scroll can move it, so no edge of it shows */
+  .group-card .backdrop,
+  .group-card .plate {
+    --bleed-x: 22vw;
+  }
+
   /* the art drifts against the wipe at its own depth */
   .group-card .backdrop {
     transform: translate3d(calc(var(--d) * -8vw * var(--wx)), calc(var(--d) * -6svh * var(--wy) + var(--p) * -4svh), 0);
@@ -239,7 +273,7 @@
 
   /* the word leaves on the axis the wipe does not use, and the next one rises into place from the other side */
   .group-card .show-word {
-    transform: translate3d(calc(var(--d) * 70vw * var(--wy) + var(--p) * -6vw * var(--flip)), calc(var(--d) * 45svh * var(--wx)), 0);
+    transform: translate3d(calc(var(--d) * 70vw * var(--wy) + var(--p) * 2vw), calc(var(--d) * 45svh * var(--wx)), 0);
   }
 
   /* the devices travel across and shrink away as they leave; the next ones arrive from the other side, the second one lagging */

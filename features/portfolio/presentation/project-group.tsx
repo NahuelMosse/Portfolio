@@ -30,10 +30,22 @@ const numeral = (position: number) => String(position).padStart(2, "0")
 // The screen a beat shows: the list walks one step per beat and starts over when it runs out.
 const screenAt = (beat: number, count: number) => beat % count
 
+// How many steps the companion is held back so that a beat never shows the same pair of screens as an earlier one.
+function stepsRepeated(beat: number, leadCount: number, companionCount: number) {
+  let repeats = 0
+  for (let earlier = 0; earlier < beat; earlier++) {
+    if (screenAt(earlier, leadCount) === screenAt(beat, leadCount) && screenAt(earlier, companionCount) === screenAt(beat, companionCount)) repeats++
+  }
+  return repeats
+}
+
 // The device beside the lead one: the pieces of the other frame, or the same screens one step ahead when there are none.
 function companion(pieces: readonly Piece[], kind: Piece["frame"], beat: number) {
   const others = pieces.filter((piece) => piece.frame !== kind)
-  if (others.length > 0) return { kind: others[0].frame, screens: others, active: screenAt(beat, others.length) }
+  if (others.length > 0) {
+    const lead = pieces.filter((piece) => piece.frame === kind).length
+    return { kind: others[0].frame, screens: others, active: screenAt(beat + stepsRepeated(beat, lead, others.length), others.length) }
+  }
   const same = pieces.filter((piece) => piece.frame === kind)
   return { kind, screens: same, active: (screenAt(beat, same.length) + 1) % same.length }
 }

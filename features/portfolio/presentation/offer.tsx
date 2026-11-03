@@ -9,7 +9,7 @@ function Folder({ id, tab, card }: { id: "freelance" | "tpm"; tab: string; card:
       <h3>{card.title}</h3>
       <p>{card.line}</p>
       <p>{card.detail}</p>
-      {id === "tpm" && <a href="#dev-kit" className="proof-link">See the proof: the dev kit</a>}
+      {id === "tpm" && <a href="#tools" className="proof-link">See the proof: my tools</a>}
       <a className="door" href={doorHref(card)}>{card.door}</a>
     </article>
   )
