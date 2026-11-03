@@ -1,5 +1,3 @@
-import { httpAttackScreens, migrationsSafeScreens, motionAuditScreens, type TerminalScreen } from "./terminal-output"
-
 // The words of the page. Professional name stays Nahuel Mosse; the hero speaks as Nawi.
 
 export const identity = {
@@ -33,13 +31,11 @@ export type Piece =
 // What the piece is shown in: an app screen in a phone frame, a web page in a browser frame.
 export type ScreenFrame = "phone" | "browser"
 
-// A tool is shown in a terminal window instead.
-export type DeviceKind = ScreenFrame | "terminal"
+// A tool has no device: its illustration, its stack and its links are shown instead.
+export type DeviceKind = ScreenFrame | "tool"
 
 export type Project = Story & {
   line: string
-  // a tool is shown as the terminal it printed in, one window per beat
-  terminal?: readonly TerminalScreen[]
   stack: readonly string[]
   links: readonly Link[]
   pieces: readonly Piece[]
@@ -102,47 +98,44 @@ export const projects: readonly Project[] = [
   {
     id: "motion-audit",
     name: "motion-audit",
-    what: "Measures how a running web UI moves, frame by frame, in a real browser.",
-    problem: "A stylesheet says what should animate, not what does: controls with no hover, press or focus feedback, janky transitions and broken reduced motion go unnoticed.",
-    role: "I wrote it and published it on npm, with the Claude Code skill that runs the same command.",
-    line: "It records the element on every animation frame instead of trusting what the CSS declares, and observes only: it never clicks unless told to.",
-    stack: ["Node.js","Playwright","Claude Code skill"],
+    what: "Checks that a website moves the way it should: every button answers when touched, and nothing stutters.",
+    problem: "A site can look fine in a screenshot and still feel broken in the hand.",
+    role: "I built it and published it for other developers to use.",
+    line: "It watches the real page in a real browser, frame by frame, and reports what feels wrong.",
+    stack: ["Node.js", "Playwright", "Claude Code skill"],
     links: [
       { label: "npm", href: "https://www.npmjs.com/package/motion-audit" },
       { label: "GitHub", href: "https://github.com/NahuelMosse/motion-audit" },
     ],
     pieces: [],
-    terminal: motionAuditScreens,
   },
   {
     id: "http-attack",
     name: "http-attack",
-    what: "Adversarial probes against an HTTP API running on this machine.",
-    problem: "Unit tests prove the handler does what you thought of; the bugs live in what you did not think of.",
-    role: "I wrote it and published it on npm, with the Claude Code skill that runs the same command.",
-    line: "Malformed input, parser errors, races, injection, database faults, missing auth, IDOR and CSRF; each failure comes with its severity and the response that would have been correct.",
-    stack: ["Node.js","No runtime dependencies","Claude Code skill"],
+    what: "Attacks a system's back end the way a stranger would, before a stranger does.",
+    problem: "Most security holes live in the cases nobody thought to test.",
+    role: "I built it and published it for other developers to use.",
+    line: "It tries bad data, rushed requests and someone else's account, and says what broke and how serious it is.",
+    stack: ["Node.js", "No runtime dependencies", "Claude Code skill"],
     links: [
       { label: "npm", href: "https://www.npmjs.com/package/http-attack" },
       { label: "GitHub", href: "https://github.com/NahuelMosse/http-attack" },
     ],
     pieces: [],
-    terminal: httpAttackScreens,
   },
   {
     id: "migrations-safe",
     name: "migrations-safe",
-    what: "A linter, git history checks and a rehearsal for database migrations.",
-    problem: "A migration can lose data, break the code already running or lock a busy table, and nobody sees it before production.",
-    role: "I wrote it and published it on npm, with the Claude Code skill that runs the same command.",
-    line: "It lints the SQL and the history, then rehearses the migration on a copy: SQLite, PostgreSQL, MySQL, MariaDB, SQL Server, Oracle and Db2.",
-    stack: ["Node.js","SQL","Claude Code skill"],
+    what: "Rehearses changes to a database on a copy before they touch the real one.",
+    problem: "One careless change to a database can lose customer data or stop a running business.",
+    role: "I built it and published it for other developers to use.",
+    line: "It checks the change, then runs it on a copy of the data first, on every major database.",
+    stack: ["Node.js", "SQL", "Claude Code skill"],
     links: [
       { label: "npm", href: "https://www.npmjs.com/package/migrations-safe" },
       { label: "GitHub", href: "https://github.com/NahuelMosse/migrations-safe" },
     ],
     pieces: [],
-    terminal: migrationsSafeScreens,
   },
   {
     id: "cebador",

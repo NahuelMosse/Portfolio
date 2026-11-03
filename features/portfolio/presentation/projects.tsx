@@ -3,7 +3,7 @@ import { ChapterWord } from "./chapter-word"
 import { ProjectBackdrop, ProjectPlate } from "./project-backdrop"
 import { ProjectGroupScene, type GroupItem } from "./project-group"
 
-// The device each project shows its screens in: a phone, a browser or, for a command-line tool, a terminal window.
+// The device each project shows its screens in: a phone, a browser or, for a tool, none: its drawing carries it.
 const DEVICES = {
   grit: "phone",
   club: "phone",
@@ -11,9 +11,9 @@ const DEVICES = {
   sonria: "browser",
   miga: "browser",
   guardia: "browser",
-  "motion-audit": "terminal",
-  "http-attack": "terminal",
-  "migrations-safe": "terminal",
+  "motion-audit": "tool",
+  "http-attack": "tool",
+  "migrations-safe": "tool",
 } as const
 
 // The backdrop each project draws on, named after a world. The landings share the backdrop of the first one; the tools are
@@ -30,7 +30,7 @@ function groupItem(project: Project): GroupItem {
   const kind = DEVICES[project.id as keyof typeof DEVICES]
   if (!kind) throw new Error(`No device is mapped for project ${project.id}`)
   const backdrop = BACKDROPS[project.id as keyof typeof BACKDROPS]
-  if (!backdrop && kind !== "terminal") throw new Error(`No backdrop is mapped for project ${project.id}`)
+  if (!backdrop && kind !== "tool") throw new Error(`No backdrop is mapped for project ${project.id}`)
   return {
     project,
     kind,

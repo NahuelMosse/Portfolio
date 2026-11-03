@@ -1,0 +1,30 @@
+/* A tool has no device: its drawing carries it, and its stack and links are always on show, in plain type. */
+
+.show[data-kind="tool"] .show-label,
+.show[data-kind="tool"] .stack,
+.show[data-kind="tool"] .stack li {
+  font-family: var(--font-text);
+}
+
+.show[data-kind="tool"] .show-meta {
+  gap: var(--space-2);
+}
+
+.show[data-kind="tool"] .show-meta .stack {
+  flex-basis: 100%;
+}
+
+.show[data-kind="tool"] .show-meta a {
+  min-height: var(--show-strip);
+  padding: 0 var(--space-4);
+  background: var(--bone);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.show[data-kind="tool"] .show-meta a:hover,
+.show[data-kind="tool"] .show-meta a:focus-visible {
+  background: var(--ink);
+  color: var(--bone);
+  outline: var(--rule) solid var(--bone);
+}

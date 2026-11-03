@@ -53,6 +53,24 @@ function companion(pieces: readonly Piece[], kind: Piece["frame"], beat: number)
 // A browser project whose phone screens are real ones: on a phone the phone is the hero and the page peeks behind it.
 const hasPhoneScreens = (pieces: readonly Piece[]) => pieces.filter((piece) => piece.frame === "phone").length >= 2
 
+// The stack as plain words and the links as buttons.
+function ProjectMeta({ project }: { project: Project }) {
+  return (
+    <div className="show-meta">
+      <ul data-stack="" className="stack" aria-label="Stack">
+        {project.stack.map((entry) => (
+          <li key={entry}>{entry}</li>
+        ))}
+      </ul>
+      {project.links.map((link) => (
+        <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
+          {link.label}
+        </a>
+      ))}
+    </div>
+  )
+}
+
 type CardProps = { item: GroupItem; order: number; composition: "a" | "b"; current: boolean; reachable: boolean; beat: number }
 
 // A project as one scene of the group: its field, art, word, devices and captions. Its place on the track (--i against --track)
@@ -60,8 +78,8 @@ type CardProps = { item: GroupItem; order: number; composition: "a" | "b"; curre
 function ProjectCard({ item, order, composition, current, reachable, beat }: CardProps) {
   const { project, kind, art } = item
   const own = project.pieces.filter((piece) => piece.frame === kind)
-  const terminal = kind === "terminal"
-  const beside = kind === "terminal" ? null : companion(project.pieces, kind, beat)
+  const tool = kind === "tool"
+  const beside = tool ? null : companion(project.pieces, kind, beat)
   const layers = kind === "browser" && hasPhoneScreens(project.pieces) ? "both" : "single"
 
   return (
@@ -85,11 +103,7 @@ function ProjectCard({ item, order, composition, current, reachable, beat }: Car
           {project.name}
         </p>
         {beside && <ShowcaseDevice kind={beside.kind} screens={beside.screens} active={beside.active} role="second" />}
-        {terminal ? (
-          <ShowcaseDevice kind="terminal" panes={project.terminal ?? []} name={project.id} active={screenAt(beat, project.terminal?.length || 1)} role="main" />
-        ) : (
-          <ShowcaseDevice kind={kind} screens={own} active={screenAt(beat, own.length)} role="main" />
-        )}
+        {!tool && <ShowcaseDevice kind={kind} screens={own} active={screenAt(beat, own.length)} role="main" />}
         <div className="show-copy">
           <h4>{project.name}</h4>
           <div className="show-beats">
@@ -99,23 +113,11 @@ function ProjectCard({ item, order, composition, current, reachable, beat }: Car
                   {numeral(step + 1)} · {entry.label}
                 </p>
                 <p className="show-text">{entry.text(project)}</p>
-                {step === BEATS.length - 1 && (
-                  <div className="show-meta">
-                    <ul data-stack="" className="stack" aria-label="Stack">
-                      {project.stack.map((entry) => (
-                        <li key={entry}>{entry}</li>
-                      ))}
-                    </ul>
-                    {project.links.map((link) => (
-                      <a key={link.href} href={link.href} target="_blank" rel="noreferrer">
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
+                {!tool && step === BEATS.length - 1 && <ProjectMeta project={project} />}
               </div>
             ))}
           </div>
+          {tool && <ProjectMeta project={project} />}
           <p className="show-ticks" aria-hidden="true">
             {BEATS.map((entry, step) => (
               <i key={entry.label} data-on={step <= beat ? "" : undefined} />

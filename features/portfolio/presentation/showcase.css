@@ -302,7 +302,7 @@
   perspective: 1600px;
 }
 
-/* a browser on its own is a wide band; a phone and a terminal are cropped to the same region, their screens cut at the top */
+/* a browser on its own is a wide band; a phone is cropped to the same region, its screens cut at the top */
 .show-rig[data-device="browser"] {
   --hero-height: 40svh;
 }
@@ -686,10 +686,6 @@
     --column: 29vw;
   }
 
-  .show[data-kind="terminal"] {
-    --column: 34vw;
-  }
-
   .show[data-composition="b"] .show-word {
     left: auto;
     right: var(--gutter-right);
@@ -724,20 +720,11 @@
     translate: 0 -46%;
   }
 
-  .show-rig[data-device="terminal"] {
-    width: 56vw;
-    height: 60svh;
-    top: 50%;
-    translate: 0 -46%;
-  }
-
-  .show-rig[data-device="browser"],
-  .show-rig[data-device="terminal"] {
+  .show-rig[data-device="browser"] {
     right: 3vw;
   }
 
-  .show[data-composition="b"] .show-rig[data-device="browser"],
-  .show[data-composition="b"] .show-rig[data-device="terminal"] {
+  .show[data-composition="b"] .show-rig[data-device="browser"] {
     right: auto;
     left: 3vw;
   }
