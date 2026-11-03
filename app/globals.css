@@ -927,6 +927,7 @@
 
 .employer[data-current="false"] .status-tag {
   background: transparent;
+  color: var(--bone);
   border: 1px solid var(--bone-35);
 }
 
