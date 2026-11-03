@@ -1,8 +1,9 @@
 /* ---------- a group of projects: one continuous pinned scene ----------
    The scroll through the section is one timeline: each project holds for its beats, then the group turns to the next one.
    --track (0 to count - 1) is where the track stands, --hold how far through its beats the project on show is. A card reads its
-   distance to the track (--d) and moves only by transform and opacity: the field morphs to the next color, the art crosses over,
-   the word and the devices slide out and the next ones come in. With reduced motion the group is its band, then each project still. */
+   distance to the track (--d). The next project wipes in over the one on show, which stays opaque under it until it is covered:
+   wide the wipe comes from the right and the word leaves upward, narrow it comes from below and the word leaves sideways. Only
+   transforms move, and text blocks never share the screen. With reduced motion the group is its band, then each project still. */
 
 .group {
   --show-strip: 5.25rem;
@@ -151,6 +152,8 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .group {
+    --wx: 1;
+    --wy: 0;
     position: relative;
     height: calc(100svh + var(--count) * var(--steps) * var(--beat-step) + (var(--count) - 1) * var(--turn-step));
   }
@@ -177,19 +180,25 @@
     inset: 0;
   }
 
+  /* the card is the wipe: it slides over the one on show along the wipe axis and its stage slides back, so the scene is revealed
+     in place; the stage keeps a lag (parallax) so the content arrives a little behind the edge */
   .group-card {
     --d: calc(var(--i) - var(--track, 0));
-    --near: max(var(--d), calc(var(--d) * -1));
+    --ahead: max(var(--d), 0);
     --p: calc(var(--cur) * var(--hold, 0) + (1 - var(--cur)) * 0.5);
     position: absolute;
     inset: 0;
     height: 100%;
+    overflow: clip;
     background: none;
     visibility: hidden;
+    box-shadow: 0 0 var(--space-6) color-mix(in srgb, var(--ink) 60%, transparent);
+    transform: translate3d(calc(var(--ahead) * 100% * var(--wx)), calc(var(--ahead) * 100% * var(--wy)), 0);
   }
 
   .group-card[data-reachable] {
     visibility: visible;
+    will-change: transform;
   }
 
   .group-card:not([data-current]) .show-copy {
@@ -198,51 +207,62 @@
 
   .group-card .show-stage {
     background: none;
+    will-change: transform;
+    transform: translate3d(
+      calc(var(--ahead) * -100% * var(--wx) + var(--d) * 24vw * var(--wx)),
+      calc(var(--ahead) * -100% * var(--wy) + var(--d) * 14svh * var(--wy)),
+      0
+    );
   }
 
-  /* the color field: the next one comes up over the one that is leaving, so the color morphs with the scroll */
+  /* the color field is opaque: the one on show stays under the next until it is covered */
   .group-field {
     display: block;
     position: absolute;
     inset: 0;
     z-index: 0;
     background: var(--field);
-    opacity: clamp(0, calc(1 - var(--d)), 1);
   }
 
-  /* the art crosses over, and slides with its own parallax against the track */
-  .group-card .backdrop,
-  .group-card .plate {
-    opacity: clamp(0, calc(1 - var(--near)), 1);
-  }
-
+  /* the art drifts against the wipe at its own depth */
   .group-card .backdrop {
-    transform: translate3d(calc(var(--d) * -12vw), calc(var(--p) * -4svh), 0) scale(1.12);
+    transform: translate3d(calc(var(--d) * -8vw * var(--wx)), calc(var(--d) * -6svh * var(--wy) + var(--p) * -4svh), 0) scale(1.12);
   }
 
   .group-card .plate {
-    transform: translate3d(calc(var(--d) * 28vw + var(--p) * 4vw * var(--flip)), calc(var(--p) * -8svh), 0) scale(calc(1.1 * var(--mirror)), 1.1);
+    transform: translate3d(
+      calc(var(--d) * 22vw * var(--wx) + var(--p) * 4vw * var(--flip)),
+      calc(var(--d) * 14svh * var(--wy) + var(--p) * -8svh),
+      0
+    ) scale(calc(1.1 * var(--mirror)), 1.1);
   }
 
-  /* the word slides out as the next one comes in from the other side */
+  /* the word leaves on the axis the wipe does not use, and the next one rises into place from the other side */
   .group-card .show-word {
-    opacity: clamp(0, calc(1 - var(--near) * 1.7), 1);
-    transform: translate3d(calc(var(--d) * 85vw + var(--p) * -6vw * var(--flip)), 0, 0);
+    transform: translate3d(calc(var(--d) * 70vw * var(--wy) + var(--p) * -6vw * var(--flip)), calc(var(--d) * 45svh * var(--wx)), 0);
   }
 
-  /* the devices turn and shrink away, and the next ones arrive turning the other way; the second one lags a little */
+  /* the devices travel across and shrink away as they leave; the next ones arrive from the other side, the second one lagging */
   .group-card .show-rig {
     --dd: var(--d);
-    opacity: clamp(0, calc(1 - max(var(--dd), calc(var(--dd) * -1)) * 1.5), 1);
-    transform: translate3d(calc(var(--dd) * 52vw), 0, 0) rotate(calc(var(--dd) * 7deg)) scale(calc(1 - max(var(--dd), calc(var(--dd) * -1)) * 0.3));
+    transform: translate3d(calc(var(--dd) * 40vw * var(--wx)), calc(var(--dd) * 30svh * var(--wy)), 0) rotate(calc(var(--dd) * 6deg))
+      scale(calc(1 - max(var(--dd), calc(var(--dd) * -1)) * 0.2));
   }
 
   .group-card .show-rig[data-role="second"] {
     --dd: calc(var(--d) * 1.3);
   }
 
+  /* the text leaves within the first fifth of the turn and the next arrives in its last 30 %, so two texts never overlap */
   .group-card .show-copy {
-    opacity: clamp(0, calc(1 - var(--near) * 3), 1);
-    transform: translate3d(0, calc(var(--d) * 8svh), 0);
+    opacity: min(clamp(0, calc(1 + var(--d) * 5), 1), clamp(0, calc((0.3 - var(--d)) * 3.34), 1));
+    transform: translate3d(0, calc(var(--d) * 6svh), 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 767px) {
+  .group {
+    --wx: 0;
+    --wy: 1;
   }
 }
