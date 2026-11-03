@@ -601,15 +601,24 @@
 }
 
 @media (min-width: 701px) {
-  /* the cold open is one screen: NAWI is sized by the height as well as the width, so the sheet fits under his baseline
-     inside the screen; the right end stays free for the corner button */
+  /* the cold open is one screen; NAWI is the poster's giant word, 41vw, crossing his head */
   .cover-scene[data-has-art] {
     min-height: 0;
     height: 100svh;
   }
 
   .cover-title {
-    --size-nawi: min(41vw, 52svh);
+    --size-nawi: 41vw;
+  }
+
+  /* the drawing starts under the top bar and keeps its top edge, so the top of his hair is never cut by the bar or faded out */
+  .cover-scene .scene-art {
+    top: var(--top-bar-height);
+    mask-image: linear-gradient(to bottom, #000 84%, transparent), linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  }
+
+  .cover-scene .scene-art img {
+    object-position: 50% 0%;
   }
 
   /* the sheet sits over the lit arm: a soft ink pool under it keeps its small type readable */
@@ -635,23 +644,9 @@
   }
 }
 
-/* black ink that hands the cold open off to the projects: it only exists while the page is in motion */
-.cold-ink {
-  display: none;
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  background: #000;
-  clip-path: polygon(0 100%, 25% 104%, 50% 100%, 75% 106%, 100% 102%, 100% 100%, 0 100%);
-  pointer-events: none;
-}
-
-.has-motion .cold-ink {
-  display: block;
-}
-
+/* scaled from the top edge: the dolly never lifts his hair under the bar */
 .has-motion .cover-scene .scene-art img {
-  transform-origin: 50% 40%;
+  transform-origin: 50% 0%;
 }
 
 /* the backdrop fills the whole section under everything, its illustration covering the box; a scrim of the ink darkens the

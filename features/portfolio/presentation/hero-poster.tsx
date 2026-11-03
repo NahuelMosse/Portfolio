@@ -30,7 +30,6 @@ export function HeroPoster() {
           Hire me for a project
         </a>
       </div>
-      <span className="cold-ink" aria-hidden="true" />
       <ColdOpenMotion />
     </section>
   )
