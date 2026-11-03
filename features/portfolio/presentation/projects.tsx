@@ -48,7 +48,7 @@ function groupItem(project: Project): GroupItem {
 export function Projects() {
   return (
     <section data-chapter="projects" id="projects" className="projects">
-      <ChapterWord id="projects" heading="h2" numeral="01" note={`${projects.length} projects`}>
+      <ChapterWord id="projects" heading="h2" numeral="02" note={`${projects.length} projects`}>
         Projects
       </ChapterWord>
       {groups.map((group, order) => {

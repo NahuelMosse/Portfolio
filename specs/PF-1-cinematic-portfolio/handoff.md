@@ -21,3 +21,5 @@ Worktree D:/projects/Portfolio-d, branch portfolio-present-d. Live app http://12
 - Design round and motion-audit.mjs not run. First cold decode of the art can drop one long frame.
 - Older e2e specs (backdrop, poster, poster-art, glance-ai-line, showcase, groups) fail against this design; the Log has their replaces lines.
 - Do not stage any png or webp; the modified tracked triaje-*.webp stay unstaged.
+
+- Round y: chapter numerals follow the nav (projects 02, experience 03, offer 04, contact 05; e2e/chapter-numerals.spec.ts); `.experience` margin-bottom clears the offer note at every width; row photos use the SVG duotone #work-duotone (ink, crimson, bone), opacity .8/1, wide photo starts at 44%. Chapter 1165 at 1440, 1239 at 390. Captures .validation/cap/y-exp-*, script .validation/cap-exp-y.mjs.

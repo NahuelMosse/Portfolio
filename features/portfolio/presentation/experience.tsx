@@ -44,8 +44,18 @@ function RowPhoto({ employerId }: { employerId: string }) {
 export function Experience() {
   return (
     <section data-chapter="experience" id="experience" className="experience">
+      {/* the duotone of the row photos: ink in the shadows, crimson in the mid tones, bone in the highlights */}
+      <svg width="0" height="0" aria-hidden="true" focusable="false" style={{ position: "absolute" }}>
+        <filter id="work-duotone" colorInterpolationFilters="sRGB">
+          <feComponentTransfer>
+            <feFuncR type="table" tableValues="0.05 0.62 0.93" />
+            <feFuncG type="table" tableValues="0.05 0.07 0.88" />
+            <feFuncB type="table" tableValues="0.04 0.09 0.8" />
+          </feComponentTransfer>
+        </filter>
+      </svg>
       <ChapterIllustration asset="ill-experience-16x9" fittedAsset="ill-experience-21x9" className="experience-band">
-        <ChapterWord id="experience" heading="h2" numeral="02" note={`${experience.length} employers`}>Experience</ChapterWord>
+        <ChapterWord id="experience" heading="h2" numeral="03" note={`${experience.length} employers`}>Experience</ChapterWord>
       </ChapterIllustration>
       <ol className="employers">
         {experience.map((employer, index) => (

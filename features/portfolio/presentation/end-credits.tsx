@@ -20,12 +20,12 @@ export function EndCredits() {
   return (
     <section data-chapter="end-credits" id="end-credits" className="credits">
       <ChapterIllustration asset="ill-offer-16x9" className="offer-scene">
-        <ChapterWord id="offer" heading="h2" numeral="03" note="Two doors">Offer</ChapterWord>
+        <ChapterWord id="offer" heading="h2" numeral="04" note="Two doors">Offer</ChapterWord>
         <Offer />
       </ChapterIllustration>
       <ChapterIllustration asset="ill-contact-16x9" className="contact-scene">
         <div className="contact" id="contact">
-          <ChapterWord id="contact" heading="h3" headingId="contact-title" numeral="04" note={identity.base}>Let&rsquo;s talk</ChapterWord>
+          <ChapterWord id="contact" heading="h3" headingId="contact-title" numeral="05" note={identity.base}>Let&rsquo;s talk</ChapterWord>
           <ul className="contact-rows">
             {contactRows.map((row) => (
               <li key={row.id} data-secondary={row.id === "github" ? "" : undefined}>
