@@ -15,6 +15,8 @@ Worktree D:/projects/Portfolio-d, branch portfolio-present-d. Live app http://12
 - Frames with GPU raster: median 16.7 ms, a few strays at the project handoff (React re-render). Headless software rendering is 116 ms median and says nothing.
 - Captures: .validation/cap/w-<group>-rest<n>, w-<group>-turn<n>a|b|c, w-kit-a|b, each -390 and -1440. Scripts: .validation/cap-wipe.mjs, cap-kit.mjs, jank.mjs.
 
+- Experience row photos: each has a focal y (focusY in experience.tsx, --photo-y) so his face is in the low strip; Jüsto uses data-crop="face" (work-presenting zoomed 330% and mirrored onto him alone, the slide cropped out). Chapter 1165 at 1440, 1239 at 390. e2e/experience-photos.spec.ts 2/2. Captures .validation/cap/x-exp-<row>-390|1440, script .validation/cap-exp.mjs.
+
 ## Open
 - Design round and motion-audit.mjs not run. First cold decode of the art can drop one long frame.
 - Older e2e specs (backdrop, poster, poster-art, glance-ai-line, showcase, groups) fail against this design; the Log has their replaces lines.

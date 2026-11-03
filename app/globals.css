@@ -785,13 +785,23 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 28%;
+  object-position: 50% var(--photo-y, 28%);
   filter: grayscale(1) contrast(1.35) brightness(0.9);
 }
 
 .employer-photo[data-crop="right"] img {
-  object-position: 80% 28%;
   transform: scaleX(-1);
+}
+
+/* the presenting photo shows only him, mirrored so he sits on the visible right: the slide beside him is cropped out and cannot be read */
+.employer-photo[data-crop="face"] img {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 330%;
+  max-width: none;
+  height: auto;
+  transform: translateY(-27%) scaleX(-1);
 }
 
 /* the red ink over the grey, multiplied, then the halftone dots over both */

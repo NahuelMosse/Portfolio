@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react"
 import { sceneAsset } from "@/features/film"
 import { ChapterIllustration } from "./chapter-illustration"
 import { ChapterWord } from "./chapter-word"
@@ -12,13 +13,14 @@ const WORK_PHOTOS = {
 
 type WorkPhotoId = keyof typeof WORK_PHOTOS
 
-// The photo of him at work that belongs to each employer's row; the desk photo serves two rows, cropped to its other half.
-const EMPLOYER_PHOTO: Record<string, { id: WorkPhotoId; crop: "left" | "right" }> = {
-  "smart-warehousing": { id: "work-desk-b", crop: "left" },
-  "grupo-st": { id: "work-desk-a", crop: "left" },
-  visma: { id: "work-desk-a", crop: "right" },
-  fravega: { id: "work-warehouse", crop: "left" },
-  justo: { id: "work-presenting", crop: "left" },
+// The photo of him at work that belongs to each employer's row; the desk photo serves two rows, cropped to its other half. focusY is the
+// object-position that keeps his face inside the low strip. The "face" crop zooms on him alone: the slide he presents beside is never legible.
+const EMPLOYER_PHOTO: Record<string, { id: WorkPhotoId; crop: "left" | "right" | "face"; focusY: number }> = {
+  "smart-warehousing": { id: "work-desk-b", crop: "left", focusY: 28 },
+  "grupo-st": { id: "work-desk-a", crop: "left", focusY: 30 },
+  visma: { id: "work-desk-a", crop: "right", focusY: 30 },
+  fravega: { id: "work-warehouse", crop: "left", focusY: 14 },
+  justo: { id: "work-presenting", crop: "face", focusY: 0 },
 }
 
 // One photo of him at work as the right side of its employer's row: printed in the page's ink (grey, then red and black by the
@@ -28,7 +30,7 @@ function RowPhoto({ employerId }: { employerId: string }) {
   const src = photo && sceneAsset(photo.id, "webp")
   if (!photo || !src) return null
   return (
-    <figure data-work-photo={photo.id} data-crop={photo.crop} className="employer-photo">
+    <figure data-work-photo={photo.id} data-crop={photo.crop} className="employer-photo" style={{ "--photo-y": `${photo.focusY}%` } as CSSProperties}>
       {/* eslint-disable-next-line @next/next/no-img-element -- a graded still of a few hundred kilobytes */}
       <img src={src} alt={WORK_PHOTOS[photo.id]} loading="lazy" decoding="async" />
       <span data-grain="" className="grain" aria-hidden="true" />
