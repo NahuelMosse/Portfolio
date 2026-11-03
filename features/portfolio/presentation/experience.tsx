@@ -1,90 +1,79 @@
 import type { CSSProperties } from "react"
 import { sceneAsset } from "@/features/film"
-import { ChapterIllustration } from "./chapter-illustration"
 import { ChapterWord } from "./chapter-word"
 import { experience } from "./content"
+import { ExperienceScene } from "./experience-scene"
+import "./experience.css"
 
-const WORK_PHOTOS = {
-  "work-presenting": "Presenting the warehouse system to the Jüsto team",
-  "work-warehouse": "On site in a warehouse, in a hard hat",
-  "work-desk-a": "At the desk, building",
-  "work-desk-b": "At the desk, reviewing",
-} as const
+const PERIOD_SEPARATOR = " – "
 
-type WorkPhotoId = keyof typeof WORK_PHOTOS
-
-// The photo of him at work that belongs to each employer's row; the desk photo serves two rows, cropped to its other half. focusY is the
-// object-position that keeps his face inside the low strip. The "face" crop zooms on him alone: the slide he presents beside is never legible.
-const EMPLOYER_PHOTO: Record<string, { id: WorkPhotoId; crop: "left" | "right" | "face"; focusY: number }> = {
-  "smart-warehousing": { id: "work-desk-b", crop: "left", focusY: 28 },
-  "grupo-st": { id: "work-desk-a", crop: "left", focusY: 30 },
-  visma: { id: "work-desk-a", crop: "right", focusY: 30 },
-  fravega: { id: "work-warehouse", crop: "left", focusY: 14 },
-  justo: { id: "work-presenting", crop: "face", focusY: 0 },
+// "09/2026 – Present": the start is set as the big numerals, the rest stays beside it in fine type.
+function splitPeriod(period: string) {
+  const cut = period.indexOf(PERIOD_SEPARATOR)
+  return cut < 0 ? { from: period, to: "" } : { from: period.slice(0, cut), to: period.slice(cut) }
 }
 
-// One photo of him at work as the right side of its employer's row: printed in the page's ink (grey, then red and black by the
-// blend), screened with a halftone and faded out toward the text, so it bleeds off the edge and is never a bare rectangle.
-function RowPhoto({ employerId }: { employerId: string }) {
-  const photo = EMPLOYER_PHOTO[employerId]
-  const src = photo && sceneAsset(photo.id, "webp")
-  if (!photo || !src) return null
-  return (
-    <figure data-work-photo={photo.id} data-crop={photo.crop} className="employer-photo" style={{ "--photo-y": `${photo.focusY}%` } as CSSProperties}>
-      {/* eslint-disable-next-line @next/next/no-img-element -- a graded still of a few hundred kilobytes */}
-      <img src={src} alt={WORK_PHOTOS[photo.id]} loading="lazy" decoding="async" />
-      <span data-grain="" className="grain" aria-hidden="true" />
-    </figure>
-  )
-}
+const pad = (n: number) => String(n).padStart(2, "0")
 
-// Experience as one compact ledger: an illustration as the header band, then a ruled row per employer with its number, logo, role,
-// period and one line, and a photo of him at work printed in the page's ink bleeding in from the right edge of the row.
-// The problem and his role wait behind a click. No real capture of an employer's system is shown (PF-1-ASM-10).
+// Experience as one scrubbed scene: five employer posters, newest first, each built around its ink illustration. Wide, a pinned track
+// carries them sideways with the scroll; narrow, each poster sticks and the next slides up over it. Nothing waits behind a click, and
+// no real capture of an employer's system is shown (PF-1-ASM-10).
 export function Experience() {
   return (
-    <section data-chapter="experience" id="experience" className="experience">
-      {/* the duotone of the row photos: ink in the shadows, crimson in the mid tones, bone in the highlights */}
-      <svg width="0" height="0" aria-hidden="true" focusable="false" style={{ position: "absolute" }}>
-        <filter id="work-duotone" colorInterpolationFilters="sRGB">
-          <feComponentTransfer>
-            <feFuncR type="table" tableValues="0.05 0.62 0.93" />
-            <feFuncG type="table" tableValues="0.05 0.07 0.88" />
-            <feFuncB type="table" tableValues="0.04 0.09 0.8" />
-          </feComponentTransfer>
-        </filter>
-      </svg>
-      <ChapterIllustration asset="ill-experience-16x9" fittedAsset="ill-experience-21x9" className="experience-band">
-        <ChapterWord id="experience" heading="h2" numeral="03" note={`${experience.length} employers`}>Experience</ChapterWord>
-      </ChapterIllustration>
-      <ol className="employers">
-        {experience.map((employer, index) => (
-          <li key={employer.id}>
-            <article data-employer={employer.id} data-current={String(employer.current === true)} className="employer">
-              <RowPhoto employerId={employer.id} />
-              <div className="employer-info">
-                <span className="employer-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-                <div className="employer-head">
-                  {employer.logo && (
-                    // eslint-disable-next-line @next/next/no-img-element -- a static brand mark of a few kilobytes
-                    <img data-employer-logo="" className="employer-logo" src={employer.logo} alt={`${employer.name} logo`} width={56} height={56} loading="lazy" />
-                  )}
-                  <h3>{employer.name}</h3>
-                  <span data-employer-tag="" className="status-tag">{employer.current ? "CURRENT" : "PAST"}</span>
-                </div>
-                <p data-employer-title="" className="employer-title">{employer.title}</p>
-                <p data-employer-period="" className="employer-period">{employer.period}</p>
-                <p data-field="what" className="employer-line">{employer.what}</p>
-                <details className="employer-more">
-                  <summary>The problem and my role</summary>
-                  <p data-field="problem">{employer.problem}</p>
-                  <p data-field="role">{employer.role}</p>
-                </details>
-              </div>
-            </article>
-          </li>
-        ))}
-      </ol>
-    </section>
+    <ExperienceScene count={experience.length}>
+      <div data-experience-stage="" className="xp-stage">
+        <div className="xp-head">
+          <ChapterWord id="experience" heading="h2" numeral="03" note={`${experience.length} employers`}>Experience</ChapterWord>
+          <span className="xp-progress" aria-hidden="true" />
+        </div>
+        <ol data-experience-track="" className="xp-track">
+          {experience.map((employer, index) => {
+            const art = sceneAsset(`ill-exp-${employer.id}-4x3`, "webp")
+            const { from, to } = splitPeriod(employer.period)
+            return (
+              <li key={employer.id} className="xp-slot" style={{ "--i": index } as CSSProperties}>
+                <article data-employer={employer.id} data-current={String(employer.current === true)} className="xp-panel">
+                  <div className="xp-art" aria-hidden="true">
+                    {art && (
+                      // eslint-disable-next-line @next/next/no-img-element -- an ink illustration moved by transform inside its frame
+                      <img data-employer-art="" src={art} alt="" width={1448} height={1086} loading={index < 2 ? "eager" : "lazy"} decoding="async" />
+                    )}
+                  </div>
+                  <div className="xp-info">
+                    <p className="xp-meta">
+                      <span aria-hidden="true">{pad(index + 1)} / {pad(experience.length)}</span>
+                      <span data-employer-tag="" className="xp-tag">{employer.current ? "CURRENT" : "PAST"}</span>
+                    </p>
+                    <p data-employer-period="" className="xp-period">
+                      <span className="xp-from">{from}</span>
+                      <span className="xp-to">{to}</span>
+                    </p>
+                    <div className="xp-name">
+                      <h3>{employer.name}</h3>
+                      {employer.logo && (
+                        // eslint-disable-next-line @next/next/no-img-element -- a static brand mark of a few kilobytes
+                        <img data-employer-logo="" className="xp-logo" src={employer.logo} alt={`${employer.name} logo`} width={56} height={56} loading="lazy" />
+                      )}
+                    </div>
+                    <p data-employer-title="" className="xp-title">{employer.title}</p>
+                    <div className="xp-slab">
+                      <p data-field="what" className="xp-what">{employer.what}</p>
+                      <div className="xp-line">
+                        <span className="xp-label">The problem</span>
+                        <p data-field="problem">{employer.problem}</p>
+                      </div>
+                      <div className="xp-line">
+                        <span className="xp-label">My role</span>
+                        <p data-field="role">{employer.role}</p>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </li>
+            )
+          })}
+        </ol>
+      </div>
+    </ExperienceScene>
   )
 }

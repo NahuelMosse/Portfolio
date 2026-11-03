@@ -1,0 +1,355 @@
+/* ---------- experience: five employer posters in one scrubbed scene ----------
+   Each poster is built around its ink illustration, with the period as big numerals, the employer in the display face and the
+   problem and his role as two short lines, always visible. Wide (from 1280) the section is a tall box with one pinned stage and the
+   scroll carries a horizontal track through it by transform (--xp, 0 to 1, comes from the scroll). Narrower, each poster sticks and
+   the next slides up over it. With reduced motion the posters are still and stacked. */
+
+.xp {
+  --xp-step: 62svh;
+  --xp-panel: 70vw;
+  --xp-gap: 3vw;
+  --xp-pad: var(--gutter-left);
+  --xp-overlap: 9rem;
+  --xp-art-cap: 46svh;
+  --xp-shift: 4%;
+  --xp-period: clamp(2.6rem, 14vw, 3.4rem);
+  background: var(--ink);
+}
+
+.xp-head {
+  position: relative;
+  padding: var(--space-4) var(--gutter-right-phone) var(--space-3) var(--gutter-left-phone);
+}
+
+.xp-progress {
+  display: none;
+}
+
+.xp-track {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* the list item only carries the index; the poster is what sticks or moves */
+.xp-slot {
+  display: contents;
+  --d: calc(var(--xp, 0) * (var(--count) - 1) - var(--i));
+}
+
+/* ---- the poster, narrow: the illustration, and under it the text lifted over its foot ---- */
+.xp-panel {
+  position: relative;
+  min-height: 76svh;
+  background: var(--ink);
+  border-top: var(--rule) solid var(--bone-30);
+}
+
+.xp-art {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  max-height: var(--xp-art-cap);
+  width: 100%;
+}
+
+.xp-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--ink) 0, var(--ink-70) 28%, transparent 62%);
+}
+
+.xp-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% 30%;
+}
+
+.xp-info {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-2);
+  margin-top: calc(var(--xp-overlap) * -1);
+  padding: 0 var(--gutter-right-phone) var(--space-4) var(--gutter-left-phone);
+}
+
+.xp-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  color: var(--bone-70);
+}
+
+.xp-tag {
+  padding: 0 var(--space-2);
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.xp-panel[data-current="false"] .xp-tag {
+  background: transparent;
+  color: var(--bone);
+  border: 1px solid var(--bone-35);
+}
+
+.xp-period {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--space-3);
+  margin: 0;
+}
+
+.xp-from {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--xp-period);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--bone);
+}
+
+.xp-to {
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  color: var(--bone-70);
+}
+
+.xp-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.xp-name h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.xp-logo {
+  flex: none;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  padding: var(--space-1);
+  background: var(--bone);
+  object-fit: contain;
+}
+
+.xp-title,
+.xp-what,
+.xp-line p {
+  margin: 0;
+}
+
+.xp-title {
+  font-weight: 500;
+}
+
+.xp-what {
+  color: var(--bone-70);
+  font-size: var(--text-small);
+}
+
+/* what the employer is, then the problem and his role: one block under a red rule */
+.xp-slab {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: var(--rule) solid var(--red);
+}
+
+.xp-line p {
+  font-size: var(--text-small);
+  line-height: 1.4;
+}
+
+.xp-label {
+  display: block;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  color: var(--bone-70);
+}
+
+/* ---- narrow with motion: each poster sticks, the next slides up over it ---- */
+@media (prefers-reduced-motion: no-preference) and (max-width: 1279px) {
+  .xp-panel {
+    position: sticky;
+    top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-track {
+    display: grid;
+    gap: var(--space-4);
+  }
+}
+
+/* ---- wide: a horizontal poster, the text on the dark left of the illustration ---- */
+@media (min-width: 1280px) {
+  .xp {
+    --xp-period: clamp(3rem, 5.4vw, 5.5rem);
+  }
+
+  .xp-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: calc(var(--top-bar-height) + var(--space-2)) var(--gutter-right) var(--space-3) var(--gutter-left);
+  }
+
+  .xp .chapter-word,
+  .xp .chapter-word[data-long] {
+    font-size: 8vw;
+  }
+
+  .xp-track {
+    padding: 0 var(--gutter-right) var(--space-4) var(--gutter-left);
+  }
+
+  .xp-panel {
+    min-height: 34rem;
+    overflow: hidden;
+    border: var(--rule) solid var(--bone-30);
+  }
+
+  .xp-art {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    max-height: none;
+  }
+
+  .xp-art::after {
+    background: linear-gradient(to right, var(--ink) 0, var(--ink-85) 30%, var(--ink-35) 52%, transparent 66%);
+  }
+
+  .xp-art img {
+    position: absolute;
+    left: -7%;
+    width: 114%;
+    max-width: none;
+    object-position: right center;
+  }
+
+  .xp-info {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 50%;
+    margin: 0;
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .xp-period {
+    margin-top: auto;
+  }
+
+  /* the block sits on a caption slab, so it reads over any part of the drawing */
+  .xp-slab {
+    padding: var(--space-3);
+    background: var(--ink-85);
+  }
+
+  .xp-name h3 {
+    font-size: clamp(1.8rem, 2.4vw, 2.6rem);
+  }
+
+  .xp-what,
+  .xp-line p {
+    font-size: var(--text-body);
+  }
+}
+
+/* ---- wide with motion: the pinned stage and the sideways track ---- */
+@media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
+  .xp {
+    height: calc(100svh + (var(--count) - 1) * var(--xp-step));
+    --xp-travel: calc(var(--count) * var(--xp-panel) + (var(--count) - 1) * var(--xp-gap) + var(--xp-pad) + var(--gutter-right) - 100vw);
+  }
+
+  .xp-stage {
+    position: sticky;
+    top: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .xp-track {
+    display: flex;
+    gap: var(--xp-gap);
+    width: max-content;
+    height: 100%;
+    box-sizing: border-box;
+    transform: translate3d(calc(var(--xp, 0) * var(--xp-travel) * -1), 0, 0);
+    will-change: transform;
+  }
+
+  .xp-panel {
+    flex: 0 0 var(--xp-panel);
+    min-height: 0;
+  }
+
+  /* each illustration drifts against the track, by its own distance to the centre of the stage */
+  .xp-art img {
+    transform: translate3d(calc(clamp(-1.2, var(--d), 1.2) * var(--xp-shift) * -1), 0, 0);
+    will-change: transform;
+  }
+
+  .xp-progress {
+    display: block;
+    position: absolute;
+    right: var(--gutter-right);
+    bottom: var(--space-4);
+    width: 22vw;
+    height: 2px;
+    background: var(--bone-30);
+  }
+
+  .xp-progress::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--red);
+    transform: scaleX(var(--xp, 0));
+    transform-origin: left;
+  }
+}
+
+@media (min-width: 1280px) and (max-height: 780px) and (prefers-reduced-motion: no-preference) {
+  .xp {
+    --xp-period: clamp(2.4rem, 4.2vw, 3.6rem);
+  }
+
+  .xp .chapter-word,
+  .xp .chapter-word[data-long] {
+    font-size: 6vw;
+  }
+
+  .xp-info {
+    padding: var(--space-4);
+  }
+}
