@@ -164,7 +164,7 @@
 
 .xp-what {
   color: var(--bone-70);
-  font-size: var(--text-small);
+  font-size: var(--text-body);
 }
 
 /* what the employer is, then the problem and his role: one block under a red rule */
@@ -177,7 +177,7 @@
 }
 
 .xp-line p {
-  font-size: var(--text-small);
+  font-size: var(--text-body);
   line-height: 1.4;
 }
 
