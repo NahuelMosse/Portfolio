@@ -273,7 +273,7 @@
 
   /* the word leaves on the axis the wipe does not use, and the next one rises into place from the other side */
   .group-card .show-word {
-    transform: translate3d(calc(var(--d) * 70vw * var(--wy) + var(--p) * 2vw), calc(var(--d) * 45svh * var(--wx)), 0);
+    transform: translate3d(calc(var(--d) * 70vw * var(--wy) + var(--p) * min(2vw, var(--gutter-right) / 2)), calc(var(--d) * 45svh * var(--wx)), 0);
   }
 
   /* the devices travel across and shrink away as they leave; the next ones arrive from the other side, the second one lagging */

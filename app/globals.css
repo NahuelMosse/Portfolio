@@ -403,6 +403,13 @@
   margin-bottom: calc(var(--word-clearance) * -1);
 }
 
+/* wide, the group header (top bar and strip) is opaque text above the first project: the word ends where it begins */
+@media (min-width: 768px) {
+  .chapter-title[data-chapter-title="projects"] {
+    margin-bottom: 0;
+  }
+}
+
 .chapter-title[data-chapter-title="projects"] .chapter-word {
   margin-left: calc(var(--gutter-left) * -1);
 }
@@ -762,6 +769,13 @@
 
 .offer-scene {
   margin-top: var(--word-clearance);
+}
+
+/* wide, the title rises 60 % of its height above the scene: the margin is that rise plus the detail line, so it clears the last card */
+@media (min-width: 701px) {
+  .offer-scene {
+    margin-top: calc(var(--size-word) * 0.5 + 4rem);
+  }
 }
 
 .contact-scene {
@@ -1169,5 +1183,39 @@
     margin-left: calc(var(--gutter-left) * -1 + var(--space-1));
     font-size: 16.5vw;
     white-space: nowrap;
+  }
+}
+
+/* ---------- scrollbar: an ink gutter with a bone hairline, a bone square bar that turns red under the pointer ---------- */
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink);
+  border-left: 1px solid var(--bone-12);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bone);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background: var(--red);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--ink);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: var(--bone) var(--ink);
+    scrollbar-width: thin;
   }
 }
