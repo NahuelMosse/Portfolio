@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test"
 
 // @PF-1-ASM-36 the ending is one red block: LET'S TALK, the contact tiles, the credits roll (studies and certifications) and the footer as the last line,
-// all on one red ground and inside one screen; the word is not smaller than the EXPERIENCE word.
+// all on one red ground and inside one screen; the word is at least 16vw wide (back at its pre-cap 16.5vw).
 const SIZES = [
   { width: 1910, height: 912 },
   { width: 1920, height: 1080 },
@@ -65,6 +65,6 @@ for (const { width, height } of SIZES) {
     expect(m.sceneBox.top, "the block starts on screen").toBeGreaterThanOrEqual(-1)
     expect(m.sceneBox.bottom, "the block ends on screen").toBeLessThanOrEqual(m.innerHeight + 1)
     expect(m.contrast, "the roll reads on the red").toBeGreaterThanOrEqual(AA_TEXT)
-    expect(m.wordSize, "LET'S TALK is not smaller than EXPERIENCE").toBeGreaterThanOrEqual(m.experienceSize - 0.5)
+    expect(m.wordSize, "LET'S TALK is at least 16vw").toBeGreaterThanOrEqual((width * 16) / 100)
   })
 }

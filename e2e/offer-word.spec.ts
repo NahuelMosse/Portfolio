@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test"
 
-// @PF-1-ASM-38 the OFFER word is at least the EXPERIENCE word's size and the Offer, cards included, still fits one screen.
+// @PF-1-ASM-38 the OFFER word is back at its pre-cap size (17vw, never under 16.5vw) and the Offer, cards included, still fits one screen.
 const SIZES = [
   { width: 1910, height: 912 },
   { width: 1920, height: 1080 },
@@ -10,7 +10,7 @@ const SIZES = [
 ] as const
 
 for (const { width, height } of SIZES) {
-  test(`the OFFER word is not smaller than EXPERIENCE and the Offer is one screen at ${width}x${height} @PF-1-ASM-38`, async ({ page }) => {
+  test(`the OFFER word is at least 16.5vw and the Offer is one screen at ${width}x${height} @PF-1-ASM-38`, async ({ page }) => {
     await page.setViewportSize({ width, height })
     await page.goto("/")
     const m = await page.evaluate(() => {
@@ -28,7 +28,7 @@ for (const { width, height } of SIZES) {
         innerHeight,
       }
     })
-    expect(m.offer, "OFFER is not smaller than EXPERIENCE").toBeGreaterThanOrEqual(m.experience - 0.5)
+    expect(m.offer, "OFFER is at least 16.5vw").toBeGreaterThanOrEqual((width * 16.5) / 100 - 0.5)
     expect(m.span, "word, art and cards are one screen").toBeLessThanOrEqual(m.innerHeight + 1)
     expect(m.cardsBottom, "both cards end inside the screen").toBeLessThanOrEqual(m.innerHeight + 1)
   })
