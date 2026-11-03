@@ -743,23 +743,50 @@
   padding-bottom: 0;
 }
 
+/* the timeline: a row per employer on a phone, a column each wide, a thin rule running along them */
 .employers {
   display: grid;
-  gap: var(--space-6);
+  gap: 0;
   margin: 0;
-  padding: var(--space-5) var(--gutter-right) var(--space-6) var(--gutter-left);
+  padding: var(--space-3) var(--gutter-right-phone) var(--space-4) var(--gutter-left-phone);
   list-style: none;
 }
 
 .employer {
   display: grid;
-  gap: var(--space-4);
+  grid-template-columns: minmax(0, 7rem) minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-3) 0;
+  border-top: var(--rule) solid var(--bone-30);
 }
 
 .employer-info {
   display: grid;
   align-content: start;
-  gap: var(--space-2);
+  gap: var(--space-1);
+}
+
+.employer-index {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-title);
+  line-height: 0.8;
+  color: var(--red);
+}
+
+.employer-line {
+  margin: 0;
+}
+
+.employer-more summary {
+  min-height: 44px;
+  padding-top: var(--space-2);
+  cursor: pointer;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
 }
 
 .employer-logo {
@@ -809,32 +836,14 @@
 }
 
 @media (min-width: 1280px) {
+  .employers {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-4);
+    padding: var(--space-3) var(--gutter-right) var(--space-4) var(--gutter-left);
+  }
+
   .employer {
-    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
-    gap: var(--space-5);
-    align-items: center;
-  }
-
-  .employer .employer-info {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .employer .employer-art {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .employer[data-side="left"] {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
-  }
-
-  .employer[data-side="left"] .employer-info {
-    grid-column: 2;
-  }
-
-  .employer[data-side="left"] .employer-art {
-    grid-column: 1;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -854,25 +863,19 @@
   filter: contrast(1.08) saturate(0.75) brightness(0.95);
 }
 
-.employer-info .work-photo {
-  width: min(100%, 18rem);
-  margin-top: var(--space-3);
-}
-
 .work-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-3);
-  max-width: 48rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  max-width: 40rem;
+  margin: 0 var(--gutter-right-phone) var(--space-4) var(--gutter-left-phone);
 }
 
-.work-strip-label {
-  grid-column: 1 / -1;
-  margin: 0;
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking);
-  text-transform: uppercase;
+@media (min-width: 1280px) {
+  .work-strip {
+    margin-left: var(--gutter-left);
+    margin-right: var(--gutter-right);
+  }
 }
 
 .employer-head {
@@ -1296,85 +1299,11 @@
 
 /* experience: each employer is a band of its own. The drawing of its system runs full height on one side and the facts sit on an
    ink slab that overlaps it, with its case number in crimson and a hard crimson offset. */
-.employers {
-  gap: 0;
-  padding: 0;
-}
-
-.employer {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  padding: 0 0 var(--space-6);
-  border-top: var(--rule) solid var(--bone-30);
-}
-
-.employer-art {
-  order: -1;
-}
-
-.employer-art .scene-art {
-  mask-image: linear-gradient(to bottom, #000 70%, transparent);
-}
-
-.employer-info {
-  position: relative;
-  z-index: 1;
-  margin: calc(var(--space-6) * -1) var(--gutter-right-phone) 0 var(--gutter-left-phone);
-  padding: var(--space-4);
-  background: var(--ink);
-  box-shadow: var(--space-3) var(--space-3) 0 var(--red);
-}
-
-.employer-index {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--poster-word-size-phone);
-  line-height: 0.8;
-  color: var(--red);
-}
-
 .employer h3 {
-  font-size: calc(var(--size-case-title) * 1.7);
+  font-size: var(--text-title);
   line-height: 0.95;
   text-transform: uppercase;
   letter-spacing: -0.02em;
-}
-
-@media (min-width: 1280px) {
-  .employer {
-    display: block;
-    min-height: 78svh;
-    padding: 0;
-  }
-
-  .employer-art.scene[data-has-art] {
-    position: absolute;
-    inset: 0 0 0 36%;
-    aspect-ratio: auto;
-  }
-
-  .employer[data-side="left"] .employer-art.scene[data-has-art] {
-    inset: 0 36% 0 0;
-  }
-
-  .employer-art .scene-art {
-    mask-image: linear-gradient(to right, transparent, #000 22%);
-  }
-
-  .employer[data-side="left"] .employer-art .scene-art {
-    mask-image: linear-gradient(to left, transparent, #000 22%);
-  }
-
-  .employer-info {
-    width: min(30rem, 40vw);
-    margin: var(--space-7) 0 var(--space-7) var(--gutter-left);
-    padding: var(--space-5);
-  }
-
-  .employer[data-side="left"] .employer-info {
-    margin: var(--space-7) var(--gutter-right) var(--space-7) auto;
-  }
 }
 
 /* offer: two doors, two printed panels. The freelance door is bone with ink type, the company door is crimson sunk into the ink

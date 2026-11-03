@@ -2,7 +2,7 @@
 
 import type { CSSProperties, ReactNode } from "react"
 import type { Project } from "./content"
-import { ProjectIndex, type IndexEntry } from "./project-showcase"
+import { ProjectTabs } from "./project-showcase"
 import { useScrollBeat } from "./use-scroll-beat"
 
 // The six stations a requirement walks, and the hook that stands guard at each one.
@@ -72,17 +72,18 @@ function Track({ station }: { station: number }) {
   )
 }
 
-type KitSceneProps = { project: Project; index: number; entries: readonly IndexEntry[]; art: ReactNode }
+type KitSceneProps = { id: string; label: string; project: Project; art: ReactNode }
 
 // The dev kit as a pinned scene: one card travels through the six stations as the page scrolls, and each station shows what the
 // method does there and the hook that keeps the agents honest.
-export function KitScene({ project, index, entries, art }: KitSceneProps) {
+export function KitScene({ id, label, project, art }: KitSceneProps) {
   const { scene, beat } = useScrollBeat(STATIONS.length)
 
   return (
     <section
       ref={scene}
-      id={project.id}
+      id={id}
+      data-group={id}
       data-project={project.id}
       data-composition="a"
       data-beat={beat}
@@ -95,7 +96,7 @@ export function KitScene({ project, index, entries, art }: KitSceneProps) {
         <p data-poster-word="" className="show-word" aria-hidden="true">
           Dev kit
         </p>
-        <ProjectIndex entries={entries} current={index} />
+        <ProjectTabs label={label} names={["Dev kit"]} current={0} />
         <div className="kit-rig">
           <TravelCard station={beat} />
         </div>

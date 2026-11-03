@@ -3,6 +3,19 @@
 /* A scene is a tall section with one sticky stage. The stage holds still while the page scrolls through it; --p (0 to 1) is how far
    through it the visitor is, and every layer moves by its own share of it: the far art least, the device and its screen light most.
    --on is the ink that reads on the product's field. */
+/* the field and its ink are colors, so a click on a tab slides one product's color into the next */
+@property --field {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #b3261e;
+}
+
+@property --on {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ede4d0;
+}
+
 .show {
   --field: var(--spot-kit);
   --on: var(--bone);
@@ -13,6 +26,9 @@
   position: relative;
   height: calc(100svh + (var(--beats) - 1) * var(--beat-run));
   background: var(--field);
+  transition:
+    --field var(--motion-section) var(--ease-out),
+    --on var(--motion-section) var(--ease-out);
 }
 
 .show[data-project="grit"] {
@@ -31,6 +47,15 @@
 
 .show[data-project="club"] {
   --field: var(--spot-club);
+  --on: var(--ink);
+}
+
+.show[data-project="sonria"] {
+  --field: var(--spot-sonria);
+}
+
+.show[data-project="miga"] {
+  --field: var(--spot-miga);
   --on: var(--ink);
 }
 
@@ -56,8 +81,20 @@
 
 /* ---- the art, in depth: the world far behind, his ink plate nearer, both drifting as the page scrolls ---- */
 
+/* the art of the project on show: a click remounts it, and it fades in over the color that slid in */
+.show-art {
+  display: contents;
+}
+
+@keyframes show-art-in {
+  from {
+    opacity: 0;
+  }
+}
+
 .show .backdrop,
 .show .plate {
+  animation: show-art-in var(--motion-section) var(--ease-out) both;
   position: absolute;
   inset: 0;
   display: block;
@@ -109,7 +146,7 @@
   mix-blend-mode: soft-light;
 }
 
-/* ---- the strip: where the visitor is among the five projects ---- */
+/* ---- the strip: the kind of chapter and a tab for each project in it ---- */
 
 .show-index {
   position: absolute;
@@ -117,7 +154,7 @@
   z-index: 7;
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   height: calc(var(--top-bar-height) + var(--show-strip));
   margin: 0;
   padding: var(--top-bar-height) var(--gutter-right-phone) 0 var(--gutter-left-phone);
@@ -130,28 +167,42 @@
   text-transform: uppercase;
 }
 
-.show-index a {
+.show-kind {
+  display: none;
+  margin-right: var(--space-3);
+  color: color-mix(in srgb, var(--on) 62%, var(--field));
+}
+
+.show-index button {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   min-width: var(--show-strip);
   min-height: var(--show-strip);
+  padding: 0 var(--space-2);
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
   white-space: nowrap;
   color: color-mix(in srgb, var(--on) 62%, var(--field));
-  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--beat-fade) var(--ease-out);
 }
 
-.show-index li[aria-current] a {
+.show-index button:hover,
+.show-index li[aria-current] button {
   color: var(--on);
 }
 
-.show-index li[aria-current] b {
+/* the tab on is underlined: on the phone by its name, wide by its numeral */
+.show-index li[aria-current] span {
   padding-bottom: var(--space-1);
   border-bottom: var(--space-1) solid var(--on);
 }
 
-/* on the phone only the current project carries its name; the others are their numbers */
-.show-index li:not([aria-current]) span {
+.show-index b {
   display: none;
 }
 
@@ -159,11 +210,25 @@
   .show-index {
     padding-left: var(--gutter-left);
     padding-right: var(--gutter-right);
-    gap: var(--space-5);
+    gap: var(--space-4);
   }
 
-  .show-index li:not([aria-current]) span {
+  .show-kind {
+    display: block;
+  }
+
+  .show-index b {
     display: inline;
+  }
+
+  .show-index li[aria-current] span {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .show-index li[aria-current] b {
+    padding-bottom: var(--space-1);
+    border-bottom: var(--space-1) solid var(--on);
   }
 }
 
@@ -192,7 +257,9 @@
 /* on the bright fields (teal, pink, lime) the plate's black masses would swallow an ink word: it is bone with a hard ink shadow */
 .show[data-project="guardia"] .show-word,
 .show[data-project="cebador"] .show-word,
-.show[data-project="club"] .show-word {
+.show[data-project="club"] .show-word,
+.show[data-project="sonria"] .show-word,
+.show[data-project="miga"] .show-word {
   text-shadow: var(--space-1) var(--space-1) 0 var(--ink);
 }
 
@@ -1052,6 +1119,13 @@
 
   .show .plate {
     scale: none;
+  }
+
+  .show,
+  .show .backdrop,
+  .show .plate {
+    animation: none;
+    transition: none;
   }
 
   .show-word,

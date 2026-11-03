@@ -140,6 +140,48 @@ export const projects: readonly Project[] = [
     ],
   },
   {
+    id: "sonria",
+    name: "Sonría",
+    what: "The one-page site of a fictional neighborhood dental clinic in Caballito.",
+    problem: "A clinic site has to answer a toothache at once and let people book without calling.",
+    role: "I did the design, the copy and the code.",
+    line: "Built with my dev kit: Claude Code agents, every behavior tested.",
+    stack: ["HTML, CSS, JS", "Playwright", "GitHub Pages"],
+    links: [
+      { label: "Visit the site", href: "https://nahuelmosse.github.io/sonria/" },
+      { label: "Repository", href: "https://github.com/NahuelMosse/sonria" },
+    ],
+    pieces: [
+      screen("browser", "sonria-hero-1440", "The Sonría site's first screen at desktop width, with the urgency card", "Home"),
+      screen("browser", "sonria-tratamientos-1440", "The Sonría site's treatments with indicative prices at desktop width", "Treatments"),
+      screen("browser", "sonria-turno-1440", "The Sonría site's four-step appointment at desktop width", "Appointment"),
+      screen("phone", "sonria-hero-390", "The Sonría site's first screen on a phone, with the urgency by WhatsApp", "Home, at 390"),
+      screen("phone", "sonria-tratamientos-390", "The Sonría site's treatments on a phone", "Treatments, at 390"),
+      screen("phone", "sonria-turno-390", "The Sonría site's appointment on a phone", "Appointment, at 390"),
+    ],
+  },
+  {
+    id: "miga",
+    name: "Miga",
+    what: "The site of a fictional sourdough bakery in Villa Crespo.",
+    problem: "A bakery site has to show today's bread and let people order for pickup.",
+    role: "I did the design, the copy and the code.",
+    line: "Built with my dev kit: Claude Code agents, every behavior tested.",
+    stack: ["HTML, CSS, JS", "Playwright", "GitHub Pages"],
+    links: [
+      { label: "Visit the site", href: "https://nahuelmosse.github.io/miga/" },
+      { label: "Repository", href: "https://github.com/NahuelMosse/miga" },
+    ],
+    pieces: [
+      screen("browser", "miga-hero-1440", "The Miga site's first screen at desktop width, over a sourdough loaf", "Home"),
+      screen("browser", "miga-lista-1440", "The Miga site's list of the day's bread with prices at desktop width", "Today's bread"),
+      screen("browser", "miga-pedir-1440", "The Miga site's order-to-pickup steps at desktop width", "How to order"),
+      screen("phone", "miga-hero-390", "The Miga site's first screen on a phone", "Home, at 390"),
+      screen("phone", "miga-lista-390", "The Miga site's list of the day's bread on a phone", "Today's bread, at 390"),
+      screen("phone", "miga-pedir-390", "The Miga site's order-to-pickup steps on a phone", "How to order, at 390"),
+    ],
+  },
+  {
     id: "club",
     name: "ClubNahuelMosse",
     what: "A Flutter app with a REST API to book sports courts.",
@@ -155,6 +197,16 @@ export const projects: readonly Project[] = [
       screen("phone", "club-listo", "ClubNahuelMosse reservation confirmed", "Booked"),
     ],
   },
+]
+
+// The projects are told in chapters by kind; inside one, the visitor picks the project with a click.
+export type ProjectGroup = { id: string; label: string; projects: readonly string[] }
+
+export const groups: readonly ProjectGroup[] = [
+  { id: "apps", label: "Apps", projects: ["grit", "club"] },
+  { id: "landings", label: "Landings", projects: ["cebador", "sonria", "miga"] },
+  { id: "game", label: "Game", projects: ["guardia"] },
+  { id: "dev-kit", label: "Dev kit", projects: ["dev-kit"] },
 ]
 
 export const experience: readonly Employer[] = [

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import type { CSSProperties, ReactNode } from "react"
 import type { Piece, Project, ScreenFrame } from "./content"
 import { ShowcaseDevice } from "./showcase-device"
@@ -13,15 +14,14 @@ const BEATS = [
   { label: "My role", text: (project: Project) => project.role },
 ] as const
 
-type ShowcaseProps = {
-  project: Project
-  index: number
-  kind: ScreenFrame
-  // the backdrop and plate, drawn on the server where the delivered files are known
-  art: ReactNode
-  word: string
+// One project of a group: its content, the device its screens sit in, and the art drawn on the server where the files are known.
+export type GroupItem = { project: Project; kind: ScreenFrame; word: string; art: ReactNode }
+
+type GroupSceneProps = {
+  id: string
+  label: string
   composition: "a" | "b"
-  entries: readonly IndexEntry[]
+  items: readonly GroupItem[]
 }
 
 const numeral = (position: number) => String(position).padStart(2, "0")
@@ -36,28 +36,33 @@ function companion(pieces: readonly Piece[], kind: ScreenFrame, active: number, 
   return { kind, screens: same, active: (active + 1) % same.length }
 }
 
-// The project index: where the visitor is among the five.
-export type IndexEntry = { id: string; label: string }
+type TabsProps = { label: string; names: readonly string[]; current: number; onPick?: (position: number) => void }
 
-export function ProjectIndex({ entries, current }: { entries: readonly IndexEntry[]; current: number }) {
+// The strip of a chapter: its kind, and one tab per project in it. Only clicks pick a project.
+export function ProjectTabs({ label, names, current, onPick }: TabsProps) {
   return (
-    <ol className="show-index" aria-label="Projects">
-      {entries.map((entry, order) => (
-        <li key={entry.id} aria-current={order === current ? "step" : undefined}>
-          <a href={`#${entry.id}`}>
+    <ol className="show-index" aria-label={`${label} projects`}>
+      <li className="show-kind" aria-hidden="true">
+        {label}
+      </li>
+      {names.map((name, order) => (
+        <li key={name} aria-current={order === current ? "step" : undefined}>
+          <button type="button" aria-pressed={order === current} onClick={() => onPick?.(order)}>
             <b>{numeral(order + 1)}</b>
-            <span>{entry.label}</span>
-          </a>
+            <span>{name}</span>
+          </button>
         </li>
       ))}
     </ol>
   )
 }
 
-// One project as a pinned scene: the section is tall, its stage sticks, and as the page scrolls the real screens change inside
-// one large device standing in the art, while short captions tell the product beat by beat.
-export function ProjectShowcase({ project, index, kind, art, word, composition, entries }: ShowcaseProps) {
+// A chapter of projects of one kind as one pinned scene: the section is short, its stage sticks, and the scroll walks the beats of the
+// project on show while its real screens change inside one large device standing in the art. A click on a tab swaps the project.
+export function ProjectGroupScene({ id, label, composition, items }: GroupSceneProps) {
+  const [picked, setPicked] = useState(0)
   const { scene, beat } = useScrollBeat(BEATS.length)
+  const { project, kind, word, art } = items[picked]
   const own = project.pieces.filter((piece) => piece.frame === kind)
   const active = screenAt(beat, BEATS.length, own.length)
   const beside = companion(project.pieces, kind, active, beat)
@@ -65,7 +70,8 @@ export function ProjectShowcase({ project, index, kind, art, word, composition, 
   return (
     <section
       ref={scene}
-      id={project.id}
+      id={id}
+      data-group={id}
       data-project={project.id}
       data-composition={composition}
       data-kind={kind}
@@ -74,14 +80,16 @@ export function ProjectShowcase({ project, index, kind, art, word, composition, 
       style={{ "--beats": BEATS.length, "--chars": word.length } as CSSProperties}
     >
       <div data-scene-screen="" className="show-stage">
-        {art}
+        <div key={project.id} className="show-art">
+          {art}
+        </div>
         <span className="show-light" aria-hidden="true" />
         <p data-poster-word="" className="show-word" aria-hidden="true">
           {word}
         </p>
-        <ProjectIndex entries={entries} current={index} />
-        <ShowcaseDevice kind={beside.kind} screens={beside.screens} active={beside.active} role="second" />
-        <ShowcaseDevice kind={kind} screens={own} active={active} role="main" />
+        <ProjectTabs label={label} names={items.map((item) => item.word)} current={picked} onPick={setPicked} />
+        <ShowcaseDevice key={`${project.id}-second`} kind={beside.kind} screens={beside.screens} active={beside.active} role="second" />
+        <ShowcaseDevice key={`${project.id}-main`} kind={kind} screens={own} active={active} role="main" />
         <div className="show-copy">
           <h3 tabIndex={-1}>{project.name}</h3>
           <div className="show-beats">

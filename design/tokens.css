@@ -13,6 +13,8 @@
   --spot-triaje: #36d1a8;
   --spot-cebador: #f0a8ac;
   --spot-club: #cdeb3a;
+  --spot-sonria: #6a4bd8;
+  --spot-miga: #e8a33d;
 
   --red-16: color-mix(in srgb, var(--red) 16%, transparent);
   --red-20: color-mix(in srgb, var(--red) 20%, transparent);
@@ -134,7 +136,7 @@
   --rule: 1px;
 
   /* the pinned showcase: the scroll each beat of a story takes, the device and the card in it, the light spilling from a screen */
-  --beat-run: 70svh;
+  --beat-run: 42svh;
   --device-phone-height: 54svh;
   --device-browser-width: 92vw;
   --device-browser-width-wide: 52vw;

@@ -1,46 +1,70 @@
-import { projects } from "./content"
+import { groups, projects, type Project } from "./content"
 import { ChapterWord } from "./chapter-word"
 import { KitScene } from "./kit-scene"
 import { ProjectBackdrop, ProjectPlate, TrackPlate } from "./project-backdrop"
-import { ProjectShowcase, type IndexEntry } from "./project-showcase"
+import { ProjectGroupScene, type GroupItem } from "./project-showcase"
 
 // The device each project shows its screens in: a phone, or a browser.
 const DEVICES = {
   grit: "phone",
-  guardia: "browser",
-  cebador: "browser",
   club: "phone",
+  cebador: "browser",
+  sonria: "browser",
+  miga: "browser",
+  guardia: "browser",
 } as const
 
-// The name of each project's art files: bg-<name>-16x9 and bg-<name>-9x16.
-const BACKDROPS = { grit: "grit", guardia: "guardia", cebador: "cebador", club: "club" } as const
+// The art files each project draws on: the backdrop and the plate are named after a world. The landings share the backdrop of
+// the first one; each of them has its own plate when it is delivered.
+const BACKDROPS = { grit: "grit", club: "club", cebador: "cebador", sonria: "cebador", miga: "cebador", guardia: "guardia" } as const
 
-// The word set at poster scale and shown in the index; a long name has a short word of its own.
+// The word set at poster scale and shown in the tab; a long name has a short word of its own.
 const SHORT_NAMES: Record<string, string> = { "dev-kit": "Dev kit", club: "Club" }
 
 const DEV_KIT = "dev-kit"
 
 const shortName = (id: string, name: string) => SHORT_NAMES[id] ?? name
 
-// Each project is a pinned scene of its own, one after the other: the section holds still while the real screens of the
-// product change inside one large device standing in the art, and short captions tell it beat by beat. The dev kit is the
-// first scene: a card walks the method's stations. The cases alternate their composition.
-export function Projects() {
-  const entries: IndexEntry[] = projects.map((project) => ({ id: project.id, label: shortName(project.id, project.name) }))
+function projectNamed(id: string): Project {
+  const project = projects.find((entry) => entry.id === id)
+  if (!project) throw new Error(`The group names a project that does not exist: ${id}`)
+  return project
+}
 
+function groupItem(project: Project): GroupItem {
+  const kind = DEVICES[project.id as keyof typeof DEVICES]
+  const backdrop = BACKDROPS[project.id as keyof typeof BACKDROPS]
+  if (!kind || !backdrop) throw new Error(`No device or backdrop is mapped for project ${project.id}`)
+  return {
+    project,
+    kind,
+    word: shortName(project.id, project.name),
+    art: (
+      <>
+        <ProjectBackdrop name={backdrop} />
+        <ProjectPlate name={project.id} />
+      </>
+    ),
+  }
+}
+
+// The projects are four chapters by kind, one pinned scene each: the apps, the landings, the game and the dev kit. Inside a chapter the
+// visitor picks the project with a click; the scroll only walks the beats of the one on show. The dev kit is the last chapter:
+// a card walks the method's stations. The chapters alternate their composition.
+export function Projects() {
   return (
     <section data-chapter="projects" id="projects" className="projects">
       <ChapterWord id="projects" heading="h2" numeral="01" note={`${projects.length} projects`}>
         Projects
       </ChapterWord>
-      {projects.map((project, index) => {
-        if (project.id === DEV_KIT)
+      {groups.map((group, order) => {
+        if (group.id === DEV_KIT)
           return (
             <KitScene
-              key={project.id}
-              project={project}
-              index={index}
-              entries={entries}
+              key={group.id}
+              id={group.id}
+              label={group.label}
+              project={projectNamed(DEV_KIT)}
               art={
                 <>
                   <ProjectBackdrop name="kit" />
@@ -50,24 +74,13 @@ export function Projects() {
               }
             />
           )
-        const kind = DEVICES[project.id as keyof typeof DEVICES]
-        const backdrop = BACKDROPS[project.id as keyof typeof BACKDROPS]
-        if (!kind || !backdrop) throw new Error(`No device or backdrop is mapped for project ${project.id}`)
         return (
-          <ProjectShowcase
-            key={project.id}
-            project={project}
-            index={index}
-            kind={kind}
-            art={
-              <>
-                <ProjectBackdrop name={backdrop} />
-                <ProjectPlate name={backdrop} />
-              </>
-            }
-            word={shortName(project.id, project.name)}
-            composition={index % 2 === 0 ? "a" : "b"}
-            entries={entries}
+          <ProjectGroupScene
+            key={group.id}
+            id={group.id}
+            label={group.label}
+            composition={order % 2 === 0 ? "a" : "b"}
+            items={group.projects.map((id) => groupItem(projectNamed(id)))}
           />
         )
       })}

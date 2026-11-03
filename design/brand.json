@@ -22,7 +22,9 @@
     "grit": "#1f55d6",
     "guardia": "#36d1a8",
     "cebador": "#f0a8ac",
-    "club": "#cdeb3a"
+    "club": "#cdeb3a",
+    "sonria": "#6a4bd8",
+    "miga": "#e8a33d"
   },
   "rules": {
     "ground": "ink or a product color; bone only as type and as the lit edge of a drawing",
