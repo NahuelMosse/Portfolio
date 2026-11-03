@@ -607,8 +607,35 @@
     height: 100svh;
   }
 
+  /* the line box is tightened to the cap height: its bottom sits at the N's foot, so the sheet below can never overlap it;
+     the box starts 0.03em above the glyph tops, so the top offset adds it back to keep the letters under the bar */
   .cover-title {
     --size-nawi: 41vw;
+    top: calc(var(--top-bar-height) + var(--space-2) + 0.03 * var(--size-nawi));
+    gap: var(--space-3);
+  }
+
+  .mark {
+    line-height: 0.7;
+  }
+
+  .id-sheet {
+    line-height: 1.3;
+  }
+
+  .id-sheet .sheet-row {
+    padding: var(--space-1) 0;
+  }
+
+  .id-sheet dd {
+    font-size: var(--text-small);
+  }
+
+  /* a short wide screen has the least room under NAWI's foot: the ruled rows tighten further */
+  @media (max-height: 760px) {
+    .id-sheet .sheet-row {
+      padding: 1px 0;
+    }
   }
 
   /* the drawing starts under the top bar and keeps its top edge, so the top of his hair is never cut by the bar or faded out */
