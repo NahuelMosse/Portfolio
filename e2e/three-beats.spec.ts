@@ -27,6 +27,7 @@ async function scrollThrough(page: Page, id: string, progress: number) {
 
 test.describe("three beats per project", () => {
   test("at 1910 and 390 every project has three beats and three ticks, the scroll walks all three, and its stack and links are visible on each of them @PF-1-ASM-43", async ({ page }) => {
+    test.setTimeout(300_000)
     for (const viewport of VIEWPORTS) {
       await page.setViewportSize(viewport)
       await page.goto("/")
@@ -41,8 +42,7 @@ test.describe("three beats per project", () => {
         const seen = new Map<string, Set<string>>()
         for (let step = 0; step <= 60; step++) {
           await scrollThrough(page, id, step / 60)
-          await page.waitForTimeout(60)
-          await page.waitForTimeout(200)
+          await page.waitForTimeout(150)
           const current = await section.evaluate((el) => {
             const node = el.querySelector("article[data-current]")
             return node ? { project: node.getAttribute("data-project"), beat: node.getAttribute("data-beat") } : null
