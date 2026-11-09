@@ -5,12 +5,11 @@ import type { DeviceKind, Piece, Project } from "./content"
 import { ShowcaseDevice } from "./showcase-device"
 import { BEAT_RUN, BEATS_PER_PROJECT, TURN_RUN, startOf, useGroupTrack } from "./use-group-track"
 
-// The four beats of a project's story, one per step of its hold: what it is, the problem, how it was built, his part.
+// The three beats of a project's story, one per step of its hold: what it is, the problem, and his part in how it was built.
 const BEATS = [
   { label: "What it is", text: (project: Project) => project.what },
   { label: "The problem", text: (project: Project) => project.problem },
-  { label: "How it was built", text: (project: Project) => project.line },
-  { label: "My role", text: (project: Project) => project.role },
+  { label: "How I built it", text: (project: Project) => `${project.role} ${project.line}` },
 ] as const
 
 // One project of a group: its content, the device its screens sit in, and the art drawn on the server where the files are known.
@@ -113,11 +112,10 @@ function ProjectCard({ item, order, composition, current, reachable, beat }: Car
                   {numeral(step + 1)} · {entry.label}
                 </p>
                 <p className="show-text">{entry.text(project)}</p>
-                {!tool && step === BEATS.length - 1 && <ProjectMeta project={project} />}
               </div>
             ))}
           </div>
-          {tool && <ProjectMeta project={project} />}
+          <ProjectMeta project={project} />
           <p className="show-ticks" aria-hidden="true">
             {BEATS.map((entry, step) => (
               <i key={entry.label} data-on={step <= beat ? "" : undefined} />
@@ -129,7 +127,7 @@ function ProjectCard({ item, order, composition, current, reachable, beat }: Car
   )
 }
 
-// A chapter of projects of one kind as one continuous pinned scene. Each project holds for its four beats, its screens swapping in
+// A chapter of projects of one kind as one continuous pinned scene. Each project holds for its three beats, its screens swapping in
 // its device; between two projects the scroll turns the scene: the field morphs to the next color, the art crosses over, the word
 // and the devices slide out and the next ones come in. The index in the top band follows; it is a shortcut, the scroll alone shows
 // every project. With reduced motion the group is its band and then each project as a still.

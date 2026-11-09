@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 // The scroll through a group is one timeline in "runs": each project holds for HOLD_BEATS steps of one run (its beats, its screens
 // swapping) and then the group turns to the next project over TURN runs. The CSS height of the section is built from the same
 // numbers, so the progress maps onto the timeline exactly.
-export const BEATS_PER_PROJECT = 4
+export const BEATS_PER_PROJECT = 3
 export const BEAT_RUN = 18
 export const TURN_RUN = 34
 

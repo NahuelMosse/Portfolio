@@ -1,29 +1,32 @@
-/* A tool has no device: its drawing carries it, and its stack and links are always on show, in plain type. */
+/* A project's stack and links are always on show, outside its beats. The stack is set in the label face like every other scene; the links are printed buttons. */
 
-.show[data-kind="tool"] .show-label,
-.show[data-kind="tool"] .stack,
-.show[data-kind="tool"] .stack li {
-  font-family: var(--font-text);
-}
-
-.show[data-kind="tool"] .show-meta {
+.show .show-meta {
   gap: var(--space-2);
 }
 
-.show[data-kind="tool"] .show-meta .stack {
+.show .show-meta .stack {
   flex-basis: 100%;
 }
 
-.show[data-kind="tool"] .show-meta a {
-  min-height: var(--show-strip);
+.show .show-meta a {
+  min-height: var(--space-5);
   padding: 0 var(--space-4);
   background: var(--bone);
   color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
   text-decoration: none;
 }
 
-.show[data-kind="tool"] .show-meta a:hover,
-.show[data-kind="tool"] .show-meta a:focus-visible {
+.show .show-meta a::after {
+  content: "→";
+  margin-left: var(--space-2);
+}
+
+.show .show-meta a:hover,
+.show .show-meta a:focus-visible {
   background: var(--ink);
   color: var(--bone);
   outline: var(--rule) solid var(--bone);
