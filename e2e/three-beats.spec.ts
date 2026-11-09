@@ -42,10 +42,14 @@ test.describe("three beats per project", () => {
         for (let step = 0; step <= 60; step++) {
           await scrollThrough(page, id, step / 60)
           await page.waitForTimeout(60)
-          const card = section.locator("article[data-current]")
-          const project = await card.getAttribute("data-project")
-          const beat = await card.getAttribute("data-beat")
-          if (!project || beat === null) continue
+          await page.waitForTimeout(200)
+          const current = await section.evaluate((el) => {
+            const node = el.querySelector("article[data-current]")
+            return node ? { project: node.getAttribute("data-project"), beat: node.getAttribute("data-beat") } : null
+          })
+          if (!current?.project || current.beat === null) continue
+          const { project, beat } = current
+          const card = section.locator(`article[data-project="${project}"]`)
           if (!seen.has(project)) seen.set(project, new Set())
           if (seen.get(project)!.has(beat)) continue
           seen.get(project)!.add(beat)

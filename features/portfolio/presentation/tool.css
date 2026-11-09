@@ -1,4 +1,11 @@
-/* A project's stack and links are always on show, outside its beats. The stack is set in the label face like every other scene; the links are printed buttons. */
+/* A project's stack and links are always on show, outside its beats, the links as printed buttons. Tools set them, and their labels, in plain type. */
+
+.show[data-kind="tool"] .show-label,
+.show[data-kind="tool"] .stack,
+.show[data-kind="tool"] .stack li,
+.show[data-kind="tool"] .show-meta a {
+  font-family: var(--font-text);
+}
 
 .show .show-meta {
   gap: var(--space-2);
