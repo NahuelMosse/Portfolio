@@ -1,7 +1,7 @@
 # PF-1 · cinematic portfolio for freelance and Technical Project Manager work
 
 status: proposed
-cap: 2400 min
+cap: 6000 min
 sources: requirement as text in the session (5 messages, 2026-10-31 and 2026-11-01); cv/CV.tex as the source of experience; lib/content.ts as the current content
 not_read: none; the "Equipo WMS Justo" photo is .media-source/justo-team-presentation.jpg (from the requester's Downloads, git-ignored)
 
@@ -339,3 +339,10 @@ motion: node .claude/tools/motion-audit.mjs $APP_URL
 - L214 · 2026-11-03 · T6 · ASM-40 af11e37: e2e/cover-handoff.spec.ts 15 of 15 pass at the five sizes (no flat band >=15% on 300px ticks, hair top below the bar, NAWI 41vw); ink wipe removed, art starts under the bar scaled from its top edge, top fade removed; NAWI size from ddc9f39/acdbc37 (41vw), ASM-37 had capped it min(41vw,52svh); captures .validation/asm-cover/{before,after}-*; tsc and eslint clean
 - L215 · 2026-11-03 · replaces: e2e/cold-open-short.spec.ts (ASM-30, 5 sizes), e2e/id-sheet-no-photos.spec.ts 'still sits below NAWI baseline' (ASM-34), e2e/one-screen-sections.spec.ts 'the identification sheet does not touch NAWI' (ASM-37, 1910x912, 1280x720, 2560x1080) · the requester restored NAWI to 41vw crossing his head (ASM-40), so its glyphs pass over the sheet head at the left; the cover still fits one screen · by: none yet (could not run in the turn budget): the sheet-clear claim is dropped by the requester's choice, rewrite if wanted
 - L216 · 2026-11-03 · ASM-40 · restores the 9 tests (cold-open-short x5, id-sheet-no-photos, one-screen-sections sheet-clear x3) unchanged, superseding the earlier 'replaces: e2e/cold-open-short.spec.ts ... by: none yet' line; NAWI 41vw kept, line-height .7, sheet compacted; playwright cover-handoff + those suites serial: 55 passed
+- L217 · 2026-11-03 · requester: «me da igual el limite, te lo ordeno yo» · cap raised to 6000 min by his order, past the time plan
+- L218 · 2026-11-04 · ASM-41 · requester: «los titulos y certificados podes traducirlos porfa» · the credits roll in English (IT Analyst, Electromechanical Technician, Level 8, Applied Software Architecture), institution names kept; test e2e/credits-english.spec.ts
+- L219 · 2026-11-04 · replaces: e2e/certifications-curated.spec.ts 'the roll lists the two studies and the three curated certifications' (ASM-18, ASM-26), e2e/project-presentation.spec.ts 'the certifications are rendered once, in the rotating band' list assertion (ASM-26), e2e/credits.spec.ts:256 and e2e/credits-liceo-8.spec.ts:21 roll lists (ASM-18, ASM-21) · they pin the Spanish wording the requester asked to translate · by: e2e/credits-english.spec.ts (ASM-41)
+- L220 · 2026-11-04 · ASM-41 · requester: «IT Analyst» read as a job title, «arregla esto» · studies read as degrees: «Associate Degree in Computer Science · Universidad de Morón · 2025», «Electromechanical Technician Diploma · Colegio Emaús · 2021» · test e2e/credits-english.spec.ts
+- L221 · 2026-11-09 · ASM-42 · requester: «se llama Triaje el juego, no guardia» · the game shows as Triaje (content.ts name); its id stays guardia, so plates, anchors and data-project keep working · replaces: the 'Guardia' name and label in e2e/project-scroll-groups.spec.ts and e2e/project-groups.spec.ts
+- L222 · 2026-11-09 · ASM-43 · requester: «quiero que cada seccion tenga 3 partes, las que tienen 4 tienen que pasar a tener 3 ... que las tecnologias y links se vean en las 3 partes, no solo en la ultima», «como se hace en tools» · reading, cheapest to undo and keeping all copy: 'How it was built' and 'My role' merge into one beat 'How I built it' (role then line); stack and links sit outside the beats for every kind, styled as the tools'; employers already have three · test e2e/three-beats.spec.ts
+- L223 · 2026-11-09 · replaces: e2e/project-groups.spec.ts 'ends on the last beat' (beats 4 for apps, landings, game) (ASM-26) · a project now has three beats (ASM-43) · by: e2e/three-beats.spec.ts
