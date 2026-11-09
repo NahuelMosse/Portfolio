@@ -1267,11 +1267,11 @@
   }
 
   .offer-scene .scene-art {
-    mask-image: none;
+    mask-image: linear-gradient(to bottom, transparent, #000 18%);
   }
 
   .offer-scene .scene-art img {
-    object-position: 62% 20%;
+    object-position: 62% 35%;
   }
 
   .offer-scene .scene-copy {
