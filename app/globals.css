@@ -41,6 +41,53 @@
   font-display: swap;
 }
 
+/* the faces shown while the type arrives, fitted to its metrics so nothing moves when it swaps in */
+@font-face {
+  font-family: "Boska Fallback";
+  src: local("Georgia Bold"), local("Georgia-Bold");
+  font-weight: 700;
+  size-adjust: 78.43%;
+  ascent-override: 122.41%;
+  descent-override: 31.88%;
+  line-gap-override: 11.48%;
+}
+
+@font-face {
+  font-family: "Courier Prime Fallback";
+  src: local("Courier New"), local("CourierNewPSMT");
+  font-weight: 400;
+  size-adjust: 99.92%;
+  ascent-override: 78.19%;
+  descent-override: 34.21%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "General Sans Fallback";
+  src: local("Arial"), local("ArialMT");
+  size-adjust: 97.26%;
+  ascent-override: 103.84%;
+  descent-override: 24.68%;
+  line-gap-override: 10.28%;
+}
+
+/* a deferred image shows its blurred proof (or the ink) until its copy arrives, then comes into focus */
+img[data-srcset]:not([data-loaded]),
+img[data-src]:not([data-loaded]) {
+  filter: blur(14px);
+}
+
+img[data-srcset][data-loaded],
+img[data-src][data-loaded] {
+  animation: plate-focus 450ms ease-out;
+}
+
+@keyframes plate-focus {
+  from {
+    filter: blur(14px);
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -108,6 +155,13 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* no paragraph ends on a lone word */
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
   a:focus-visible,
   button:focus-visible {
     outline: 2px solid var(--bone);
@@ -138,15 +192,27 @@
   gap: var(--space-4);
   min-height: var(--top-bar-height);
   padding: 0 var(--space-4);
-  background: var(--ink-85);
+  background: var(--ink);
   border-bottom: 1px solid var(--bone-12);
 }
 
+/* the n5 stamp takes the color of where it sits: bone on the ink bar, crimson in the opening title */
+.brand-mark {
+  display: inline-block;
+  height: 1em;
+  aspect-ratio: 1180 / 815;
+}
+
+.brand-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
 .wordmark {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.75rem;
-  letter-spacing: -0.02em;
+  font-size: 2.5rem;
+  color: var(--red);
   display: inline-flex;
   align-items: center;
   min-width: var(--space-6);
@@ -193,6 +259,170 @@
   background: transparent;
   border-color: transparent;
   color: var(--red);
+}
+
+/* ---------- the sound cue: what invites the first click ---------- */
+
+.sound-bars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 14px;
+}
+
+.sound-bars b {
+  display: block;
+  width: 2px;
+  height: 14px;
+  background: var(--red);
+  transform-origin: center;
+}
+
+.sound-bars b:nth-child(1) {
+  transform: scaleY(0.72);
+}
+
+.sound-bars b:nth-child(2) {
+  transform: scaleY(1);
+}
+
+.sound-bars b:nth-child(3) {
+  transform: scaleY(0.78);
+}
+
+.sound-bars b:nth-child(4) {
+  transform: scaleY(0.9);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sound-cue .sound-bars b {
+    animation: sound-bar 0.9s ease-in-out infinite alternate;
+  }
+
+  .sound-cue .sound-bars b:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+
+  .sound-cue .sound-bars b:nth-child(3) {
+    animation-delay: -0.6s;
+  }
+
+  .sound-cue .sound-bars b:nth-child(4) {
+    animation-delay: -0.15s;
+  }
+}
+
+@keyframes sound-bar {
+  from {
+    transform: scaleY(0.72);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* in the toggle the bars are a still hint, only until the sound has been started or pressed */
+.sound-toggle .sound-bars {
+  display: none;
+  margin-right: var(--space-2);
+  vertical-align: middle;
+}
+
+html[data-sound="idle"] .sound-toggle .sound-bars {
+  display: inline-flex;
+}
+
+.sound-cue {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--bone) 20%, transparent);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out);
+}
+
+html[data-sound="idle"] .sound-cue[data-visible] {
+  opacity: 1;
+}
+
+/* with a mouse the invitation is a credit line on the cover, under the name line; it scrolls with the cover. It shares the name
+   line's class, declared later, so it is held by both classes: a touch screen never shows it (the chip invites there). */
+.professional-name.cover-cue {
+  display: none;
+  margin-top: var(--space-4);
+  align-items: center;
+  transition: opacity 0.3s var(--ease-out);
+}
+
+/* the bars are an <i>, like the name line's rule: they keep their own size and no rule */
+.cover-cue .sound-bars {
+  flex: none;
+  border-top: 0;
+  display: inline-flex;
+  align-items: flex-end;
+  height: 0.75em;
+}
+
+@media (pointer: fine) {
+  .professional-name.cover-cue {
+    display: flex;
+  }
+
+  html[data-sound="idle"] .cold-open {
+    cursor: pointer;
+  }
+}
+
+html:not([data-sound="idle"]) .cover-cue {
+  opacity: 0;
+}
+
+.cover-cue .sound-bars b {
+  animation: none;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cover-cue .sound-bars b {
+    animation: sound-bar 0.9s ease-in-out infinite alternate;
+  }
+
+  .cover-cue .sound-bars b:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+
+  .cover-cue .sound-bars b:nth-child(3) {
+    animation-delay: -0.6s;
+  }
+
+  .cover-cue .sound-bars b:nth-child(4) {
+    animation-delay: -0.15s;
+  }
+}
+
+@media (pointer: coarse) {
+  .sound-cue-chip {
+    display: inline-flex;
+    top: auto;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom) + 1.25rem + var(--hire-bar-clearance, 3.5rem));
+    translate: -50% 0;
+  }
 }
 
 .chapter-index {
@@ -361,6 +591,25 @@
   font-size: var(--size-word-long-phone);
 }
 
+/* the letters rise out of a mask; its padding keeps descenders unclipped without moving the word */
+.chapter-letters {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.25em;
+  margin-bottom: -0.25em;
+}
+
+.chapter-letter {
+  display: inline-block;
+}
+
+/* Let's talk has no descenders and sits at the foot of the page: its mask must add nothing below the word */
+.contact-scene .chapter-letters {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
 @media (min-width: 701px) {
   .chapter-word {
     font-size: var(--size-word);
@@ -396,21 +645,34 @@
   clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
 }
 
-/* projects: flush left, no illustration of its own; it hangs over the top of the first project */
-.chapter-title[data-chapter-title="projects"] {
-  margin-top: var(--space-6);
+/* projects and experience: flush left, no illustration of its own; it hangs over the top of the first scene */
+.chapter-title:is([data-chapter-title="projects"], [data-chapter-title="experience"]) {
+  margin-top: calc(-12 * 1svh);
   padding-left: var(--gutter-left);
   margin-bottom: calc(var(--word-clearance) * -1);
 }
 
+/* experience hangs over the scene above by the same visible depth as projects over the cover: the scene above has no pin tail to take up the pull */
+.chapter-title[data-chapter-title="experience"] {
+  margin-top: calc(-6.5 * 1svh);
+}
+
+/* on a phone the cover ends in the sheet and its door, and the last project in its illustration, in flow: the word starts below them instead of hanging over them */
+@media (max-width: 767px) {
+  .chapter-title[data-chapter-title="projects"],
+  .chapter-title[data-chapter-title="experience"] {
+    margin-top: var(--space-6);
+  }
+}
+
 /* wide, the group header (top bar and strip) is opaque text above the first project: the word ends where it begins */
 @media (min-width: 768px) {
-  .chapter-title[data-chapter-title="projects"] {
+  .chapter-title:is([data-chapter-title="projects"], [data-chapter-title="experience"]) {
     margin-bottom: 0;
   }
 }
 
-.chapter-title[data-chapter-title="projects"] .chapter-word {
+.chapter-title:is([data-chapter-title="projects"], [data-chapter-title="experience"]) .chapter-word {
   margin-left: calc(var(--gutter-left) * -1);
 }
 
@@ -587,19 +849,6 @@
   margin: 0;
 }
 
-.hero-line {
-  max-width: 28rem;
-  margin: 0;
-  font-size: var(--text-body);
-}
-
-.hero-line strong {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 700;
-}
-
 @media (min-width: 701px) {
   /* the cold open is one screen; NAWI is the poster's giant word, 41vw, crossing his head */
   .cover-scene[data-has-art] {
@@ -666,9 +915,47 @@
     padding-bottom: var(--space-3);
   }
 
-  .hero-line {
+  .cover-foot .hero-door {
+    grid-column: 3;
     justify-self: end;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
   }
+}
+
+/* a tablet held upright: the sheet and the door stack at the left, the door a single line well clear of the corner CTA */
+@media (min-width: 701px) and (max-width: 1099px) and (orientation: portrait) {
+  .cover-foot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding-right: var(--gutter-right);
+    padding-bottom: calc(var(--space-3) + 6.5rem);
+  }
+
+  .cover-foot .hero-door {
+    justify-self: auto;
+    margin-bottom: 0;
+  }
+
+  /* the tall plate is wider than tall here: its dark top is trimmed, so his whole face stays in frame under NAWI's foot */
+  .cover-scene .scene-art img {
+    object-position: 50% 100%;
+  }
+}
+
+/* load-in wipes up with clip-path and fill-mode backwards: the boxes never leave the screen, and GSAP's scroll fade (transform, opacity inline) owns them once it ends */
+@media (prefers-reduced-motion: no-preference) {
+  .cover-foot .layer-sheet,
+  .cover-foot .hero-door {
+    animation: cover-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s backwards;
+  }
+  .cover-foot .hero-door { animation-delay: 0.4s; }
+}
+@keyframes cover-rise {
+  from { opacity: 0; clip-path: inset(100% 0 0 0); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); }
 }
 
 /* scaled from the top edge: the dolly never lifts his hair under the bar */
@@ -872,6 +1159,10 @@
 .hero-door {
   display: inline-block;
   margin: 0;
+  /* GSAP drives its transform: a CSS transition on it would lag behind the tween */
+  transition:
+    background var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out);
 }
 
 .end-of-file {
@@ -882,6 +1173,7 @@
   letter-spacing: var(--label-tracking-fine);
   text-transform: uppercase;
   text-align: center;
+  text-wrap: balance;
 }
 
 /* the roll runs edge to edge under the credits sheet */
@@ -904,6 +1196,10 @@
 .roll-band {
   position: relative;
   padding-block: var(--space-3);
+}
+
+/* the fade sits on the element that clips the loop, so the words dissolve at the very edge they are cut by */
+.roll-marquee {
   mask-image: var(--fade-sides);
 }
 
@@ -998,8 +1294,10 @@
     --gutter-right: var(--gutter-right-phone);
   }
 
+  /* held at the top while the page scrolls, so the menu is one tap away from any chapter */
   .top-bar {
-    position: relative;
+    position: sticky;
+    top: 0;
     padding: 0 var(--space-3);
   }
 
@@ -1071,6 +1369,40 @@
     transform: scale(var(--press-scale));
   }
 
+}
+
+/* tablet: the chapter index does not fit one line beside the hire button and the sound, so it folds into the menu */
+@media (min-width: 701px) and (max-width: 1099px) {
+  .top-nav {
+    display: none;
+  }
+
+  .top-bar[data-menu-open="true"] .top-nav {
+    position: absolute;
+    inset: 100% 0 auto 0;
+    z-index: 41;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-3);
+    background: var(--ink);
+  }
+
+  .top-bar[data-menu-open="true"] .chapter-index {
+    flex-direction: column;
+  }
+
+  .top-hire {
+    margin-left: auto;
+  }
+
+  .top-bar .menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    min-width: 48px;
+  }
 }
 
 @media (max-width: 700px) {
@@ -1303,13 +1635,27 @@
     font-size: min(4vw, 7svh);
   }
 
+  /* both cards share the row's height and their buttons sit on the same line, however long the copy above */
+  .offer-scene .folder {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .offer-scene .folder-tab {
+    align-self: flex-start;
+  }
+
   .offer-scene .folder .door {
-    margin-top: var(--space-2);
+    margin-top: auto;
+  }
+
+  .offer-scene .folder p:last-of-type {
+    margin-bottom: var(--space-3);
   }
 
   /* the word's line box reaches below its glyphs: the group header starts under all of it */
-  .chapter-title[data-chapter-title="projects"] .chapter-word {
-    margin-bottom: 0.2em;
+  .chapter-title:is([data-chapter-title="projects"], [data-chapter-title="experience"]) .chapter-word {
+margin-bottom: 0.2em;
   }
 
   .contact-scene {
@@ -1330,40 +1676,100 @@
     padding-block: calc(var(--top-bar-height) + var(--space-3)) 1px;
   }
 
+  /* the drawing fades in from the left: the text column sits on the plain red field, the hand and its seal hold the right */
+  .contact-scene .scene-art {
+    mask-image: linear-gradient(to right, rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.2) 32%, #000 66%);
+  }
+
   .contact-scene .contact {
     display: flex;
     flex: 1;
     flex-direction: column;
-    justify-content: space-between;
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 
+  /* one voice at a time: the title is the only giant; the address, its hint and the two networks follow as quiet lines */
   .contact-scene .contact-tiles {
+    flex: 1;
+    grid-template-rows: auto auto auto;
+    align-content: center;
     gap: clamp(var(--space-2), 2svh, var(--space-4));
   }
 
-  /* room above and below for the tilted band's corners and the copy hint */
+  /* the two networks are compact links in the text column; the right side stays free for the drawing and its seal */
+  .contact-scene .band-halves {
+    align-self: start;
+    justify-self: start;
+    margin-inline: 0;
+    border-top: var(--rule) solid var(--bone-70);
+  }
+
+  /* the address is written once, level and still, as a line of type that copies itself when clicked */
   .contact-scene .band-field {
-    padding-block: var(--space-1) clamp(var(--space-2), 3.6svh, var(--space-5));
+    margin-inline: 0;
+    padding-block: 0 var(--space-2);
+    overflow: visible;
   }
 
   .contact-scene .band {
-    background: color-mix(in srgb, var(--ink) 45%, transparent);
+    width: fit-content;
+    contain: none;
+    margin-left: 0;
+    padding: 0 0 var(--space-1);
+    border-bottom: var(--rule) solid var(--bone-70);
+    background: transparent;
+    overflow: visible;
+    transform: none;
+  }
+
+  .contact-scene .band:hover,
+  .contact-scene .band:focus-visible {
+    border-bottom-color: var(--bone);
+  }
+
+  .contact-scene .band[data-copied] {
+    background: transparent;
+    color: var(--bone);
+  }
+
+  .contact-scene .band-track {
+    animation: none;
+  }
+
+  .contact-scene .band-set + .band-set,
+  .contact-scene .band-item:not(:first-child),
+  .contact-scene .band-star {
+    display: none;
   }
 
   .contact-scene .band-item {
-    font-size: min(7vw, 8svh);
+    font-size: min(4.2vw, 7svh);
+  }
+
+  .contact-scene .band[data-copied] .band-at {
+    color: var(--bone);
+  }
+
+  .contact-scene .band-stamp {
+    inset: 50% auto auto 100%;
+    transform: translate(var(--space-4), -50%) rotate(3deg);
+    animation-name: band-stamp-side;
   }
 
   .contact-scene .band-half {
-    min-height: 12.5svh;
-    grid-auto-flow: column;
+    min-height: 7.5rem;
+    grid-template-columns: auto auto auto;
+    grid-template-areas:
+      "glyph word arrow"
+      "glyph handle arrow";
     align-items: center;
     align-content: center;
     justify-content: start;
-    gap: var(--space-4);
-    padding-block: var(--space-2);
-    background: color-mix(in srgb, var(--ink) 40%, transparent);
+    column-gap: var(--space-4);
+    row-gap: var(--space-1);
+    padding-block: var(--space-4);
+    padding-inline: 0 var(--space-7);
+    background: transparent;
   }
 
   .contact-scene .band-half:hover,
@@ -1371,12 +1777,44 @@
     background: var(--bone);
   }
 
+  /* the word, its glyph and its arrow scale with the button's height */
+  .contact-scene .band-half {
+    --half-word: min(3.6vw, 7.5svh);
+  }
+
+  .contact-scene .band-halves {
+    grid-template-columns: auto auto;
+  }
+
+  .contact-scene .band-slot .band-half {
+    padding-left: var(--space-6);
+  }
+
+  /* the first half keeps its type on the address's left edge while its hover fill reaches past the glyph */
+  .contact-scene .band-halves > .band-half {
+    margin-left: calc(var(--space-5) * -1);
+    padding-left: var(--space-5);
+  }
+
   .contact-scene .half-word {
-    font-size: min(8.4vw, 5.5svh);
+    grid-area: word;
+    font-size: var(--half-word);
+  }
+
+  .contact-scene .half-handle {
+    grid-area: handle;
+    font-size: var(--text-small);
+  }
+
+  .contact-scene .band-half .contact-glyph {
+    grid-area: glyph;
+    width: calc(var(--half-word) * 0.8);
+    height: calc(var(--half-word) * 0.8);
   }
 
   .contact-scene .band-half .contact-arrow {
-    font-size: 1.25rem;
+    grid-area: arrow;
+    font-size: calc(var(--half-word) * 0.3);
   }
 
   .credits-roll {
@@ -1384,8 +1822,11 @@
   }
 
   .contact-scene .credits-roll {
-    margin-top: 0;
+    display: grid;
+    gap: var(--space-1);
+    margin-block: 0 calc(var(--space-2) * -1);
     margin-inline: calc(var(--gutter-left) * -1) calc(var(--gutter-right) * -1);
+    opacity: 0.6;
   }
 
   .roll-band {
@@ -1403,12 +1844,41 @@
   }
 
   .roll-item {
-    font-size: min(clamp(1.25rem, 1.5vw, 1.5rem), 2.6svh);
+    font-size: min(clamp(1rem, 1.1vw, 1.25rem), 2.2svh);
   }
 
   .end-of-file {
     margin-top: 0;
     padding-bottom: 0;
+    text-align: left;
+  }
+}
+
+@keyframes band-stamp-side {
+  from {
+    opacity: 0;
+    transform: translate(var(--space-4), -50%) rotate(3deg) scale(1.35);
+  }
+}
+
+/* short wide screens: the ending's gaps and button height tighten so the © line stays inside the screen */
+@media (min-width: 1100px) and (max-height: 760px) {
+  .contact-scene[data-has-art] .scene-copy {
+    gap: var(--space-2);
+  }
+
+  .contact-scene .contact {
+    gap: var(--space-2);
+  }
+
+  .contact-scene .contact-tiles {
+    gap: var(--space-1);
+  }
+
+  .contact-scene .band-half {
+    --half-word: min(3.6vw, 7svh);
+    min-height: 7rem;
+    padding-block: var(--space-3);
   }
 }
 
@@ -1443,5 +1913,142 @@
   html {
     scrollbar-color: var(--bone) var(--ink);
     scrollbar-width: thin;
+  }
+}
+
+/* ---------- narrow (below 1100): the offer, the contact and the roll ----------
+   The offer is the wide one made small: the word rises across the top of its drawing and the two doors are glass panels over it,
+   the whole scene one screen high so it pins like the wide one. The contact fits its address and its networks inside the page; the
+   roll is full-bleed with a long fade. */
+@media (max-width: 1099px) {
+
+  .offer-scene {
+    --size-word: clamp(4.5rem, 24vw, 11rem);
+    margin-top: calc(var(--size-word) * 0.6 + 2rem);
+    margin-bottom: 0;
+  }
+
+  .offer-scene[data-has-art] {
+    min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.6 - 2rem);
+  }
+
+  .offer-scene .scene-art img {
+    object-position: 72% 30%;
+  }
+
+  .offer-scene .scene-copy {
+    justify-content: flex-end;
+    min-height: 0;
+    padding: calc(var(--size-word) * 0.4 + var(--space-2)) 0 var(--space-3);
+    background: none;
+  }
+
+  .offer-scene .folder-tab {
+    align-self: flex-start;
+  }
+
+  .offer-scene .chapter-word {
+    font-size: var(--size-word);
+    white-space: nowrap;
+  }
+
+  .offer-scene .offer {
+    gap: var(--space-2);
+    margin-top: 0;
+  }
+
+  .offer-scene .folder {
+    --glass: color-mix(in srgb, var(--ink) 55%, transparent);
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-3) var(--gutter-right) var(--space-3) var(--gutter-left);
+    background: var(--glass);
+    color: var(--bone);
+  }
+
+  .offer-scene .folder[data-offer-card="tpm"] {
+    --glass: color-mix(in srgb, var(--red) 55%, transparent);
+  }
+
+  .offer-scene .folder h3 {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+    line-height: 1;
+  }
+
+  .offer-scene .folder p {
+    font-size: 0.875rem;
+    line-height: 1.3;
+    margin-block: 0 var(--space-2);
+  }
+
+  .offer-scene .folder .door {
+    margin-top: auto;
+  }
+
+  .contact-scene .band-item {
+    font-size: min(6.4vw, 3.25rem);
+  }
+
+  /* the network's panel takes the same room on both sides, so its arrow stays inside it when it inverts */
+  .contact-scene .band-half,
+  .contact-scene .band-halves > .band-half {
+    margin-inline: calc(var(--space-3) * -1);
+    padding-inline: var(--space-3);
+  }
+
+  .contact-scene .half-word {
+    font-size: min(11vw, 3.5rem);
+  }
+
+  .contact-scene .credits-roll {
+    margin-inline: calc(var(--gutter-left) * -1) calc(var(--gutter-right) * -1);
+    margin-top: var(--space-5);
+  }
+
+  .contact-scene .roll-item {
+    font-size: 1.25rem;
+  }
+
+  .end-of-file {
+    padding-bottom: calc(var(--space-5) + var(--hire-bar-height));
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1099px) {
+  .offer-scene {
+    --size-word: 17vw;
+  }
+
+  .offer-scene .offer {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .offer-scene .folder {
+    padding-block: var(--space-4);
+    padding-inline: var(--space-4);
+  }
+
+  .offer-scene .folder[data-offer-card="freelance"] {
+    padding-left: var(--gutter-left);
+  }
+
+  .offer-scene .folder[data-offer-card="tpm"] {
+    padding-right: var(--gutter-right);
+  }
+
+  .offer-scene .folder h3 {
+    font-size: clamp(2rem, 4.2vw, 3rem);
+  }
+
+  .offer-scene .folder p {
+    font-size: var(--text-body);
+  }
+}
+
+@media (max-width: 700px) {
+  .offer-scene .scene-copy {
+    padding-bottom: calc(var(--space-3) + var(--hire-bar-height));
   }
 }

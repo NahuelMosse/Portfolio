@@ -4,9 +4,10 @@ import { ChapterWord } from "./chapter-word"
 import { ContactTiles } from "./contact-tiles"
 import { credits, identity } from "./content"
 import { Offer } from "./offer"
+import { OfferMotion } from "./offer-motion"
 
 const bands: readonly RollBand[] = [
-  { id: "studies", label: "Completed studies", speed: "slow", items: credits.studies },
+  { id: "studies", label: "Education", speed: "slow", items: credits.studies },
   { id: "certifications", label: "Certifications", speed: "fast", items: credits.certifications },
 ]
 
@@ -14,7 +15,8 @@ const bands: readonly RollBand[] = [
 export function EndCredits() {
   return (
     <section data-chapter="end-credits" id="end-credits" className="credits">
-      <ChapterIllustration asset="ill-offer-16x9" className="offer-scene">
+      <OfferMotion />
+      <ChapterIllustration asset="ill-offer-16x9" tallAsset="ill-offer-9x16" className="offer-scene">
         <ChapterWord id="offer" heading="h2" numeral="04" note="Two doors">Offer</ChapterWord>
         <Offer />
       </ChapterIllustration>

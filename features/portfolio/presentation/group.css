@@ -61,10 +61,12 @@
   text-transform: uppercase;
 }
 
+/* narrow, the tab with its color rule fills the strip under the top bar exactly */
 .group-index button {
   display: inline-flex;
+  align-items: center;
   gap: var(--space-1);
-  min-height: var(--space-5);
+  min-height: calc(var(--show-strip) - var(--space-1));
   padding: 0;
   border: 0;
   background: none;
@@ -154,6 +156,10 @@
     gap: var(--space-4);
   }
 
+  .group-index button {
+    min-height: var(--space-5);
+  }
+
   .group-index span {
     position: static;
     width: auto;
@@ -200,6 +206,7 @@
     inset: 0 0 auto;
     height: calc(var(--top-bar-height) + var(--show-strip));
     padding-top: var(--top-bar-height);
+    padding-bottom: 0;
     align-items: center;
   }
 
@@ -258,15 +265,16 @@
     --bleed-x: 22vw;
   }
 
-  /* the art drifts against the wipe at its own depth */
+  /* the art drifts against the wipe at its own depth. The plate bleeds past the stage by only 3vw and 3svh (showcase.css), so its
+     scroll drift is centred on the middle of the hold and stays inside that bleed: ±2vw across, ±2.5svh up and down */
   .group-card .backdrop {
     transform: translate3d(calc(var(--d) * -8vw * var(--wx)), calc(var(--d) * -6svh * var(--wy) + var(--p) * -4svh), 0);
   }
 
   .group-card .plate {
     transform: translate3d(
-      calc(var(--d) * 8vw * var(--wx) + var(--p) * 4vw * var(--flip)),
-      calc(var(--d) * 4svh * var(--wy) + var(--p) * -8svh),
+      calc(var(--d) * 8vw * var(--wx) + (var(--p) - 0.5) * 4vw * var(--flip)),
+      calc(var(--d) * 4svh * var(--wy) + (var(--p) - 0.5) * -5svh),
       0
     ) scale(var(--mirror), 1);
   }
@@ -298,5 +306,112 @@
   .group {
     --wx: 0;
     --wy: 1;
+  }
+}
+
+/* ---------- narrow (below 1100): the same pinned scene ----------
+   The tab is a 44px touch target. The caption is measured (--copy-h, set from its own height) and the device stands in what the
+   caption leaves, so the two never overlap and the device is never cropped by the caption. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 1099px) {
+  .group {
+    --show-strip: 2.75rem;
+  }
+
+  .group-index {
+    gap: 0;
+  }
+
+  .group-index button {
+    justify-content: center;
+    min-width: var(--show-strip);
+    min-height: calc(var(--show-strip) - var(--space-1));
+    padding: 0 var(--space-2);
+  }
+
+  .group-card {
+    --avail: calc(100svh - var(--hero-top) - var(--copy-h, 15rem) + var(--space-4));
+  }
+
+  .group-card .show-rig[data-device="phone"] {
+    --hero-height: max(min(var(--avail), calc(var(--hero-width) * 2.164)), 8rem);
+    width: auto;
+    aspect-ratio: 390 / 844;
+  }
+
+  .group-card .show-rig[data-device="browser"] {
+    --hero-height: max(min(var(--avail), calc(var(--hero-width) * 0.8)), 8rem);
+  }
+
+  .group-card[data-layers="both"] .show-rig[data-device="browser"] {
+    --hero-height: max(min(calc(var(--avail) * 0.62), calc(var(--hero-width) * 0.8)), 8rem);
+  }
+
+  .group-card .show-text {
+    font-size: clamp(1.0625rem, 2.6vw, 1.5rem);
+  }
+
+  .group-card[data-layers="both"] .show-rig[data-role="second"] {
+    top: calc(var(--hero-top) + var(--avail) * 0.2);
+    height: max(calc(var(--avail) * 0.8), 8rem);
+  }
+}
+
+/* a tablet held wide: the caption takes the left column, the device the right one, the word above the caption */
+@media (prefers-reduced-motion: no-preference) and (min-width: 768px) and (max-width: 1099px) and (min-aspect-ratio: 1 / 1) {
+  .group-card {
+    --word-size: min(calc((100vw - var(--gutter-left) - var(--gutter-right)) * 0.46 / (var(--chars, 8) * 0.56)), 15svh);
+    --stage-top: calc(var(--top-bar-height) + var(--show-strip));
+    --stage-bottom: calc(var(--hire-bar-height) + var(--space-3));
+    --stage-middle: calc(var(--stage-top) + (100svh - var(--stage-top) - var(--stage-bottom)) / 2);
+    --device-height: calc(100svh - var(--stage-top) - var(--stage-bottom) - var(--space-4));
+    --device-x: 74%;
+    --browser-width: min(var(--device-height) * 1.45, 50vw - var(--gutter-right));
+  }
+
+  .group-card .show-word {
+    top: calc(var(--stage-top) + var(--space-4));
+    left: var(--gutter-left);
+  }
+
+  .group-card .show-rig[data-device] {
+    top: var(--stage-middle);
+    left: var(--device-x);
+    translate: -50% -50%;
+  }
+
+  .group-card .show-rig[data-device="phone"] {
+    --hero-height: var(--device-height);
+  }
+
+  .group-card .show-rig[data-device="browser"] {
+    --hero-width: var(--browser-width);
+    --hero-height: calc(var(--browser-width) / 1.6);
+  }
+
+  .group-card[data-layers="both"] .show-rig[data-device="browser"] {
+    --hero-height: calc(var(--browser-width) / 1.6);
+  }
+
+  .group-card[data-layers="both"] .show-rig[data-role="second"] {
+    top: calc(var(--stage-middle) + var(--browser-width) * 0.05);
+    left: calc(var(--device-x) + var(--browser-width) * 0.5 - var(--browser-width) * 0.28);
+    height: calc(var(--browser-width) / 1.6 * 0.8);
+    translate: none;
+  }
+
+  .group-card .show-copy {
+    inset: auto auto 0 var(--gutter-left);
+    width: min(28rem, 46vw - var(--gutter-left));
+    padding: 0 0 var(--stage-bottom);
+  }
+
+  .group-card .show-copy::before {
+    inset: -22svh -6vw 0 calc(var(--gutter-left) * -1);
+    background: linear-gradient(to right, color-mix(in srgb, var(--shade-deep) 88%, transparent) 55%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 30%);
+  }
+
+  .group-card .show-text {
+    font-size: 1.25rem;
   }
 }

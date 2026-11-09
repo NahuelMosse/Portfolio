@@ -1,82 +1,53 @@
 "use client"
 
 import { useEffect } from "react"
-import { MOTION, gsap, motionAllowed } from "@/features/film/motion"
+import { BEAT_RUN, TURN_RUN, startOf, useGroupTrack } from "./use-group-track"
 
-const WIDE = "(min-width: 900px)"
-const HOLD = 0.6
-const STEP = 1.6
-const SCROLL_PER_STEP = 85
-// A jagged edge climbing from below the stage until it clears the top: the same seven points as the resting polygon in CSS.
-const INK_COVER = "polygon(0% -6%, 25% -14%, 50% -4%, 75% -12%, 100% -8%, 100% 100%, 0% 100%)"
+// An employer holds for three beats (the employer, the problem, the role) of the Projects track, then the stage turns to the next.
+export const BEATS_PER_EMPLOYER = 3
+const HOST = "#experience-scene"
 
-// Offsets inside one handoff, in timeline units. The incoming art and copy start while the outgoing copy is still leaving and the ink
-// is still rising, so the stage always has something on it.
-const OUT_COPY = 0.4
-const INK_FROM = 0.15
-const INK_LENGTH = 0.6
-const IN_ART = 0.1
-const IN_COPY = 0.18
-const OUT_PANEL_HIDDEN = 0.95
-
-// The scrubbed scene of the experience (wide only): the stage pins, each employer's art is wiped by ink and the next is drawn on.
-export function ExperienceMotion() {
+// The employers are driven by the Projects track: the section is as tall as the scroll it needs, the stage is pinned and --track
+// goes to the section, where group.css turns the stage. Only the employer and the beat on show are state; they land on each
+// scene's attributes and on the index the way ProjectGroupScene renders them. The index is a shortcut to an employer's hold.
+export function ExperienceMotion({ count }: { count: number }) {
   useEffect(() => {
-    if (!motionAllowed()) return
-    const scope = document.querySelector<HTMLElement>("#experience")
-    if (!scope) return
+    const node = document.querySelector<HTMLElement>(HOST)
+    if (!node) return
+    node.style.setProperty("--beat-step", `${BEAT_RUN}svh`)
+    node.style.setProperty("--turn-step", `${TURN_RUN}svh`)
+    node.style.setProperty("--steps", String(BEATS_PER_EMPLOYER - 1))
 
-    const context = gsap.context(() => {
-      const media = gsap.matchMedia()
-      media.add(WIDE, () => {
-        const stage = scope.querySelector<HTMLElement>("[data-experience-stage]")!
-        const panels = gsap.utils.toArray<HTMLElement>("[data-employer]", scope)
-        const counter = scope.querySelector<HTMLElement>("[data-xp-counter]")!
-        const fill = scope.querySelector<HTMLElement>(".xp-progress i")!
-        const total = HOLD * 2 + (panels.length - 1) * STEP
+    const jump = (event: Event) => {
+      const button = (event.target as HTMLElement).closest<HTMLElement>("[data-employer-jump]")
+      if (!button) return
+      const top = node.getBoundingClientRect().top + window.scrollY
+      const run = node.offsetHeight - window.innerHeight
+      window.scrollTo({ top: top + run * startOf(Number(button.dataset.employerJump), count, BEATS_PER_EMPLOYER) })
+    }
+    node.addEventListener("click", jump)
+    return () => node.removeEventListener("click", jump)
+  }, [count])
 
-        const timeline = gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: {
-            trigger: stage,
-            start: "top top",
-            end: `+=${(panels.length - 1) * SCROLL_PER_STEP}%`,
-            pin: true,
-            scrub: MOTION.scrub,
-            onUpdate: (self) => {
-              const index = Math.min(panels.length - 1, Math.floor(self.progress * total > HOLD ? (self.progress * total - HOLD + STEP / 2) / STEP : 0))
-              counter.textContent = `${String(index + 1).padStart(2, "0")} / ${String(panels.length).padStart(2, "0")}`
-            },
-          },
-        })
-        timeline.fromTo(fill, { scaleX: 0 }, { scaleX: 1, duration: total }, 0)
+  const { project, beat } = useGroupTrack(count, { beats: BEATS_PER_EMPLOYER, host: HOST })
 
-        panels.forEach((panel, index) => {
-          if (index === 0) return
-          const previous = panels[index - 1]
-          const at = HOLD + (index - 1) * STEP
-          const outgoing = previous.querySelectorAll("[data-xp-line]")
-          const incoming = panel.querySelectorAll("[data-xp-line]")
-          const art = panel.querySelector(".xp-art img")
-          const ink = previous.querySelector(".xp-ink")
-
-          timeline.to(outgoing, { yPercent: -40, autoAlpha: 0, clipPath: "inset(0 0 100% 0)", stagger: 0.03, duration: OUT_COPY, ease: MOTION.easeOut }, at)
-          timeline.to(ink, { clipPath: INK_COVER, duration: INK_LENGTH, ease: MOTION.easeStrong }, at + INK_FROM)
-          timeline.set(panel, { autoAlpha: 1 }, at + IN_ART)
-          timeline.fromTo(art, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.7, ease: MOTION.easeExpo }, at + IN_ART)
-          timeline.fromTo(
-            incoming,
-            { yPercent: 60, autoAlpha: 0, clipPath: "inset(0 0 100% 0)" },
-            { yPercent: 0, autoAlpha: 1, clipPath: "inset(0 0 0% 0)", stagger: 0.06, duration: 0.5, ease: MOTION.easeOut },
-            at + IN_COPY,
-          )
-          timeline.set(previous, { autoAlpha: 0 }, at + OUT_PANEL_HIDDEN)
-        })
-      })
-    }, scope)
-
-    return () => context.revert()
-  }, [])
+  useEffect(() => {
+    const node = document.querySelector<HTMLElement>(HOST)
+    if (!node) return
+    node.querySelectorAll<HTMLElement>("[data-employer]").forEach((card, order) => {
+      const own = order === project ? beat : order < project ? BEATS_PER_EMPLOYER - 1 : 0
+      card.toggleAttribute("data-current", order === project)
+      card.toggleAttribute("data-reachable", Math.abs(order - project) <= 1)
+      card.style.setProperty("--cur", order === project ? "1" : "0")
+      card.dataset.beat = String(own)
+      card.querySelectorAll<HTMLElement>(".show-beat").forEach((el, step) => el.toggleAttribute("data-on", step === own))
+      card.querySelectorAll<HTMLElement>(".show-ticks i").forEach((el, step) => el.toggleAttribute("data-on", step <= own))
+    })
+    node.querySelectorAll<HTMLElement>(".group-index li").forEach((item, order) => {
+      if (order === project) item.setAttribute("aria-current", "step")
+      else item.removeAttribute("aria-current")
+    })
+  }, [project, beat])
 
   return null
 }
