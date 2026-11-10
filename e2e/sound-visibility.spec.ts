@@ -104,7 +104,7 @@ test.describe("touch", () => {
     await page.evaluate(() => window.scrollTo(0, 0))
     await expect(page.locator(".sound-cue-chip[data-visible], .cover-cue").first()).toBeVisible({ timeout: 15000 })
     const cdp = await page.context().newCDPSession(page)
-    const touch = (type: string, y: number) =>
+    const touch = (type: "touchStart" | "touchMove" | "touchEnd", y: number) =>
       cdp.send("Input.dispatchTouchEvent", { type, touchPoints: type === "touchEnd" ? [] : [{ x: 195, y }] })
     await touch("touchStart", 600)
     for (let y = 560; y >= 300; y -= 40) await touch("touchMove", y)
