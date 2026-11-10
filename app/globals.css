@@ -244,7 +244,10 @@ img[data-src][data-loaded] {
     background var(--motion-control) var(--ease-out),
     border-color var(--motion-control) var(--ease-out),
     color var(--motion-control) var(--ease-out),
-    transform var(--motion-control) var(--ease-out);
+    transform var(--motion-control) var(--ease-out),
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s 0s;
 }
 
 /* the index and the sound toggle are typed caps in the bar, not pills */
@@ -508,7 +511,28 @@ html:not([data-sound="idle"]) .cover-cue {
   right: 0;
   bottom: 0;
   opacity: 0;
+  translate: 0 6px;
   visibility: hidden;
+  transition:
+    background var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out),
+    opacity 200ms cubic-bezier(0.4, 0, 1, 1),
+    translate 200ms cubic-bezier(0.4, 0, 1, 1),
+    visibility 0s 200ms;
+}
+
+/* when both arrive together, Let's talk leads and Top follows */
+.corner-top[data-visible="true"] {
+  transition:
+    background var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out),
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1) 60ms,
+    translate 320ms cubic-bezier(0.22, 1, 0.36, 1) 60ms,
+    visibility 0s 0s;
 }
 
 /* ---------- scenes: one full-bleed illustration, its copy laid over the dark of it ---------- */
@@ -1344,7 +1368,9 @@ html:not([data-sound="idle"]) .cover-cue {
     font-size: 1.25rem;
     letter-spacing: var(--label-tracking);
     text-transform: uppercase;
-    transition: transform var(--motion-control) var(--ease-out);
+    transition:
+      transform var(--motion-control) var(--ease-out),
+      margin-right 320ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .hire-bar a:active {
@@ -1367,7 +1393,11 @@ html:not([data-sound="idle"]) .cover-cue {
     color: var(--bone);
     font-family: var(--font-label);
     font-size: 1.5rem;
-    transition: transform var(--motion-control) var(--ease-out);
+    transition:
+      transform var(--motion-control) var(--ease-out),
+      opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s 0s;
   }
 
   .bar-top:active {
@@ -1381,7 +1411,13 @@ html:not([data-sound="idle"]) .cover-cue {
 
   .bar-top[data-visible="false"] {
     opacity: 0;
+    translate: 0 6px;
     visibility: hidden;
+    transition:
+      transform var(--motion-control) var(--ease-out),
+      opacity 200ms cubic-bezier(0.4, 0, 1, 1),
+      translate 200ms cubic-bezier(0.4, 0, 1, 1),
+      visibility 0s 200ms;
   }
 
   body:has(.bar-top[data-visible="true"]) .hire-bar a:first-child {
@@ -1540,6 +1576,24 @@ html:not([data-sound="idle"]) .cover-cue {
   .corner-cta:active,
   .door:active {
     transform: none;
+  }
+
+  .corner-cta,
+  .corner-cta[data-visible="false"],
+  .corner-top[data-visible="true"],
+  .bar-top,
+  .bar-top[data-visible="false"] {
+    translate: none;
+    transition: opacity 150ms linear, visibility 0s 0s;
+  }
+
+  .corner-cta[data-visible="false"],
+  .bar-top[data-visible="false"] {
+    transition: opacity 150ms linear, visibility 0s 150ms;
+  }
+
+  .hire-bar a:first-child {
+    transition: none;
   }
 
   /* the roll stands still and wraps: one copy, no loop */
