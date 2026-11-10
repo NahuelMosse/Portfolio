@@ -3,6 +3,7 @@ import { Arrow, Glyph } from "./contact-glyphs"
 import { github, linkedin } from "./contact-channels"
 import { useCopy } from "./contact-copy"
 import { identity } from "./content"
+import { Button } from "@/components/ui/button"
 
 const EMAILS_PER_SET = 3
 
@@ -47,7 +48,7 @@ export function MarqueeBand() {
   return (
     <>
       <div className="band-field">
-        <button type="button" data-copy="" data-copied={copied ? "" : undefined} className="band" aria-label={`Copy ${identity.email}`} onClick={copy}>
+        <Button type="button" variant="ghost" size={null} data-copy="" data-copied={copied ? "" : undefined} className="band whitespace-normal shrink rounded-none focus-visible:ring-0" aria-label={`Copy ${identity.email}`} onClick={copy}>
           <span className="band-track" aria-hidden="true">
             <Run />
             <Run />
@@ -57,7 +58,7 @@ export function MarqueeBand() {
               Copied to clipboard ✓
             </span>
           ) : null}
-        </button>
+        </Button>
       </div>
       <p className="band-hint">
         <span>Click the address to copy it</span>

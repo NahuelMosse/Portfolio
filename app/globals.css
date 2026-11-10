@@ -79,7 +79,7 @@ img[data-src]:not([data-loaded]) {
 
 img[data-srcset][data-loaded],
 img[data-src][data-loaded] {
-  animation: plate-focus 450ms ease-out;
+  animation: plate-focus var(--dur-plate-focus) ease-out;
 }
 
 @keyframes plate-focus {
@@ -269,7 +269,7 @@ img[data-src][data-loaded] {
 .sound-bars {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--space-hair);
   height: 14px;
 }
 
@@ -299,7 +299,7 @@ img[data-src][data-loaded] {
 
 @media (prefers-reduced-motion: no-preference) {
   .sound-cue .sound-bars b {
-    animation: sound-bar 0.9s ease-in-out infinite alternate;
+    animation: sound-bar var(--dur-sound-bar) ease-in-out infinite alternate;
   }
 
   .sound-cue .sound-bars b:nth-child(2) {
@@ -344,7 +344,7 @@ html[data-sound="off"] .sound-toggle .sound-bars b {
 
 @media (prefers-reduced-motion: no-preference) {
   html[data-sound="on"] .sound-toggle .sound-bars b {
-    animation: sound-bar 0.9s ease-in-out infinite alternate;
+    animation: sound-bar var(--dur-sound-bar) ease-in-out infinite alternate;
   }
 
   html[data-sound="on"] .sound-toggle .sound-bars b:nth-child(2) {
@@ -381,7 +381,7 @@ html[data-sound="off"] .sound-toggle .sound-bars b {
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s var(--ease-out);
+  transition: opacity var(--dur-fade) var(--ease-out);
 }
 
 html[data-sound="idle"] .sound-cue[data-visible] {
@@ -394,7 +394,7 @@ html[data-sound="idle"] .sound-cue[data-visible] {
   display: none;
   margin-top: var(--space-4);
   align-items: center;
-  transition: opacity 0.3s var(--ease-out);
+  transition: opacity var(--dur-fade) var(--ease-out);
 }
 
 /* the bars are an <i>, like the name line's rule: they keep their own size and no rule */
@@ -427,7 +427,7 @@ html:not([data-sound="idle"]) .cover-cue {
 
 @media (prefers-reduced-motion: no-preference) {
   .cover-cue .sound-bars b {
-    animation: sound-bar 0.9s ease-in-out infinite alternate;
+    animation: sound-bar var(--dur-sound-bar) ease-in-out infinite alternate;
   }
 
   .cover-cue .sound-bars b:nth-child(2) {
@@ -472,7 +472,7 @@ html:not([data-sound="idle"]) .cover-cue {
   width: var(--space-4);
   height: 2px;
   background: var(--bone);
-  box-shadow: 0 6px var(--bone), 0 -6px var(--bone);
+  box-shadow: 0 var(--space-rail) var(--bone), 0 calc(var(--space-rail) * -1) var(--bone);
 }
 
 .proof-link {
@@ -610,7 +610,7 @@ html:not([data-sound="idle"]) .cover-cue {
   position: absolute;
   inset: 0;
   z-index: -1;
-  mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent), linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, var(--ink-black) 16%, var(--ink-black) 84%, transparent), linear-gradient(to right, transparent, var(--ink-black) 7%, var(--ink-black) 93%, transparent);
   mask-composite: intersect;
 }
 
@@ -968,7 +968,7 @@ html:not([data-sound="idle"]) .cover-cue {
   /* the drawing starts under the top bar and keeps its top edge, so the top of his hair is never cut by the bar or faded out */
   .cover-scene .scene-art {
     top: var(--top-bar-height);
-    mask-image: linear-gradient(to bottom, #000 84%, transparent), linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(to bottom, var(--ink-black) 84%, transparent), linear-gradient(to right, transparent, var(--ink-black) 7%, var(--ink-black) 93%, transparent);
   }
 
   .cover-scene .scene-art img {
@@ -989,7 +989,7 @@ html:not([data-sound="idle"]) .cover-cue {
     grid-template-columns: 24rem 1fr auto;
     align-items: end;
     gap: var(--space-5);
-    padding-right: 13rem;
+    padding-right: var(--space-corner-cta);
     padding-bottom: var(--space-3);
   }
 
@@ -1003,7 +1003,7 @@ html:not([data-sound="idle"]) .cover-cue {
     align-items: flex-start;
     gap: var(--space-4);
     padding-right: var(--gutter-right);
-    padding-bottom: calc(var(--space-3) + 6.5rem);
+    padding-bottom: calc(var(--space-3) + var(--space-corner-lift));
   }
 
   /* the tall plate is wider than tall here: its dark top is trimmed, so his whole face stays in frame under NAWI's foot */
@@ -1015,7 +1015,7 @@ html:not([data-sound="idle"]) .cover-cue {
 /* load-in wipes up with clip-path and fill-mode backwards: the boxes never leave the screen, and GSAP's scroll fade (transform, opacity inline) owns them once it ends */
 @media (prefers-reduced-motion: no-preference) {
   .cover-foot .layer-sheet {
-    animation: cover-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s backwards;
+    animation: cover-rise var(--dur-cover-rise) cubic-bezier(0.22, 1, 0.36, 1) var(--dur-fade) backwards;
   }
 }
 @keyframes cover-rise {
@@ -1123,7 +1123,7 @@ html:not([data-sound="idle"]) .cover-cue {
   padding: var(--space-1) var(--space-2);
   border-bottom: var(--rule) solid var(--field);
   /* a chip carries its own dark ground, so its bone type reads at AA over any backdrop and any product color */
-  background: rgb(12 12 11 / 0.88);
+  background: var(--ink-88);
   color: var(--bone);
 }
 
@@ -1180,7 +1180,7 @@ html:not([data-sound="idle"]) .cover-cue {
 /* wide, the title rises 60 % of its height above the scene: the margin is that rise plus the detail line, so it clears the last card */
 @media (min-width: 701px) {
   .offer-scene {
-    margin-top: calc(var(--size-word) * 0.5 + 4rem);
+    margin-top: calc(var(--size-word) * 0.5 + var(--space-offer-lead));
   }
 }
 
@@ -1601,7 +1601,7 @@ html:not([data-sound="idle"]) .cover-cue {
   }
 
   .id-sheet .sheet-head {
-    margin-bottom: 4px;
+    margin-bottom: var(--space-1);
   }
 
   .id-sheet .sheet-title {
@@ -1611,7 +1611,7 @@ html:not([data-sound="idle"]) .cover-cue {
   .id-sheet .sheet-row {
     grid-template-columns: 5.5rem 1fr;
     gap: var(--space-2);
-    padding: 3px 0;
+    padding: var(--space-sheet-row) 0;
   }
 
   .id-sheet dt {
@@ -1673,12 +1673,12 @@ html:not([data-sound="idle"]) .cover-cue {
   .bar-top,
   .bar-top[data-visible="false"] {
     translate: none;
-    transition: opacity 150ms linear, visibility 0s 0s;
+    transition: opacity var(--dur-toggle) linear, visibility var(--dur-zero) var(--dur-zero);
   }
 
   .corner-pair .corner-cta[data-visible="false"],
   .bar-top[data-visible="false"] {
-    transition: opacity 150ms linear, visibility 0s 150ms;
+    transition: opacity var(--dur-toggle) linear, visibility var(--dur-zero) var(--dur-toggle);
   }
 
   .bar-top[data-visible="false"],
@@ -1690,16 +1690,16 @@ html:not([data-sound="idle"]) .cover-cue {
   .hire-bar,
   .hire-bar[data-yield="true"] {
     translate: none;
-    transition: opacity 150ms linear, visibility 0s 150ms;
+    transition: opacity var(--dur-toggle) linear, visibility var(--dur-zero) var(--dur-toggle);
   }
 
   .hire-bar:not([data-yield="true"]) {
-    transition: opacity 150ms linear, visibility 0s 0s;
+    transition: opacity var(--dur-toggle) linear, visibility var(--dur-zero) var(--dur-zero);
   }
 
   .bar-top,
   .bar-top-label {
-    transition: opacity 150ms linear, visibility 0s 0s;
+    transition: opacity var(--dur-toggle) linear, visibility var(--dur-zero) var(--dur-zero);
   }
 
   .hire-bar a:first-child {
@@ -1849,7 +1849,7 @@ html:not([data-sound="idle"]) .cover-cue {
 @media (min-width: 1100px) {
   .offer-scene {
     --size-word: 17vw;
-    margin-top: calc(var(--size-word) * 0.6 + 2rem);
+    margin-top: calc(var(--size-word) * 0.6 + var(--space-offer-lead-phone));
   }
 
   .offer-scene[data-has-art] {
@@ -1859,7 +1859,7 @@ html:not([data-sound="idle"]) .cover-cue {
   /* the drawing rises behind the OFFER word up to the top bar and melts into the black beneath it */
   .offer-scene .scene-art {
     top: calc((var(--size-word) * 0.6 + 2rem) * -1);
-    mask-image: linear-gradient(to bottom, transparent, #000 14%);
+    mask-image: linear-gradient(to bottom, transparent, var(--ink-black) 14%);
   }
 
   .offer-scene .scene-art img {
@@ -1938,7 +1938,7 @@ margin-bottom: 0.2em;
 
   /* the drawing fades in from the left: the text column sits on the plain red field, the hand and its seal hold the right */
   .contact-scene .scene-art {
-    mask-image: linear-gradient(to right, rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.2) 32%, #000 66%);
+    mask-image: linear-gradient(to right, var(--ink-black-20), var(--ink-black-20) 32%, var(--ink-black) 66%);
   }
 
   .contact-scene .contact {
@@ -2189,7 +2189,7 @@ margin-bottom: 0.2em;
   .offer-scene {
     background: var(--ink);
     --size-word: clamp(4.5rem, 24vw, 11rem);
-    margin-top: calc(var(--size-word) * 0.6 + 2rem);
+    margin-top: calc(var(--size-word) * 0.6 + var(--space-offer-lead-phone));
     margin-bottom: 0;
   }
 
@@ -2385,8 +2385,8 @@ margin-bottom: 0.2em;
 
   /* narrow screens: the roll runs from the left edge in full ink, only its exit on the right fades */
   .contact-scene .roll-marquee {
-    mask-image: linear-gradient(to right, #000 94%, transparent);
-    -webkit-mask-image: linear-gradient(to right, #000 94%, transparent);
+    mask-image: linear-gradient(to right, var(--ink-black) 94%, transparent);
+    -webkit-mask-image: linear-gradient(to right, var(--ink-black) 94%, transparent);
   }
 
   .contact-scene .roll-list {
@@ -2490,7 +2490,7 @@ margin-bottom: 0.2em;
   .contact-scene .contact-tiles {
     flex: none;
     margin-block: auto;
-    padding-top: clamp(0px, (100svh - 667px) * 0.3, 56px);
+    padding-top: clamp(var(--space-0), (100svh - var(--phone-short-height)) * 0.3, var(--space-contact-top-cap));
     align-content: start;
   }
 
@@ -2500,15 +2500,15 @@ margin-bottom: 0.2em;
 
   /* inside the block: the hint sits clear of the address, the first rule clear of the hint, the rows are tall like desktop. */
   .contact-scene .band-hint {
-    margin-top: clamp(10px, 1.6svh, 16px);
+    margin-top: clamp(var(--space-hint-min), 1.6svh, var(--space-3));
   }
 
   .contact-scene .band-halves {
-    margin-top: clamp(16px, 3svh, 28px);
+    margin-top: clamp(var(--space-3), 3svh, var(--space-halves-cap));
   }
 
   .contact-scene .band-half {
-    padding-block: clamp(12px, 3.2svh, 28px);
+    padding-block: clamp(var(--space-half-min), 3.2svh, var(--space-halves-cap));
   }
 
   .contact-scene .band-hint {
@@ -2591,7 +2591,7 @@ margin-bottom: 0.2em;
   .offer-scene .folder .door {
     min-height: 44px;
     box-sizing: border-box;
-    padding: 12px var(--space-2);
+    padding: var(--space-half-min) var(--space-2);
     margin-top: auto;
   }
 
@@ -2608,7 +2608,7 @@ margin-bottom: 0.2em;
   .offer-scene .folder p {
     font-size: 1rem;
     line-height: 1.45;
-    margin-block: 0 6px;
+    margin-block: 0 var(--space-rail);
   }
 
   .offer-scene .folder p.folder-tab {
@@ -2638,7 +2638,7 @@ margin-bottom: 0.2em;
   .offer-scene .folder p {
     font-size: 0.90625rem;
     line-height: 1.3;
-    margin-block: 0 4px;
+    margin-block: 0 var(--space-1);
   }
 
   .offer-scene .folder h3 {
@@ -2646,11 +2646,11 @@ margin-bottom: 0.2em;
   }
 
   .offer-scene .folder {
-    padding-block: 8px;
+    padding-block: var(--space-2);
   }
 
   .offer-scene .folder .door {
-    padding-block: 8px;
+    padding-block: var(--space-2);
     margin-top: var(--space-1);
   }
 

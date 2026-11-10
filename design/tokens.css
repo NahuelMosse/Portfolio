@@ -158,6 +158,44 @@
   /* the height of the dev kit's plate above its machines' tops, in the wide composition: 49% of a 16:9 drawing as wide as the viewport */
   --track-rise: 27.5vw;
 
+  /* the black of a mask: it only gates alpha, never shows */
+  --ink-black: #000;
+  --ink-black-20: color-mix(in srgb, var(--ink-black) 20%, transparent);
+  --ink-88: color-mix(in srgb, var(--ink) 88%, transparent);
+
+  /* spaces by use */
+  --space-0: 0px;
+  --space-hair: 2px;
+  --space-rail: 6px;
+  --space-sheet-row: 3px;
+  --space-corner-cta: 13rem;
+  --space-corner-lift: 6.5rem;
+  --space-offer-lead: 4rem;
+  --space-offer-lead-phone: 2rem;
+  --space-contact-top-cap: 56px;
+  --space-hint-min: 10px;
+  --space-half-min: 12px;
+  --space-halves-cap: 28px;
+  --space-preloader: 1.5em;
+  --phone-short-height: 667px;
+
+  /* durations by use */
+  --dur-instant: 1ms;
+  --dur-zero: 0s;
+  --dur-toggle: 150ms;
+  --dur-fade: 0.3s;
+  --dur-plate-focus: 450ms;
+  --dur-sound-bar: 0.9s;
+  --dur-cover-rise: 0.9s;
+  --dur-stamp-in: 260ms;
+  --dur-preloader-drift: 5s;
+  --dur-preloader-reg: 420ms;
+  --dur-preloader-reg-delay: 80ms;
+  --dur-preloader-float: 2.4s;
+  --dur-preloader-out: 460ms;
+  --dur-caret-delay: 160ms;
+  --dur-caret-step: 24ms;
+
   /* semantic */
   --background: var(--ink);
   --foreground: var(--bone);

@@ -418,7 +418,7 @@
   .group-card .show-copy::before {
     inset: -22svh -6vw 0 calc(var(--gutter-left) * -1);
     background: linear-gradient(to right, color-mix(in srgb, var(--shade-deep) 88%, transparent) 55%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, #000 30%);
+    mask-image: linear-gradient(to bottom, transparent, var(--ink-black) 30%);
   }
 
   .group-card .show-text {

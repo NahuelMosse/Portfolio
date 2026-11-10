@@ -84,7 +84,7 @@
   white-space: nowrap;
   box-shadow: var(--space-1) var(--space-1) 0 var(--ink);
   transform: translate(-50%, -50%) rotate(3deg);
-  animation: band-stamp-in 260ms var(--ease-out) both;
+  animation: band-stamp-in var(--dur-stamp-in) var(--ease-out) both;
   pointer-events: none;
 }
 

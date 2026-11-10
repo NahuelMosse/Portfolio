@@ -20,7 +20,7 @@ const PRINTED = "nawi:printed"
 // hydrated), eased toward so it does not jump; it inks the stamp (the threshold of the n5-ink filter, rewritten only when the
 // reading changes, so the grain is not redrawn every frame) and is written under it, into the text nodes already there.
 //
-// On a slow line React sometimes fails to hydrate the server's page (error #418, the same before the stamp) and renders it again
+// On a slow line React sometimes fails to hydrate the server's page (hydration error 418, the same before the stamp) and renders it again
 // from scratch, which resets the classes of <html>. revive() puts the title back the moment the new Preloader mounts, before it
 // paints, and goes on from the same reading: the visitor sees the stamp keep inking, never a cut.
 export const PRELOADER_SCRIPT = `(function(){try{var d=document.documentElement,q=/[?&]preloader\\b/.test(location.search),s=sessionStorage.getItem("${SEEN_KEY}");if(!q&&navigator.webdriver)return;d.classList.add("is-preloading","has-title");if(s&&!q)d.classList.add("is-revisit")}catch(e){return}

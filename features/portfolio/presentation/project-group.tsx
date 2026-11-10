@@ -4,6 +4,7 @@ import type { CSSProperties, ReactNode } from "react"
 import type { DeviceKind, Piece, Project } from "./content"
 import { ShowcaseDevice } from "./showcase-device"
 import { BEAT_RUN, BEATS_PER_PROJECT, TURN_RUN, startOf, useGroupTrack } from "./use-group-track"
+import { Button } from "@/components/ui/button"
 
 // The three beats of a project's story, one per step of its hold: what it is, the problem, and his part in how it was built.
 const BEATS = [
@@ -164,10 +165,10 @@ export function ProjectGroupScene({ id, label, noun, line, composition, items }:
             <ol className="group-index" aria-label={`${label} projects`}>
               {items.map((item, order) => (
                 <li key={item.project.id} data-project={item.project.id} aria-current={order === current ? "step" : undefined}>
-                  <button type="button" onClick={() => goTo(order)}>
+                  <Button type="button" variant="ghost" size={null} className="whitespace-normal shrink rounded-none focus-visible:ring-0" onClick={() => goTo(order)}>
                     <b>{numeral(order + 1)}</b>
                     <span>{item.project.name}</span>
-                  </button>
+                  </Button>
                 </li>
               ))}
             </ol>

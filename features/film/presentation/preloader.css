@@ -55,7 +55,7 @@ html.has-title .cover-foot .layer-sheet {
   inset: calc(var(--cell) * -2);
   background: radial-gradient(circle, var(--bone) 0.9px, transparent 1.4px) 0 0 / var(--cell) var(--cell);
   opacity: calc(0.16 * (1 - var(--progress)));
-  animation: preloader-drift 5s linear infinite;
+  animation: preloader-drift var(--dur-preloader-drift) linear infinite;
 }
 
 /* ---- the plate: the cover itself, printed in coarser dots each step until it is the cover's first frame ---- */
@@ -71,7 +71,7 @@ html.has-title .cover-foot .layer-sheet {
   inset: 0;
   opacity: clamp(0, calc(var(--progress) * 5 - var(--k)), 1);
   --r: calc(1px + var(--k) * 1.1px);
-  mask-image: radial-gradient(circle, #000 calc(var(--r) - 0.6px), transparent var(--r));
+  mask-image: radial-gradient(circle, var(--ink-black) calc(var(--r) - 0.6px), transparent var(--r));
   mask-size: var(--cell) var(--cell);
 }
 
@@ -123,7 +123,7 @@ html.has-title .cover-foot .layer-sheet {
   width: 40px;
   height: 40px;
   color: var(--red);
-  animation: preloader-reg 420ms cubic-bezier(0.34, 1.56, 0.64, 1) 80ms backwards;
+  animation: preloader-reg var(--dur-preloader-reg) cubic-bezier(0.34, 1.56, 0.64, 1) var(--dur-preloader-reg-delay) backwards;
 }
 
 .preloader-reg[data-corner="end"] {
@@ -156,7 +156,7 @@ html.has-title .cover-foot .layer-sheet {
 }
 
 .preloader-char {
-  animation: preloader-type 1ms linear backwards;
+  animation: preloader-type var(--dur-instant) linear backwards;
   animation-delay: calc(160ms + var(--c) * 24ms);
 }
 
@@ -168,7 +168,7 @@ html.has-title .cover-foot .layer-sheet {
   height: 1em;
   background: var(--red);
   opacity: 0;
-  animation: preloader-caret 0.9s steps(1) calc(160ms + var(--c) * 24ms) infinite;
+  animation: preloader-caret var(--dur-sound-bar) steps(1) calc(var(--dur-caret-delay) + var(--c) * var(--dur-caret-step)) infinite;
 }
 
 /* ---- the stamp: a ghost from the first frame, the ink through the rubber's grain, hovering over the file until it strikes ---- */
@@ -178,13 +178,13 @@ html.has-title .cover-foot .layer-sheet {
   z-index: 3;
   width: min(44vw, 72svh);
   transform-origin: 0 0;
-  animation: preloader-arrive 900ms var(--ease-out) backwards;
+  animation: preloader-arrive var(--motion-section) var(--ease-out) backwards;
 }
 
 .preloader-stamp {
   position: relative;
   color: var(--red);
-  animation: preloader-hover 2.4s infinite;
+  animation: preloader-hover var(--dur-preloader-float) infinite;
 }
 
 .preloader-stamp .brand-mark {
@@ -195,7 +195,7 @@ html.has-title .cover-foot .layer-sheet {
 
 .preloader-stamp-ghost {
   display: block;
-  animation: preloader-breathe 2.4s infinite;
+  animation: preloader-breathe var(--dur-preloader-float) infinite;
 }
 
 .preloader-stamp-flash,
@@ -221,7 +221,7 @@ html.has-title .cover-foot .layer-sheet {
   z-index: 3;
   margin: 0;
   display: flex;
-  gap: 1.5em;
+  gap: var(--space-preloader);
   font-family: var(--font-label);
   font-size: var(--text-small);
   text-transform: uppercase;
@@ -262,12 +262,12 @@ html.has-title .cover-foot .layer-sheet {
 .preloader-face::before,
 .preloader-chrome,
 .preloader-read {
-  transition: opacity 460ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity var(--dur-preloader-out) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .preloader[data-state] .preloader-read {
   opacity: 0;
-  transition-duration: 160ms;
+  transition-duration: var(--dur-caret-delay);
 }
 
 .preloader[data-state="landing"] :is(.preloader-slate, .preloader-plate, .preloader-chrome),
@@ -276,7 +276,7 @@ html.has-title .cover-foot .layer-sheet {
 }
 
 .preloader[data-state="fading"] {
-  animation: preloader-fade 300ms ease-out forwards;
+  animation: preloader-fade var(--dur-fade) ease-out forwards;
 }
 
 /* a later load of the session: the stamp in full ink keeps its loop over the bare slate. Reduced motion and the streaming

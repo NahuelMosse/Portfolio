@@ -348,8 +348,8 @@
     linear-gradient(var(--ink) 0 0) content-box exclude,
     linear-gradient(var(--ink) 0 0);
   mask:
-    linear-gradient(#000 0 0) content-box exclude,
-    linear-gradient(#000 0 0);
+    linear-gradient(var(--ink-black) 0 0) content-box exclude,
+    linear-gradient(var(--ink-black) 0 0);
   pointer-events: none;
 }
 
@@ -854,7 +854,7 @@
   }
 
   .show-copy::before {
-    mask-image: linear-gradient(to bottom, transparent, #000 30%);
+    mask-image: linear-gradient(to bottom, transparent, var(--ink-black) 30%);
   }
 
   .show[data-composition="b"] .show-copy::before {
