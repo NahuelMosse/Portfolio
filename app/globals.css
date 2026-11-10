@@ -1427,8 +1427,66 @@ html:not([data-sound="idle"]) .cover-cue {
     flex-direction: column-reverse;
   }
 
+  /* the plate rides up so his face clears the ID sheet, which sits over the lower third above the sound cue */
+  .cover-scene .scene-art img {
+    object-position: 50% 100%;
+    translate: 0 -72px;
+  }
+
   .cover-foot {
+    position: relative;
+    z-index: 3;
     padding-top: var(--space-4);
+  }
+
+  .cover-foot .layer-sheet {
+    position: absolute;
+    inset: auto 0 calc(100% + 7.6rem) 0;
+    padding: var(--space-4) var(--gutter-right) 0 var(--gutter-left);
+    background: linear-gradient(to top, var(--ink-85) 62%, transparent);
+  }
+
+  .id-sheet {
+    max-width: none;
+    line-height: 1.2;
+  }
+
+  .id-sheet .sheet-head {
+    margin-bottom: 4px;
+  }
+
+  .id-sheet .sheet-title {
+    font-size: 0.8125rem;
+  }
+
+  .id-sheet .sheet-row {
+    grid-template-columns: 5.5rem 1fr;
+    gap: var(--space-2);
+    padding: 3px 0;
+  }
+
+  .id-sheet dt {
+    font-size: 0.75rem;
+    opacity: 0.85;
+  }
+
+  .id-sheet dd {
+    font-size: 0.875rem;
+  }
+}
+
+/* short phones: the plate rides higher and the sheet's rows tighten so it still clears his chin */
+@media (max-width: 700px) and (max-height: 760px) {
+  .cover-scene .scene-art img {
+    translate: 0 -96px;
+  }
+
+  .id-sheet .sheet-row {
+    padding: 1px 0;
+  }
+
+  .cover-foot .layer-sheet {
+    padding-top: var(--space-2);
   }
 }
 
