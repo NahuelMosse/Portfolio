@@ -1949,7 +1949,7 @@ margin-bottom: 0.2em;
   .offer-scene .scene-copy {
     justify-content: flex-end;
     min-height: 0;
-    padding: calc(var(--size-word) * 0.4 + var(--space-2)) 0 var(--space-3);
+    padding: calc(var(--size-word) * 0.4 + var(--space-2)) var(--gutter-right) var(--space-3) var(--gutter-left);
     background: none;
   }
 
@@ -2067,5 +2067,29 @@ margin-bottom: 0.2em;
 @media (max-width: 700px) {
   .offer-scene .scene-copy {
     padding-bottom: calc(var(--space-3) + var(--hire-bar-height));
+  }
+}
+
+/* with reduced motion nothing pins the offer, so it is as tall as its two doors and leaves no empty ink under them */
+@media (prefers-reduced-motion: reduce) and (max-width: 1099px) {
+  .offer-scene[data-has-art] {
+    min-height: 0;
+  }
+}
+
+/* a phone held sideways: the invitation moves under the top bar at the right so it never covers the sheet, and the cover's door rises
+   above the corner CTA instead of sliding behind it */
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 500px) and (max-width: 1099px) {
+  .sound-cue-chip {
+    top: calc(var(--top-bar-height) + var(--space-2));
+    right: var(--space-3);
+    bottom: auto;
+    left: auto;
+    translate: none;
+  }
+
+  .cover-foot .hero-door {
+    margin-bottom: calc(var(--space-4) + 2.5rem + var(--space-2));
+    box-shadow: var(--space-1) var(--space-1) 0 var(--ink);
   }
 }

@@ -812,6 +812,7 @@
   .show-stage {
     position: relative;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-4);
     height: auto;
     min-height: 100svh;
@@ -829,6 +830,11 @@
 
   .show .plate {
     scale: none;
+    inset: 0 -3vw;
+  }
+
+  .show-stage > * {
+    min-width: 0;
   }
 
   .show,

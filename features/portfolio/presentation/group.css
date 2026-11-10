@@ -418,3 +418,29 @@
     font-size: 1.25rem;
   }
 }
+
+/* a phone held sideways: the stage has under 300px, so the word shrinks and the caption tightens to leave them apart */
+@media (prefers-reduced-motion: no-preference) and (min-width: 768px) and (max-width: 1099px) and (min-aspect-ratio: 1 / 1) and (max-height: 500px) {
+  .group-card {
+    --word-size: min(calc((100vw - var(--gutter-left) - var(--gutter-right)) * 0.3 / (var(--chars, 8) * 0.56)), 9svh);
+  }
+
+  .group-card .show-copy {
+    width: min(30rem, 52vw - var(--gutter-left));
+    padding-bottom: var(--space-4);
+  }
+
+  .group-card .show-text {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .group-card .show-beats,
+  .group-card .show-beat {
+    gap: var(--space-1);
+  }
+
+  .show[data-employer] .show-lead {
+    margin-bottom: var(--space-1);
+  }
+}
