@@ -2460,11 +2460,13 @@ margin-bottom: 0.2em;
     font-size: min(var(--text-small), 1.9svh, 3.2vw);
   }
 
-  /* the free height is shared in two equal auto margins: between the word and the address, and between the last network and the
-     roll, which stays pinned above the © line */
+  /* the free height is shared in two auto margins, the one under the word wider by the top padding: the address and the networks
+     sit a little closer to the roll, which stays pinned above the © line. The padding grows with the height left over past the
+     shortest phone (667px), where the block already fills the screen */
   .contact-scene .contact-tiles {
     flex: none;
     margin-block: auto;
+    padding-top: clamp(0px, (100svh - 667px) * 0.3, 56px);
     align-content: start;
   }
 
