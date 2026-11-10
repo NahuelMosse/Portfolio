@@ -99,7 +99,7 @@ async function measure(page: Page) {
       bar: bar && {
         wordmark: bar.querySelector("[data-wordmark]")?.textContent?.trim(),
         indexVisible: [...bar.querySelectorAll("[data-index-item]")].filter(visible).map((a) => a.textContent?.trim()),
-        hire: !!bar.querySelector("[data-top-hire]") && visible(bar.querySelector("[data-top-hire]")!),
+        hire: bar.querySelectorAll("[data-top-hire]").length,
         menu: !!bar.querySelector("[data-menu-button]") && visible(bar.querySelector("[data-menu-button]")!),
         sound: !!bar.querySelector("[data-sound-toggle]"),
       },
@@ -179,7 +179,7 @@ for (const viewport of VIEWPORTS) {
       expect(m.bar?.sound).toBe(true)
       if (wide) {
         expect(m.bar?.indexVisible).toEqual(["01 SUBJECT", "02 PROJECTS", "03 EXPERIENCE", "04 OFFER", "05 CONTACT"])
-        expect(m.bar?.hire).toBe(true)
+        expect(m.bar?.hire, "the top bar holds no Let's talk, the corner is the one").toBe(0)
       } else {
         expect(m.bar?.menu).toBe(true)
         expect(m.bar?.indexVisible).toEqual([])

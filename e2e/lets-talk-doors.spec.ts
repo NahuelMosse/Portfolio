@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test"
 
-// Let's talk is the one open invitation: the top bar and the phone bar carry it, the cover has no hire door,
+// Let's talk is the one open invitation: the corner call to action carries it on desktop and the phone bar on a phone, the cover has no hire door,
 // and the freelance door of the offer reads "Let's talk about your project" (PF-1-ASM-44).
 
 const VIEWPORTS = [
@@ -25,12 +25,15 @@ for (const { width, height } of VIEWPORTS) {
   })
 }
 
-test("the desktop top bar carries Let's talk to the contact scene and the phone bar carries the same link @PF-1-ASM-26 @PF-1-ASM-27", async ({ browser }) => {
+test("desktop has one Let's talk, the corner, with none in the top bar, and the phone bar carries the same link @PF-1-ASM-26 @PF-1-ASM-27", async ({ browser }) => {
   const desktop = await browser.newPage({ viewport: { width: 1280, height: 720 } })
   await desktop.goto("/")
-  const top = desktop.locator("[data-top-hire]")
-  await expect(top).toHaveText(/let.s talk/i)
-  await expect(top).toHaveAttribute("href", "#contact")
+  await expect(desktop.locator("[data-top-bar] [data-top-hire]")).toHaveCount(0)
+  await expect(desktop.locator("[data-top-bar]").getByText(/let.s talk/i)).toHaveCount(0)
+  const corner = desktop.locator("[data-cta]")
+  await expect(corner).toHaveCount(1)
+  await expect(corner).toHaveText(/let.s talk/i)
+  await expect(corner).toHaveAttribute("href", "#contact")
   await expect(desktop.locator("main").getByText("Hire me", { exact: false })).toHaveCount(0)
   await desktop.close()
 
