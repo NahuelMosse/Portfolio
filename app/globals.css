@@ -2220,8 +2220,8 @@ margin-bottom: 0.2em;
     min-height: calc(100svh - var(--top-bar-height));
   }
 
-  .offer-scene .folder p.folder-tab {
-    margin-top: auto;
+  .offer-scene .folder > p.folder-tab:first-child {
+    margin-block: auto var(--space-2);
   }
 
   .offer-scene .folder .door {
