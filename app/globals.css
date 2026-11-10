@@ -2295,10 +2295,16 @@ margin-bottom: 0.2em;
     font-size: min(var(--text-small), 1.9svh, 3.2vw);
   }
 
+  /* the free height is shared in two equal auto margins: between the word and the address, and between the last network and the
+     roll, which stays pinned above the © line */
   .contact-scene .contact-tiles {
     flex: none;
-    margin-top: auto;
+    margin-block: auto;
     align-content: start;
+  }
+
+  .contact-scene .credits-roll {
+    margin-top: 0;
   }
 
   .contact-scene .band-hint {
