@@ -2305,6 +2305,18 @@ margin-bottom: 0.2em;
 
   .contact-scene .end-of-file {
     margin-top: 0;
+    font-size: 12px;
+  }
+
+  .contact-scene .band-hint,
+  .contact-scene .band-hint .band-mail,
+  .contact-scene .band-half .half-handle {
+    font-size: 13px;
+  }
+
+  .xp .show[data-employer] p.show-lead {
+    font-size: 15px;
+    line-height: 1.4;
   }
 
   .offer-scene .scene-copy {
