@@ -2220,19 +2220,35 @@ margin-bottom: 0.2em;
     padding-bottom: 0;
   }
 
-  /* one composed screen: the word block, then the two doors at their own height; the free height is shared evenly between the
-     word, the doors and the foot, and each button sits right under its text */
+  /* one composed screen: the word block, then the two doors at their own height; the free height is shared in two equal auto
+     margins, between the title and the first door and between the doors, so the last door ends on the screen's foot and each
+     button sits right under its text */
   .offer-scene {
     --size-word: clamp(3.5rem, 16vw, 4.25rem);
   }
 
   .offer-scene .scene-copy {
-    justify-content: space-evenly;
-    padding-bottom: var(--space-2);
+    box-sizing: border-box;
+    min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.5 - 1.1rem);
+    justify-content: flex-end;
+    padding-bottom: 0;
   }
 
   .offer-scene .offer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     gap: var(--space-2);
+  }
+
+  .offer-scene .offer::before {
+    content: "";
+    flex: none;
+    margin-top: auto;
+  }
+
+  .offer-scene .folder + .folder {
+    margin-top: auto;
   }
 
   .offer-scene .folder {
