@@ -84,3 +84,33 @@ test("the toggle starts the sound from anywhere @PF-1-ASM-46", async ({ page }) 
   await expect(page.locator("html")).toHaveAttribute("data-sound", "on")
   expect(await playing(page)).toBe(true)
 })
+
+test("a key that scrolls the cover leaves the sound idle @PF-1-ASM-46", async ({ page }) => {
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await expect(page.locator(".sound-cue-chip[data-visible], .cover-cue").first()).toBeVisible({ timeout: 15000 })
+  for (const key of ["Space", "PageDown"]) {
+    await page.keyboard.press(key)
+    await page.waitForTimeout(300)
+    expect(await soundPhase(page)).toBe("idle")
+    expect(await playing(page)).toBe(false)
+    await page.evaluate(() => window.scrollTo(0, 0))
+  }
+})
+
+test.describe("touch", () => {
+  test.use({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 844 } })
+
+  test("a swipe that scrolls the page from the cover leaves the sound idle @PF-1-ASM-46", async ({ page }) => {
+    await page.evaluate(() => window.scrollTo(0, 0))
+    await expect(page.locator(".sound-cue-chip[data-visible], .cover-cue").first()).toBeVisible({ timeout: 15000 })
+    const cdp = await page.context().newCDPSession(page)
+    const touch = (type: string, y: number) =>
+      cdp.send("Input.dispatchTouchEvent", { type, touchPoints: type === "touchEnd" ? [] : [{ x: 195, y }] })
+    await touch("touchStart", 600)
+    for (let y = 560; y >= 300; y -= 40) await touch("touchMove", y)
+    await touch("touchEnd", 300)
+    await page.waitForTimeout(400)
+    expect(await soundPhase(page)).toBe("idle")
+    expect(await playing(page)).toBe(false)
+  })
+})
