@@ -26,9 +26,6 @@ export function HeroPoster() {
           <strong>{identity.greeting}</strong>
           {identity.promise}
         </p>
-        <a data-door="" className="door hero-door" href="#end-credits">
-          Hire me for a project
-        </a>
       </div>
       <ColdOpenMotion />
     </section>

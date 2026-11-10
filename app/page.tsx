@@ -3,7 +3,6 @@ import { HeroPoster } from "@/features/portfolio/presentation/hero-poster"
 import { Projects } from "@/features/portfolio/presentation/projects"
 import { Experience } from "@/features/portfolio/presentation/experience"
 import { EndCredits } from "@/features/portfolio/presentation/end-credits"
-import { doorHref, offer } from "@/features/portfolio/presentation/content"
 import { getStructuredData } from "@/lib/machine-readable"
 
 // Wide, Offer ends the screen where Let's talk begins, so the whole OFFER word is on screen and no red shows, and Contact's block
@@ -16,6 +15,9 @@ const CHAPTERS = [
   { id: "contact", label: "05 CONTACT", heading: "#contact-title", land: { selector: ".contact-scene", edge: "top", wide: true } },
 ] as const
 
+// One invitation for the top bar and the phone bar: the contact scene.
+const TALK = { label: "Let’s talk", href: "#contact" }
+
 export default function Home() {
   const structuredData = getStructuredData()
 
@@ -24,8 +26,8 @@ export default function Home() {
       <FilmShell
         chapters={CHAPTERS}
         skipLabel="Skip intro"
-        cta={{ label: "Let’s talk", href: "#contact" }}
-        hire={{ label: "Hire me", href: doorHref(offer.freelance) }}
+        cta={TALK}
+        hire={TALK}
       >
         <HeroPoster />
         <Projects />

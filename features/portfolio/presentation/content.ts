@@ -303,7 +303,7 @@ export const offer = {
     title: "Freelance",
     line: "Freelance builds of digital products and sites with a visual identity of their own, from design to launch.",
     detail: "I build the whole product myself, design, code and launch, and the pieces above are what I already built.",
-    door: "Hire me for a project",
+    door: "Let’s talk about your project",
     subject: "Freelance project · Nahuel Mosse",
     prompts: ["What are you building, and for whom?", "What should it look and feel like?", "When do you need the first version?"],
   },

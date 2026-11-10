@@ -48,7 +48,7 @@ Boska (display) is the identity: NAWI edge to edge as the mark, chapter titles a
 ## 5. The system: primitives, components and patterns
 
 - Chapter (`features/film`): label between thin rules, the poster title above everything, a seam figure and an optional torn scrap; the card of a chapter has no frame.
-- Shell (`features/film`): desk image, thread, lamp light and HUD rail, plus the controls that never hold the visitor: skip, chapter index, sound toggle, the corner call to action and, on a phone, the fixed Hire me bar. Controls are one pill with hover to red, a visible focus ring and a press scale.
+- Shell (`features/film`): desk image, thread, lamp light and HUD rail, plus the controls that never hold the visitor: skip, chapter index, sound toggle, the corner call to action and, on a phone, the fixed Let’s talk bar; the top bar's Let’s talk and that bar both go to the contact scene, and the cover has no door. Controls are one pill with hover to red, a visible focus ring and a press scale.
 - Credits roll: two full-bleed bands on the Magic UI marquee, edges faded into black, paused by hover or focus.
 - Piece row: on a phone a case's pieces are one row that swipes sideways with a counter; case details open with a toggle.
 - Catalog items in use: Magic UI marquee, border beam, animated shiny text, text animate; Aceternity sticky scroll reveal and parallax scroll; shadcn button. Vendored as installed.
@@ -74,7 +74,7 @@ Loading holds the still with grain until the video can play; a failed video keep
 
 ## 9. Voice
 
-First person, short, no figures. Door labels: "Hire me for a project" and "Bring AI-first delivery to your team".
+First person, short, no figures. Door labels: "Let’s talk about your project" and "Bring AI-first delivery to your team".
 
 ## 10. How it is extended
 

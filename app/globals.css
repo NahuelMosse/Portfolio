@@ -916,12 +916,6 @@ html:not([data-sound="idle"]) .cover-cue {
     padding-bottom: var(--space-3);
   }
 
-  .cover-foot .hero-door {
-    grid-column: 3;
-    justify-self: end;
-    margin-bottom: 0.5rem;
-    white-space: nowrap;
-  }
 }
 
 /* a tablet held upright: the sheet and the door stack at the left, the door a single line well clear of the corner CTA */
@@ -935,11 +929,6 @@ html:not([data-sound="idle"]) .cover-cue {
     padding-bottom: calc(var(--space-3) + 6.5rem);
   }
 
-  .cover-foot .hero-door {
-    justify-self: auto;
-    margin-bottom: 0;
-  }
-
   /* the tall plate is wider than tall here: its dark top is trimmed, so his whole face stays in frame under NAWI's foot */
   .cover-scene .scene-art img {
     object-position: 50% 100%;
@@ -948,11 +937,9 @@ html:not([data-sound="idle"]) .cover-cue {
 
 /* load-in wipes up with clip-path and fill-mode backwards: the boxes never leave the screen, and GSAP's scroll fade (transform, opacity inline) owns them once it ends */
 @media (prefers-reduced-motion: no-preference) {
-  .cover-foot .layer-sheet,
-  .cover-foot .hero-door {
+  .cover-foot .layer-sheet {
     animation: cover-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s backwards;
   }
-  .cover-foot .hero-door { animation-delay: 0.4s; }
 }
 @keyframes cover-rise {
   from { opacity: 0; clip-path: inset(100% 0 0 0); }
@@ -1155,15 +1142,6 @@ html:not([data-sound="idle"]) .cover-cue {
   background: var(--red);
   border-color: var(--red);
   color: var(--bone);
-}
-
-.hero-door {
-  display: inline-block;
-  margin: 0;
-  /* GSAP drives its transform: a CSS transition on it would lag behind the tween */
-  transition:
-    background var(--motion-control) var(--ease-out),
-    color var(--motion-control) var(--ease-out);
 }
 
 .end-of-file {
@@ -2412,7 +2390,7 @@ margin-bottom: 0.2em;
   .offer-scene .folder .door {
     min-height: 44px;
     box-sizing: border-box;
-    padding-block: 12px;
+    padding: 12px var(--space-2);
     margin-top: auto;
   }
 
@@ -2494,8 +2472,4 @@ margin-bottom: 0.2em;
     translate: none;
   }
 
-  .cover-foot .hero-door {
-    margin-bottom: calc(var(--space-4) + 2.5rem + var(--space-2));
-    box-shadow: var(--space-1) var(--space-1) 0 var(--ink);
-  }
 }

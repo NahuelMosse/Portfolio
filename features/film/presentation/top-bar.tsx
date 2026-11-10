@@ -12,7 +12,7 @@ type TopBarProps = {
   soundSrc?: string
 }
 
-// The page's one bar: the NAWI mark, the chapter index in typed caps, Hire me and the sound toggle.
+// The page's one bar: the NAWI mark, the chapter index in typed caps, Let's talk and the sound toggle.
 // On a phone the index and the skip link open from a menu button.
 export function TopBar({ chapters, skipLabel, hire, soundSrc }: TopBarProps) {
   const [open, setOpen] = useState(false)
