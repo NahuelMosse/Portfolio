@@ -153,12 +153,11 @@ test("each door opens an email with its own subject and three prompts in the bod
   expect(lastIsDoor).toBe(true)
 })
 
-test("the intro skips, the chapter index jumps by click and by keyboard; every link, door, index item, skip and sound toggle answers hover, a visible focus ring and press @PF-1-S18", async ({ page }) => {
+test("the chapter index jumps by click and by keyboard, past the cover to the projects heading; every link, door, index item and sound toggle answers hover, a visible focus ring and press @PF-1-S18", async ({ page }) => {
   const targets: Record<string, Locator> = {
     link: page.locator("article[data-project] .links a").first(),
     door: page.locator("[data-doors] a").first(),
     index: page.locator("[data-chapter-index] [data-index-item]").first(),
-    skip: page.locator("[data-skip]"),
     sound: page.locator("[data-sound-toggle]"),
   }
   for (const [name, target] of Object.entries(targets)) {
@@ -192,13 +191,13 @@ test("the intro skips, the chapter index jumps by click and by keyboard; every l
   await page.keyboard.press("Enter")
   await expect(page.locator('section[data-chapter="end-credits"] h2')).toBeFocused()
   await page.evaluate(() => window.scrollTo(0, 0))
-  await page.locator("[data-skip]").click()
-  await expect(page.locator("article[data-project] h3").first()).toBeFocused()
+  await page.locator('[data-index-item="projects"]').click()
+  await expect(page.locator('section[data-chapter="projects"] h2')).toBeFocused()
 })
 
-test("the wheel scrolls natively, every chapter reads with sound off, focus lands on the chapter heading after a jump and on the first project heading after skip, and skip is focusable at second 1 @PF-1-ASM-13", async ({ page }) => {
+test("the wheel scrolls natively, every chapter reads with sound off, focus lands on the chapter heading after a jump and the index's projects link is focusable at second 1 and lands past the cover @PF-1-ASM-13", async ({ page }) => {
   await page.waitForTimeout(1000)
-  const skip = page.locator("[data-skip]")
+  const skip = page.locator('[data-index-item="projects"]')
   await expect(skip).toBeVisible()
   await skip.focus()
   await expect(skip).toBeFocused()
@@ -214,8 +213,8 @@ test("the wheel scrolls natively, every chapter reads with sound off, focus land
   }
   await page.evaluate(() => window.scrollTo(0, 0))
   await skip.click()
-  expect(await page.evaluate(() => document.activeElement?.tagName)).toBe("H3")
-  await expect(page.locator("article[data-project] h3").first()).toBeFocused()
+  expect(await page.evaluate(() => document.activeElement?.tagName)).toBe("H2")
+  await expect(page.locator('section[data-chapter="projects"] h2')).toBeFocused()
 })
 
 test("the completed studies and the certifications move right to left without end and keep moving after a full loop @PF-1-S21", async ({ page }) => {
