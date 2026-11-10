@@ -9,13 +9,13 @@
 // A regex over a shell line is incomplete by nature: a wrapper (`sh -c`, `eval`) around a push is refused
 // instead of parsed, and the branch protection of the remote is the layer that no command dodges.
 // A refused call goes through only when the user's last message orders it: the refusals guard an agent acting alone, not a
-// person. The order is read from the session transcript and has to be explicit: an imperative of the action ("mergealo",
+// person. The order is read from the session transcript, given to the main thread in the last 30 minutes, and has to be explicit: an imperative of the action ("mergealo",
 // "push it", "autorizo"), no question and no negation, and it names what made the call risky (main, force, admin, delete).
 // Contract: exit 0 lets it through, exit 2 blocks and Claude reads stderr. On its own error it blocks.
 import { appendFileSync, existsSync, readFileSync, realpathSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { lastUserText } from '../tools/transcript.mjs';
+import { currentOrder } from '../tools/transcript.mjs';
 // The order of an action: an imperative, never an infinitive or a remark ("deberían poder mergear" orders nothing).
 const AUTHORIZE = /\bautorizo\b|\bi authori[sz]e\b|\bgo ahead\b/i;
 const ORDERS = {
@@ -40,12 +40,12 @@ const userOrders = (text, what, command, branches) =>
 let asked = null;
 let call = '';
 let defaults = () => new Set();
-let transcript = '';
+let callInput = null;
 let userText = null;
 class UserAsked extends Error {}
 const block = (reason) => {
   if (asked) {
-    userText ??= lastUserText(transcript);
+    userText ??= currentOrder(callInput);
     if (userOrders(userText, asked, call, defaults())) throw new UserAsked(reason);
   }
   process.stderr.write(reason + (asked ? ' Only the user can lift this refusal: ask them, naming the exact command. It goes through ' +
@@ -61,7 +61,7 @@ const today = () => new Date().toISOString().slice(0, 10);
 try {
   const raw = readFileSync(0, 'utf8');
   const input = JSON.parse(raw);
-  transcript = String(input.transcript_path ?? '');
+  callInput = input;
   const cardMod = await import('../tools/card.mjs');
   await cardMod.delegateToRepo(import.meta.url, raw, input);
 
@@ -103,6 +103,9 @@ try {
     'specs/<card>/closing.md with its three sections (## Passed, ## Failed, ## Could not run). Run /close, then publish.';
 
   const root = () => openCard()?.root ?? cwd;
+  // Set for each gh call: the folder it runs in, and whether that is another repository than the card's.
+  let ghDir = cwd;
+  let away = false;
   const git = (...args) => spawnSync('git', args, { cwd: root(), encoding: 'utf8' });
   const currentBranch = () => git('rev-parse', '--abbrev-ref', 'HEAD').stdout.trim();
   const defaultBranches = () => {
@@ -200,8 +203,9 @@ try {
       block(`You can create, comment, edit, merge, check out, mark ready and read PRs (view, checks, list, status, diff); \`gh pr ${verb ?? ''}\` is the one refused.`);
     }
     if (verb === 'create' && !hasRemote()) block(NO_REMOTE);
-    // Outside a card the agent opens and edits its PRs as it sees fit; a card's PR comes from its close.
-    if (!openCard()) return;
+    // Outside a card the agent opens and edits its PRs as it sees fit; a card's PR comes from its close. A call that runs
+    // in another repository (`cd <other> && gh pr create`) is not this card's PR.
+    if (!openCard() || away) return;
     if (!closingReady()) block(NEEDS_CLOSING);
     if (verb === 'create') {
       if (args.some((a) => a === '--draft' || a === '-d')) block('You can open this card\'s PR; it goes ready for review, not as a draft. Drop --draft.');
@@ -229,8 +233,9 @@ try {
     if (repo !== null) pr.push('--repo', repo);
     // KIT_GH_CHECKS: a node script that stands in for `gh pr checks` in the kit's tests.
     const fake = process.env.KIT_GH_CHECKS;
-    const checks = fake ? spawnSync(process.execPath, [fake, ...pr], { cwd: root(), encoding: 'utf8' })
-      : spawnSync('gh', ['pr', 'checks', ...pr], { cwd: root(), encoding: 'utf8' });
+    const checksDir = away ? ghDir : root();
+    const checks = fake ? spawnSync(process.execPath, [fake, ...pr], { cwd: checksDir, encoding: 'utf8' })
+      : spawnSync('gh', ['pr', 'checks', ...pr], { cwd: checksDir, encoding: 'utf8' });
     const out = `${checks.stdout ?? ''}${checks.stderr ?? ''}`;
     if (checks.status !== 0 && !/no checks reported/i.test(out)) {
       // The checks are asked in the session's repository: a PR of another one is not found there, whatever the `cd`.
@@ -241,7 +246,7 @@ try {
       block(`You can merge this PR once its checks pass; they do not yet (\`gh pr checks\`: ${out.trim().split('\n').slice(0, 3).join(' · ') || `exit ${checks.status}`}). ` +
             'Wait for them (`gh pr checks --watch`) or fix what fails and push, then merge.');
     }
-    if (!openCard()) return;
+    if (!openCard() || away) return;
     if (!closingReady()) block(NEEDS_CLOSING);
     const closing = read(join(card().dir, 'closing.md'));
     const failed = (section(closing, 'Failed') ?? '').split('\n').filter((l) => /^\s*[-*]\s+\S/.test(l));
@@ -381,6 +386,9 @@ try {
           }
         } else if (/^gh(\.exe)?$/i.test(program)) {
           asked = rest.filter((a) => !a.startsWith('-'))[1] === 'merge' ? 'merge' : 'gh';
+          // Moved into another repository: the card in progress and its closing.md belong to this one, not that one.
+          ghDir = where;
+          away = !unknownDir && where !== cwd && toplevel(where) !== '' && toplevel(where) !== toplevel(root());
           await checkGh(rest);
         }
       } catch (e) {

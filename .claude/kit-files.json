@@ -1,7 +1,7 @@
 {
   ".claude/AUTONOMY.md": {
     "module": "core",
-    "sha256": "ce2884bf77dd95e816db265fb7a9e3f94c5aca546dbaae1e6c0df115dfc7be93"
+    "sha256": "4802a9e438d193844e4b326fb0a93112e4d5e80480635a7e46f126d1d7ff5a51"
   },
   ".claude/METHOD.md": {
     "module": "core",
@@ -25,7 +25,7 @@
   },
   ".claude/agents/design-critic.md": {
     "module": "profile:web",
-    "sha256": "b019c4139666969116f24c715f5d5c61142ad033f87add1be1d0ebedc6aeb2ac"
+    "sha256": "86f6c79bcd79addec6b54b0e8c8eb437c8048fd78b817abd3011a532ae2f701c"
   },
   ".claude/agents/designer.md": {
     "module": "profile:web",
@@ -65,7 +65,7 @@
   },
   ".claude/commands/close.md": {
     "module": "core",
-    "sha256": "55a36f67ce4a9b4cc5142ee4fbf0ea01168fda58c4fea51c0ef9441ee700c7dc"
+    "sha256": "0bff30212765fa6b23a39aceb339e0e4a506dc137b2add10ceb0aac13210fbc4"
   },
   ".claude/commands/design-deslop.md": {
     "module": "ui",
@@ -73,7 +73,7 @@
   },
   ".claude/hooks/commit-why.mjs": {
     "module": "core",
-    "sha256": "e20420f8d35725afb8abd99c7118970f00dc866f0193ae2a6af96821460d316e"
+    "sha256": "89c6cafe17d132410c566b6a4f23533a375c9f2b3fc01b8c8050b1683dd433d0"
   },
   ".claude/hooks/context-cap.mjs": {
     "module": "core",
@@ -93,7 +93,7 @@
   },
   ".claude/hooks/guard.mjs": {
     "module": "core",
-    "sha256": "d61a1afa0ef6821d92be86dd7e9b021959bb444f65b779fbb95259222420fb08"
+    "sha256": "d30dd25e47b674c93c49f05e6e2253c4ec541463c246b87ae1099db7fb63f669"
   },
   ".claude/hooks/light-images.mjs": {
     "module": "core",
@@ -105,7 +105,7 @@
   },
   ".claude/hooks/publish.mjs": {
     "module": "core",
-    "sha256": "68a91c4663a6f631f9440d585886948a1ae91339b6c76431b4d5616353fed5cf"
+    "sha256": "706246c43a914a867380a70f58cac64e43cca71f790ad929fe20cdf8caaacaec"
   },
   ".claude/hooks/require-at-close.mjs": {
     "module": "core",
@@ -141,7 +141,7 @@
   },
   ".claude/modules.json": {
     "module": "core",
-    "sha256": "241544f7bcecbbdbcdff44dcd5f1456f9b7aceb804cf4ad680ca54582250e7ca"
+    "sha256": "ee60746270de2da2bbc7ae35e86e632dd6fd5f1dd4f8b19f5c7017815954c221"
   },
   ".claude/profiles/web.md": {
     "module": "profile:web",
@@ -165,7 +165,7 @@
   },
   ".claude/reference/brand.md": {
     "module": "profile:web",
-    "sha256": "bde18f27e93fb85a94539d3f24bdddf4541d068aa306f30ad044577c2857ba00"
+    "sha256": "19d87b9276b70f4d23f980f0361f44ac9142834a2bd082047d6bb0c86d4cdc7c"
   },
   ".claude/reference/code-patterns.md": {
     "module": "core",
@@ -249,7 +249,7 @@
   },
   ".claude/reference/showcase.md": {
     "module": "ui",
-    "sha256": "63b02005aa08c030b03626b6fc1c9ce2e97c66007c2cc2732a32f3fd21c1f0db"
+    "sha256": "6fe0fc7b74b7890cf18eb08b5b0228448d9144c8570253e84baf99794e780309"
   },
   ".claude/reference/structure.md": {
     "module": "core",
@@ -453,7 +453,7 @@
   },
   ".claude/skills/shadcn/design-system-page.md": {
     "module": "ui",
-    "sha256": "c541d661af159548744be3e27f79e7da710ab83f9afd448a4346f7ff1531d328"
+    "sha256": "685fbb7e43065e78dd3db315398b07b818e885b06f005ce9690035bb18d762fc"
   },
   ".claude/skills/shadcn/design-system.md": {
     "module": "ui",
@@ -577,7 +577,7 @@
   },
   ".claude/templates/components/gallery.html": {
     "module": "ui",
-    "sha256": "1fa9c80882b2951857a04893639bcb967645d73df67cf5dd37e2a88b941db66c"
+    "sha256": "9da25081dc3f28d4db5a90a8962a4578107ad8efed42193d630ad39e14467d6d"
   },
   ".claude/templates/components/home.css": {
     "module": "ui",
@@ -1065,7 +1065,7 @@
   },
   ".claude/templates/components/motion/kk.spec.mjs": {
     "module": "ui",
-    "sha256": "c5a71fd0dce4973db446e150a03dc29e13b4d020a51cc47c6be145f0cf82b043"
+    "sha256": "51b8d0b1df05c17ef8ba88ff9dc5ebc79a308ad602f910a1d3c5c4e1ddcde2b8"
   },
   ".claude/templates/components/motion/kokonut-toolbar.css": {
     "module": "ui",
@@ -1145,7 +1145,7 @@
   },
   ".claude/templates/components/motion/morphing-dialog.html": {
     "module": "ui",
-    "sha256": "d75e7abe1a8f129642111ee1c10047ad21ad8a999aa88e282952297a33bb86cb"
+    "sha256": "fe38976f1fc3fd81e6d491d3a4fed588da2cbe97a0b2eb18ed75c55435ef0358"
   },
   ".claude/templates/components/motion/morphing-dialog.js": {
     "module": "ui",
@@ -1221,7 +1221,7 @@
   },
   ".claude/templates/components/motion/profile-dropdown.js": {
     "module": "ui",
-    "sha256": "4f9e9f64aae0b6b9a84ca3804bd1899a3b32a8cacc4366c5e06c80ea9db43912"
+    "sha256": "029351f0cf0ef601c6727f86f589e029df34c96e1422698733dd332797f4e5fe"
   },
   ".claude/templates/components/motion/progressive-blur.css": {
     "module": "ui",
@@ -1521,7 +1521,7 @@
   },
   ".claude/templates/components/record.html": {
     "module": "ui",
-    "sha256": "7de646b998c1052c744759e3163fa38fbf1b45cdc82ca27c1ceebb5907e11fce"
+    "sha256": "018de51c9dd51ce30c745abfdcc6793be5dba4b05794bfda132d75fdf5893893"
   },
   ".claude/templates/components/record.js": {
     "module": "ui",
@@ -1597,7 +1597,7 @@
   },
   ".claude/tools/card-doc.mjs": {
     "module": "core",
-    "sha256": "c99812e7794717eb9e50fdbd7b15128d1a2e7caf3b617dc8bf6f2ca97cb1125d"
+    "sha256": "946991310048330861edab3d6ba55ca4134e17c0c4599d9b356492098fcdfa41"
   },
   ".claude/tools/card-view.mjs": {
     "module": "core",
@@ -1605,11 +1605,11 @@
   },
   ".claude/tools/card.mjs": {
     "module": "core",
-    "sha256": "3bfbabde0c357a61ca62b4545aebfd823661a624815878beaf9918c1306c7a55"
+    "sha256": "ba17ad8c2fc22dc7ccd4902c98f582cf0171feb317e36242a5d7e834b8acf1c5"
   },
   ".claude/tools/close.mjs": {
     "module": "core",
-    "sha256": "c8835cd4811e96ec5a95d85bb888df6aec08b8ff940377f670f43e3403ac1358"
+    "sha256": "58c9650d3f4189ff3403be24f6f8e495cb9b11f6a6c0f2c0499d14a07ee505e7"
   },
   ".claude/tools/code-language.mjs": {
     "module": "core",
@@ -1641,7 +1641,7 @@
   },
   ".claude/tools/gate-checks.mjs": {
     "module": "core",
-    "sha256": "a83875dbafe7848af09591c67e653ed23244b6a1e029266b7350301580d0210a"
+    "sha256": "dc6ee9ee190ac72e820db89304f4a35c1a0863b8cf7bec9da6c7fc8073a08191"
   },
   ".claude/tools/help.mjs": {
     "module": "core",
@@ -1669,7 +1669,7 @@
   },
   ".claude/tools/install.mjs": {
     "module": "core",
-    "sha256": "ec7f6e698b9cb629a087988b5cbce5e2b745143a63f93d3000360dd8de19158e"
+    "sha256": "cf9119013733a3775c7961b1df259d9e36213df00a281ca5337e09e76237a9b2"
   },
   ".claude/tools/judge-context.mjs": {
     "module": "core",
@@ -1677,7 +1677,7 @@
   },
   ".claude/tools/kit.mjs": {
     "module": "core",
-    "sha256": "8b84151a79484eac96a2344fc12f843a590177966a515ac6d8ac2aae1df13509"
+    "sha256": "e5d3e5977b7e927aede4773d5b0915e80fd635cf14c850cbbdbc725d93a8636b"
   },
   ".claude/tools/log.mjs": {
     "module": "core",
@@ -1729,7 +1729,7 @@
   },
   ".claude/tools/required.mjs": {
     "module": "core",
-    "sha256": "9bb98a61bf5d7629190cb8d4931d1e2d7c1231aa82b68a8231a05be4013a0abf"
+    "sha256": "e5b84c43f7c579f25e2f04cc5ed9cbb3566616ea0dbcaf82c4e1dba4ca4df722"
   },
   ".claude/tools/review-range.mjs": {
     "module": "core",
@@ -1753,7 +1753,7 @@
   },
   ".claude/tools/transcript.mjs": {
     "module": "core",
-    "sha256": "1de21338bbdc84db9de8985064f3e7e7e17c502619d48065188c0482d3f589cb"
+    "sha256": "e24786914d3a2e552d21a92ad40defc6fa65a2bbd700fa5c8239cf6bf6aa6230"
   },
   ".claude/tools/tree-snapshot.mjs": {
     "module": "core",
@@ -1769,7 +1769,7 @@
   },
   ".claude/tools/wait.mjs": {
     "module": "core",
-    "sha256": "5cf70ec16ab67cf47e3b841f5659ae447861a8c91d3108786498c0ec965cf897"
+    "sha256": "4a4b6cf397409f683974f2dff568a639a76c81af3649b7780c2de4a01d9ebf21"
   },
   ".claude/skills/design-taste-frontend/LICENSE": {
     "module": "ui",
@@ -1809,7 +1809,7 @@
   },
   ".claude/skills/design-taste-frontend/evals/evals.json": {
     "module": "ui",
-    "sha256": "df0ee2a248cd5445c0e1600eb095dc0d43dd312f5b4bb4316a78471ae0d22a74"
+    "sha256": "2754b49e92fb3231c693c3f31df3ccf803e46eba66b713c70b2ab8e955956fbf"
   },
   ".claude/skills/design-taste-frontend/library/app.json": {
     "module": "ui",
@@ -2077,7 +2077,7 @@
   },
   ".claude/tools/guard-paths.mjs": {
     "module": "core",
-    "sha256": "20e2dafe36eb391a400fa6788f5ae4ff354ae71e2b3c068320ee296a9a934dc6"
+    "sha256": "39fec2db153384de499d4d537e2bed8343a21a2adcf649010d3fdf304f98b1e6"
   },
   ".claude/tools/shell-words.mjs": {
     "module": "core",
@@ -2101,7 +2101,7 @@
   },
   ".claude/skills/break-ui/SKILL.md": {
     "module": "core",
-    "sha256": "7819c1dc113808c321b2216dcd0e3470427457cd4da751c09da57b2b0f36dbb4"
+    "sha256": "77bd554d0e4948ddab3781170c4d9254113d06b0f0477f24c8017854815f2dee"
   },
   ".claude/skills/choreograph/LICENSE": {
     "module": "core",
@@ -2665,6 +2665,6 @@
   },
   ".claude/tools/public-bar.mjs": {
     "module": "core",
-    "sha256": "e077f6ad186f0797e715c8de50ae80389c291938379bb0845f7f537c48b49e30"
+    "sha256": "798f3d0e51434d47409542ac935ee94f1b44fbe93d0c77976b8e12576ede1e18"
   }
 }

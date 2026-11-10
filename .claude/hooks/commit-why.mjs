@@ -9,6 +9,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { hookCard } from '../tools/card.mjs';
+import { baseOf } from '../tools/migrations.mjs';
 
 const CONVENTIONAL = /^(feat|fix|perf|refactor|docs|test|chore|style|build|ci|revert)(\([^)]+\))?!?: .+/;
 
@@ -109,7 +110,21 @@ for (let i = 0; i < words.length; i++) {
 const subject = (messages[0] ?? '').split('\n')[0];
 if (messages.length > 0 && inCard && grade && grade !== 'poc' && !declared.skip) {
   if (/^(?:wip\b|fixup!|squash!|amend!)/i.test(subject)) reject(`A card's commit says what it changes: "${subject}" is a wip or a fixup. Commit the finished step with its own subject.`);
-  if (!CONVENTIONAL.test(subject)) {
+  // A card keeps the convention it started with: a kit update that arrives mid-card does not reject the subjects its
+  // history already uses ("PF-1 T6 …").
+  const started = () => {
+    const base = (() => { try { return baseOf(inCard.root)?.sha; } catch { return null; } })();
+    if (!base) return false;
+    const log = spawnSync('git', ['log', '--format=%s', `${base}..HEAD`], { cwd: inCard.root, encoding: 'utf8', timeout: 20_000 });
+    return log.status === 0 && log.stdout.split('\n').some((s) => s && !CONVENTIONAL.test(s) && !/^Merge /.test(s));
+  };
+  // A repo whose history already prefixes commits with the card key ("KIT-06: …") keeps that convention in its next cards.
+  const keyed = /^[A-Z][A-Z0-9]*-\d+\b[:\s]/;
+  const repoKeyed = () => {
+    const log = spawnSync('git', ['log', '-50', '--no-merges', '--format=%s'], { cwd: inCard.root, encoding: 'utf8', timeout: 20_000 });
+    return log.status === 0 && log.stdout.split('\n').filter((s) => keyed.test(s)).length >= 3;
+  };
+  if (!CONVENTIONAL.test(subject) && !started() && !(keyed.test(subject) && repoKeyed())) {
     reject('A card\'s commits are Conventional Commits: `type(scope)!: subject`, with type feat | fix | perf | refactor | docs | test | chore | style | build | ci | revert. ' +
       'Example: git commit -m "feat(customers): search by partial name" -m "why".');
   }

@@ -89,7 +89,8 @@ const globRe = (glob) => new RegExp(`^${glob.replace(/[.+^${}()|[\]\\]/g, '\\$&'
 export const publicDeclarations = (doc) => {
   const lines = gateLinesOf(doc ?? '');
   const allow = lines.flatMap((l) => {
-    const m = l.match(/^public-allow\s*:\s*(\S+)(?:\s+([a-z-]+))?\s*·\s*(\S.*)$/i);
+    // The kind goes bare or in the brackets the usage shows it with (`[email]`).
+    const m = l.match(/^public-allow\s*:\s*(\S+)(?:\s+\[?([a-z-]+)\]?)?\s*·\s*(\S.*)$/i);
     return m ? [{ file: globRe(m[1]), kind: KINDS.includes(m[2]) ? m[2] : null, why: m[3].trim() }] : [];
   });
   const skip = lines.map((l) => l.match(/^public-skip\s*:\s*(\S.*)$/i)?.[1]?.trim()).find(Boolean) ?? null;
