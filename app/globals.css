@@ -1289,6 +1289,14 @@ html:not([data-sound="idle"]) .cover-cue {
 
 /* ---------- the phone ---------- */
 
+@media (max-width: 1099px) {
+  :root {
+    /* phones and tablets: content sits centred, equal gutters each side */
+    --gutter-left-phone: 24px;
+    --gutter-right-phone: 24px;
+  }
+}
+
 @media (max-width: 700px) {
   :root {
     --gutter-left: var(--gutter-left-phone);
