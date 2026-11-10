@@ -1,66 +1,70 @@
 "use client"
 
-import type { MouseEvent } from "react"
+import { useEffect } from "react"
+import { landOn, landingFor, type Landing } from "./landing"
 
 export type ChapterLink = {
   id: string
   label: string
   // the heading that takes focus after a jump; the chapter's own title when left out
   heading?: string
-  // wide screens only: put this element's top edge at the top ("top") or at the bottom ("bottom", so the screen is filled by what precedes it) of the viewport
-  land?: { selector: string; edge: "top" | "bottom" }
+  // where the jump lands instead of the chapter's top under the bar; `wide` keeps it to wide screens
+  land?: Landing
 }
 
-const WIDE_LANDING = "(min-width: 1100px)"
+const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
-// Scrolls to a heading (or, wide, to its landing edge) and leaves focus on it, never on body.
-function goTo(event: MouseEvent, heading: Element | null, reduced: boolean, land?: ChapterLink["land"]) {
-  if (!(heading instanceof HTMLElement)) return
-  event.preventDefault()
-  // the smooth-scroll engine also handles anchor clicks and would override this landing
-  event.stopPropagation()
-  const behavior = reduced ? "auto" : "smooth"
-  const anchor = land && window.matchMedia(WIDE_LANDING).matches ? document.querySelector(land.selector) : null
-  if (anchor) {
-    const top = anchor.getBoundingClientRect().top + window.scrollY
-    // whole pixels, rounded so the scene never ends a fraction below the screen
-    window.scrollTo({ top: Math.ceil(land!.edge === "top" ? top : top - window.innerHeight), behavior })
-  } else {
-    heading.scrollIntoView({ block: "start", behavior })
-  }
+// The heading that takes focus once the page lands, never body: a chapter's title, a group's word, or the target itself.
+function headingOf(target: HTMLElement, chapter?: ChapterLink): HTMLElement {
+  const named = chapter?.heading ? document.querySelector<HTMLElement>(chapter.heading) : null
+  const heading = named ?? target.querySelector<HTMLElement>(":is(h1, h2, h3)") ?? target
+  if (!heading.hasAttribute("tabindex")) heading.setAttribute("tabindex", "-1")
+  return heading
+}
+
+// Focuses the heading. A scene hides itself while it is off screen, so a heading that refuses focus is tried again until the
+// landing shows it, for as long as focus has stayed on the link or fallen to the page.
+function focusHeading(heading: HTMLElement, link: HTMLElement) {
   heading.focus({ preventScroll: true })
+  if (document.activeElement === heading) return
+  const until = performance.now() + 3000
+  const retry = () => {
+    const held = document.activeElement
+    if (held !== link && held !== document.body && held !== null) return
+    heading.focus({ preventScroll: true })
+    if (document.activeElement !== heading && performance.now() < until) requestAnimationFrame(retry)
+  }
+  requestAnimationFrame(retry)
 }
 
-const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
-
-export function SkipIntro({ label }: { label: string }) {
-  return (
-    <a
-      data-skip=""
-      className="film-control skip-intro"
-      href="#projects"
-      onClick={(event) => goTo(event, document.querySelector("[data-project] h3"), prefersReducedMotion())}
-    >
-      {label}
-    </a>
-  )
+// Every same-page link of the page (the index, the doors, Let's talk, Back to top, the proof link) lands through one place, which
+// measures where its target stands in its first beat. A link names another landing target with data-land.
+export function useLandingLinks(chapters: readonly ChapterLink[], onJump: () => void) {
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+      const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href^="#"]')
+      if (!link) return
+      const id = decodeURIComponent(link.hash.slice(1))
+      const target = link.dataset.land ? document.querySelector<HTMLElement>(link.dataset.land) : document.getElementById(id)
+      if (!target) return
+      event.preventDefault()
+      const chapter = link.dataset.land ? undefined : chapters.find((entry) => entry.id === id)
+      const { element, edge } = landingFor(target, chapter?.land)
+      landOn(element, edge, reducedMotion())
+      focusHeading(headingOf(target, chapter), link)
+      onJump()
+    }
+    document.addEventListener("click", onClick)
+    return () => document.removeEventListener("click", onClick)
+  }, [chapters, onJump])
 }
 
-export function ChapterIndex({ chapters, onJump }: { chapters: readonly ChapterLink[]; onJump: () => void }) {
+export function ChapterIndex({ chapters }: { chapters: readonly ChapterLink[] }) {
   return (
     <nav data-chapter-index="" aria-label="Chapters" className="chapter-index">
       {chapters.map((chapter) => (
-        <a
-          key={chapter.id}
-          data-index-item={chapter.id}
-          className="film-control"
-          href={`#${chapter.id}`}
-          onClick={(event) => {
-            const heading = document.querySelector(chapter.heading ?? `[data-chapter="${chapter.id}"] :is(h1, h2)`)
-            goTo(event, heading, prefersReducedMotion(), chapter.land)
-            onJump()
-          }}
-        >
+        <a key={chapter.id} data-index-item={chapter.id} className="film-control" href={`#${chapter.id}`}>
           {chapter.label}
         </a>
       ))}

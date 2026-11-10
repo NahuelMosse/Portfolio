@@ -1,4 +1,5 @@
 import { groups, projects, type Project } from "./content"
+import { ChapterMotion } from "./chapter-motion"
 import { ChapterWord } from "./chapter-word"
 import { ProjectBackdrop, ProjectPlate } from "./project-backdrop"
 import { ProjectGroupScene, type GroupItem } from "./project-group"
@@ -62,6 +63,7 @@ export function Projects() {
           items={group.projects.map((id) => groupItem(projectNamed(id)))}
         />
       ))}
+      <ChapterMotion />
     </section>
   )
 }

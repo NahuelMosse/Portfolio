@@ -11,9 +11,9 @@ const FIELDS = [
 // The identification sheet: the typed fields of the file, with no portrait.
 export function CharacterSheet() {
   return (
-    <aside data-id-sheet="" aria-label="Identification sheet" className="id-sheet">
+    <aside data-id-sheet="" aria-label="ID sheet" className="id-sheet">
       <div className="sheet-head">
-        <p className="sheet-title">Identification sheet</p>
+        <p className="sheet-title">ID sheet</p>
       </div>
       <dl>
         {FIELDS.map(([label, value]) => (

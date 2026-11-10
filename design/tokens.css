@@ -15,6 +15,11 @@
   --spot-club: #cdeb3a;
   --spot-sonria: #6a4bd8;
   --spot-miga: #e8a33d;
+  --spot-fravega: #b8188a;
+  --spot-grupo-st: #004f87;
+  --spot-justo: #00a37c;
+  --spot-smart-warehousing: #f7901e;
+  --spot-visma: #7f56fa;
 
   --red-16: color-mix(in srgb, var(--red) 16%, transparent);
   --red-20: color-mix(in srgb, var(--red) 20%, transparent);
@@ -117,9 +122,9 @@
   --radius-device: 28px;
   --cast: 0 var(--space-4) var(--space-6) var(--red-20), 0 var(--space-2) var(--space-4) var(--ink-85);
 
-  --font-label: "Courier Prime", monospace;
-  --font-display: "Boska", serif;
-  --font-text: "General Sans", sans-serif;
+  --font-label: "Courier Prime", "Courier Prime Fallback", monospace;
+  --font-display: "Boska", "Boska Fallback", serif;
+  --font-text: "General Sans", "General Sans Fallback", sans-serif;
   --text-body: 1rem;
   --label-tracking-fine: 0.08em;
 

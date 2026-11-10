@@ -2,9 +2,10 @@ import { CharacterSheet } from "./character-sheet"
 import { ChapterIllustration } from "./chapter-illustration"
 import { ColdOpenMotion } from "./cold-open-motion"
 import { identity } from "./content"
+import { SoundBars } from "@/features/film/presentation/sound-toggle"
 
 // The cold open: his illustration with the sealed envelope, NAWI over its dark top, the identification sheet,
-// who he is and the door. On a phone the sheet, the line and the door follow the illustration in flow.
+// and the door. On a phone the sheet and the door follow the illustration in flow.
 export function HeroPoster() {
   return (
     <section data-chapter="cold-open" id="cold-open" className="cold-open">
@@ -16,16 +17,16 @@ export function HeroPoster() {
             <i />
             <span>{identity.base}</span>
           </p>
+          <p className="professional-name cover-cue" aria-hidden="true">
+            <SoundBars />
+            <span>Click anywhere — sound on</span>
+          </p>
         </div>
       </ChapterIllustration>
       <div className="cover-foot">
         <div className="layer-sheet">
           <CharacterSheet />
         </div>
-        <p className="hero-line">
-          <strong>{identity.greeting}</strong>
-          {identity.promise}
-        </p>
       </div>
       <ColdOpenMotion />
     </section>

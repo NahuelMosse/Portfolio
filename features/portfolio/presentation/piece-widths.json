@@ -1,0 +1,168 @@
+{
+ "cebador-1280-poster": [
+  480,
+  800,
+  960
+ ],
+ "cebador-390-poster": [
+  360
+ ],
+ "cebador-s2-1280": [
+  480,
+  800,
+  1200
+ ],
+ "cebador-s2-390": [
+  390
+ ],
+ "cebador-s3-1280": [
+  480,
+  800,
+  1200
+ ],
+ "club-horarios": [
+  360
+ ],
+ "club-listo": [
+  360
+ ],
+ "club-login": [
+  360
+ ],
+ "club-sedes": [
+  360
+ ],
+ "grit-completado": [
+  390
+ ],
+ "grit-descanso": [
+  390
+ ],
+ "grit-ejercicio": [
+  390
+ ],
+ "grit-hoy": [
+  390
+ ],
+ "grit-lab": [
+  480,
+  800,
+  900
+ ],
+ "grit-live": [
+  390
+ ],
+ "grit-progress": [
+  480,
+  490
+ ],
+ "grit-serie": [
+  390
+ ],
+ "grit-today": [
+  390
+ ],
+ "kit-report-test": [
+  480,
+  800,
+  1200
+ ],
+ "kit-report": [
+  480,
+  800,
+  1200
+ ],
+ "kit-skill-http-attack": [
+  480,
+  800,
+  1200
+ ],
+ "kit-skill-migrations-safe": [
+  480,
+  800,
+  1200
+ ],
+ "kit-skill-motion-audit": [
+  480,
+  800,
+  1200
+ ],
+ "miga-hero-1440": [
+  480,
+  800,
+  1200
+ ],
+ "miga-hero-390": [
+  480,
+  780
+ ],
+ "miga-lista-1440": [
+  480,
+  800,
+  1200
+ ],
+ "miga-lista-390": [
+  480,
+  780
+ ],
+ "miga-pedir-1440": [
+  480,
+  800,
+  1200
+ ],
+ "miga-pedir-390": [
+  480,
+  780
+ ],
+ "sonria-hero-1440": [
+  480,
+  800,
+  1200
+ ],
+ "sonria-hero-390": [
+  480,
+  780
+ ],
+ "sonria-tratamientos-1440": [
+  480,
+  800,
+  1200
+ ],
+ "sonria-tratamientos-390": [
+  480,
+  780
+ ],
+ "sonria-turno-1440": [
+  480,
+  800,
+  1200
+ ],
+ "sonria-turno-390": [
+  480,
+  780
+ ],
+ "triaje-mobile": [
+  480,
+  780
+ ],
+ "triaje-page": [
+  480,
+  800,
+  1200
+ ],
+ "triaje-play-2": [
+  480,
+  800,
+  1200
+ ],
+ "triaje-scrolled": [
+  480,
+  800,
+  1200
+ ],
+ "triaje-title": [
+  480,
+  800,
+  1200
+ ]
+}

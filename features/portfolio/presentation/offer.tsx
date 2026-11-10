@@ -19,7 +19,7 @@ function Folder({ id, tab, card }: { id: "freelance" | "tpm"; tab: string; card:
 export function Offer() {
   return (
     <div data-offer="" data-doors="" className="offer">
-      <Folder id="freelance" tab="Freelance" card={offer.freelance} />
+      <Folder id="freelance" tab="Small businesses" card={offer.freelance} />
       <Folder id="tpm" tab="Companies" card={offer.tpm} />
     </div>
   )

@@ -1,0 +1,395 @@
+/* ---------- the opening title: the n5 stamp inked over the case file, then pressed onto the cover and carried to the bar ---------- */
+
+.preloader {
+  --progress: 0;
+  --cell: 9px;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  overflow: hidden;
+  color: var(--bone);
+  contain: strict;
+}
+
+html.is-preloading .preloader,
+.preloader[data-state],
+.preloader[data-fallback] {
+  display: block;
+}
+
+.preloader[data-fallback] {
+  --progress: 1;
+  background: var(--ink);
+}
+
+/* the mark lives in the title until it lands in the bar */
+html.is-preloading [data-wordmark] [data-brand-mark],
+html.is-landing [data-wordmark] [data-brand-mark] {
+  opacity: 0;
+}
+
+/* the credits' masked marks are fetched with the rest of the page, after the title, not during it */
+html.is-preloading .roll-mark {
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}
+
+/* the title covers the cover's entrance: under it the sheet is already in place when the slate lifts */
+html.has-title .cover-foot .layer-sheet {
+  animation: none;
+}
+
+/* ---- the slate: the ink of the case file, with a bone screen of dots drifting slowly across it while the page arrives ---- */
+
+.preloader-slate {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  overflow: hidden;
+}
+
+.preloader-slate::after {
+  content: "";
+  position: absolute;
+  inset: calc(var(--cell) * -2);
+  background: radial-gradient(circle, var(--bone) 0.9px, transparent 1.4px) 0 0 / var(--cell) var(--cell);
+  opacity: calc(0.16 * (1 - var(--progress)));
+  animation: preloader-drift 5s linear infinite;
+}
+
+/* ---- the plate: the cover itself, printed in coarser dots each step until it is the cover's first frame ---- */
+
+.preloader-plate {
+  position: absolute;
+  inset: var(--top-bar-height) 0 0;
+  pointer-events: none;
+}
+
+.preloader-screen {
+  position: absolute;
+  inset: 0;
+  opacity: clamp(0, calc(var(--progress) * 5 - var(--k)), 1);
+  --r: calc(1px + var(--k) * 1.1px);
+  mask-image: radial-gradient(circle, #000 calc(var(--r) - 0.6px), transparent var(--r));
+  mask-size: var(--cell) var(--cell);
+}
+
+.preloader-screen:last-child {
+  mask-image: none;
+}
+
+.preloader-screen img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+  transform-origin: 0 0;
+}
+
+/* an ink pool under the stamp that thins out as the plate completes, so the frame it ends on is the cover's own */
+.preloader-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.preloader-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 46% 40% at 50% 50%, var(--ink) 20%, transparent 100%);
+  opacity: calc(0.82 * (1 - var(--progress) * var(--progress) * 0.55));
+}
+
+/* ---- the chrome: registration marks and the typed case line ---- */
+
+.preloader-chrome {
+  position: absolute;
+  inset: 0;
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  letter-spacing: var(--label-tracking);
+}
+
+.preloader-reg {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  color: var(--red);
+  animation: preloader-reg 420ms cubic-bezier(0.34, 1.56, 0.64, 1) 80ms backwards;
+}
+
+.preloader-reg[data-corner="end"] {
+  top: calc(var(--top-bar-height) / 2 - 20px);
+  right: var(--space-4);
+}
+
+.preloader-reg[data-corner="start"] {
+  bottom: var(--space-4);
+  left: var(--space-4);
+  animation-delay: 220ms;
+}
+
+.preloader-case {
+  position: absolute;
+  top: calc(var(--top-bar-height) / 2 - 0.7lh);
+  left: var(--gutter-left);
+  margin: 0;
+  display: grid;
+  font-size: var(--text-small);
+  line-height: 1.4;
+}
+
+.preloader-line {
+  white-space: pre;
+}
+
+.preloader-line + .preloader-line {
+  opacity: 0.62;
+}
+
+.preloader-char {
+  animation: preloader-type 1ms linear backwards;
+  animation-delay: calc(160ms + var(--c) * 24ms);
+}
+
+.preloader-caret {
+  position: absolute;
+  right: -0.9em;
+  bottom: 0.2em;
+  width: 0.55em;
+  height: 1em;
+  background: var(--red);
+  opacity: 0;
+  animation: preloader-caret 0.9s steps(1) calc(160ms + var(--c) * 24ms) infinite;
+}
+
+/* ---- the stamp: a ghost from the first frame, the ink through the rubber's grain, hovering over the file until it strikes ---- */
+
+.preloader-mark {
+  position: relative;
+  z-index: 3;
+  width: min(44vw, 72svh);
+  transform-origin: 0 0;
+  animation: preloader-arrive 900ms var(--ease-out) backwards;
+}
+
+.preloader-stamp {
+  position: relative;
+  color: var(--red);
+  animation: preloader-hover 2.4s infinite;
+}
+
+.preloader-stamp .brand-mark {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.preloader-stamp-ghost {
+  display: block;
+  animation: preloader-breathe 2.4s infinite;
+}
+
+.preloader-stamp-flash,
+.preloader-stamp-ink,
+.preloader-stamp-dry {
+  position: absolute;
+  inset: 0;
+}
+
+.preloader-stamp-flash {
+  opacity: 0;
+  filter: blur(6px);
+}
+
+.preloader-stamp-dry {
+  color: var(--red);
+  opacity: 0;
+}
+
+/* the stage and the reading under the stamp, small and tracked */
+.preloader-read {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  display: flex;
+  gap: 1.5em;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  text-shadow: 0 0 0.35em var(--ink), 0 0 0.12em var(--ink);
+}
+
+.preloader-read > :first-child {
+  opacity: 0.72;
+}
+
+.preloader-count {
+  font-variant-numeric: tabular-nums;
+}
+
+.preloader-count::after {
+  content: "%";
+  opacity: 0.6;
+}
+
+/* ---- the way out: the full impression at the strike; then the slate lifts off the plate, which is the cover, as the stamp flies ---- */
+
+.preloader[data-state] .preloader-stamp,
+.preloader[data-state] .preloader-stamp-ghost {
+  animation: none;
+}
+
+.preloader[data-state] .preloader-stamp-ghost {
+  opacity: 0;
+}
+
+.preloader[data-state] .preloader-stamp-ink use {
+  filter: none;
+}
+
+.preloader-slate,
+.preloader-plate,
+.preloader-face::before,
+.preloader-chrome,
+.preloader-read {
+  transition: opacity 460ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.preloader[data-state] .preloader-read {
+  opacity: 0;
+  transition-duration: 160ms;
+}
+
+.preloader[data-state="landing"] :is(.preloader-slate, .preloader-plate, .preloader-chrome),
+.preloader[data-state="landing"] .preloader-face::before {
+  opacity: 0;
+}
+
+.preloader[data-state="fading"] {
+  animation: preloader-fade 300ms ease-out forwards;
+}
+
+/* a later load of the session: the stamp in full ink keeps its loop over the bare slate. Reduced motion and the streaming
+   fallback: the still stamp in full ink, then a crossfade */
+html.is-revisit .preloader-plate,
+html.is-revisit .preloader-slate::after {
+  display: none;
+}
+
+html.is-revisit .preloader-stamp-ghost,
+html.is-revisit .preloader-read,
+.preloader[data-fallback] .preloader-stamp-ghost,
+.preloader[data-fallback] .preloader-read {
+  visibility: hidden;
+}
+
+html.is-revisit .preloader-stamp-ink use,
+.preloader[data-fallback] .preloader-stamp-ink use {
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader-plate,
+  .preloader-slate::after,
+  .preloader-stamp-ghost {
+    display: none;
+  }
+
+  .preloader-stamp-ink use {
+    filter: none;
+  }
+
+  .preloader *,
+  .preloader-mark {
+    animation: none;
+  }
+
+  .preloader-caret {
+    opacity: 1;
+  }
+}
+
+/* ---- the phone ---- */
+
+@media (max-width: 700px) {
+  .preloader {
+    --cell: 7px;
+  }
+
+  .preloader-reg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .preloader-reg[data-corner="end"] {
+    top: calc(var(--top-bar-height) / 2 - 14px);
+    right: var(--space-3);
+  }
+
+  .preloader-reg[data-corner="start"] {
+    bottom: calc(var(--space-4) + 2.75rem);
+    left: var(--space-3);
+  }
+
+  .preloader-case {
+    font-size: 0.6875rem;
+  }
+
+  .preloader-mark {
+    width: 80vw;
+  }
+
+  .preloader-read {
+    font-size: 0.6875rem;
+  }
+}
+
+@keyframes preloader-type {
+  from { opacity: 0; }
+}
+
+@keyframes preloader-caret {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes preloader-reg {
+  from { opacity: 0; transform: scale(1.9) rotate(-18deg); }
+}
+
+@keyframes preloader-arrive {
+  from { opacity: 0; transform: scale(0.96); }
+}
+
+/* the loop while the page arrives: the hand lifts the stamp off the file with a slight tilt and tamps it back down, and the ghost
+   of the impression darkens at each touch. It never settles: the way out takes it from whichever frame is on screen */
+@keyframes preloader-hover {
+  0% { transform: none; animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1); }
+  48% { transform: translateY(-3.2%) scale(1.035) rotate(-0.9deg); animation-timing-function: cubic-bezier(0.6, 0, 0.9, 0.5); }
+  78% { transform: translateY(0.3%) scale(0.994) rotate(0.15deg); animation-timing-function: cubic-bezier(0.2, 0, 0.3, 1); }
+  100% { transform: none; }
+}
+
+@keyframes preloader-breathe {
+  0%, 100% { opacity: 0.16; }
+  48% { opacity: 0.08; }
+  78% { opacity: 0.26; }
+}
+
+@keyframes preloader-drift {
+  to { transform: translate(var(--cell), var(--cell)); }
+}
+
+@keyframes preloader-fade {
+  to { opacity: 0; }
+}

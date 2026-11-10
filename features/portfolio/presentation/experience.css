@@ -1,304 +1,80 @@
-/* ---------- experience: five employers, one full scene each ----------
-   Wide with motion, one pinned stage holds the chapter word, the employer's illustration shown whole at 4:3 on the left and the copy
-   in its own column on the right; the scroll wipes one employer away with black ink and draws the next one on. Narrow with motion,
-   each employer is one scene and the next slides up over it. Without motion (or without script) the scenes are stacked and still. */
+/* ---------- experience: a group of the Projects kind ----------
+   The scenes, their motion and their copy come from group.css and showcase.css. What is its own: each employer's field is its
+   brand colour, and the logo stands above the name in one optical box so the five marks read equally strong. The logos are
+   bone, like the copy they head. */
 
-.xp {
-  --xp-period: clamp(2.6rem, 14vw, 3.4rem);
-  background: var(--ink);
+.show[data-employer="fravega"] {
+  --field: var(--spot-fravega);
 }
 
-.xp-head {
-  position: relative;
-  padding: var(--space-4) var(--gutter-right-phone) var(--space-3) var(--gutter-left-phone);
+.show[data-employer="grupo-st"] {
+  --field: var(--spot-grupo-st);
 }
 
-.xp-foot {
-  display: none;
+.show[data-employer="justo"] {
+  --field: var(--spot-justo);
+  --on: var(--ink);
 }
 
-.xp-track {
-  display: grid;
-  gap: var(--space-5);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.show[data-employer="smart-warehousing"] {
+  --field: var(--spot-smart-warehousing);
+  --on: var(--ink);
 }
 
-.xp-slot {
-  display: contents;
+.show[data-employer="visma"] {
+  --field: var(--spot-visma);
 }
 
-.xp-panel {
-  position: relative;
-  display: grid;
-  gap: var(--space-3);
-  background: var(--ink);
+/* employer names carry accents above the capitals (Jüsto, Frávega): the word sits lower so they clear the strip */
+.show[data-employer] .show-word {
+  margin-top: 0.14em;
+  text-shadow: var(--space-1) var(--space-1) 0 var(--ink);
 }
 
-/* the illustration is whole: its box is the picture's own 4:3 */
-.xp-art {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-}
-
-.xp-art img {
+.xp-mark {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
+  max-width: clamp(8rem, 18vw, 16rem);
+  max-height: clamp(3.5rem, 11svh, 7.5rem);
+  margin-bottom: var(--space-3);
+  object-fit: contain;
+  object-position: left center;
 }
 
-/* black ink that wipes the illustration away: a jagged edge climbing from the bottom (animated by the scene) */
-.xp-ink {
-  position: absolute;
-  inset: 0;
-  display: none;
-  background: var(--ink);
-  clip-path: polygon(0 100%, 25% 104%, 50% 100%, 75% 106%, 100% 102%, 100% 100%, 0 100%);
-  pointer-events: none;
-}
-
-.xp-info {
-  display: grid;
-  align-content: start;
-  gap: var(--space-2);
-  min-width: 0;
-  padding: 0 var(--gutter-right-phone) var(--space-4) var(--gutter-left-phone);
-}
-
-.xp-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0;
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking-fine);
-  text-transform: uppercase;
-  color: var(--bone-70);
-}
-
-.xp-tag {
-  padding: 0 var(--space-2);
-  background: var(--bone);
-  color: var(--ink);
-}
-
-.xp-panel[data-current="false"] .xp-tag {
-  background: transparent;
-  color: var(--bone);
-  border: 1px solid var(--bone-35);
-}
-
-.xp-period {
+/* the role, the period and the tag read as a file's header line: typed, bone, the tag stamped */
+.show[data-employer] .show-lead {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: var(--space-3);
-  margin: 0;
-}
-
-.xp-from {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--xp-period);
-  line-height: 0.9;
-  letter-spacing: -0.02em;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  margin-bottom: var(--space-3);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
   color: var(--bone);
 }
 
-.xp-to {
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking-fine);
-  text-transform: uppercase;
+.show[data-employer] [data-employer-period] {
   color: var(--bone-70);
 }
 
-.xp-name {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.xp-name h3 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.6rem;
-  line-height: 1;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-}
-
-.xp-logo {
-  flex: none;
-  width: var(--logo-size);
-  height: var(--logo-size);
-  padding: var(--space-1);
-  background: var(--bone);
-  object-fit: contain;
-}
-
-.xp-title,
-.xp-what,
-.xp-line p {
-  margin: 0;
-}
-
-.xp-title {
-  font-weight: 500;
-}
-
-.xp-what {
-  color: var(--bone-70);
-  font-size: var(--text-body);
-}
-
-/* what the employer is, then the problem and his role: one block under a red rule */
-.xp-slab {
-  display: grid;
-  gap: var(--space-2);
-  margin-top: var(--space-1);
-  padding-top: var(--space-2);
-  border-top: var(--rule) solid var(--red);
-}
-
-.xp-line p {
-  font-size: var(--text-body);
-  line-height: 1.4;
-}
-
-.xp-label {
-  display: block;
-  font-family: var(--font-label);
-  font-size: var(--text-small);
-  letter-spacing: var(--label-tracking-fine);
-  text-transform: uppercase;
+.show[data-employer] [data-employer-tag] {
+  padding: 0 var(--space-2);
+  border: var(--rule) solid var(--bone-70);
   color: var(--bone-70);
 }
 
-/* ---- narrow with motion: one scene per employer, the next slides up over the last ---- */
-@media (max-width: 899px) {
-  .has-motion .xp-track {
-    gap: 0;
-    padding-bottom: calc(var(--hire-bar-height) + var(--space-3));
-  }
-
-  .has-motion .xp-panel {
-    position: sticky;
-    top: 0;
-    align-content: start;
-    min-height: 100svh;
-    padding-top: var(--space-5);
-    border-top: var(--rule) solid var(--bone-30);
-  }
+.show[data-employer][data-tag="current"] [data-employer-tag] {
+  border-color: var(--red);
+  background: var(--red);
+  color: var(--bone);
 }
 
-/* ---- wide with motion: the pinned stage ---- */
-@media (min-width: 900px) {
-  .xp {
-    --xp-period: clamp(3rem, 5vw, 5rem);
-  }
-
-  .xp-head {
-    padding: calc(var(--top-bar-height) + var(--space-2)) var(--gutter-right) var(--space-2) var(--gutter-left);
-  }
-
-  .xp .chapter-word,
-  .xp .chapter-word[data-long] {
-    font-size: 8vw;
-  }
-
-  .xp-panel {
-    grid-template-columns: auto minmax(0, 1fr);
-    column-gap: var(--space-5);
-    align-items: center;
-    padding: 0 var(--gutter-right) 0 var(--gutter-left);
-  }
-
-  .xp-art {
-    width: min(56cqw, 133.333cqh);
-  }
-
-  .xp-info {
-    padding: 0;
-  }
-
-  .xp-name h3 {
-    font-size: clamp(1.8rem, 2.4vw, 2.6rem);
-  }
-}
-
-@media (min-width: 900px) and (max-height: 780px) {
-  .xp {
-    --xp-period: clamp(2.4rem, 4vw, 3.4rem);
-  }
-
-  .xp .chapter-word,
-  .xp .chapter-word[data-long] {
-    font-size: 6vw;
-  }
-
-  .xp-info {
-    gap: var(--space-1);
-  }
-}
-
-@media (min-width: 900px) {
-  .has-motion .xp-stage {
-    display: grid;
-    grid-template-rows: auto minmax(0, 1fr) auto;
-    height: 100svh;
-    overflow: hidden;
-  }
-
-  .has-motion .xp-track {
-    position: relative;
-    display: block;
-    min-height: 0;
-    container-type: size;
-  }
-
-  /* transparent so the outgoing art and copy stay visible under the incoming panel while it is drawn on */
-  .has-motion .xp-panel {
-    position: absolute;
-    inset: 0;
-    background: transparent;
-  }
-
-  .has-motion .xp-slot:not(:first-child) .xp-panel {
-    visibility: hidden;
-  }
-
-  .has-motion .xp-ink {
-    display: block;
-  }
-
-  .has-motion .xp-foot {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    padding: var(--space-2) var(--gutter-right) var(--space-3) var(--gutter-left);
-    font-family: var(--font-label);
-    font-size: var(--text-small);
-    letter-spacing: var(--label-tracking-fine);
-  }
-
-  .xp-progress {
-    position: relative;
-    flex: 1;
-    height: 2px;
-    background: var(--bone-30);
-  }
-
-  .xp-progress i {
-    position: absolute;
-    inset: 0;
-    background: var(--red);
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-}
+/* the index of employers carries each brand colour as its rule, as the project indexes do */
+.group-index [data-project="fravega"] { --swatch: var(--spot-fravega); }
+.group-index [data-project="grupo-st"] { --swatch: var(--spot-grupo-st); }
+.group-index [data-project="justo"] { --swatch: var(--spot-justo); }
+.group-index [data-project="smart-warehousing"] { --swatch: var(--spot-smart-warehousing); }
+.group-index [data-project="visma"] { --swatch: var(--spot-visma); }
