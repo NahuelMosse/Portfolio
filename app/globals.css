@@ -2216,6 +2216,39 @@ margin-bottom: 0.2em;
 }
 
 @media (max-width: 700px) {
+  /* let's talk: the address on one line sized by the width, its hint right under it, the roll close to the © line; the height this
+     releases opens above the address, under the word */
+  .contact-scene .band-item {
+    white-space: nowrap;
+    font-size: min(7.7vw, 5.4svh);
+    letter-spacing: -0.03em;
+  }
+
+  .contact-scene .band-hint {
+    font-size: min(var(--text-small), 1.9svh, 3.2vw);
+  }
+
+  .contact-scene .contact-tiles {
+    flex: none;
+    margin-top: auto;
+    align-content: start;
+  }
+
+  .contact-scene .band-hint {
+    flex-direction: column;
+    gap: var(--space-1);
+    line-height: 1.2;
+  }
+
+  .contact-scene .band-hint .band-mail {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .contact-scene .end-of-file {
+    margin-top: 0;
+  }
+
   .offer-scene .scene-copy {
     padding-bottom: 0;
   }
