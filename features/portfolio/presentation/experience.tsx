@@ -43,7 +43,7 @@ export function Experience() {
             <ol className="group-index" aria-label="Employers">
               {experience.map((employer, index) => (
                 <li key={employer.id} data-project={employer.id} aria-current={index === 0 ? "step" : undefined}>
-                  <Button type="button" variant="ghost" size={null} className="whitespace-normal shrink rounded-none focus-visible:ring-0 focus-visible:outline-2 focus-visible:outline-(--bone) focus-visible:outline-offset-4" data-employer-jump={index}>
+                  <Button type="button" variant="ghost" size={null} className="whitespace-normal shrink rounded-none focus-visible:ring-0 justify-normal" data-employer-jump={index}>
                     <b>{pad(index + 1)}</b>
                     <span>{employer.name}</span>
                   </Button>

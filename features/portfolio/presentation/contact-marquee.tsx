@@ -48,7 +48,7 @@ export function MarqueeBand() {
   return (
     <>
       <div className="band-field">
-        <Button type="button" variant="ghost" size={null} data-copy="" data-copied={copied ? "" : undefined} className="band whitespace-normal shrink rounded-none focus-visible:ring-0" aria-label={`Copy ${identity.email}`} onClick={copy}>
+        <Button type="button" variant="ghost" size={null} data-copy="" data-copied={copied ? "" : undefined} className="band whitespace-normal shrink rounded-none focus-visible:ring-0 justify-normal items-stretch gap-[normal] text-base leading-6 font-normal" aria-label={`Copy ${identity.email}`} onClick={copy}>
           <span className="band-track" aria-hidden="true">
             <Run />
             <Run />

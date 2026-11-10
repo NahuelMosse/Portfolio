@@ -165,7 +165,7 @@ export function ProjectGroupScene({ id, label, noun, line, composition, items }:
             <ol className="group-index" aria-label={`${label} projects`}>
               {items.map((item, order) => (
                 <li key={item.project.id} data-project={item.project.id} aria-current={order === current ? "step" : undefined}>
-                  <Button type="button" variant="ghost" size={null} className="whitespace-normal shrink rounded-none focus-visible:ring-0 focus-visible:outline-2 focus-visible:outline-(--bone) focus-visible:outline-offset-4" onClick={() => goTo(order)}>
+                  <Button type="button" variant="ghost" size={null} className="whitespace-normal shrink rounded-none focus-visible:ring-0 justify-normal" onClick={() => goTo(order)}>
                     <b>{numeral(order + 1)}</b>
                     <span>{item.project.name}</span>
                   </Button>

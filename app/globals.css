@@ -169,6 +169,13 @@ img[data-src][data-loaded] {
   }
 }
 
+/* the catalog Button clears the outline as a utility, above the base layer: the page's own jump buttons get it back here */
+[data-employer-jump]:focus-visible,
+.group-index button:focus-visible {
+  outline: 2px solid var(--bone);
+  outline-offset: 4px;
+}
+
 /* a heading that receives focus after a jump is not outlined: the page moved to it */
 [tabindex="-1"]:focus {
   outline: none;
