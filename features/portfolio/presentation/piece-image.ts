@@ -5,7 +5,8 @@ import widths from "./piece-widths.json"
 const WIDTHS: Record<string, number[]> = widths
 
 type Bar = { bg: string; tone: "light" | "dark"; trim?: number }
-const BARS: Record<string, Bar> = bars
+// a JSON import widens "light" | "dark" to string; scripts/derive-bars.mjs writes only those two tones
+const BARS = bars as Record<string, Bar>
 
 // "/film/pieces/club-login.webp" → "club-login"
 const idOf = (src: string) => src.replace(/^\/film\/pieces\//, "").replace(/\.webp$/, "")
