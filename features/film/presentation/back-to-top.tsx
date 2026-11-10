@@ -41,7 +41,14 @@ export function BackToTop({ variant }: { variant: "corner" | "bar" }) {
       tabIndex={visible ? 0 : -1}
       onClick={hold}
     >
-      {variant === "bar" ? "↑" : "↑ Top"}
+      {variant === "bar" ? (
+        <>
+          <span aria-hidden="true">↑</span>
+          <span className="bar-top-label">Back to top</span>
+        </>
+      ) : (
+        "↑ Top"
+      )}
     </a>
   )
 }

@@ -965,8 +965,12 @@ html:not([data-sound="idle"]) .cover-cue {
 }
 
 /* scaled from the top edge: the dolly never lifts his hair under the bar */
-.has-motion .cover-scene .scene-art img {
-  transform-origin: 50% 0%;
+@media (prefers-reduced-motion: no-preference) {
+  /* the dolly's first frame (COVER_START in cold-open-motion.tsx), set before the scroll engine runs so the cover never jumps */
+  .cover-scene .scene-art img {
+    transform-origin: 50% 0%;
+    transform: scale(1.12);
+  }
 }
 
 /* the backdrop fills the whole section under everything, its illustration covering the box; a scrim of the ink darkens the
@@ -1349,11 +1353,18 @@ html:not([data-sound="idle"]) .cover-cue {
     display: flex;
     background: var(--ink);
     border-top: 1px solid var(--bone-30);
-    transition: transform var(--motion-control) var(--ease-out);
+    transition:
+      translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      right 320ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /* Let's talk leaves to the left, the Top square enters from the right: one timing, so the moves read as pushes */
   .hire-bar[data-yield="true"] {
-    transform: translateY(100%);
+    translate: -100% 0;
+  }
+
+  body:has(.bar-top[data-visible="true"]) .hire-bar {
+    right: var(--hire-bar-height);
   }
 
   .hire-bar a:first-child {
@@ -1368,9 +1379,7 @@ html:not([data-sound="idle"]) .cover-cue {
     font-size: 1.25rem;
     letter-spacing: var(--label-tracking);
     text-transform: uppercase;
-    transition:
-      transform var(--motion-control) var(--ease-out),
-      margin-right 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform var(--motion-control) var(--ease-out);
   }
 
   .hire-bar a:active {
@@ -1386,18 +1395,41 @@ html:not([data-sound="idle"]) .cover-cue {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.75rem;
     width: var(--hire-bar-height);
     height: var(--hire-bar-height);
     border: 1px solid var(--bone);
     background: var(--ink);
     color: var(--bone);
     font-family: var(--font-label);
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
     transition:
       transform var(--motion-control) var(--ease-out),
-      opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
       translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 320ms cubic-bezier(0.22, 1, 0.36, 1),
       visibility 0s 0s;
+  }
+
+  .bar-top-label {
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    white-space: nowrap;
+    transition:
+      max-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 240ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+  }
+
+  /* Let's talk has slid out: the Top square takes the full width and names itself */
+  body:has(.hire-bar[data-yield="true"]) .bar-top {
+    width: 100%;
+  }
+
+  body:has(.hire-bar[data-yield="true"]) .bar-top-label {
+    max-width: 12em;
+    opacity: 1;
   }
 
   .bar-top:active {
@@ -1410,20 +1442,14 @@ html:not([data-sound="idle"]) .cover-cue {
   }
 
   .bar-top[data-visible="false"] {
-    opacity: 0;
-    translate: 0 6px;
+    translate: 100% 0;
     visibility: hidden;
     transition:
       transform var(--motion-control) var(--ease-out),
-      opacity 200ms cubic-bezier(0.4, 0, 1, 1),
-      translate 200ms cubic-bezier(0.4, 0, 1, 1),
-      visibility 0s 200ms;
+      translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s 320ms;
   }
-
-  body:has(.bar-top[data-visible="true"]) .hire-bar a:first-child {
-    margin-right: var(--hire-bar-height);
-  }
-
 }
 
 /* tablet: the chapter index does not fit one line beside the hire button and the sound, so it folds into the menu */
@@ -1590,6 +1616,27 @@ html:not([data-sound="idle"]) .cover-cue {
   .corner-cta[data-visible="false"],
   .bar-top[data-visible="false"] {
     transition: opacity 150ms linear, visibility 0s 150ms;
+  }
+
+  .bar-top[data-visible="false"],
+  .hire-bar[data-yield="true"] {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .hire-bar,
+  .hire-bar[data-yield="true"] {
+    translate: none;
+    transition: opacity 150ms linear, visibility 0s 150ms;
+  }
+
+  .hire-bar:not([data-yield="true"]) {
+    transition: opacity 150ms linear, visibility 0s 0s;
+  }
+
+  .bar-top,
+  .bar-top-label {
+    transition: opacity 150ms linear, visibility 0s 0s;
   }
 
   .hire-bar a:first-child {
