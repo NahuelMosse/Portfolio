@@ -66,7 +66,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  min-height: calc(var(--show-strip) - var(--space-1));
+  min-height: var(--show-strip);
   padding: 0;
   border: 0;
   background: none;
@@ -206,7 +206,6 @@
     inset: 0 0 auto;
     height: calc(var(--top-bar-height) + var(--show-strip));
     padding-top: var(--top-bar-height);
-    padding-bottom: 0;
     align-items: center;
   }
 
@@ -317,6 +316,10 @@
     --show-strip: 2.75rem;
   }
 
+  .group-head {
+    padding-bottom: 0;
+  }
+
   .group-index {
     gap: 0;
   }
@@ -324,7 +327,7 @@
   .group-index button {
     justify-content: center;
     min-width: var(--show-strip);
-    min-height: calc(var(--show-strip) - var(--space-1));
+    min-height: var(--show-strip);
     padding: 0 var(--space-2);
   }
 
