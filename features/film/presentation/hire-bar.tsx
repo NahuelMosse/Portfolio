@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { BackToTop } from "./back-to-top"
 
 // Where the page already holds the way to talk to him: the two doors, the contact scene and the footer under it.
 const YIELDS_TO = "[data-doors], .contact-scene, .end-of-file"
@@ -29,8 +28,6 @@ export function HireBar({ label, href }: { label: string; href: string }) {
 
   return (
     <div ref={bar} data-hire-bar="" className="hire-bar">
-      <a href={href}>{label}</a>
-      <BackToTop variant="bar" />
-    </div>
+      <a href={href}>{label}</a>    </div>
   )
 }

@@ -29,6 +29,7 @@ export function FilmShell({ chapters, cta, children }: FilmShellProps) {
           <CallToAction label={cta.label} href={cta.href} />
         </div>
         <HireBar label={cta.label} href={cta.href} />
+        <BackToTop variant="bar" />
       </aside>
       <main id="main-content" className="film">
         {children}

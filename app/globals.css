@@ -1255,7 +1255,8 @@ html:not([data-sound="idle"]) .cover-cue {
 
 /* ---------- the hire bar ---------- */
 
-.hire-bar {
+.hire-bar,
+.bar-top {
   display: none;
 }
 
@@ -1350,14 +1351,18 @@ html:not([data-sound="idle"]) .cover-cue {
     transform: scale(var(--press-scale));
   }
 
-  .hire-bar .bar-top {
+  /* the Top square sits at the bar's right end and stays put when the bar slides away */
+  .bar-top {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 46;
     display: flex;
     align-items: center;
     justify-content: center;
     width: var(--hire-bar-height);
-    min-width: 48px;
-    min-height: var(--hire-bar-height);
-    border-left: 1px solid var(--bone-30);
+    height: var(--hire-bar-height);
+    border: 1px solid var(--bone);
     background: var(--ink);
     color: var(--bone);
     font-family: var(--font-label);
@@ -1365,17 +1370,22 @@ html:not([data-sound="idle"]) .cover-cue {
     transition: transform var(--motion-control) var(--ease-out);
   }
 
-  .hire-bar .bar-top:focus-visible {
+  .bar-top:active {
+    transform: scale(var(--press-scale));
+  }
+
+  .bar-top:focus-visible {
     outline: 2px solid var(--bone);
     outline-offset: -4px;
   }
 
-  .hire-bar .bar-top[data-visible="false"] {
-    width: 0;
-    min-width: 0;
-    border-left-width: 0;
-    overflow: hidden;
+  .bar-top[data-visible="false"] {
+    opacity: 0;
     visibility: hidden;
+  }
+
+  body:has(.bar-top[data-visible="true"]) .hire-bar a:first-child {
+    margin-right: var(--hire-bar-height);
   }
 
 }
