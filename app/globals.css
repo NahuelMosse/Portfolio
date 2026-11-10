@@ -1665,8 +1665,10 @@ html:not([data-sound="idle"]) .cover-cue {
     min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.6 - 2rem);
   }
 
+  /* the drawing rises behind the OFFER word up to the top bar and melts into the black beneath it */
   .offer-scene .scene-art {
-    mask-image: linear-gradient(to bottom, transparent, #000 18%);
+    top: calc((var(--size-word) * 0.6 + 2rem) * -1);
+    mask-image: linear-gradient(to bottom, transparent, #000 14%);
   }
 
   .offer-scene .scene-art img {
