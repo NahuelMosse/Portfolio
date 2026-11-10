@@ -5,8 +5,20 @@ import { Button } from "@/components/ui/button"
 
 type Phase = "idle" | "on" | "off"
 
-// The soundtrack starts on the first click, tap or key anywhere, and the toggle turns it off or on; the audio element exists only
-// when its file does. Once the visitor has used the toggle, nothing starts the sound for them again. The phase is mirrored on
+const isOnScreen = (el: Element) => {
+  const style = getComputedStyle(el)
+  if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) <= 0) return false
+  const rect = el.getBoundingClientRect()
+  return rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.right > 0 && rect.top < innerHeight && rect.left < innerWidth
+}
+
+// the touch chip counts only while it is marked visible; the desktop line has no mark
+const invitationOnScreen = () =>
+  [...document.querySelectorAll(".sound-cue-chip[data-visible], .cover-cue")].some(isOnScreen)
+
+// The soundtrack starts on the first click, tap or key only while a sound invitation is on screen (the touch chip or the desktop
+// cover line); elsewhere that gesture is ignored and listening goes on. The toggle turns it off or on from anywhere; the audio
+// element exists only when its file does. Once the visitor has used the toggle, nothing starts the sound for them again. The phase is mirrored on
 // <html data-sound> so the cue that invites the first click can leave when the sound starts or the toggle is pressed. The sound
 // plays only while the page is on screen, so a hidden tab pauses it and returning resumes it if it was on.
 export function SoundToggle({ src }: { src?: string }) {
@@ -42,7 +54,7 @@ export function SoundToggle({ src }: { src?: string }) {
       if (playing || phaseRef.current !== "idle") return
       if (event instanceof KeyboardEvent && event.key === "Escape") return
       if (event.target instanceof Element && event.target.closest("[data-sound-toggle]")) return
-      if (document.hidden) return
+      if (document.hidden || !invitationOnScreen()) return
       playing = true
       void audio.current?.play().then(
         () => {
