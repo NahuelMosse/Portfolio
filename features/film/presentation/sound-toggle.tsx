@@ -133,7 +133,7 @@ export function SoundToggle({ src }: { src?: string }) {
   )
 }
 
-// Four thin bars: the sign of sound. Inside the toggle it shows, still, only while the sound has never been started or pressed.
+// Four thin bars: the sign of sound. Inside the toggle they move while the sound plays and lie low while it is off.
 export function SoundBars({ className = "sound-bars" }: { className?: string }) {
   return (
     <i className={className} aria-hidden="true">

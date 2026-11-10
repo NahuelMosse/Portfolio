@@ -325,15 +325,39 @@ img[data-src][data-loaded] {
   }
 }
 
-/* in the toggle the bars are a still hint, only until the sound has been started or pressed */
+/* the toggle always carries its bars: they move while the sound plays and lie low and dim while it is off */
 .sound-toggle .sound-bars {
-  display: none;
   margin-right: var(--space-2);
   vertical-align: middle;
 }
 
-html[data-sound="idle"] .sound-toggle .sound-bars {
-  display: inline-flex;
+.sound-toggle .sound-bars b {
+  transition:
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html[data-sound="off"] .sound-toggle .sound-bars b {
+  transform: scaleY(0.3);
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-sound="on"] .sound-toggle .sound-bars b {
+    animation: sound-bar 0.9s ease-in-out infinite alternate;
+  }
+
+  html[data-sound="on"] .sound-toggle .sound-bars b:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+
+  html[data-sound="on"] .sound-toggle .sound-bars b:nth-child(3) {
+    animation-delay: -0.6s;
+  }
+
+  html[data-sound="on"] .sound-toggle .sound-bars b:nth-child(4) {
+    animation-delay: -0.15s;
+  }
 }
 
 .sound-cue {
