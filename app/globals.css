@@ -709,6 +709,7 @@ html:not([data-sound="idle"]) .cover-cue {
 /* fine detail around the word: numeral, a thin rule, a catalog line, a four-point star */
 .chapter-detail {
   display: flex;
+  width: fit-content;
   align-items: center;
   gap: var(--space-3);
   margin: 0;
