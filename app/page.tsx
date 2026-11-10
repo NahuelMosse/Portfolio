@@ -6,13 +6,14 @@ import { EndCredits } from "@/features/portfolio/presentation/end-credits"
 import { doorHref, offer } from "@/features/portfolio/presentation/content"
 import { getStructuredData } from "@/lib/machine-readable"
 
-// Offer: the screen ends where Let's talk begins, so the whole OFFER word is on screen and no red shows. Contact: its block fills the screen.
+// Wide, Offer ends the screen where Let's talk begins, so the whole OFFER word is on screen and no red shows, and Contact's block
+// fills the screen. Elsewhere every chapter lands with its top just under the bar.
 const CHAPTERS = [
   { id: "cold-open", label: "01 SUBJECT" },
   { id: "projects", label: "02 PROJECTS" },
   { id: "experience", label: "03 EXPERIENCE" },
-  { id: "end-credits", label: "04 OFFER", land: { selector: ".contact-scene", edge: "bottom" } },
-  { id: "contact", label: "05 CONTACT", heading: "#contact-title", land: { selector: ".contact-scene", edge: "top" } },
+  { id: "end-credits", label: "04 OFFER", land: { selector: ".contact-scene", edge: "bottom", wide: true } },
+  { id: "contact", label: "05 CONTACT", heading: "#contact-title", land: { selector: ".contact-scene", edge: "top", wide: true } },
 ] as const
 
 export default function Home() {
@@ -23,7 +24,7 @@ export default function Home() {
       <FilmShell
         chapters={CHAPTERS}
         skipLabel="Skip intro"
-        cta={{ label: "Let’s talk", href: "#end-credits" }}
+        cta={{ label: "Let’s talk", href: "#contact" }}
         hire={{ label: "Hire me", href: doorHref(offer.freelance) }}
       >
         <HeroPoster />

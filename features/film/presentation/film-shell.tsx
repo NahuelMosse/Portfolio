@@ -4,6 +4,7 @@ import { CallToAction } from "./call-to-action"
 import type { ChapterLink } from "./chapter-index"
 import { HireBar } from "./hire-bar"
 import { MotionEngine } from "./motion-engine"
+import { PlateLoader } from "./plate-loader"
 import { TopBar } from "./top-bar"
 import { sceneAsset } from "./scene-asset"
 
@@ -20,11 +21,12 @@ export function FilmShell({ chapters, skipLabel, cta, hire, children }: FilmShel
   return (
     <>
       <MotionEngine />
+      <PlateLoader />
       <TopBar chapters={chapters} skipLabel={skipLabel} hire={hire} soundSrc={sceneAsset("pf-soundtrack", "mp3")} />
       <aside aria-label="Page controls">
         <ScrollProgress />
         <CallToAction label={cta.label} href={cta.href} />
-        <HireBar label={hire.label} href={hire.href} />
+        <HireBar label={cta.label} href={cta.href} />
       </aside>
       <main id="main-content" className="film">
         {children}

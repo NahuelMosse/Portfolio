@@ -16,7 +16,7 @@ export function EndCredits() {
   return (
     <section data-chapter="end-credits" id="end-credits" className="credits">
       <OfferMotion />
-      <ChapterIllustration asset="ill-offer-16x9" tallAsset="ill-offer-9x16" className="offer-scene">
+      <ChapterIllustration asset="ill-offer-16x9" wideOnly className="offer-scene">
         <ChapterWord id="offer" heading="h2" numeral="04" note="Two doors">Offer</ChapterWord>
         <Offer />
       </ChapterIllustration>
