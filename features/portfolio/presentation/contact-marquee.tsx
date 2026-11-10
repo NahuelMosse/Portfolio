@@ -14,6 +14,7 @@ function Run() {
       {Array.from({ length: EMAILS_PER_SET }, (_, i) => (
         <span key={i} className="band-item">
           {name}
+          <wbr />
           <span className="band-at">@</span>
           {domain}
           <span className="band-star">✦</span>
@@ -51,12 +52,17 @@ export function MarqueeBand() {
             <Run />
             <Run />
           </span>
+          {copied ? (
+            <span className="band-stamp" aria-hidden="true">
+              Copied to clipboard ✓
+            </span>
+          ) : null}
         </button>
       </div>
       <p className="band-hint">
-        <span>Click the band to copy the address</span>
+        <span>Click the address to copy it</span>
         <span data-copy-status="" aria-live="polite" className="band-status">
-          {copied ? "Copied" : ""}
+          {copied ? "Copied to clipboard" : ""}
         </span>
         <a data-contact="email" className="band-mail" href={`mailto:${identity.email}`}>
           Or open your mail app <Arrow />
