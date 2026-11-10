@@ -2194,9 +2194,10 @@ margin-bottom: 0.2em;
     line-height: 1.15;
   }
 
+  /* narrow screens: the roll runs from the left edge in full ink, only its exit on the right fades */
   .contact-scene .roll-marquee {
-    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(to right, #000 94%, transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 94%, transparent);
   }
 
   .contact-scene .roll-list {
