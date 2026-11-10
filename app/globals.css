@@ -1967,8 +1967,11 @@ margin-bottom: 0.2em;
     margin-top: 0;
   }
 
+  /* the doors read as on the wide screen: freelance bone button with ink type on dark glass, company crimson button sunk into the ink */
   .offer-scene .folder {
-    --glass: color-mix(in srgb, var(--ink) 55%, transparent);
+    --panel: var(--ink);
+    --panel-ink: var(--bone);
+    --glass: color-mix(in srgb, var(--ink) 45%, transparent);
     display: flex;
     flex-direction: column;
     padding: var(--space-3) var(--gutter-right) var(--space-3) var(--gutter-left);
@@ -1977,7 +1980,8 @@ margin-bottom: 0.2em;
   }
 
   .offer-scene .folder[data-offer-card="tpm"] {
-    --glass: color-mix(in srgb, var(--red) 55%, transparent);
+    --panel: color-mix(in srgb, var(--red) 78%, var(--ink));
+    --glass: color-mix(in srgb, var(--red) 45%, transparent);
   }
 
   .offer-scene .folder h3 {
@@ -2021,6 +2025,132 @@ margin-bottom: 0.2em;
 
   .end-of-file {
     padding-bottom: calc(var(--space-5) + var(--hire-bar-height));
+  }
+
+  /* the ending is exactly one screen, from its top: the word, the address, the networks, the roll and the © line share 100svh */
+  .contact-scene[data-has-art] {
+    height: 100svh;
+    min-height: 100svh;
+  }
+
+  .contact-scene[data-has-art] .scene-copy {
+    box-sizing: border-box;
+    height: 100%;
+    justify-content: flex-start;
+    gap: var(--space-2);
+    padding-block: calc(var(--top-bar-height) + var(--space-1)) 1px;
+  }
+
+  .contact-scene .contact {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    gap: var(--space-1);
+  }
+
+  .contact-scene .chapter-word[data-chapter-word] {
+    font-size: min(26vw, 11.5svh);
+  }
+
+  .contact-scene .contact-tiles {
+    flex: 1;
+    display: grid;
+    align-content: space-evenly;
+    gap: var(--space-1);
+  }
+
+  .contact-scene .band-field {
+    padding-block: 0;
+  }
+
+  .contact-scene .band-hint {
+    gap: 0 var(--space-3);
+    font-size: min(var(--text-small), 1.9svh);
+  }
+
+  .contact-scene .band-half {
+    --half-word: min(8vw, 4.4svh);
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "glyph word arrow"
+      "glyph handle arrow";
+    align-items: center;
+    column-gap: var(--space-3);
+    row-gap: 0;
+    padding-block: var(--space-2);
+  }
+
+  .contact-scene .band-half .half-word {
+    grid-area: word;
+    font-size: var(--half-word);
+  }
+
+  .contact-scene .band-half .half-handle {
+    grid-area: handle;
+    font-size: min(var(--text-small), 1.9svh, 2.9vw);
+  }
+
+  .contact-scene .band-half .contact-glyph {
+    grid-area: glyph;
+    width: calc(var(--half-word) * 1.1);
+    height: calc(var(--half-word) * 1.1);
+  }
+
+  .contact-scene .band-half .contact-arrow {
+    grid-area: arrow;
+    grid-row: auto;
+    font-size: calc(var(--half-word) * 0.7);
+  }
+
+  .contact-scene .band-half {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: var(--space-2);
+    padding-inline: 0 var(--space-3);
+  }
+
+  .contact-scene .band-half .half-handle {
+    letter-spacing: 0.04em;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-scene .credits-roll {
+    margin-top: 0;
+  }
+
+  .contact-scene .roll-band,
+  .contact-scene .roll-marquee {
+    padding-block: 0;
+    line-height: 1.1;
+  }
+
+  .contact-scene .roll-item {
+    font-size: min(1.25rem, 2.6svh);
+  }
+
+  .contact-scene .roll-item img {
+    width: 1.2em;
+    height: 1.2em;
+  }
+
+  .end-of-file {
+    padding-bottom: 0;
+  }
+}
+
+/* a phone held sideways: the two networks sit side by side to spare the height */
+@media (max-width: 1099px) and (max-height: 500px) {
+  .contact-scene .band-halves {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contact-scene .band-slot .band-half {
+    border-top: 0;
+  }
+
+  .contact-scene .chapter-word[data-chapter-word] {
+    font-size: 15svh;
+    white-space: nowrap;
   }
 }
 

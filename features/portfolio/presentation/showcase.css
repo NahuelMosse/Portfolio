@@ -31,7 +31,7 @@
       var(--space-5) + 3svh
   );
   --hero-width: min(calc(100vw - 2 * var(--gutter-right-phone)), 36rem);
-  --hero-height: 55svh;
+  --hero-height: 46svh;
   position: relative;
   height: calc(100svh + (var(--beats) - 1) * var(--beat-run));
   background: var(--field);
@@ -70,12 +70,6 @@
 
 .show[data-composition="b"] {
   --flip: -1;
-}
-
-@media (min-width: 1280px) {
-  .show[data-composition="b"] {
-    --mirror: -1;
-  }
 }
 
 .show-stage {
@@ -127,13 +121,20 @@
   opacity: 0.3;
 }
 
-/* the plate is black ink on white paper, multiplied over the field so the drawing is printed on it */
+/* his scene is drawn on open paper so the product's color fills it: no texture is printed under it */
+.show:has(.plate[data-portrait]) .backdrop {
+  display: none;
+}
+
+/* the plate is black ink on white paper, multiplied over the field so the drawing is printed on it. It is drawn in the shape of
+   the stage under the strip and fills it, bleeding past it only by the little it drifts, so almost all of it is on show */
 .show .plate {
   z-index: 1;
+  inset: calc(var(--top-bar-height) + var(--show-strip) - 3svh) -3vw -3svh;
   mix-blend-mode: multiply;
   transform: translate3d(
-      calc(var(--p) * 4vw * var(--flip)),
-      calc(var(--p) * -8svh),
+      calc((var(--p) - 0.5) * 4vw * var(--flip)),
+      calc((var(--p) - 0.5) * -5svh),
       0
     )
     scale(var(--mirror), 1);
@@ -144,11 +145,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: left top;
-}
-
-.show .plate[data-portrait] img {
-  object-position: center top;
+  object-position: center;
 }
 
 /* the lamp: a cone of light from the top corner that slides as the page scrolls, and the field sinking into shade at the foot */
@@ -449,6 +446,86 @@
   transform: none;
 }
 
+/* ---- the phone's status bar: every size is a share of the screen's width, so it is the same bar on every phone ---- */
+
+.show-rig[data-device="phone"] .show-glass {
+  container-type: inline-size;
+  --status-h: 8.2cqw;
+}
+
+/* the app starts under the bar; a capture that came with a bar of its own is cropped (--trim of its height) so it is drawn once */
+.show-rig[data-device="phone"] .show-screen {
+  box-sizing: border-box;
+  padding-top: var(--status-h);
+  overflow: hidden;
+  background: var(--bar);
+}
+
+.show-rig[data-device="phone"] .show-screen img {
+  height: calc(100% / (1 - var(--trim, 0)));
+  translate: 0 calc(var(--trim, 0) * -100%);
+}
+
+.show-screen[data-tone="light"] {
+  --bar-ink: var(--bone);
+}
+
+.show-screen[data-tone="dark"] {
+  --bar-ink: var(--ink);
+}
+
+.show-status {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1.3cqw;
+  height: var(--status-h);
+  padding-inline: 7cqw 6cqw;
+  background: var(--bar);
+  color: var(--bar-ink);
+}
+
+.show-clock {
+  margin-right: auto;
+  font-family: var(--font-text);
+  font-size: 3.7cqw;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.show-island {
+  position: absolute;
+  left: 50%;
+  top: 1.7cqw;
+  width: 20cqw;
+  height: 4.8cqw;
+  translate: -50% 0;
+  border-radius: 2.4cqw;
+  background: var(--ink);
+}
+
+.show-signal {
+  width: 3.9cqw;
+}
+
+.show-wifi {
+  width: 3.9cqw;
+}
+
+.show-battery {
+  width: 6cqw;
+}
+
+/* a phone's bezel is slim and keeps its proportion to the screen: the wide frames keep their own */
+@media (max-width: 1099px) {
+  .show-rig[data-device="phone"] {
+    --device-bezel: 3px;
+    --radius-phone: 1.125rem;
+  }
+}
+
 .show-screen img,
 .show-screen .scene-media {
   display: block;
@@ -481,9 +558,9 @@
 .show[data-layers="both"] .show-rig[data-role="second"] {
   display: block;
   z-index: 5;
-  top: calc(var(--hero-top) + 12svh);
+  top: calc(var(--hero-top) + 8svh);
   width: auto;
-  height: 46svh;
+  height: 40svh;
   aspect-ratio: 390 / 844;
 }
 
@@ -498,12 +575,13 @@
 
 /* ---- the captions: one beat at a time ---- */
 
+/* on the phone the caption is a solid band the devices sink behind: the text never sits on a screen */
 .show-copy {
   position: absolute;
   z-index: 6;
   inset: auto 0 0;
   padding: var(--space-6) var(--gutter-right-phone)
-    calc(var(--hire-bar-height) + var(--space-2)) var(--gutter-left-phone);
+    calc(var(--hire-bar-height) + var(--space-3)) var(--gutter-left-phone);
   color: var(--bone);
 }
 
@@ -512,7 +590,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(to top, var(--shade-deep) 58%, transparent);
+  background: linear-gradient(to bottom, transparent, var(--shade-deep) var(--space-6));
 }
 
 .show-copy h3 {
@@ -676,14 +754,25 @@
     transform: none;
   }
 
+  /* wide the product is the subject: the screen splits in thirds, the word and the copy hold the first and the device stands
+     centered in the other two, in the middle of the height under the strip; his scene fills the third it leaves */
   .show {
-    /* wide the word sits in the column the device leaves free: an uppercase Boska letter is at most 0.56em, so the word fits it */
-    --column: 46vw;
-    --word-size: min(calc(var(--column) / (var(--chars, 8) * 0.56)), 34vw);
-  }
-
-  .show[data-kind="browser"] {
-    --column: 29vw;
+    /* an uppercase Boska letter is at most 0.56em, so the word fits the measure; it never grows past a band of 15svh */
+    --word-size: min(
+      calc(
+        (100vw - var(--gutter-left) - var(--gutter-right)) /
+          (var(--chars, 8) * 0.56)
+      ),
+      15svh
+    );
+    --stage-top: calc(var(--top-bar-height) + var(--show-strip));
+    --stage-middle: calc(var(--stage-top) + (100svh - var(--stage-top)) / 2);
+    --device-height: calc(100svh - var(--stage-top) - var(--space-5) * 2);
+    --device-x: calc(50% + var(--flip) * 100% / 6);
+    --browser-width: min(
+      var(--device-height) * 1.6,
+      100vw * 2 / 3 - var(--gutter-right) - var(--space-5)
+    );
   }
 
   .show[data-composition="b"] .show-word {
@@ -691,63 +780,43 @@
     right: var(--gutter-right);
   }
 
-  .show-rig {
-    left: auto;
-    right: 9vw;
-    translate: none;
-  }
-
-  .show[data-composition="b"] .show-rig {
-    right: auto;
-    left: 9vw;
+  .show-rig[data-device="phone"],
+  .show-rig[data-device="browser"] {
+    top: var(--stage-middle);
+    left: var(--device-x);
+    translate: -50% -50%;
   }
 
   .show-rig[data-device="phone"] {
-    --device-phone-height: calc(
-      100svh - var(--top-bar-height) - var(--show-strip) - var(--space-7)
-    );
-    top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-5));
     width: auto;
-    height: var(--device-phone-height);
+    height: var(--device-height);
     aspect-ratio: 390 / 844;
   }
 
   .show-rig[data-device="browser"] {
-    width: var(--device-browser-width-wide);
+    width: var(--browser-width);
     height: auto;
     aspect-ratio: 16 / 10;
-    top: 50%;
-    translate: 0 -46%;
   }
 
-  .show-rig[data-device="browser"] {
-    right: 3vw;
-  }
-
-  .show[data-composition="b"] .show-rig[data-device="browser"] {
-    right: auto;
-    left: 3vw;
-  }
-
+  /* the phone's sibling leans behind it, toward the far edge */
   .show[data-kind="phone"] .show-rig[data-role="second"] {
     display: block;
     z-index: 3;
-    width: auto;
-    height: var(--device-phone-height);
-    aspect-ratio: 390 / 844;
-    translate: calc(var(--flip) * 62%) 6svh;
+    translate: calc(-50% + var(--flip) * 62%) calc(-50% + 6svh);
     scale: 0.82;
     filter: brightness(0.72) saturate(0.85);
   }
 
-  /* the phone that goes with the page stands inside its lower corner */
+  /* the phone that goes with the page stands inside its lower corner, toward the copy */
   .show[data-kind="browser"] .show-rig[data-role="second"] {
     display: block;
     z-index: 5;
-    top: calc(50% - 6svh);
-    right: calc(3vw + var(--space-4));
+    top: calc(var(--stage-middle) - var(--browser-width) / 3.2 + var(--browser-width) * 0.25);
+    left: auto;
+    right: calc(100% / 3 - var(--browser-width) / 2 + var(--space-4));
     width: auto;
-    height: calc(var(--device-second-height) * 1.5);
+    height: calc(var(--browser-width) / 1.6 * 0.55);
     aspect-ratio: 390 / 844;
     translate: none;
   }
@@ -755,7 +824,7 @@
   .show[data-kind="browser"][data-composition="b"]
     .show-rig[data-role="second"] {
     right: auto;
-    left: calc(3vw + var(--space-4));
+    left: calc(100% / 3 - var(--browser-width) / 2 + var(--space-4));
   }
 
   .show[data-kind="browser"]
@@ -765,12 +834,13 @@
 
   .show-copy {
     inset: auto auto var(--space-6) var(--gutter-left);
-    width: 28rem;
+    width: min(28rem, 100vw / 3 - var(--gutter-left) - var(--space-5));
     padding: 0;
   }
 
+  /* the corner button holds the bottom right: copy set on that side stands clear above it */
   .show[data-composition="b"] .show-copy {
-    inset: auto var(--gutter-right) var(--space-6) auto;
+    inset: auto var(--gutter-right) calc(var(--space-6) + var(--space-5)) auto;
   }
 
   /* the copy sits on a soft shade of the field sunk into the ink, falling off toward the device */

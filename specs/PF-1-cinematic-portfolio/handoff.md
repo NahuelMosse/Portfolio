@@ -1,14 +1,15 @@
-# Handoff (builder 6) - branch portfolio-present-d, no push; dev server http://127.0.0.1:8704
+# Handoff · designer fix round, mobile (below 1100px)
 
-## Done and committed
-- ASM-39 complete (c86aabf RED logos, 3c14bf4 code): 78 passed serial, tsc and eslint clean, captures .validation/asm-spacing/. Platzi and EF SET marks in the roll (public/logos/, masks 1em, e2e/roll-brand-logos.spec.ts). credits.spec.ts and credits-liceo-8.spec.ts fail as before (stale, L168).
-- ASM-40 (af11e37, RED commit before it): e2e/cover-handoff.spec.ts 15 of 15. Ink wipe removed (cold-open-motion.tsx, hero-poster.tsx, globals.css .cold-ink gone); cover art starts under the top bar (.cover-scene .scene-art top, object-position 50% 0%, transform-origin 50% 0%, top mask fade removed); NAWI --size-nawi 41vw at >=701px (globals.css, cover block near line 606).
-- Scratch .validation/m.mjs, m2.mjs, cap-spacing.mjs deleted (also walk.mjs, sheet.mjs).
+## Done (committed)
+1. Let's talk fits 100svh below 1100: `app/globals.css`, end of the `max-width: 1099px` block. Measured block (scene top to last network link) at 390x844 639, 375x667 485, 360x740 560, 414x896 698, 768x1024 784, 844x390 283: all under innerHeight. Desktop 1910x912 722 and 1440x900 675 unchanged. The roll and the © line sit inside the same 100svh.
+2. Offer doors: below 1100 the `.offer-scene .folder` takes the wide screen's colors (freelance: ink glass 45 %, bone button with ink type; company: crimson glass 45 %, crimson button).
+3. Website/app plates: `group.css` fixes `--avail` for `data-layers="both"` and `data-kind="phone"` cards to Cebador's room (23.75rem caption reserve), so Sonria, Miga and the apps size like Cebador.
+4. Bezel: below 1100 `--device-bezel: 3px` and `--radius-phone: 1.125rem` on phone rigs (`showcase.css`).
+5. Status bar on every phone (all widths): `showcase-device.tsx` (`StatusBar`, inline SVG), `showcase.css` (cqw sizes), `piece-bars.json` from `scripts/derive-bars.mjs` (bar color = the app's top edge, light or dark icons by luminance). Club's captures have an Android bar baked in: cropped by `trim: 0.04` (CSS translate of the image under the screen's overflow), so it is drawn once and every phone gets the same bar and frame.
 
-## Not covered (turn budget), all *could not run*
-- Requester decision on NAWI/sheet overlap («no tape otros textos»): keep NAWI 41vw, no text of the cover (sheet, NAHUEL MOSSE — BUENOS AIRES, I'm Nawi block, buttons) may intersect NAWI's glyph box at 1910x912, 1920x1080, 2560x1080, 1440x900, 1280x720; sheet heading starts below the N's foot with >= 12px clearance; compact the sheet (row height, padding, font a notch smaller) and/or lift NAWI's baseline (never behind the bar); hair stays uncut.
-- The 9 tests that fail now must pass AS THEY ARE (do not replace): e2e/cold-open-short.spec.ts x5, e2e/id-sheet-no-photos.spec.ts (1910x912), e2e/one-screen-sections.spec.ts sheet-clear x3 (1910x912, 1280x720, 2560x1080). First read how they measure (NAWI .mark box bottom versus the sheet top: at 1910x912 the box is ~72 to ~737 with font 783px and the sheet starts ~620, so the line box may have to be tightened: smaller line-height on .mark at >=701px, or a negative margin, before the sheet is compacted).
-- Add to e2e/cover-handoff.spec.ts (new test, same tag @PF-1-ASM-40): no cover text element intersects NAWI's glyph box.
-- Log: append a line saying the 9 tests are restored under ASM-40 (the earlier line "replaces: e2e/cold-open-short.spec.ts ... by: none yet" is superseded).
-- Re-run cover-handoff + those 9 serially (APP_URL=http://127.0.0.1:8704, --workers=1); recapture .validation/asm-cover/after-cover-1910x912.png and look at it; commit.
-- Dev server serves stale CSS after edits: a comment-only edit of app/globals.css forces the recompile.
+## Not covered (turn budget)
+- *could not run*: visual review of the after captures (`D:/tmp/ia3/walk2-a390`, `walk2-a390r` reduced motion, `walk2-a1910`, `walk2-a1440`) and of Let's talk after (`D:/tmp/ia3/lt/after-sheet.jpg`, taken before the last handle-size and offer edits). Check the status bar reads on Grit, Club, Cebador, Sonria, Miga, Triaje (phone), that Club shows no second bar, the offer doors at 390 and 768, and Sonria/Miga against Cebador.
+- *could not run*: desktop pixel diff. `node D:/tmp/ia3/diff.cjs D:/tmp/ia3/walk2-b1910 D:/tmp/ia3/walk2-a1910` (and 1440) with `NODE_PATH=D:/projects/Portfolio-d/node_modules`; only the phone status bars may differ. Baselines were taken before any change.
+- *could not run*: Let's talk measure with reduced motion; `D:/tmp/ia3/lt-measure.cjs reduce`. The offer after-sheet. The affected tests (`node .claude/tools/affected.mjs <files>`).
+- Open: the 768-1099 bezel is 3px too; `--copy-h` is set inline by `use-group-track.ts`, so the plate fix overrides `--avail` instead.
+- Before/after sheets: Let's talk `D:/tmp/ia3/lt/before-sheet.jpg` / `after-sheet.jpg`; projects before `D:/tmp/ia3/lt/b390-proj.jpg`.

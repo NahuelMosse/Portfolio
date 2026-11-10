@@ -331,8 +331,15 @@
     padding: 0 var(--space-2);
   }
 
+  /* the apps and the websites stand their devices in the same room whatever their caption's length, Cebador's: a longer caption
+     sinks the foot of the device behind its solid band, as the scene already does */
   .group-card {
     --avail: calc(100svh - var(--hero-top) - var(--copy-h, 15rem) + var(--space-4));
+  }
+
+  .group-card[data-layers="both"],
+  .group-card[data-kind="phone"] {
+    --avail: calc(100svh - var(--hero-top) - 23.75rem + var(--space-4));
   }
 
   .group-card .show-rig[data-device="phone"] {
