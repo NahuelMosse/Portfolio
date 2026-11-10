@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // tasteskill / inspect — render the page in a real browser, measure it, and photograph it.
 //
-//   node inspect.mjs <url | path/to/file.html> [--out DIR] [--widths 1440,768,390] [--allow rule,rule] [--app] [--film] [--json]
+//   node inspect.mjs <url | path/to/file.html> [--out DIR] [--root DIR] [--widths 1440,768,390] [--allow rule,rule] [--app] [--film] [--json]
 //
 // --film also photographs the scroll as a visitor sees it (a frame every third of a screen, real wheel
 // input) into desktop-film-NN.jpg, so a scroll scene is judged by its in-between states. A direction
@@ -16,29 +16,60 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync, createReadStream, readdirSync, unlinkSync } from 'node:fs';
 import { resolve, join, relative, dirname, extname, sep } from 'node:path';
 import { createServer } from 'node:http';
+import { pathToFileURL } from 'node:url';
 import { Browser, sleep } from './lib/cdp.mjs';
-import { probe, frame, layout, app, colourShare } from './lib/probe.mjs';
+import { probe, frame, layout, app, colourShare, textSpacing, VITALS } from './lib/probe.mjs';
 import { judge, judgeLayout, judgeApp, APP_SKIP } from './lib/rules.mjs';
 import { viewportClass as name, screenshotLabel, isInspectionScreenshot } from './lib/inspection-files.mjs';
+import { heroExpectation, heroDealtFindings } from './lib/hero-dealt.mjs';
 
 const args = process.argv.slice(2);
 const flag = (name, def) => { const i = args.indexOf('--' + name); if (i === -1) return def; const v = args[i + 1]; args.splice(i, 2); return v; };
 const has = (name) => { const i = args.indexOf('--' + name); if (i === -1) return false; args.splice(i, 1); return true; };
-const outDir = resolve(flag('out', '.taste-skill/inspect'));
+const rootArg = flag('root', null);
+// Each page of a multi-page site keeps its own report: inspecting about.html does not erase index.html's.
+// The name is the page's whole path (under --root for a file), so about/index.html and blog/post never share the home's folder.
+const pageName = (t) => {
+  const isUrl = /^https?:\/\//.test(t || '');
+  const u = isUrl ? new URL(t) : null;
+  const parts = (isUrl ? u.pathname.split('/') : rootArg ? relative(resolve(rootArg), resolve(t)).split(sep) : [(t || '').split(/[\\/]/).pop()])
+    .filter(Boolean).map((p) => p.replace(/\.html?$/i, ''));
+  if (parts.at(-1) === 'index') parts.pop();
+  if (u?.search) parts.push(u.search.slice(1));
+  return parts.join('-').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '');
+};
+// Windows paths compare without case; a drive root already ends in its separator.
+const inside = (f, r) => { const low = (s) => (process.platform === 'win32' ? s.toLowerCase() : s); return low(f).startsWith(low(r.endsWith(sep) ? r : r + sep)); };
+const outArg = flag('out', null);
 const widths = flag('widths', '1440,768,390').split(',').map(Number).filter(Boolean);
 let allow = flag('allow', '').split(',').filter(Boolean);
 const asJson = has('json');
 let appMode = has('app');
 let film = has('film');
+const OWN_PICTURES = ['photography', 'product-photo', 'product-ui', 'video'];
+let ownPictures = false; // the sheet's --have says the project has pictures of its own to open with
+let sector = null;
 let dealtFonts = []; // the faces the saved sheet dealt, to catch a build that quietly fell back to a default
+let dealtHero = null; // what the dealt hero blueprint says about its headline, to catch a build that fell back to the default first screen
 const target = args[0];
 if (!target || target === '-h' || target.startsWith('--')) {
-  console.error('usage: node inspect.mjs <url | file.html> [--out DIR] [--widths 1440,768,390] [--allow rule,rule] [--app] [--film] [--json]');
+  console.error('usage: node inspect.mjs <url | file.html> [--out DIR] [--root DIR] [--widths 1440,768,390] [--allow rule,rule] [--app] [--film] [--json]');
   process.exit(2);
 }
+const outDir = resolve(outArg || join('.taste-skill/inspect', pageName(target)));
 // Allowances granted by the drawn direction (written by draw.mjs) apply automatically.
-for (const p of ['.taste-skill/direction.json', join(outDir, '..', 'direction.json')]) {
-  if (existsSync(p)) { try { const d = JSON.parse(readFileSync(p, 'utf8')); allow = [...new Set([...allow, ...(d.allow || [])])]; if (d.kind === 'app') appMode = true; if (Array.isArray(d.scenes) && d.scenes.length) film = true; dealtFonts = (d.input?.keep || []).includes('type') ? [] : d.kind === 'app' ? [d.style?.tokens?.font?.family].filter(Boolean) : [d.type?.display?.family, d.type?.text?.family].filter(Boolean); } catch {} break; }
+for (const p of ['.taste-skill/direction.json', join(outDir, '..', 'direction.json'), join(outDir, '..', '..', 'direction.json')]) {
+  if (existsSync(p)) { try { const d = JSON.parse(readFileSync(p, 'utf8')); allow = [...new Set([...allow, ...(d.allow || [])])]; if (d.kind === 'app') appMode = true; if (Array.isArray(d.scenes) && d.scenes.length) film = true; ownPictures = OWN_PICTURES.some((h) => (d.input?.have || []).includes(h)); sector = d.input?.sector || null; dealtHero = d.kind === 'app' ? null : heroExpectation(d.hero); dealtFonts = (d.input?.keep || []).includes('type') ? [] : d.kind === 'app' ? [d.style?.tokens?.font?.family].filter(Boolean) : [d.type?.display?.family, d.type?.text?.family].filter(Boolean); } catch {} break; }
+}
+// A rule waived by hand is a note for the kit (tools/kit-notes.mjs, when the skill lives inside the kit): a rule waived in
+// many cards is a rule to look at. The sheet's own allowances are the deal, not a waiver. Recording never changes the inspection.
+const waived = flag('allow', '').split(',').filter(Boolean);
+if (waived.length) {
+  try {
+    const notes = await import(pathToFileURL(join(import.meta.dirname, '..', '..', '..', 'tools', 'kit-notes.mjs')).href);
+    const ctx = await notes.contextOf(process.cwd());
+    for (const rule of waived) notes.record({ kind: 'waiver', key: `inspector:${rule}`, text: `--allow ${rule} on ${pageName(target)}`, ...ctx, once: true });
+  } catch {}
 }
 // A local file is served over http from a throwaway server on 127.0.0.1, so the browser never has to
 // open a file path (some sandboxes show Node and the browser different views of the disk) and relative
@@ -48,12 +79,13 @@ if (!/^https?:\/\//.test(target)) {
   const file = resolve(target);
   if (!existsSync(file)) { console.error('No such file: ' + file); process.exit(2); }
   const cwd = resolve('.');
-  const root = file.startsWith(cwd + sep) ? cwd : dirname(file);
+  const root = rootArg ? resolve(rootArg) : inside(file, cwd) ? cwd : dirname(file);
+  if (!inside(file, root)) { console.error(`The page is not inside --root ${root}: ${file}`); process.exit(2); }
   const MIME = { '.html': 'text/html; charset=utf-8', '.htm': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.avif': 'image/avif', '.gif': 'image/gif', '.ico': 'image/x-icon', '.woff': 'font/woff', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.otf': 'font/otf', '.mp4': 'video/mp4', '.webm': 'video/webm', '.txt': 'text/plain; charset=utf-8', '.xml': 'application/xml', '.webmanifest': 'application/manifest+json' };
   server = createServer((req, res) => {
     try {
       let f = resolve(join(root, decodeURIComponent(new URL(req.url, 'http://x').pathname)));
-      if (f !== root && !f.startsWith(root + sep)) { res.writeHead(403); return res.end(); }
+      if (f !== root && !inside(f, root)) { res.writeHead(403); return res.end(); }
       if (statSync(f).isDirectory()) f = join(f, 'index.html');
       res.writeHead(200, { 'content-type': MIME[extname(f).toLowerCase()] || 'application/octet-stream', 'content-length': statSync(f).size, 'cache-control': 'no-store' });
       createReadStream(f).pipe(res);
@@ -121,6 +153,7 @@ try {
     const imageLabel = screenshotLabel(w, widths);
     const page = await browser.newPage({ width: w, height: h, dsf: 1, mobile: w < 600 });
     await page.send('Page.addScriptToEvaluateOnNewDocument', { source: MOTION_RECORDER }).catch(() => {});
+    await page.send('Page.addScriptToEvaluateOnNewDocument', { source: VITALS }).catch(() => {});
     const how = await page.goto(url, { timeoutMs: 30000, settleMs: 600 });
     await sleep(600); // about 1.2s after the load event: is the title there to read yet?
     const early = await page.eval(TITLE_SEEN).catch(() => null);
@@ -131,6 +164,11 @@ try {
     const fold = join(outDir, `${imageLabel}-fold.jpg`);
     await page.screenshot({ path: fold, quality: 82 });
     const metrics = await page.eval(probe);
+    // read before the walk: the scroll below loads more and would count shifts a visitor at the top never sees
+    // LCP counts from the moment the request leaves: a fresh Chrome can hold its first request for seconds while its network
+    // stack starts, which is the browser and not the page
+    const vitals = await page.eval(`(() => { const v = window.__vitals; if (!v) return null; const sent = performance.getEntriesByType('navigation')[0]?.requestStart || 0;
+      return { cls: Math.round(v.cls * 1000) / 1000, lcp: v.lcp == null ? null : Math.max(0, Math.round(v.lcp - sent)), lcpTag: v.lcpTag }; })()`).catch(() => null);
 
     // walk the page one screen at a time so scroll reveals fire, photographing each screen
     const frames = [readFileSync(fold).toString('base64')];
@@ -151,6 +189,8 @@ try {
     const after = await page.eval(probe).catch(() => metrics);
     const m = after.headings.length >= metrics.headings.length ? after : metrics;
     const lay = await page.eval(layout).catch(() => null);
+    m.vitals = vitals ? { ...vitals, local: /^(file:|https?:\/\/(localhost|127\.0\.0\.1|\[::1\]))/.test(url) } : null;
+    m.textSpacing = await page.eval(textSpacing).catch(() => []);
     const appM = appMode ? await page.eval(app).catch(() => null) : null;
     if (appM) appM.colourShare = await helper.eval(colourShare, 'data:image/jpeg;base64,' + frames[0]).catch(() => null);
 
@@ -199,14 +239,15 @@ try {
       await sheet(frames.slice(i, i + perSheet), cols, cellW, cellH, p);
       sheets.push(p);
     }
-    let findings = [...judge(m, { width: w, allow }), ...sceneFindings];
+    let findings = [...judge(m, { width: w, allow, ownPictures: ownPictures && !appMode, sector }), ...sceneFindings];
     if (devServer && !allow.includes('dev-server')) findings.push({ level: 'WARN', id: 'dev-server', width: w, message: 'This page is served by a development server (Vite, webpack or Next in dev mode).', fix: 'Run the last gate on the production build too (vite build && vite preview, next build && next start, or the built index.html): minifiers and bundlers change the CSS a visitor receives.' });
     if (dealtFonts.length && w >= 1100 && !allow.includes('font-not-dealt')) {
       const norm = (f) => String(f).toLowerCase().replace(/["']/g, '').replace(/\s+variable$/, '').trim();
       const used = m.type.families.filter((f) => f.share >= 0.1).map((f) => norm(f.family));
       const missing = dealtFonts.filter((f) => !used.some((u) => u === norm(f) || u.startsWith(norm(f))));
-      if (missing.length === dealtFonts.length) findings.push({ level: appMode ? 'FAIL' : 'WARN', id: 'font-not-dealt', width: w, message: `The sheet dealt ${dealtFonts.join(' and ')}, but the page renders ${m.type.families.slice(0, 2).map((f) => f.family).join(', ')}.`, fix: 'Load the dealt face (the link on the sheet) and put it first in font-family. A build that falls back to a default face lands on the default look.' });
+      if (missing.length === dealtFonts.length) findings.push({ level: appMode ? 'FAIL' : 'WARN', id: 'font-not-dealt', width: w, message: `The sheet dealt ${dealtFonts.join(' and ')}, but the page renders ${m.type.families.slice(0, 2).map((f) => f.family).join(', ')}.`, fix: 'Self-host the dealt face (references/type.md §5: the weights named by the link on the sheet) and put it first in font-family. A build that falls back to a default face lands on the default look.' });
     }
+    if (!allow.includes('hero-not-dealt')) findings.push(...heroDealtFindings(m.h1, dealtHero, w, { app: appMode }));
     // a third of the studied award pages were still unreadable 4.5s after load; the house sequence is over by 1.2s
     if (!appMode && early && early.found && !early.visible && !allow.includes('late-title')) findings.push({ level: 'FAIL', id: 'late-title', width: w, message: `The title is not readable 1.2s after the page loaded (${early.why}).`, fix: 'Put the headline in the HTML, painted on the first frame; the load sequence only adds arrival and is settled by 1.2s (references/motion.md, "Load sequence in 1.2 seconds"). No preloader, no gate, no waiting for the load event.' });
     if (lay) findings.push(...judgeLayout(lay, { width: w, allow }));

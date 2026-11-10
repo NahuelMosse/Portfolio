@@ -2,7 +2,7 @@
 // required.mjs — run from the repo root, with a card in progress.
 //
 // Says what is missing, on the code being delivered, to be able to close:
-// - the mutation of every logic file the card touched (`mutationRequired`: nothing at poc, the domain at mvp, every file
+// - the mutation of every logic file the card touched (`mutationRequired`: nothing at poc, the domain and a screen's `*-state.js` at mvp, every file
 //   but the screens at production; a screen file —markup, components— and a file marked `(presentation)` are not mutated, and
 //   `declared · mutate · <file> · <why>` in the Log leaves one out, listed by the close for a person);
 // - the linter over every test file the card touched;
@@ -26,6 +26,7 @@ import { runningAgents } from './agents-running.mjs';
 import { editedFromBase, IS_MIGRATION, migrationsOutlook } from './migrations.mjs';
 import { outOfScopeThatBelongToTheCard } from './out-of-scope.mjs';
 import { records } from './once.mjs';
+import { linesOf } from './transcript.mjs';
 
 const MUTATOR = /mutate\.mjs|stryker|mutmut|pitest|go-mutesting|cosmic-ray/i;
 const LINTER = /eslint|ruff|golangci-lint|pylint|flake8|rubocop|ktlint|checkstyle|dotnet format|dart (?:analyze|format)|flutter analyze/i;
@@ -39,12 +40,14 @@ const gateLine = (cardDir, name) => {
   return line?.slice(line.indexOf(':') + 1).trim();
 };
 
-// The models a session's record names (`"model":"…"` of its messages), in the order they appear.
+// The models a session's record names (`"model":"…"` of its messages), in the order they appear. Streamed: a long
+// session's record passes V8's longest string.
 export const modelsOf = (record) => {
+  const models = new Set();
   try {
-    const text = readFileSync(record, 'utf8');
-    return [...new Set([...text.matchAll(/"model"\s*:\s*"([^"<]+)"/g)].map((m) => m[1]))];
-  } catch { return []; }
+    for (const line of linesOf(record)) if (line.includes('"model"')) for (const m of line.matchAll(/"model"\s*:\s*"([^"<]+)"/g)) models.add(m[1]);
+  } catch { /* a record that is not there names no model */ }
+  return [...models];
 };
 // The records this card's sessions left in `.validation/sessions.log`, and the line of sessions.md each one needs.
 export const sessionRecords = (root, cardDir) => {
@@ -117,8 +120,11 @@ export const declaredUnmutated = (cardDir) => new Map((String(readCard(cardDir) 
   .map((l) => l.match(DECLARED_MUTATE)).filter(Boolean).map((m) => [m[1].replaceAll('\\', '/'), m[2]]));
 
 // Whether the grade asks for the mutation of a file. `root` is the card's repo (the cwd by default).
-export const mutationRequired = (exempt, map, file, root = process.cwd()) =>
-  !isPresentation(map, file, root) && !exempt.criteria.has('T3') && (exempt.level?.mutation !== 'domain' || isDomain(map, file, root));
+// A screen's pure state module (`presentation/<name>-state.js`, templates/card.md) holds its validation and messages: logic,
+// mutated at every grade that mutates, though it sits in presentation/.
+const SCREEN_LOGIC = /(^|\/)[^/]+-state\.[cm]?[jt]s$/;
+export const mutationRequired = (exempt, map, file, root = process.cwd()) => !exempt.criteria.has('T3') && (SCREEN_LOGIC.test(file)
+  || (!isPresentation(map, file, root) && (exempt.level?.mutation !== 'domain' || isDomain(map, file, root))));
 
 // Every report has an owner. A line for a report whose owner still runs starts with PENDING: it is not an action.
 export const PENDING = 'pending · ';

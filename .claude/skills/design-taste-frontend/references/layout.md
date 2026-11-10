@@ -117,7 +117,12 @@ void with the picture, the type, a step in ground tone or a field of flat colour
   colour lets the gap be a little smaller. More than about 40% of a screen of plain ground between two
   sections is a hole.
 - The gap between sections is clearly larger than any gap inside one. Related things sit close and
-  unrelated things far; a heading has at least twice as much space above it as below.
+  unrelated things far; a heading has at least twice as much space above it as below (the inspector
+  warns, `heading-rhythm`).
+- Every gap comes from one scale on a 4px base: 4 8 12 16 24 32 48 64 96 128 160 240. Three levels do
+  the work: inside a group (a label and its value, a heading and its paragraph) 8–16, between groups
+  in a section 24–48, between sections the gaps above. One value everywhere is no rhythm: the
+  inspector warns when one gap holds 80% of the page's stacks (`monotonous-spacing`).
 - No stretch of the page taller than about half a screen holds nothing at all. In the study, runs of a
   screen or more with nothing in the page were almost always scroll distance for a pinned scene; the
   pinned stage must then hold something at every scroll position.

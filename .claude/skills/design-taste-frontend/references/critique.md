@@ -12,6 +12,7 @@ the code, so you will read your intentions into it. The pictures only show what 
 4. Writing the critique
 5. What to fix first
 6. When to stop
+7. The price test (the last round)
 
 ## 1. How to look
 
@@ -180,3 +181,20 @@ remains, or let a picture or a colour field take the space.
 Run at most three rounds: critique → fix the top three → re-inspect → critique. Stop early when a round
 finds no problem a stranger would notice. If round three still scores under 7.5, say so plainly in
 your report, with the remaining problems listed; do not round up.
+
+## 7. The price test
+
+A score from your own rubric drifts toward the page you just made: a page with a bare name on its first
+screen and its work in thumbnail strips scored well here, passed the gate, and was valued by its owner
+at a twentieth of their own pages. The last round is a comparison, not a score.
+
+1. **Name the price** the page is meant to be worth, and pick a real page at that price: the person's
+   own best pages first (a page they already liked), then a studied gallery site of the same sector.
+2. **Put them side by side,** the same width, first screen against first screen, then section against
+   section, at 1440 and at 390. Judge in pairs (which one would a client pay more for, and why), never
+   each one alone.
+3. **Count the substance the reference has and yours lacks,** in this order: a strong picture of this
+   subject on the first screen; the work or product at a size that can be read; scenes and motion worked
+   for this subject; each section with its own composition. Each one missing is the next fix.
+4. **Stop only when yours wins or ties** a pair at the target price. If after three rounds it still
+   loses, say so in the report with the reference you used.

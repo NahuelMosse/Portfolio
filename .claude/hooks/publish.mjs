@@ -15,26 +15,7 @@
 import { appendFileSync, existsSync, readFileSync, realpathSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
-
-// The user's last message in the session: a typed prompt or one sent while the agent worked; tool results,
-// reminders, background-task notices (stored as user messages that start with `<`) and subagents are not theirs.
-const lastUserText = (path) => {
-  if (!path || !existsSync(path)) return '';
-  let text = '';
-  for (const line of readFileSync(path, 'utf8').split('\n')) {
-    if (!line.includes('"user"') && !line.includes('queued_command')) continue;
-    let e;
-    try { e = JSON.parse(line); } catch { continue; }
-    const own = e.type === 'user' && !e.isMeta && !e.isSidechain;
-    if (own && typeof e.message?.content === 'string') { if (!e.message.content.startsWith('<')) text = e.message.content; }
-    else if (own && Array.isArray(e.message?.content) && e.message.content.length && e.message.content.every((c) => c.type === 'text')) {
-      text = e.message.content.map((c) => c.text).filter((t) => !t.startsWith('<')).join('\n') || text;
-    } else if (e.type === 'attachment' && e.attachment?.type === 'queued_command' && e.attachment.origin?.kind === 'human') {
-      text = String(e.attachment.prompt ?? '');
-    }
-  }
-  return text;
-};
+import { lastUserText } from '../tools/transcript.mjs';
 // The order of an action: an imperative, never an infinitive or a remark ("deberían poder mergear" orders nothing).
 const AUTHORIZE = /\bautorizo\b|\bi authori[sz]e\b|\bgo ahead\b/i;
 const ORDERS = {
@@ -229,6 +210,9 @@ try {
       const head = flagValue(args, ['--head', '-H']);
       if (head !== null && head.split(':').pop() !== currentBranch()) block('You can open this card\'s PR; it is opened from the branch that is checked out. Switch to it, or drop --head.');
       checkBranch(currentBranch());
+      const { isPublic, looksSpanish } = await import('../tools/public-bar.mjs');
+      const title = flagValue(args, ['--title', '-t']) ?? '';
+      if (isPublic(root()) && looksSpanish(title)) block('You can open this card\'s PR; the repo is declared `Visibility: public`, so its title is in English. Write --title in English.');
     }
     if (verb === 'edit' && flagValue(args, ['--base', '-B']) !== null) block('You can edit this card\'s PR; its base stays the default branch. Drop --base.');
   };
@@ -249,6 +233,11 @@ try {
       : spawnSync('gh', ['pr', 'checks', ...pr], { cwd: root(), encoding: 'utf8' });
     const out = `${checks.stdout ?? ''}${checks.stderr ?? ''}`;
     if (checks.status !== 0 && !/no checks reported/i.test(out)) {
+      // The checks are asked in the session's repository: a PR of another one is not found there, whatever the `cd`.
+      if (/could not resolve to a pullrequest/i.test(out) && repo === null) {
+        block('You can merge this PR once its checks pass, but the check looks for it in the session\'s repository and it is not there. ' +
+              'Name its repository: `gh pr merge <n> -R <owner>/<repo>`.');
+      }
       block(`You can merge this PR once its checks pass; they do not yet (\`gh pr checks\`: ${out.trim().split('\n').slice(0, 3).join(' · ') || `exit ${checks.status}`}). ` +
             'Wait for them (`gh pr checks --watch`) or fix what fails and push, then merge.');
     }

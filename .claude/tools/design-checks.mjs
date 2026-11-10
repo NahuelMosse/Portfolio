@@ -143,7 +143,9 @@ export const collectClickables = () => {
   for (const el of set) {
     if (!shown(el) || el.disabled || el.getAttribute('aria-disabled') === 'true' || el.closest('[inert]') || unreachable(el)) continue;
     const item = { i, selector: label(el), native: el.matches('a[href], button, [role=button], [onclick]'), verdict: 'click', reason: '' };
-    if (el.tagName === 'A' && el.hasAttribute('href')) {
+    // A form control the browser opens or edits by itself (a select's list, a date picker) moves nothing in a headless DOM.
+    if (el.matches('select, input:not([type=button], [type=submit], [type=reset], [type=image]), textarea, option, summary')) item.verdict = 'ok';
+    else if (el.tagName === 'A' && el.hasAttribute('href')) {
       const href = el.getAttribute('href').trim();
       const id = href.slice(1);
       let target = null;

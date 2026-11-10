@@ -54,6 +54,13 @@ is the ceiling. The common failure is nine sizes that are all near each other (1
 }
 ```
 
+- The four text steps keep a clamp's maximum at 2.5× its minimum or less, so the text still doubles
+  when the reader zooms to 200% (WCAG 1.4.4). Display type is exempt: at 48px and up it stays readable
+  at any zoom, and the direction needs its range.
+- Each step is at least 1.125× the one below and the largest heading at least 1.25× the body; the
+  inspector warns about closer sizes (`near-sizes`, `flat-hierarchy`). Headings carry
+  `text-wrap: balance` and paragraphs `text-wrap: pretty`, so no heading ends on one word
+  (`heading-orphan`).
 - `--step-display` belongs to the direction. A monument wordmark is 16–24vw; a quiet instrument's
   headline is 28px. Use the size the hero blueprint gives, as a `clamp()` so it scales with the
   viewport but is bounded on phones and very wide screens.
@@ -113,15 +120,21 @@ small, .caption { font-size: var(--step-small); line-height: 1.45; }
 
 ## 5. Loading the fonts properly
 
-The sheet gives a `<link>` tag. Use it exactly; do not swap in a face you prefer.
+The sheet gives a `<link>` tag that names the family and the weights. Use those exactly; do not swap in
+a face you prefer. The page ships the fonts self-hosted, never from the Google Fonts or Fontshare
+servers: loading them from there sends each visitor's IP to a third party without consent
+(`reference/legal.md` LEG-05). Downloading the files is not installing anything: for a Google Fonts family,
+`node <skill>/scripts/fonts.mjs "<Family>" --weights 400,600 --out public/fonts` writes the `woff2` files, the
+family's licence and a stylesheet with their `@font-face` rules, and prints the two `<link>` lines, the files to
+name in the card's `## Tasks` (the gate's scope check fails a file it does not name) and the `CREDITS.md` line. For Fontshare, download the `woff2` files of the weights you use into `fonts/` and declare
+them yourself, with the ITF Free Font License beside them and a line in `CREDITS.md`:
 
 ```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="…from the direction sheet…" rel="stylesheet">
+<link rel="preload" href="fonts/family-700.woff2" as="font" type="font/woff2" crossorigin>
 ```
 
 ```css
+@font-face { font-family: "Family From Sheet"; src: url("fonts/family-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 :root {
   --font-display: "Family From Sheet", "Helvetica Neue", Arial, sans-serif;
   --font-text: "Family From Sheet", Georgia, serif;
@@ -130,9 +143,9 @@ The sheet gives a `<link>` tag. Use it exactly; do not swap in a face you prefer
 
 - Request only the weights you use (usually two or three in total).
 - Always give a fallback stack of the same broad kind (sans for sans, serif for serif).
-- In a framework, use its font loader with the same family and weights (`next/font/google`, or a
-  self-hosted `@font-face` with `font-display: swap`). Fontshare faces load from the
-  `api.fontshare.com` stylesheet on the sheet.
+- In a framework, use its font loader with the same family and weights (`next/font/google` and
+  `next/font/local` self-host at build time), or the self-hosted `@font-face` above.
+- `node .claude/tools/legal-check.mjs` fails a page that still loads them from a font CDN.
 - After building, `inspect.mjs` reports the families that actually rendered. If it warns that a face
   did not load, the screenshots show a fallback and nothing you judge from them is real. Fix the link
   first.

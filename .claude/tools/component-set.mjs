@@ -55,9 +55,11 @@ export const classesDefined = (css) => new Set([...String(css).replace(/\/\*[\s\
   .matchAll(/\.(-?[a-z_][\w-]*)/gi)].map((m) => m[1]));
 
 // The stylesheets of the set in the repo, by path: its own components and the catalog's ports copied with it.
-export const setSheets = (root) => existsSync(join(root, SET))
-  ? readdirSync(join(root, SET), { recursive: true }).map((f) => `${SET}/${String(f).split('\\').join('/')}`).filter((f) => /\.s?css$/.test(f))
-  : [];
+// A copy under the folder the server serves (public/design/components/) is the set too: a page loads it from there.
+export const SERVED = ['', 'public/', 'static/', 'www/', 'wwwroot/'];
+export const setSheets = (root) => SERVED.map((p) => `${p}${SET}`).filter((d) => existsSync(join(root, d)))
+  .flatMap((d) => readdirSync(join(root, d), { recursive: true }).map((f) => `${d}/${String(f).split('\\').join('/')}`))
+  .filter((f) => /\.s?css$/.test(f));
 
 // The classes the repo's stylesheets defined before the card: a screen that uses them is composed too. The kit's
 // templates are not the project's: a class there is used only once it is copied into the set.

@@ -46,20 +46,24 @@ In order of preference:
 1. **The project's own images.** Product shots, the place, the people, the work. Even ordinary
    photographs of the real thing beat beautiful photographs of something else. Ask what exists; look in
    the repository.
-2. **Images you can generate** with an image tool in this session. Write prompts as a photographer's
-   brief: subject, angle, light, background, crop ratio, and "no text". Generate the hero first and
-   make the rest match its light.
+2. **Images you can generate** with a generator that is connected (`generation.md` §1 says which may be
+   used). Not for the client's own product, room, people or interface. The written look, the shot
+   list, the prompt, the set, the rejection pass and the delivery are in `generation.md`.
 3. **Real pictures of the subject's world from the open collections** (section 3). Archives,
-   museums and photographers have published millions of pictures anyone may use with a credit: the
-   client's city and street in old postcards, maps of its neighbourhood, its materials, its trade in
-   engravings, museum objects of its kind. Whenever an honest one exists, it beats a drawing of the
-   same thing: it is real, it has detail no drawing in a page's budget reaches, and it carries history.
-   Honest means nobody could take it for the client's own product, room, dish, person or team.
+   museums and photographers have published millions of pictures anyone may use with a credit. First
+   the product's own kind, photographed: for a sourdough bakery a loaf, its crumb, facturas on a tray,
+   hands kneading, a bread counter; for a dentist a chair and its lamp. Then, for what has no such
+   photograph, the client's city in old postcards, maps of its neighbourhood, its trade in engravings,
+   museum objects of its kind. A painting, a map or a tool standing in for the product the visitor came
+   to see reads as a detour: in a blind test of the same bakery card, the page with photographs of bread
+   and facturas beat the one with a peel, a Ruisdael and an old map, which beat the drawn one. Honest
+   means the page never claims the picture: no caption or line says «our bread» or «our room» under a
+   photograph that is not the client's, and the footer credits it.
 4. **Pictures you draw in code from the subject itself** (section 8), for what no honest picture
    exists of: the product's own objects as flat shapes, the place's tiles and windows, a map of its
-   streets, the document a tool produces, the interface of a piece of software. In testing, pages that
-   drew their subject with care beat pages that borrowed unrelated photographs every time, and beat
-   pages that showed nothing.
+   streets, the document a tool produces, the interface of a piece of software. A careful drawing of the
+   subject beats a page that shows nothing and a photograph of something else (a foggy motorway on a
+   restaurant); it loses to real photographs of the subject's own kind.
 5. **The photographs dealt on the direction sheet.** Real photographs of places, light, texture and
    weather. Use them only where an honestly generic picture fits (the open sea for a house on the sea,
    fog for a quiet retreat). They cannot stand in for a specific product, dish, room, person or

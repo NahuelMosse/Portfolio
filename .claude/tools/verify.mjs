@@ -21,7 +21,7 @@
 // command's last run—: past it the command is killed and reported as
 // `could not run: timeout`, never as passed.
 // What the grade leaves out does not run: a `mutate` line over a file the grade does not ask to mutate
-// (required.mjs `mutationRequired`: none at poc, the domain at mvp), a line whose criterion the grade leaves
+// (required.mjs `mutationRequired`: none at poc, the domain and a screen's `*-state.js` at mvp), a line whose criterion the grade leaves
 // out (`LINE_CRITERIA`) and the HTML check (K11) are reported as
 // `skipped: not required by grade <g>`, never as passed. Measured: a card at mvp ran 13 mutations for 2
 // domain files and chased survivors in code the grade does not ask to mutate.
@@ -68,12 +68,13 @@ import { endsWithLine } from './final-line.mjs';
 import { logPath, readRecord, withTestTimeout, writeRecord } from './once.mjs';
 import { QUALITY, missing, mutationRequired, splitPending, writeSessionLines } from './required.mjs';
 import { CARD_FILE, cardIdOf, fencedBlocks, readCard, requirementOf, riskOf, sectionOf } from './card-doc.mjs';
-import { cardChecks, noVisualCheck, probeRecords, removeOnlyOf, screenChecks, specsCheck, visualInstruments } from './gate-checks.mjs';
+import { cardChecks, noLookOf, noVisualCheck, probeRecords, screenChecks, specsCheck, visualInstruments } from './gate-checks.mjs';
 import { detectIn } from './signals.mjs';
 import { affected } from './affected.mjs';
 import { catalogFindings, classesAt, classesDefined, classesIn, setFindings, setSheets, usesCatalog } from './component-set.mjs';
 import { escalate } from './risk.mjs';
 import { changedBetween, snapshot } from './tree-snapshot.mjs';
+import { IS_TEST_FILE, committedTagged } from './guard-paths.mjs';
 
 const TOOLS = relative(process.cwd(), join(import.meta.dirname)).split('\\').join('/') || '.';
 const ONE_AT_A_TIME = /playwright|cypress|attack|server|start|axe|schemathesis|lhci|lighthouse|k6|autocannon|gatling|locust/i;
@@ -277,7 +278,7 @@ const killTree = (p) => {
 };
 
 // `app:` and `seed:` tell app.mjs how to start the app the judges share; `no-visual:` is a declaration risk.mjs reads: none is a check.
-const ENVIRONMENT_LINE = /^(app|seed|no-visual|no-docs|refactor-tests):/;
+const ENVIRONMENT_LINE = /^(app|seed|no-visual|no-docs|refactor-tests|public-allow|public-skip):/;
 // `heading` is `Verification` in plan.md and `Gate` in card.md: the same block, the same lines.
 const HOST_WORDS = /\bHost\b|\b[Vv]irtual[ -][Hh]osts?\b/;
 export const wantsStrictHost = (doc) => {
@@ -473,6 +474,10 @@ export const usesBrowser = (command, root) => {
   const text = expandScripts(suiteOf(command), scripts);
   return BROWSER.test(text) && isSerial(suiteOf(command), root);
 };
+
+// A test run that exits 0 having run nothing: node:test's summary, and jest or vitest with their pass-with-no-tests switch.
+// pytest (exit 5) and Playwright (exit 1) already fail on it.
+export const ZERO_RUN = /^(?:ℹ|#) tests 0\s*$|^No tests found, exiting with code 0|^No test files found, exiting with code 0/m;
 
 // The failing tests an output names, for the runners we can re-run by name: node:test (`✖ name`,
 // `not ok N - name`), Playwright (`1) [project] › file:line:col › title`) and jest or vitest (`✕|× name`).
@@ -717,8 +722,9 @@ export const design = (root, cardDir, off = new Set()) => {
   diffs.clear();
   // A card that declared `no-visual:` changes no markup (its gate check verifies the diff): it owes no design line.
   if (riskOf(cardDir)?.declared?.some((d) => d.lens === 'visual')) return [];
-  // A remove-only card adds no look: no design line is owed for it (its `remove-only` check fails if it adds any).
-  if (removeOnlyOf(readCard(cardDir))) return [];
+  // A remove-only card adds no look (its `remove-only` check fails if it adds any), and a plain one takes the repo's styles:
+  // no design line is owed for either.
+  if (noLookOf(readCard(cardDir))) return [];
   const base = cardStart(root, cardDir);
   const written = cardFiles(root, base)
     .filter((f) => !/^(specs|test|tests|e2e|\.claude)\//.test(f) && !/\.(test|spec)\./.test(f) && existsSync(join(root, f)))
@@ -730,7 +736,8 @@ export const design = (root, cardDir, off = new Set()) => {
   const touched = written.filter((f) => IS_SCREEN.test(f) || (IS_CODE.test(f) && BUILDS_SCREEN.test(readFileSync(join(root, f), 'utf8'))));
   if (!touched.length) return [];
   // The component set is checked as a whole in its gallery; the screens, for how they use it.
-  const inSet = (f) => f.startsWith(`${SET}/`);
+  // A copy of the set under the served folder (public/design/components/) is the set too.
+  const inSet = (f) => f.startsWith(`${SET}/`) || f.includes(`/${SET}/`);
   const screen = touched.filter((f) => !inSet(f) && !/^design\//.test(f));
   const setFiles = existsSync(join(root, SET)) ? readdirSync(join(root, SET), { recursive: true }).map((f) => `${SET}/${String(f).split('\\').join('/')}`).filter((f) => /\.(css|m?js|html?|tsx?|jsx|vue|svelte)$/.test(f)) : [];
   const problems = [];
@@ -741,13 +748,14 @@ export const design = (root, cardDir, off = new Set()) => {
 
   // Only what the card wrote counts: old code is not rewritten because of this.
   const text = (files) => files.map((f) => readFileSync(join(root, f), 'utf8')).join('\n');
-  const raw = touched.flatMap((f) => {
+  // The set defines the scales: its literal values are its tokens, not values written around them.
+  const raw = touched.filter((f) => !inSet(f)).flatMap((f) => {
     const lines = added(root, base, f).filter((l) => !DECLARES_TOKEN.test(l)).join('\n');
     const n = (lines.match(RAW_COLOR)?.length ?? 0) + (lines.match(RAW_DURATION)?.length ?? 0);
     return n ? [`${f} (${n})`] : [];
   });
   if (raw.length && !off.has('design-line'))
-    problems.push(`I-tokens · colors or durations written by hand in what the card added: ${raw.join(', ')} · at: ${placesOf(root, base, touched, [RAW_COLOR, RAW_DURATION]).join('; ')} · close: in each place write \`var(--<token>)\` instead of the value; a missing token is declared once in design/tokens.css as \`--<name>: <value>;\``);
+    problems.push(`I-tokens · colors or durations written by hand in what the card added: ${raw.join(', ')} · at: ${placesOf(root, base, touched.filter((f) => !inSet(f)), [RAW_COLOR, RAW_DURATION]).join('; ')} · close: in each place write \`var(--<token>)\` instead of the value; a missing token is declared once in design/tokens.css as \`--<name>: <value>;\``);
   // On a screen —not in the set, where the scales are defined— space, radius and shadow come from
   // tokens or primitives too: that is what keeps a new screen in the product's language.
   const rawLayout = screen.flatMap((f) => {
@@ -816,7 +824,8 @@ const cardCode = (root, cardDir) => cardFiles(root, cardStart(root, cardDir))
 // places. Blocking for what the card writes: a clone where at least one side is lines this card added or changed. A clone that was
 // already there (the card touched the file, not those lines) is a `note:`, never a failure. jscpd matches token by token, so an exact
 // copy is found and a copy with renamed identifiers is not (measured): the plan's `reuses:`/`new:` line is what stops that one.
-// A clone that cannot be extracted —one copy is a frozen test— is declared in the Log: `declared · K4 · <file>[:<lines>] · <why>`.
+// A clone with a frozen test on either side is a `note:`: the frozen copy cannot import a shared part. Any other clone that
+// cannot be extracted is declared in the Log: `declared · K4 · <file>[:<lines>] · <why>`.
 // A clone with a declared file on either side is not reported; close.mjs lists the declaration for a person.
 // The floor is Sonar's, 10 lines: under it jscpd mostly finds framework boilerplate (measured: 53 of 249 clones in a Flutter
 // and FastAPI repo were 6 to 9 lines, 33 of them Dart widget trees), and extracting those costs more than it saves.
@@ -875,6 +884,8 @@ export const duplication = (root, cardDir, run = defaultRun, notes = []) => {
     const where = `${a}:${d.firstFile.start}-${d.firstFile.end} and ${b}:${d.secondFile.start}-${d.secondFile.end}`;
     const fresh = (f, side) => files.includes(f) && isNew(added.get(f), side.start, side.end);
     if (!fresh(a, d.firstFile) && !fresh(b, d.secondFile)) { notes.push(`note: K4 · clone already in the repo, not from this card: ${d.lines} lines, ${where}`); return []; }
+    // A frozen test cannot be edited to import the shared part (guard): with one on either side there is nothing to extract.
+    if ([a, b].some((f) => IS_TEST_FILE.test(f) && committedTagged(join(root, f), root).frozen)) { notes.push(`note: K4 · clone with a frozen test, which cannot import a shared part: ${d.lines} lines, ${where}`); return []; }
     return [`K4 · new duplication of ${d.lines} lines: ${where} · close: extract to the owning module or \`shared/\` and import it from both, or add to the Log \`declared · K4 · <file> · <why the two must differ>\``];
   });
 };
@@ -993,6 +1004,10 @@ const run = (line, logsDir) => new Promise((done) => {
       flaky = readRecord(process.cwd(), name, command)?.flaky ?? [];
       replaced = readRecord(process.cwd(), name, command)?.replaced ?? [];
       cached = readRecord(process.cwd(), name, command)?.when ?? null;
+      if (!MUTATOR.test(command) && ZERO_RUN.test(readFileSync(log, 'utf8'))) {
+        exit = 1;
+        appendFileSync(log, '\n[verify] failed: the runner executed 0 tests, so the line proves nothing (a filter, a glob or a tag that matches no test)\n');
+      }
     } else {
       // Any test line, not only `suite`: a scenarios line that runs a frozen test the Log declares replaced counts its swap too.
       // replacedFailures answers only when every failing test it reads has a replacement that holds.
@@ -1018,6 +1033,10 @@ const run = (line, logsDir) => new Promise((done) => {
             writeFileSync(logPath(process.cwd(), name, command), output);
           }
         }
+      }
+      if (exit === 0 && !timedOut && !MUTATOR.test(command) && ZERO_RUN.test(output)) {
+        exit = 1;
+        output += '\n[verify] failed: the runner executed 0 tests, so the line proves nothing (a filter, a glob or a tag that matches no test)\n';
       }
       writeFileSync(log, output);
     }
@@ -1132,9 +1151,15 @@ export const isParallelProbe =(c, all) => {
 };
 const PENDING_DESIGNER ='pending designer';
 const DESIGNER_CHECKS = new Set(['rounds', 'docs']);
-// A card with the `visual` lens whose designer has left no round yet (rondas.md without a `## Round`).
+// What design-round.mjs leaves: before the designer's first round there is no round.json to read, which is its turn, not a defect.
+const ROUND_CHECKS = new Set(['dead-clicks', 'brand']);
+export const designerVerdict = (c, waitsDesigner) => (waitsDesigner
+  && ((c.state === 'failed' && DESIGNER_CHECKS.has(c.name)) || (c.state === 'could not run' && ROUND_CHECKS.has(c.name) && /^no rondas\//.test(c.detail ?? '')))
+  ? { ...c, state: PENDING_DESIGNER } : c);
+// A card with the `visual` lens whose designer has left no round yet (rondas.md without a `## Round`). A remove-only or a plain
+// card has no designer.
 export const designerPending = (cardDir) => {
-  if (!riskOf(cardDir)?.lenses?.includes('visual')) return false;
+  if (!riskOf(cardDir)?.lenses?.includes('visual') || noLookOf(readCard(cardDir))) return false;
   const notes = join(cardDir, 'rondas.md');
   return !(existsSync(notes) && /^## Round\b/m.test(readFileSync(notes, 'utf8')));
 };
@@ -1292,7 +1317,7 @@ const verifyLines = async (root, { cardDir, single, planned, logsDir }) => {
     actions.push(quality.includes(f) ? f : `${f} · close: \`node ${TOOLS}/required.mjs\` exits 0`);
   }
   // The checks that read what the card and the probe left on disk: out-of-scope.mjs runs inside required.mjs above.
-  const checks = (single ? gateChecks(root, cardDir) : []).map((c) => (waitsDesigner && c.state === 'failed' && DESIGNER_CHECKS.has(c.name) ? { ...c, state: PENDING_DESIGNER } : c));
+  const checks = (single ? gateChecks(root, cardDir) : []).map((c) => designerVerdict(c, waitsDesigner));
   for (const c of checks) for (const n of c.notes ?? []) say(n);
   for (const c of checks.filter((x) => x.state !== 'passed' && x.state !== PENDING_DESIGNER))
     actions.push(`${c.name} · ${c.state === 'failed' ? c.detail : `could not run: ${c.detail}`} · close: \`node ${TOOLS}/verify.mjs\` shows ${c.name} passed`);
@@ -1329,7 +1354,8 @@ A \`node --test\` with no \`--test-timeout\` gets 30 s per test (KIT_TEST_TIMEOU
 \`timed out after 30 s\`. Other runners are left as they are (vitest and jest cut at 5 s; pytest only with pytest-timeout and \`--timeout=<s>\`).
 A failing test is re-run once, alone: if it fails again with the same error the line is failed and nothing more runs; otherwise it is
 re-run up to 3 times and, if it passes at least once, the line is \`passed with flaky k/3\`.
-With a visual card whose designer has left no round yet (rondas.md), \`rounds\`, \`docs\`, \`I-line\` and \`I-tokens\` print \`pending designer\`
+With a visual card whose designer has left no round yet (rondas.md), \`rounds\`, \`docs\`, \`I-line\` and \`I-tokens\`, and \`dead-clicks\` and
+\`brand\` with no round.json, print \`pending designer\`
 and do not count for the exit code; required.mjs and the close still ask for them.
 Exit: 0 nothing to fix, 1 actions, 2 no commands in the gate, 3 not run from the root of a repo with a card in progress.`);
     process.exit(0);

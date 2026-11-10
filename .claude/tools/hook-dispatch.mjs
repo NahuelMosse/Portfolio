@@ -2,7 +2,7 @@
 // hook-dispatch.mjs <event> — the one process that answers an event of settings.json: it reads the
 // call once, picks the hooks that apply to the tool, runs each in its own thread of this process
 // and answers with the sum: exit 2 if any blocks, else 0 with what they printed.
-// Events: PreToolUse, PostToolUse, Stop, SubagentStop, SessionStart, and `close` —an alias of the checks that
+// Events: PreToolUse, PostToolUse, Stop, SubagentStop, SessionStart, UserPromptSubmit, and `close` —an alias of the checks that
 // open the close, which PreToolUse now runs itself; a settings.json that still registers `close` keeps working.
 //
 // Why one process: every hook used to be a node process of its own, and a call to Edit started five.
@@ -42,6 +42,8 @@ export const ROUTES = {
   Stop: [[null, ['no-pending-close']]],
   SubagentStop: [[null, ['no-pending-close']]],
   SessionStart: [[null, ['session-record']]],
+  // What the person types: a correction or a note for the kit goes to its notes (tools/kit-notes.mjs). Never blocks.
+  UserPromptSubmit: [[null, ['kit-feedback']]],
 };
 export const DEADLINE_S = { default: 25, 'require-at-close': 55 };
 
@@ -85,8 +87,8 @@ export const skips = (name, input, card, hookUrl) => {
       }
       // The main thread is never capped.
       case 'context-cap': return !input.agent_id || !CAPPED.has(input.agent_type);
-      // Only a subagent has turns; the main thread never has an `agent_id`.
-      case 'turn-budget': return !input.agent_id;
+      // Only a subagent has turns; the main thread never has an `agent_id`, and is looked at only when it resumes one.
+      case 'turn-budget': return !input.agent_id && input.tool_name !== 'SendMessage';
       case 'require-at-close': {
         const tool = input.tool_name;
         const closingFile = ['Write', 'Edit'].includes(tool) && /(^|\/)specs\/[^/]+\/closing\.md$/.test(String(data.file_path ?? '').replaceAll('\\', '/'));
@@ -176,6 +178,20 @@ export const dispatch = async (event, raw, dir, deadline) => {
       outputs.push(r.out);
       if (r.err.trim()) notes.push(r.err.trim());
     }
+  }
+  // What blocked or failed is a note for the kit (tools/kit-notes.mjs): a hook that stops the same thing in many cards is
+  // a rule to look at. Recording never changes the answer.
+  const signals = results.filter((r) => r.code !== 0 || r.why);
+  if (signals.length && input && typeof input === 'object') {
+    try {
+      const notes = await import('./kit-notes.mjs');
+      const ctx = await notes.contextOf(input.cwd ?? process.cwd());
+      for (const r of signals) {
+        const failed = Boolean(r.why) || r.code !== 2;
+        notes.record({ kind: failed ? 'hook-failed' : 'block', key: `${failed ? 'hook-failed' : 'hook'}:${r.name}`, ...ctx, session: input.session_id ?? null,
+          text: `${tool ? `${tool} · ` : ''}${failed ? (r.why ?? `exit ${r.code}`) : (r.err.trim().split('\n')[0] ?? '')}` });
+      }
+    } catch {}
   }
   if (blocked.length) return { code: 2, stderr: `${blocked.join('\n')}\n`, stdout: '' };
   return { code: 0, stderr: notes.length ? `${notes.join('\n')}\n` : '', stdout: merge(outputs) };

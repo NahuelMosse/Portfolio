@@ -46,4 +46,5 @@ repo with its own design system uses it: where this rule names a font, token or 
 
 ## After: look before you finish
 - Looking at the screen (captures, verdict against `ref:`, correction) is the `designer`'s rounds and, at grade `production`, the `design-critic`'s.
+- A public page (landing, product, pricing, post) is also built to be found: title, description, canonical, sharing cards, structured data, alt and size on images, links that name where they go, no jump while it loads. The values and what the skill's `inspect.mjs` checks are in its `references/seo.md`; a screen behind a login says `noindex` and nothing more.
 - If two rules collide, clarity and accessibility win over aesthetics and motion.

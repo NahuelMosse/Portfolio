@@ -7,7 +7,7 @@ import { spawnSync } from 'node:child_process';
 import { basename, join, resolve } from 'node:path';
 import { asmsOf, cardIdOf, plannedTestsOf, reuseOf, rolesOf, sectionOf, specTagsIn, specsOf, tasksOf, whyLayerOf } from './card-doc.mjs';
 import { IS_CODE, IS_TEST, NOT_PRODUCTION } from './card.mjs';
-import { gateLinesOf, hasAttacksLine, misplacedLayer, removeOnlyOf, roleFor, statesLacking, visualInstruments } from './gate-checks.mjs';
+import { gateLinesOf, hasAttacksLine, misplacedLayer, noLookOf, plainOf, roleFor, statesLacking, visualInstruments } from './gate-checks.mjs';
 import { IS_MIGRATION } from './migrations.mjs';
 import { informationProblems, isProductLook } from './information.mjs';
 import { SET, TEMPLATES, usesCatalog } from './component-set.mjs';
@@ -22,9 +22,10 @@ export const LOOK_MAX_LINES = 15;
 // `behavior:` (one line per moment) and `tokens:`; short, so that it is read.
 export const lookProblems = (doc, cardDir) => {
   const section = sectionOf(doc, 'Look');
-  if (section === null) return ['no `## Look` section (visual lens): add `ref:`, `behavior:`, `tokens:` and `copy:` (template: .claude/templates/card.md), or `remove-only: <what goes>` when the card only takes something off a screen'];
+  if (section === null) return ['no `## Look` section (visual lens): add `ref:`, `behavior:`, `tokens:` and `copy:` (template: .claude/templates/card.md), `remove-only: <what goes>` when the card only takes something off a screen, or `plain: <why>` when the requirement asks for a screen and names no look, reference, brand or landing'];
   // A card that only takes something off has no new look to direct: the gate's `remove-only` check holds it against the diff.
-  if (removeOnlyOf(doc)) return [];
+  // A plain card takes the repo's styles: there is no direction to write.
+  if (noLookOf(doc)) return [];
   const lines = section.split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !l.startsWith('<!--'));
   const field = (name) => lines.flatMap((l) => { const m = l.match(new RegExp(`^(?:[-*]\\s*)?${name}:\\s*(.*)$`, 'i')); return m && m[1].trim() ? [m[1].trim()] : []; });
   const out = [];
@@ -80,6 +81,15 @@ export const branchProblems = (doc, id, planned) => {
     return count === 1 ? [`${s.id}: has two branches («${s.text.match(BRANCH)[0]}») and one planned test · a test per branch in its T line, or \`declared · ${s.id} · <why>\``] : [];
   });
 };
+// A spec past 500 characters usually holds several behaviors under one tag, and the one test it gets checks only one of them.
+export const SPEC_MAX_CHARS = 500;
+// Only what the card writes counts: the quote of the requirement is verbatim and keeps its length.
+// A quote is a pair of marks around a dozen characters or more, so an inch mark (6") does not open one.
+const ownPart = (text) => text.replace(/(?<!\d)"[^"\n]{12,}"|“[^”]*”|«[^»]*»/g, '');
+// Its own declaration, so keeping a long scenario does not also silence the branch and quantifier checks of that S#.
+export const longSpecProblems = (doc) => specsOf(doc).flatMap((s) => (ownPart(s.text).length > SPEC_MAX_CHARS && !declaredFor(doc, `long-spec\\s*·\\s*${s.id}`)
+  ? [`${s.id}: ${ownPart(s.text).length} characters in one scenario · split it into one S# per behavior, or \`declared · long-spec · ${s.id} · <why it is one>\``]
+  : []));
 
 const wordsOf = (s) => new RegExp(`(?<![\\p{L}\\d])(?:${s})(?![\\p{L}\\d])`, 'iu');
 const PROMISES_RESPONSE = /\b[1-5]\d\d\b|\bdevuelv\w*|\bresponde\w*|\breturns?\b|\bresponds?\b|\bse (?:guarda|devuelve)\b|\b(?:saved|stored|returned)\b/i;
@@ -357,6 +367,7 @@ export const planProblems = (doc, { cardDir, lenses = [], root }) => {
   }
   out.push(...quantifierProblems(doc, id, planned));
   out.push(...branchProblems(doc, id, planned));
+  out.push(...longSpecProblems(doc));
   out.push(...promiseProblems(doc, { cardDir, lenses, root }));
   const roles = rolesOf(doc);
   const unmarked = [...new Set(tasksOf(doc).flatMap((t) => t.files))].filter((f) => IS_CODE.test(f) && !NOT_PRODUCTION.test(f) && !roleFor(roles, f));
@@ -383,7 +394,8 @@ export const planProblems = (doc, { cardDir, lenses = [], root }) => {
     const kind = instruments.probe && instruments.golden ? 'probe` or `golden' : instruments.golden ? 'golden' : 'probe';
     for (const x of statesLacking(doc, instruments)) out.push(`state ${x}: no \`${kind} ${x}:\` line in ## Gate (visual lens)`);
   }
-  if (lenses.includes('visual')) out.push(...lookProblems(doc, cardDir), ...informationProblems(doc, gateLinesOf(doc)), ...setPlanProblems(doc, root));
+  // A plain screen takes the repo's styles, or semantic HTML when there are none: no component set to copy.
+  if (lenses.includes('visual')) out.push(...lookProblems(doc, cardDir), ...informationProblems(doc, gateLinesOf(doc)), ...(plainOf(doc) ? [] : setPlanProblems(doc, root)));
   if (lenses.includes('contract') && !hasAttacksLine(doc)) out.push('no `attacks:` line in ## Gate (contract lens) · add `attacks: node .claude/tools/attack.mjs --write "POST /<path> <field>=<value>" --read "/<path>"`, with `--body-limit <bytes>` if the card sets a limit');
   migrationLens();
   return out;

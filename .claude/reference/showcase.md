@@ -104,7 +104,9 @@ amber bars on black, no memorable moment”—; rules 8–12 are the judge's fiv
 GSAP with ScrollTrigger for scroll timelines —`scrub: 1` or more, never `0`—, Lenis for smooth
 scrolling synced to ScrollTrigger (`lenis.on('scroll', ScrollTrigger.update)`), and a shader or
 Three.js only if the direction asks for it. The vendored skills `build-awwwards-quality-sites` and
-`cinematic-gsap-lenis-motion-system` (Meng To, MIT) carry the recipes.
+`cinematic-gsap-lenis-motion-system` (Meng To, MIT) carry the recipes; the official `gsap-core`,
+`gsap-react`, `gsap-scrolltrigger`, `gsap-plugins` and `gsap-timeline` (GreenSock, MIT) carry the API
+and its cleanup. Every GSAP plugin is free, SplitText and ScrollSmoother included: none needs a paid account or token.
 
 ## What is touched is tested by touching it
 

@@ -42,6 +42,9 @@ const measure = ({ selectors }) => {
   const found = [];
   const name = (el) => `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ''}${typeof el.className === 'string' && el.className ? `.${el.className.trim().split(/\s+/)[0]}` : ''}`;
   const hasText = (el) => [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
+  // A box that does not clip spills whole lines onto what follows it; less than half a line is the ink of
+  // a display face set with a line-height under 1, which overlaps nothing.
+  const spill = (cs) => (Number.parseFloat(cs.lineHeight) || Number.parseFloat(cs.fontSize) * 1.2) / 2;
   for (const root of roots) {
     for (const el of [root, ...root.querySelectorAll('*')]) {
       if (seen.has(el)) continue;
@@ -59,7 +62,7 @@ const measure = ({ selectors }) => {
       const label = `${name(el)} “${el.textContent.trim().slice(0, 30)}”`;
       if (el.scrollWidth > el.clientWidth + 1 && !scrollsX) {
         found.push(`${label}: scrollWidth ${el.scrollWidth} > clientWidth ${el.clientWidth}${clips && !ellipsis ? ' (text cut off, no ellipsis)' : ''}`);
-      } else if (el.scrollHeight > el.clientHeight + 1 && !scrollsY && (clips || cs.height !== 'auto')) {
+      } else if (el.scrollHeight > el.clientHeight + 1 && !scrollsY && (clips || el.scrollHeight - el.clientHeight >= spill(cs))) {
         found.push(`${label}: scrollHeight ${el.scrollHeight} > clientHeight ${el.clientHeight}${clips && !ellipsis ? ' (text cut off, no ellipsis)' : ''}`);
       }
     }

@@ -76,6 +76,7 @@ and dark.
 | **Animate UI** (`@animate-ui`) | MIT + Commons Clause: use it in projects, never resell the components as such | animated Radix/Base/Headless primitives, animated tabs, avatar group, animated icons |
 | **Kokonut UI** (`@kokonutui`) | MIT (the free components; `kokonutui.pro` templates are paid) | liquid glass, spotlight cards, smooth tabs and drawer, text effects |
 | **Bencho** (`bencho.dev`, repo `cabralorenzo/bencho`, the free half: 44 blocks and 24 sounds) | MIT (repo `LICENSE` read 2026-10-29; the name, the mark and the site's photographs are not covered; Pro blocks are paid and not used) | micro-interactions to read and port, not to install: most blocks are demos with fixed data and pointer-only input. Worth porting: `checklist` (one spring 380/34/0.9 drives the fill, the tick and the strike of a row), `one-time-code` (one invisible real input with `autocomplete="one-time-code"`, so paste and autofill work), `label-input` (a floating label on a real `<label for>`), `time-scrubber` (`role="slider"`, arrows, the step decided on release), `slide-confirm` (commits only at the end of the track; a port adds the keyboard path and the role). `sounds/` synthesises interface sounds with Web Audio and has no mute: a port gates it behind a setting and reduced motion, and only in `showcase`. Not used: `dynamic-island`, `dock`, `glass-bubble` (they imitate Apple's UI) and the upload dropzone (a simulation, no file input) |
+| **React Bits** (`@react-bits`, registry `"@react-bits": "https://reactbits.dev/r/{name}.json"` in `components.json`; `npx shadcn@latest add @react-bits/SplitText-TS-TW`, suffix `JS`/`TS` + `CSS`/`TW`) | MIT + Commons Clause (repo `LICENSE.md` read 2026-11-07): used inside the project, its copyright notice kept; the components are never redistributed on their own, so none is copied into this kit. React Bits Pro is proprietary and not used | `showcase` text effects (split, scramble, shiny, decrypted), cursor effects and shader backgrounds. At most one WebGL background per page (`ogl`/`three`), lazy-loaded, with a still image under reduced motion and on a weak GPU; a few components do not check reduced motion, so `motion-audit` runs after one comes in |
 | **Watermelon UI** (`ui.watermelon.sh`, repos `WatermelonCorp/watermelon-platform` and `watermellon-registry`) | MIT (repo `LICENSE` read 2026-10-25; the provenance of each contributed component is not guaranteed) | a large catalog of blocks and animated components; a component is ported only after its file and credit are read, never those that imitate a brand UI (`family-*`, `aave-*`) |
 
 ## The register of each row
@@ -130,11 +131,11 @@ the motion.
 
 | Need | Component | Register | How it works |
 |---|---|---|---|
-| Headline that enters | `@magicui/text-animate`, Motion Primitives `text-effect`, `@aceternity/text-generate-effect` | `showcase` | by word or by letter, `blur → 0` and fade, staggered |
+| Headline that enters | `@magicui/text-animate`, Motion Primitives `text-effect`, `@aceternity/text-generate-effect`, `@react-bits/SplitText-TS-TW` (GSAP SplitText) | `showcase` | by word or by letter, `blur → 0` and fade, staggered |
 | Shine that runs over text | `@magicui/animated-shiny-text`, Motion Primitives `text-shimmer`, `@kokonutui/shimmer-text` | `showcase` | |
 | Gradient text | `@magicui/aurora-text`, `@magicui/animated-gradient-text` | `showcase` | |
 | Rotating word | `@aceternity/flip-words`, `@magicui/word-rotate`, `@aceternity/container-text-flip` | `showcase` | |
-| Decipher reveal | `@magicui/hyper-text`, Motion Primitives `text-scramble`, `@aceternity/encrypted-text` | `showcase` | |
+| Decipher reveal | `@magicui/hyper-text`, Motion Primitives `text-scramble`, `@aceternity/encrypted-text`, `@react-bits/DecryptedText-TS-TW` | `showcase` | |
 | Text revealed by scroll | `@magicui/text-reveal` | `showcase` | words light up as the scroll passes |
 | Highlight | `@magicui/highlighter`, `@aceternity/hero-highlight` | `showcase` | |
 
@@ -146,6 +147,7 @@ the motion.
 | Grid that lives | `@magicui/flickering-grid`, `@magicui/animated-grid-pattern`, `@magicui/interactive-grid-pattern`, `@magicui/retro-grid`, `@aceternity/background-ripple-effect` | `showcase` |
 | Texture | `@magicui/dot-pattern`, `@magicui/noise-texture`, `@aceternity/noise-background`, `@aceternity/dotted-glow-background` | `both` |
 | Atmosphere | `@aceternity/aurora-background`, `@aceternity/background-beams`, `@aceternity/background-gradient-animation`, `@kokonutui/beams-background`, `@kokonutui/background-paths`, `@magicui/particles`, `@magicui/meteors` | `showcase` |
+| Shader field (WebGL, one per page) | `@react-bits/Aurora-TS-TW`, `@react-bits/Silk-TS-TW`, `@react-bits/Threads-TS-TW`, `@react-bits/Iridescence-TS-TW`, `@react-bits/LiquidChrome-TS-TW` | `showcase` |
 
 ### Navigation and continuity
 

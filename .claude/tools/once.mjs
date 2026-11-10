@@ -32,7 +32,8 @@ export const DIR = join('.validation', 'once');
 // is left as it is. Only the text that is spawned changes: the record keeps the command as written.
 // A test cut by its timeout leaves its open handles alive and the file never ends: the runner is asked to exit when the tests do.
 const FORCE_EXIT = Number(process.versions.node.split('.')[0]) >= 22;
-export const testTimeoutMs = () => (Number(process.env.KIT_TEST_TIMEOUT_MS) > 0 ? Number(process.env.KIT_TEST_TIMEOUT_MS) : 30000);
+export const FORCE_EXIT_ABORT = /Assertion failed: !\(handle->flags & UV_HANDLE_CLOSING\)/;
+export const testTimeoutMs =() => (Number(process.env.KIT_TEST_TIMEOUT_MS) > 0 ? Number(process.env.KIT_TEST_TIMEOUT_MS) : 30000);
 export const withTestTimeout = (command, ms = testTimeoutMs()) => (/--test-timeout\b/.test(command) ? command
   : command.replace(/\bnode((?:\s+--?[\w-]+(?:=\S+|\s+(?!--test(?:\s|$))[^\s-]\S*)?)*?)\s+--test(?=\s|$)/g, `node$1 --test --test-timeout=${ms}${FORCE_EXIT && !/--test-force-exit/.test(command) ? ' --test-force-exit' : ''}`));
 
@@ -95,8 +96,19 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const p = spawn(spawned, { shell: true, stdio: ['inherit', 'pipe', 'pipe'] });
   p.stdout.on('data', (d) => { process.stdout.write(d); log.write(d); seen += d; });
   p.stderr.on('data', (d) => { process.stderr.write(d); log.write(d); seen += d; });
-  const code = await new Promise((done) => { p.on('close', (c) => done(c ?? 1)); p.on('error', () => done(1)); });
-  const exit = code;
+  let exit = await new Promise((done) => { p.on('close', (c) => done(c ?? 1)); p.on('error', () => done(1)); });
+  if (exit !== 0 && FORCE_EXIT_ABORT.test(seen)) {
+    // Node 24 on Windows aborts at the forced exit while fetch keeps a connection alive (UV_HANDLE_CLOSING), after
+    // the tests passed: the runtime's failure, not the code's. The same run without the forced exit decides; the
+    // test timeout still cuts a hung test, and the line's own limit the rest.
+    const again = expandVars(withTestTimeout(command).replace(/\s--test-force-exit(?=\s|$)/g, ''));
+    const note = `\n[once] the runtime aborted at the forced exit (UV_HANDLE_CLOSING: a connection fetch keeps alive, on Windows); run again without --test-force-exit; the test that leaves it open closes its server with server.closeAllConnections() before server.close()\n`;
+    process.stdout.write(note); log.write(note); seen += note;
+    const q = spawn(again, { shell: true, stdio: ['inherit', 'pipe', 'pipe'] });
+    q.stdout.on('data', (d) => { process.stdout.write(d); log.write(d); seen += d; });
+    q.stderr.on('data', (d) => { process.stderr.write(d); log.write(d); seen += d; });
+    exit = await new Promise((done) => { q.on('close', (c) => done(c ?? 1)); q.on('error', () => done(1)); });
+  }
   releaseLock();
   const minutes = (Date.now() - start) / 60000;
   const record = writeRecord(root, { name, command, exit, minutes });

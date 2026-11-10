@@ -3,7 +3,7 @@
 // - A `builder` or a `grunt` does, in its own context, from card.md.
 // - The main thread does only when `risk.json` says `size: small` and a commit already holds the card's tests
 //   (`@<ID>-S<n>`): RED comes before the code. On a `large` card, or before that commit, it launches the `builder`.
-// - A `designer` writes only the files `## Tasks` marks `(presentation)`.
+// - A `designer` writes only the files `## Tasks` marks `(presentation)`; at poc, any.
 // - Any other subagent (a scout, a runner, an oracle) writes it without the card in front of it: refused.
 // A subagent's hook input has `agent_id` and `agent_type`; the main thread's has neither.
 import * as card from './card.mjs';
@@ -17,6 +17,10 @@ export const productionVerdict = async (input, path) => {
   const cardDir = card.currentCard(root);
   if (!cardDir) return null;
   if (input.agent_id && input.agent_type === 'designer') {
+    // A poc is all facade and has no `## Tasks`: the designer writes any of its files (require-bar keeps logic out).
+    let poc = false;
+    try { poc = (await import('./kit.mjs')).isPoc(root); } catch { poc = false; }
+    if (poc) return null;
     const { readCard, rolesOf } = await import('./card-doc.mjs');
     const { roleFor } = await import('./gate-checks.mjs');
     const roles = rolesOf(readCard(cardDir) ?? '');

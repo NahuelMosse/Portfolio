@@ -1,7 +1,7 @@
 {
   ".claude/AUTONOMY.md": {
     "module": "core",
-    "sha256": "a7400c36f7bc4aba4355a04abe17fefa66707f2208c7bc0bed77c47a0289654c"
+    "sha256": "ce2884bf77dd95e816db265fb7a9e3f94c5aca546dbaae1e6c0df115dfc7be93"
   },
   ".claude/METHOD.md": {
     "module": "core",
@@ -17,7 +17,7 @@
   },
   ".claude/agents/builder.md": {
     "module": "core",
-    "sha256": "f69a81b9d01405d5f4bd1a5264ed98d82acaa195765abf27aa65f29f461d9d8f"
+    "sha256": "798d552d4f97099afcc489d198883820966382e1e011212ca4143bb4b1fe9a08"
   },
   ".claude/agents/card-runner.md": {
     "module": "core",
@@ -33,15 +33,15 @@
   },
   ".claude/agents/executor.md": {
     "module": "core",
-    "sha256": "569224a956539e12ba9327254444baa4cae8ce33ebbecadbd33395d5ba8e76c5"
+    "sha256": "962fc52f992750af6bf404b0269e3114c89173aebf3a905098535eb927d07034"
   },
   ".claude/agents/grunt.md": {
     "module": "core",
-    "sha256": "a809de36244652cbb7ba5b33b8e964b3c615b0a8c3af6920448b2ef9ab2638e2"
+    "sha256": "3911149dce47a305788eaf0b0426bd8aea3c7bd55d7fc7be38d31b7d12200da2"
   },
   ".claude/agents/judge.md": {
     "module": "core",
-    "sha256": "d9284ddafc8db461654f64deaaaeed5c48800ae4fc75f661ea44e6f2835b057c"
+    "sha256": "84613c86e142f1b992d09353a080ef99e560035e5e4b78a32b8b5f21c84a7661"
   },
   ".claude/agents/oracle.md": {
     "module": "core",
@@ -53,7 +53,7 @@
   },
   ".claude/agents/runner.md": {
     "module": "core",
-    "sha256": "6e490494502d4649e41db2921885fa6fff0ed1ab6daf352040882d14b07aca06"
+    "sha256": "89cc713efbf02a50606feba8089ff328b6c58ec1fcb9880688ef788be17ac5ba"
   },
   ".claude/agents/scout.md": {
     "module": "core",
@@ -61,11 +61,11 @@
   },
   ".claude/commands/card.md": {
     "module": "core",
-    "sha256": "6c86abb4a6ae2676e6220e491cb3bb76d75fcbe9a348fab52ee66f57b7df0fa6"
+    "sha256": "88523f0bc01c249a5324b8d5bd4fa97ec34c2268e53d1ba01af81782fa541f0a"
   },
   ".claude/commands/close.md": {
     "module": "core",
-    "sha256": "d8f48e3d498e2f0cf23a1fb5a12584cca35c6c554b7d412da4391e46cf172021"
+    "sha256": "55a36f67ce4a9b4cc5142ee4fbf0ea01168fda58c4fea51c0ef9441ee700c7dc"
   },
   ".claude/commands/design-deslop.md": {
     "module": "ui",
@@ -73,7 +73,7 @@
   },
   ".claude/hooks/commit-why.mjs": {
     "module": "core",
-    "sha256": "fbb373392901b791800e06091523ef34b387dcbd3d4eb959870685d1e2135075"
+    "sha256": "e20420f8d35725afb8abd99c7118970f00dc866f0193ae2a6af96821460d316e"
   },
   ".claude/hooks/context-cap.mjs": {
     "module": "core",
@@ -89,27 +89,27 @@
   },
   ".claude/hooks/guard-shell.mjs": {
     "module": "core",
-    "sha256": "150ab2c7c47a895925e8b1d7a5bedc31282ae822a91dd70138030789976f86d8"
+    "sha256": "889449c7bfc2e91eabba2e8c21cb8b929360d52b9babbd8bc52077e05cd7fc2e"
   },
   ".claude/hooks/guard.mjs": {
     "module": "core",
-    "sha256": "f82ccbc63bf33900ce09c46c8dab8e2e9fd6e4dcf29413c7d963053bc879c7bb"
+    "sha256": "d61a1afa0ef6821d92be86dd7e9b021959bb444f65b779fbb95259222420fb08"
   },
   ".claude/hooks/light-images.mjs": {
     "module": "core",
-    "sha256": "dd98e01b90eca97aab8313208e7f672eaa8e4926311df0b57229e2be86b2ba61"
+    "sha256": "7714d8dcb0d8e18563708b6e2e08bd417993075fb5b994ef1eb0ffd8d78e23a4"
   },
   ".claude/hooks/no-pending-close.mjs": {
     "module": "core",
-    "sha256": "abf57239cc214860508a8b33b53f0f7cf80dd599c8fb1d0876ad75536ad26d73"
+    "sha256": "df959b6f0749007dbe40638fc29ebaf1bd4ddc288972852cbbc1ab9ee516330b"
   },
   ".claude/hooks/publish.mjs": {
     "module": "core",
-    "sha256": "d8145b1c2eb869f07f962df93c97753fc4cf6000796ab6d8d2faaafe880be597"
+    "sha256": "68a91c4663a6f631f9440d585886948a1ae91339b6c76431b4d5616353fed5cf"
   },
   ".claude/hooks/require-at-close.mjs": {
     "module": "core",
-    "sha256": "d285ea1639117874f36608e70aa565a4b07fb750b2a5be40028842bcd8c8e62f"
+    "sha256": "a14bb1729badb700d240cd8dcf3ba0d5699868dbf6f1161743af0461867df57d"
   },
   ".claude/hooks/require-bar.mjs": {
     "module": "core",
@@ -125,7 +125,7 @@
   },
   ".claude/hooks/shell-writes.mjs": {
     "module": "core",
-    "sha256": "b7a574d01524a8ba5b1083c2674f46bc19fa954e92d36a8cb19b09dfc69b55a9"
+    "sha256": "582c807870d21e801fb847a0dcc412a329e180bdf7010027d193691e640826cb"
   },
   ".claude/hooks/time-cap.mjs": {
     "module": "core",
@@ -137,11 +137,11 @@
   },
   ".claude/hooks/turn-budget.mjs": {
     "module": "core",
-    "sha256": "8542f26fbc1d536858f6108c7e8670a5e1fb108da1440e2055ac088ca9685b8e"
+    "sha256": "94042bfb0f738329ac065989dafc6b35b16afcca14d58d777e53f821c386a6c9"
   },
   ".claude/modules.json": {
     "module": "core",
-    "sha256": "ce47bf5d55636c6320bb8bafa02594fe1486dc5e02dfec78e89b23739ab1c501"
+    "sha256": "241544f7bcecbbdbcdff44dcd5f1456f9b7aceb804cf4ad680ca54582250e7ca"
   },
   ".claude/profiles/web.md": {
     "module": "profile:web",
@@ -161,15 +161,15 @@
   },
   ".claude/reference/assets.md": {
     "module": "profile:web",
-    "sha256": "0afc330eec0113a8731410edc7584b340036bfb9af82d89c5e611f52da725aa8"
+    "sha256": "21d5077c23d24d15d6e400ddfb6816f403467b40efecdd3b6bd38e22a348c4f5"
   },
   ".claude/reference/brand.md": {
     "module": "profile:web",
-    "sha256": "4b46a15814eea031b9d6ae9476af5caa8d1f9ec9ad7d809be06171c2638b7db4"
+    "sha256": "bde18f27e93fb85a94539d3f24bdddf4541d068aa306f30ad044577c2857ba00"
   },
   ".claude/reference/code-patterns.md": {
     "module": "core",
-    "sha256": "456bc205a5b5266606c5c73fb0f4acdaadb706591dc2438e74e9105b73ee886b"
+    "sha256": "7ca909e44b0e352806b6ef72d19ce628e8921be3c108646ed326fc88a2e5c5a9"
   },
   ".claude/reference/color.md": {
     "module": "profile:web",
@@ -181,7 +181,7 @@
   },
   ".claude/reference/components.md": {
     "module": "ui",
-    "sha256": "0a1e5143638de568486b319fe9c43c5c68773f7b3dbcdebcb93d82edb12c5609"
+    "sha256": "47af7ceb955709e620eda0e2046dd037fb051ce783accf82eae308ce85273895"
   },
   ".claude/reference/composition.md": {
     "module": "profile:web",
@@ -193,7 +193,7 @@
   },
   ".claude/reference/criteria.md": {
     "module": "core",
-    "sha256": "261ca92e6bdae068f339baecf4779cfbf7eda32c52ca08176f34e121f7acf119"
+    "sha256": "ba5f1b4c4b08335823ab373df2897a6f704a490ecf7044790136229ad3bd1859"
   },
   ".claude/reference/cta.md": {
     "module": "profile:web",
@@ -217,7 +217,7 @@
   },
   ".claude/reference/lenses.md": {
     "module": "core",
-    "sha256": "f9fffe72f865571aedcd97e367edefbe30217ff4db5787d00d88b4becc21ab0b"
+    "sha256": "ce93f5e06fb14921435bd0108ed3cbad53d5549bc608e3c3cc6c6a273bd8b5d0"
   },
   ".claude/reference/modern-interface.md": {
     "module": "ui",
@@ -245,7 +245,7 @@
   },
   ".claude/reference/security.md": {
     "module": "core",
-    "sha256": "78705de8e85fe6fdc096c4c8184a8ff2e06defda8b836688d468906602c0a2a6"
+    "sha256": "6c2294bab37ca9491cc9992411dab4625178c92b723a4d1a986aaeeb7bfff82c"
   },
   ".claude/reference/showcase.md": {
     "module": "ui",
@@ -273,7 +273,7 @@
   },
   ".claude/rules/design.md": {
     "module": "ui",
-    "sha256": "5c8243502a7a96cd8abcbdfc5408fd76c4fbe73c7dbb7d17e23479535dfc90b0"
+    "sha256": "528f8a251d55c56ed35f0958b2eed1ef1860af7b091651e50f0667cd9bcce80e"
   },
   ".claude/rules/interface.md": {
     "module": "ui",
@@ -293,11 +293,11 @@
   },
   ".claude/settings.json": {
     "module": "core",
-    "sha256": "bf9be5c1c3469a2d75aca446b9d8d6e995e7289d66726c668a12c5f10f15d621"
+    "sha256": "ef2143c841676a2714fb884340a285ece5c2ee52c0e7a3975dea7f7e42660c67"
   },
   ".claude/skills/PROVENANCE.md": {
     "module": "core",
-    "sha256": "8b723fff548cc4ade9319a1b813a9e2f7b41141b5fc202dc15a8534cb63b154b"
+    "sha256": "8a4b3bf813cf426e8909abf9f2626808ee0e948bc95ff9618d96de6d936dc533"
   },
   ".claude/skills/accessibility-audit/SKILL.md": {
     "module": "ui",
@@ -317,7 +317,7 @@
   },
   ".claude/skills/build-awwwards-quality-sites/SKILL.md": {
     "module": "ui",
-    "sha256": "b795e1ce8faa65d276bfbdcc86227e7589cb2751e860e23c74f06f4e9797a269"
+    "sha256": "87e54f267a4b08acfcf19a68174b8a3c45815871e2bdeef6831697d3895e0c9f"
   },
   ".claude/skills/cinematic-gsap-lenis-motion-system/LICENSE": {
     "module": "ui",
@@ -329,11 +329,11 @@
   },
   ".claude/skills/cinematic-gsap-lenis-motion-system/SKILL.md": {
     "module": "ui",
-    "sha256": "7b8f5745f34ef4ba507e19fabd6acf9cd3b8d70efda81746d0f4090af0f84e06"
+    "sha256": "f965ea228c52e16928223660e032f419c2c728f121b86e45be12e48420c37814"
   },
   ".claude/skills/design-review/SKILL.md": {
     "module": "ui",
-    "sha256": "026842776797b8f4ab7690568cb237cee1e11d1f8081a4073b60870ecff9fd5f"
+    "sha256": "7816c6c0b5f9d2d9a9f6c5ff02f6a8fb8b2f42dcbb1b8e7652a3e04c2f79b18c"
   },
   ".claude/skills/find-animation-opportunities/LICENSE": {
     "module": "ui",
@@ -421,7 +421,7 @@
   },
   ".claude/skills/review-animations/STANDARDS.md": {
     "module": "ui",
-    "sha256": "e7d3605034acda54ca13e43aec9e64d65b53de20f75b11b8d694e373012fbe07"
+    "sha256": "c3861be12bc5401aaa90eb72cb6fa781e61949e7b4b10da1ed405c1839578cba"
   },
   ".claude/skills/shadcn/LICENSE.md": {
     "module": "ui",
@@ -497,7 +497,7 @@
   },
   ".claude/stacks/node-ts.md": {
     "module": "core",
-    "sha256": "d1558f2dd069585efbb8d167e69caf10533044749dabebbab6fb7d98cc48a755"
+    "sha256": "fc8537d08f920e12e18131494ef669fd7733f459fb5cae841995440bdc10d32e"
   },
   ".claude/stacks/react-shadcn.md": {
     "module": "ui",
@@ -517,7 +517,7 @@
   },
   ".claude/templates/card.md": {
     "module": "core",
-    "sha256": "ffaa73ee2d1ba8f8997ceca63da9d85fb54c3f0c43f290b3a5fb25ca89e225b0"
+    "sha256": "e8ec4e77bbe200b6f73e6889272a4fcee5e5844c1d0b779a6bb6e47b741408d0"
   },
   ".claude/templates/components/.gitignore": {
     "module": "ui",
@@ -541,7 +541,7 @@
   },
   ".claude/templates/components/components.css": {
     "module": "ui",
-    "sha256": "cff47d0789b21fd8b0b399cc1f976d2f5d2dee3c5755da385dae79197ef77c10"
+    "sha256": "ec120ebb4f13246e92e8b42b6a064256b582c58f8db7134033118feb3e3b1f53"
   },
   ".claude/templates/components/components.js": {
     "module": "ui",
@@ -1569,11 +1569,11 @@
   },
   ".claude/tools/agents-running.mjs": {
     "module": "core",
-    "sha256": "d6b75e7821eb14a86d306aff689e7539f9c20d1cb294a9ccfd022337fc025d7c"
+    "sha256": "e0296fd4df4204972e4b4083373d9ee33524ebd58be82f3fe932d98b1384b89e"
   },
   ".claude/tools/app.mjs": {
     "module": "core",
-    "sha256": "f23dd3dbe7bf16b8da43a312aa27b9c4a4c5778dae81d5445d4fdf1007c8692f"
+    "sha256": "41cbc26f1a44d3715b3dad00f882e31cbc5bfbb057cdc02042d4e77262c680b3"
   },
   ".claude/tools/asset-audit.py": {
     "module": "profile:web",
@@ -1593,11 +1593,11 @@
   },
   ".claude/tools/card-cost.mjs": {
     "module": "core",
-    "sha256": "382bd18ee4445a943bd62d95ace4f8f042bff35dfd2d03ffac31ed0c498a9290"
+    "sha256": "b2d62a8800db88ef3166228c21e77e7fc6e44729bf6c3d49e1ffe428d15e0c6c"
   },
   ".claude/tools/card-doc.mjs": {
     "module": "core",
-    "sha256": "9391b136ca921f15b71ac14976d0bfadf4fc51de9690b5f4dcd9424f90ead6d4"
+    "sha256": "c99812e7794717eb9e50fdbd7b15128d1a2e7caf3b617dc8bf6f2ca97cb1125d"
   },
   ".claude/tools/card-view.mjs": {
     "module": "core",
@@ -1605,19 +1605,19 @@
   },
   ".claude/tools/card.mjs": {
     "module": "core",
-    "sha256": "26bb04a6b7a3a85c9e851bbb7de38718b6cd92a9e4544415f0fa8d82625b3b59"
+    "sha256": "3bfbabde0c357a61ca62b4545aebfd823661a624815878beaf9918c1306c7a55"
   },
   ".claude/tools/close.mjs": {
     "module": "core",
-    "sha256": "e7cc212dff432be8049f7ad78f8c0ba4765a01336e51dea05e207ab1be33b233"
+    "sha256": "c8835cd4811e96ec5a95d85bb888df6aec08b8ff940377f670f43e3403ac1358"
   },
   ".claude/tools/code-language.mjs": {
     "module": "core",
-    "sha256": "f9cea586c3a9988513ddd758207f82aa5231abe435403fdb92f0fe7d7c3f72ba"
+    "sha256": "226ede570b532b518225f59c68e3351ef15ea338e7f0187c9fe610c677f5c366"
   },
   ".claude/tools/component-set.mjs": {
     "module": "core",
-    "sha256": "77b93ca2155716e7895f4431511316c59817c383f0b89622cf5efecf1d4f1527"
+    "sha256": "13fa956c73f1a4958dfe36b6261d23605b5966fc8141d495c783a5817cb612cd"
   },
   ".claude/tools/copy-tree.mjs": {
     "module": "core",
@@ -1625,7 +1625,7 @@
   },
   ".claude/tools/design-checks.mjs": {
     "module": "profile:web",
-    "sha256": "7dda0e1e01d21290fb96335c9cfc6d544decab59cd3e88e81c9469a693bbadca"
+    "sha256": "024aa62b03a17e7f1a479c97f86097e466abdefdf2f85d712d7c010cd151966a"
   },
   ".claude/tools/design-round.mjs": {
     "module": "profile:web",
@@ -1641,7 +1641,7 @@
   },
   ".claude/tools/gate-checks.mjs": {
     "module": "core",
-    "sha256": "1fe2abe9235dc72ff6e32156af2c56e2ed74170602e5472b44559304747834ff"
+    "sha256": "a83875dbafe7848af09591c67e653ed23244b6a1e029266b7350301580d0210a"
   },
   ".claude/tools/help.mjs": {
     "module": "core",
@@ -1649,7 +1649,7 @@
   },
   ".claude/tools/hook-dispatch.mjs": {
     "module": "core",
-    "sha256": "533d0d2fa309b75c8f691a138e8fb4f9b08c3677ba6b5d6c9194ebbccbd42da6"
+    "sha256": "67fb2ac6eaa3ece2b1fda50d4c02342e0a0270f68ba2d8e959f4bb5a2283c96e"
   },
   ".claude/tools/hook-worker.mjs": {
     "module": "core",
@@ -1677,7 +1677,7 @@
   },
   ".claude/tools/kit.mjs": {
     "module": "core",
-    "sha256": "4deb3482c97aae3ef47749f5a89231762abe6c10da7a3287629f17a7cd8457fe"
+    "sha256": "8b84151a79484eac96a2344fc12f843a590177966a515ac6d8ac2aae1df13509"
   },
   ".claude/tools/log.mjs": {
     "module": "core",
@@ -1701,7 +1701,7 @@
   },
   ".claude/tools/once.mjs": {
     "module": "core",
-    "sha256": "58cd62d013dff436044d381442b613e261eb829b5eae6193f34709e3986d53cd"
+    "sha256": "c3a7fb17528b86e4458527fe9b8a2d4856ddf4ab685fd9ab8a2cf1ed1eb1d874"
   },
   ".claude/tools/out-of-scope.mjs": {
     "module": "core",
@@ -1713,15 +1713,15 @@
   },
   ".claude/tools/overflow.mjs": {
     "module": "profile:web",
-    "sha256": "7fb6c3ad0918a9b51a31c708dfcdc1827d42b21311ffc81213a23cac3a523eda"
+    "sha256": "5d65604baa7ba85996b9fc2977c59ce41aba7e00cbba59b11ed160948ea38198"
   },
   ".claude/tools/plan.mjs": {
     "module": "core",
-    "sha256": "76997f3f0b6e1acd758246af5c77c59ba01868dbcb51b248c7ef03e3d7c7c1e5"
+    "sha256": "3e9fb39bc1f6e649b42c6a560f6a045466c867fe33431b2705e2913cfbfce466"
   },
   ".claude/tools/probe.mjs": {
     "module": "profile:web",
-    "sha256": "cd462dcd4678600c2a8a7979e57b15789244d745198715407d995f247826fc10"
+    "sha256": "90150baecc00316476461e83ce71ae4546fe79ba6c7941731990fc400663d478"
   },
   ".claude/tools/repeat.mjs": {
     "module": "core",
@@ -1729,7 +1729,7 @@
   },
   ".claude/tools/required.mjs": {
     "module": "core",
-    "sha256": "a0660df462cf94d42e169df611986c700563b7065ad5a94cdc72b2312de2b10f"
+    "sha256": "9bb98a61bf5d7629190cb8d4931d1e2d7c1231aa82b68a8231a05be4013a0abf"
   },
   ".claude/tools/review-range.mjs": {
     "module": "core",
@@ -1737,7 +1737,7 @@
   },
   ".claude/tools/risk.mjs": {
     "module": "core",
-    "sha256": "eb9f4a9c3dca6ba799c52579aae77bedd829e3daccf124dd779e74288228453a"
+    "sha256": "474f24f2df18f7d88fd86515d3858350d753bb514079a4b099c6ba05d7132504"
   },
   ".claude/tools/shell-writes.mjs": {
     "module": "core",
@@ -1749,15 +1749,15 @@
   },
   ".claude/tools/signals.mjs": {
     "module": "core",
-    "sha256": "9c2350ac8908bb71713006fd5f6d7afb5147bdb45a18fb494145971a8fed09eb"
+    "sha256": "674a71ca31dccf370ed5d92265d94bd1c5b6f0d4c2b4fdefee2cdfbc98b0d94c"
   },
   ".claude/tools/transcript.mjs": {
     "module": "core",
-    "sha256": "31fd1972de5fdd2682659944a3eb8e3ef8b1514eb51ccefa4d24819e79c2d274"
+    "sha256": "1de21338bbdc84db9de8985064f3e7e7e17c502619d48065188c0482d3f589cb"
   },
   ".claude/tools/tree-snapshot.mjs": {
     "module": "core",
-    "sha256": "40ce53d3d8886bc2d0addafb21a9caa65fc3c321d460357243dee3bb44c31477"
+    "sha256": "6a564c6c913edc4d134d3cb56b5e3c34b7c2478e16d17efd6b729f9b9b6bea7f"
   },
   ".claude/tools/trim.mjs": {
     "module": "core",
@@ -1765,11 +1765,11 @@
   },
   ".claude/tools/verify.mjs": {
     "module": "core",
-    "sha256": "407ed81bfed8f25287e024ef20297abf5c9fa8106442fe4f533a419e3f3923cb"
+    "sha256": "8b9737ab6706d92fbe2953cbe2b6de6d5ded90c67242da68e7c160519d30ed00"
   },
   ".claude/tools/wait.mjs": {
     "module": "core",
-    "sha256": "1394cd24991ccb83e32e6917b9d91b9cf0d0cac848070d9662fcc3b8434acccd"
+    "sha256": "5cf70ec16ab67cf47e3b841f5659ae447861a8c91d3108786498c0ec965cf897"
   },
   ".claude/skills/design-taste-frontend/LICENSE": {
     "module": "ui",
@@ -1781,7 +1781,7 @@
   },
   ".claude/skills/design-taste-frontend/SKILL.md": {
     "module": "ui",
-    "sha256": "0d4c8fbcf25c6df233c17dab503d9ac42f1e2364cff5dc32fae9a63dfc251c29"
+    "sha256": "4f37a8219d4ff8ae69536ef6844b5ff3c1847ff2d944234edaddb8a21618b743"
   },
   ".claude/skills/design-taste-frontend/assets/app.css": {
     "module": "ui",
@@ -1817,7 +1817,7 @@
   },
   ".claude/skills/design-taste-frontend/library/directions.json": {
     "module": "ui",
-    "sha256": "8ebf61c71bf2b46c37b14335e01c0612c70e9cea34bdf6b4ef4c93496b2b9805"
+    "sha256": "f245898acea908d679263ddb0ec102c024c364dd1ebce7aefe7a4abf7351f5eb"
   },
   ".claude/skills/design-taste-frontend/library/heroes.json": {
     "module": "ui",
@@ -1849,7 +1849,7 @@
   },
   ".claude/skills/design-taste-frontend/references/app-screens.md": {
     "module": "ui",
-    "sha256": "55e937ec30de605b53a11310b446f328a3ce7403de24fff008920a00be1a5ed4"
+    "sha256": "7e1e3ae614caf38ff2e6e137e1918131eab5393f66236359c5cf58afe14dacf2"
   },
   ".claude/skills/design-taste-frontend/references/colour.md": {
     "module": "ui",
@@ -1857,19 +1857,19 @@
   },
   ".claude/skills/design-taste-frontend/references/copy.md": {
     "module": "ui",
-    "sha256": "a72a800c315a77e7835250cb5d6d3f624d6a0c782b8f1529e459bb59f7dae58b"
+    "sha256": "cb39fc7faa953b3008cf5258099f4b1a3bf55467602116a0e87c7cfed542134b"
   },
   ".claude/skills/design-taste-frontend/references/critique.md": {
     "module": "ui",
-    "sha256": "9c2f4392674530b3f02ac529fba53d82ab37b85f401c4c1989fbe98d6217f0b4"
+    "sha256": "cb02693ff0453a2d3dbb1d65329608ba6433d7f297ad80eced8662dacdf494a9"
   },
   ".claude/skills/design-taste-frontend/references/imagery.md": {
     "module": "ui",
-    "sha256": "518def6b2c643b295e13e66b09b66f2e3fc1421d3cf6c7dbb1dc749097ad2ad9"
+    "sha256": "3364fed22bc5e36d1365e0680c9f062ae506a5547f011650ffc2776739c3d73d"
   },
   ".claude/skills/design-taste-frontend/references/layout.md": {
     "module": "ui",
-    "sha256": "40080640719b07737afb94a8868afef87767a1ab4892814d9b6882e2d283453b"
+    "sha256": "edc879b983b2dc6de49924381846f3844d728dc0f98cb8b822586af22d266146"
   },
   ".claude/skills/design-taste-frontend/references/motion.md": {
     "module": "ui",
@@ -1885,11 +1885,11 @@
   },
   ".claude/skills/design-taste-frontend/references/tells.md": {
     "module": "ui",
-    "sha256": "8e6de4411c43d3108f832b3f33bb1a2a838148a72b92a176df893b67d99a0da9"
+    "sha256": "204d9be272403fc1f4dc165bdae344b2724a641c1d50b88345d62049fe2459f1"
   },
   ".claude/skills/design-taste-frontend/references/type.md": {
     "module": "ui",
-    "sha256": "8773cc81546eba8567c94d2509e9b3a927ae26ec60ff5bb4c0c20b119ad15d26"
+    "sha256": "018af24589388b488660f07c58930399f071d918a955b8903a24652c55bb698f"
   },
   ".claude/skills/design-taste-frontend/scripts/assets.mjs": {
     "module": "ui",
@@ -1897,15 +1897,15 @@
   },
   ".claude/skills/design-taste-frontend/scripts/draw.mjs": {
     "module": "ui",
-    "sha256": "432ed8db71c47087e97cb32362e04247b9a9010a417470d0c3b717ca1a56d42c"
+    "sha256": "0daedceba125c35c997f9ea62d5003e48e78deddd26eb8ce77beb9f1196aec8b"
   },
   ".claude/skills/design-taste-frontend/scripts/inspect.mjs": {
     "module": "ui",
-    "sha256": "c0d7366f789b3f594787b37a525d1d7096104a499aac8a97ae04b405046cf02c"
+    "sha256": "dd3187e3487bcafd59da74ed6237f8eb6dd4f9afcebf6a9abc1b458a92a8c3e8"
   },
   ".claude/skills/design-taste-frontend/scripts/lib/app-draw.mjs": {
     "module": "ui",
-    "sha256": "aa0802d341d19b53ec14ec21746e428be49a8ec3ed7b30253194105fc18a8df6"
+    "sha256": "a2a68b97682a8e850f19b6a50fd793959ec700d2428f0857c0be856707b6ddaa"
   },
   ".claude/skills/design-taste-frontend/scripts/lib/cdp.mjs": {
     "module": "ui",
@@ -1921,15 +1921,15 @@
   },
   ".claude/skills/design-taste-frontend/scripts/lib/probe.mjs": {
     "module": "ui",
-    "sha256": "6fecc266a89d707b185504d4e8039ab7f42a37aca9484373ef43ac6ac6c45966"
+    "sha256": "ee7e2f997e025542cc54af5ddfe56f74a83cc6fac3bf5b370ee683140c18c2e6"
   },
   ".claude/skills/design-taste-frontend/scripts/lib/rules.mjs": {
     "module": "ui",
-    "sha256": "959eb7939d6ee8cda752b2ed558fb6a466ee2047980a72bb4f90ae4e3d09beb5"
+    "sha256": "b6d5b08901bae313a9db2ca5a911a61e2b89bd43d4129d9c70e6e7ce9e2b9750"
   },
   ".claude/skills/design-taste-frontend/scripts/lint.mjs": {
     "module": "ui",
-    "sha256": "98b7866a5199dafd7dc26040bc655c6c8e7ad411f24c0dccb63bbdcfb4b733aa"
+    "sha256": "87ce3f6fe941f6ce37bba6e76ddbceadc6e7030fc45c80d4a0280fffb3e62b72"
   },
   ".claude/skills/design-taste-frontend/scripts/scenes.mjs": {
     "module": "ui",
@@ -2073,14 +2073,598 @@
   },
   ".claude/tools/delegate-rule.mjs": {
     "module": "core",
-    "sha256": "13bdc390716504b9b1dfe50be3ba7ba5de66d4d1fd703b18b3abd69d5d2f27e5"
+    "sha256": "4ac385ce438ea82783a155742914f978124249bcff077d06ca80780c94613f08"
   },
   ".claude/tools/guard-paths.mjs": {
     "module": "core",
-    "sha256": "838b4fad1698f370454f165d933c9d6ced7dce604ecd234d3633f3ac87d90a8a"
+    "sha256": "20e2dafe36eb391a400fa6788f5ae4ff354ae71e2b3c068320ee296a9a934dc6"
   },
   ".claude/tools/shell-words.mjs": {
     "module": "core",
     "sha256": "5c8f4ceb628996205b2b46656f9c66302948bdd0b3eeb1e0971b956e68da7c03"
+  },
+  ".claude/hooks/kit-feedback.mjs": {
+    "module": "core",
+    "sha256": "e66f366660df74853265dbe8a291508f48f7f09acfa36c35044249c4e72590a1"
+  },
+  ".claude/reference/legal.md": {
+    "module": "core",
+    "sha256": "e273b056c92ca71c06fb9e32ad7c49e8b1e7a3be4b9dfd1beee0b39cafefcdfe"
+  },
+  ".claude/skills/break-ui/CATALOG.md": {
+    "module": "core",
+    "sha256": "7358efcc6bb48e35187be1c064cf60022dcb18c72c18fab58b606dfc5f421f15"
+  },
+  ".claude/skills/break-ui/LICENSE": {
+    "module": "core",
+    "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+  },
+  ".claude/skills/break-ui/SKILL.md": {
+    "module": "core",
+    "sha256": "7819c1dc113808c321b2216dcd0e3470427457cd4da751c09da57b2b0f36dbb4"
+  },
+  ".claude/skills/choreograph/LICENSE": {
+    "module": "core",
+    "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+  },
+  ".claude/skills/choreograph/RECIPES.md": {
+    "module": "core",
+    "sha256": "b61f03b5c47398cf71ce9db4157cc919617228981b1d74a72d6a5fa27e4aaad2"
+  },
+  ".claude/skills/choreograph/SKILL.md": {
+    "module": "core",
+    "sha256": "ba4366cfdc002e5d9c3e5d3c2cd5ec79d0f40f1bbba1611819f1b9d49d8a7b12"
+  },
+  ".claude/skills/design-taste-frontend/NOTICE.md": {
+    "module": "ui",
+    "sha256": "b8bb8c4a6f8ad5c426f2926349610fc48330146d9b743868c504690a2d33e485"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/LICENSE": {
+    "module": "ui",
+    "sha256": "4575a543ab88dad12ccea7d97e563d0bce5b448b06072e65d3264497dad326df"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/apps/fragment.css": {
+    "module": "ui",
+    "sha256": "68264f78cb98adf590294adc29c1128005c276aa33576a1ed0db57724c4d5294"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/apps/fragment.html": {
+    "module": "ui",
+    "sha256": "d24a268b1e06a5c440524c4b14c001844adc0930ece51f77c72669a9ee22aacb"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/apps/fragment.js": {
+    "module": "ui",
+    "sha256": "e9fdb0aa51052a6afc4b15c92473c714ec6119c6adb5868c1ebdeaa378651160"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/apps/meta.json": {
+    "module": "ui",
+    "sha256": "65e09febd9f6b63952302130097fe8da2324f3b2e53dfb8e55c9950b79782a5b"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/base.css": {
+    "module": "ui",
+    "sha256": "a534a394b5136b77e90c77ac559d785ec644edd7a4fec3e03f0ca4e86ab3a968"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/calendar/fragment.css": {
+    "module": "ui",
+    "sha256": "ae8633594e9a957576cd08635ec9b84301da97f3480240e559140ac2c16daf57"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/calendar/fragment.html": {
+    "module": "ui",
+    "sha256": "4487008e03fd01474a362cb915b4becd77f45d24c5ac4a760dfe084fe2c58aa8"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/calendar/fragment.js": {
+    "module": "ui",
+    "sha256": "48444a7e22581cd0b1917e8e033ed1f9d64441619502da07898530c348b941c4"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/calendar/meta.json": {
+    "module": "ui",
+    "sha256": "858ead691c84d283a5b829423626f86f0e0e27bdc3bda9f15883aec902715432"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/cards.css": {
+    "module": "ui",
+    "sha256": "4cba165db31146649e461b7bda76f5575d3f6eb82b725ec66d3d5a24b8249dd1"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/cards.html": {
+    "module": "ui",
+    "sha256": "793280a320583bdd33e18937a958ff8be414f12e5d37e9357a7c2c0fca645841"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/chat/fragment.css": {
+    "module": "ui",
+    "sha256": "230314eeafe2ac30726b2717d82f584c281aecd1de0fb9832a9b2639471aa165"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/chat/fragment.html": {
+    "module": "ui",
+    "sha256": "18006566eddc071a8a195ad3a6bd146e1629d073089d585a440635b51184b4d8"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/chat/fragment.js": {
+    "module": "ui",
+    "sha256": "0db20119604ebeec802490c484d0278cd26881bed3d92afe3c79bbfad761f8cb"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/chat/meta.json": {
+    "module": "ui",
+    "sha256": "05bf93c89907bbb160fa774955474cc7fcc6a58056c0e4de516755424b7ab745"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/checklist/fragment.css": {
+    "module": "ui",
+    "sha256": "4e5a5dc92aaa8da789a83551aaf8c94a4400cf0a461bb1dbc4f7f1bbeb5dacec"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/checklist/fragment.html": {
+    "module": "ui",
+    "sha256": "8cb8dd66f833c15eee0df35e4ac6af82d324a5d4f12c6718a4d4c9dc8896938d"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/checklist/fragment.js": {
+    "module": "ui",
+    "sha256": "d6076db3ba38f1199f82df949732fd4623798715e582e751a0d0fd9358530a74"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/checklist/meta.json": {
+    "module": "ui",
+    "sha256": "92ffd5676aa3b12dbf885d5c23d5dfa63fe85c9a1c02fb82e2c4c1a3bfedd93d"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/code/fragment.css": {
+    "module": "ui",
+    "sha256": "afaa55bca2ff006ec3ddaae71be484052af6b1424aae885e40448ca31b1f0f11"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/code/fragment.html": {
+    "module": "ui",
+    "sha256": "ffbe51c1c9e38bc7de0d563bc4cf1d81cb88a3a23cab3d6fbd8e3013a6ca7d96"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/code/fragment.js": {
+    "module": "ui",
+    "sha256": "cd7d87c0c5fae04e393a3475fe0847647cbd455c606afb27d2856b9565cd4907"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/code/meta.json": {
+    "module": "ui",
+    "sha256": "35cd22d92e3772c124ff0e641ba4851ab79ba57afcb077d4234086f6d14a65c8"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/cursor/fragment.css": {
+    "module": "ui",
+    "sha256": "0d4612fc8ecde3283a32e08c2d408ae51cc60e4d89cf3fd425b9ace0ee777179"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/cursor/fragment.html": {
+    "module": "ui",
+    "sha256": "3670866cba455802d6c2ec75cdc9ffbe83f1ce366caa908ad18135a99f23144c"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/cursor/fragment.js": {
+    "module": "ui",
+    "sha256": "941e776574f2652462ddeeb90215360ea2e2696552bbe3daacd03a3089b84352"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/cursor/meta.json": {
+    "module": "ui",
+    "sha256": "fd68120969adc11222b596ed111d0d9420d7c08719878c74a0e2a346baef3f44"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/diff-review/fragment.css": {
+    "module": "ui",
+    "sha256": "97effcac8b0d609f7432fd2c61e3d82ee314caf50e80e07b61e35f385b5b209f"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/diff-review/fragment.html": {
+    "module": "ui",
+    "sha256": "45c0c64f45b4c1610ff7b8911ff693603379ad94e9f7244fd791fb9d236b710f"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/diff-review/fragment.js": {
+    "module": "ui",
+    "sha256": "ee600171891e7214e25971ba9d0c2a37b9f1c9357d53550f066366ec7b045801"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/diff-review/meta.json": {
+    "module": "ui",
+    "sha256": "2cdb58b1852f565e33dfcd5a12e7ee95e2764c3c0acf3bd6cc0b082aa4718aa6"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/doc/fragment.css": {
+    "module": "ui",
+    "sha256": "7aae68f70d0be7fbb810155944c6d56bdb982e7b4fbbac4bdaff0627983cdc86"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/doc/fragment.html": {
+    "module": "ui",
+    "sha256": "4c453a366a98cd84ce0a8b1154b29ca55630876fc8f75bbc171558ee14afcc8e"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/doc/fragment.js": {
+    "module": "ui",
+    "sha256": "ca2c6e9a4b60db252ad89a3ab54b750c7c7756b328ef18b3f8787678a53e0aae"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/doc/meta.json": {
+    "module": "ui",
+    "sha256": "2be32da2aed6bd0ffb51b3adab5b7f0e8cf3840ffc53dae3e82b597d46ccf921"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/files/fragment.css": {
+    "module": "ui",
+    "sha256": "dc7046291c60568cd2ef9b722fd23bf94666d5b99432269a357e26d4dfe22987"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/files/fragment.html": {
+    "module": "ui",
+    "sha256": "88a734f9758f8c786d368d573d869fba3b26d4988779c64c07f59a4f17b255ba"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/files/fragment.js": {
+    "module": "ui",
+    "sha256": "6c490280ce2c5888e801226778942bf206407af4191147d84d34005db7a26440"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/files/meta.json": {
+    "module": "ui",
+    "sha256": "2fb6092d024e016ce9e2719639ad15e74dc37410d9ce83a68244d6d4bdf872d6"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/NOTICE": {
+    "module": "ui",
+    "sha256": "611a305fac7baaa78c1af48f0f068623ab09daa65177f394388d27ba574b5138"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/asana.svg": {
+    "module": "ui",
+    "sha256": "2aa36ddfe70508b487cc199df1093293411894f3748ebb917a386b1883b1a769"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/calendly.svg": {
+    "module": "ui",
+    "sha256": "25b7c24e93204d2637f2c4aba0c233f33e4359946d69aea067cd2d942a5b9942"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/confluence.svg": {
+    "module": "ui",
+    "sha256": "f5e6a3758d93c9b68cc96c51db7005c1814a774ddec35e0a14fa239d1814586b"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/docker.svg": {
+    "module": "ui",
+    "sha256": "bc4739077a12705622afd0ddf7b853dc2fa36dbd1775ea9a727edf4a84e92773"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/dropbox.svg": {
+    "module": "ui",
+    "sha256": "dc6284ac66a76e5647f7351dc9055b72216878e432914662a65f22d76c738a42"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/figma.svg": {
+    "module": "ui",
+    "sha256": "d17423b2c3c3817b3a1fdb9496335e01233f1bc10156a40bfe7ecf332e602443"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/git.svg": {
+    "module": "ui",
+    "sha256": "c4418cbfb0be23f3398f3b7ce7cb5b770a86d17a3e7c03f43035312316995d1e"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/github.svg": {
+    "module": "ui",
+    "sha256": "e2a0222435a7abfa3f32c222873ac113db7f75dd3e76a18354856ec9e58a43dd"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/gitlab.svg": {
+    "module": "ui",
+    "sha256": "d2d0ae828ff04365849339f91f62ad9beaad81788e43db13bb3689db5cbff8f6"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/gmail.svg": {
+    "module": "ui",
+    "sha256": "0b7e2b00b863884b026bac7a49662c8e74bc829ed29782830181d8f194c96930"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/google-docs.svg": {
+    "module": "ui",
+    "sha256": "1af302d7b9941743a752f242724e3eab2ef138414aa16da09b621ea4b9ff1d70"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/google-drive.svg": {
+    "module": "ui",
+    "sha256": "97e37220b21d5ef2492de245f0c7e278d5dcd9a4e73c549cc8f200d18492f7aa"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/icons-credits.json": {
+    "module": "ui",
+    "sha256": "f1a113069f68c36192006edc8d6e1b3bdb9caf366315ff553b8821b3f89678d4"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/intercom.svg": {
+    "module": "ui",
+    "sha256": "8721142e5d10b0e7a00e7e2b38cebc5c9d1f9468a213e74a28664e19547ae3eb"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/jira.svg": {
+    "module": "ui",
+    "sha256": "a3967c629a0b54216da9a717be2c04e87264baad1d550b0aa695d45682d401bc"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/kubernetes.svg": {
+    "module": "ui",
+    "sha256": "47209632789a0d62e88e119759b9aef3c122ac030e6729ab2b1395c945ea3e67"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/linear.svg": {
+    "module": "ui",
+    "sha256": "2795a9be63c6fd9b068aa74c7f8cb2e6beb26ab735e5031204bc846f4579659e"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/mastercard.svg": {
+    "module": "ui",
+    "sha256": "8455fb8147bf4855eb7bdabd3c51bc890788b14fa1b9aeaf9dad0a78da88cf5d"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/md.svg": {
+    "module": "ui",
+    "sha256": "f116c8ab3123ad4727e7a42d50d19b549978da9f466330a01b8a2104a9ee4c51"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/messenger.svg": {
+    "module": "ui",
+    "sha256": "a3bbf5d609d32f73cffaaa6715820f5e0c75a9cd45b50e0b6baa0149cebafa3f"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/nodejs.svg": {
+    "module": "ui",
+    "sha256": "d6e9039a364683734cfa35b3929177aea77bfe6906ef167a59bb7fb2575d8155"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/notion.svg": {
+    "module": "ui",
+    "sha256": "c937aa46bc2af2ccad2f7157eef4b9a1412635a4ab56f1eaa2fc3cffd34cd7b8"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/npm.svg": {
+    "module": "ui",
+    "sha256": "61df0e9f7ad20b87ff08b50b703741910ab088bb095dfb543b691129260f0fde"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/shopify.svg": {
+    "module": "ui",
+    "sha256": "e9b68b6894d36b3d5a78d94800ac006193c47136054d7fe4bdbd6dc7fb96a5f5"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/si-mastercard.svg": {
+    "module": "ui",
+    "sha256": "1e1066a69da3e4fc33cbdae81ad6fa6206df1eafad47b1c18e80ac9148d74a8c"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/slack.svg": {
+    "module": "ui",
+    "sha256": "446bd216bc046a01ba8f5a890d859d5f27ec343b64d8f82a6a13e1a830c5910e"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/typescript.svg": {
+    "module": "ui",
+    "sha256": "0f4b47a9bd1c09625988705f2c7ad0e661e9a5af1b19e1551089916a8b79f895"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/vercel.svg": {
+    "module": "ui",
+    "sha256": "8f7a183ae5b8618aa4ca44cad1c06f80483f95af7c7714043e5813b7b98e6f2e"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/visa.svg": {
+    "module": "ui",
+    "sha256": "7fb19310be372b9c652d80cf5990978186ef87a6946aee08266ef2fa21058d57"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/whatsapp.svg": {
+    "module": "ui",
+    "sha256": "d2371b52fabd6d3bbff147f5d1a2136ae7edbfa32f22591bdfcd1d6687e8d36b"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/icons/zendesk.svg": {
+    "module": "ui",
+    "sha256": "2864560e2482e1eca1347ae0b5d74cd6d42911487fcf1aabd3ffc1855ef7a80e"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/index.html": {
+    "module": "ui",
+    "sha256": "ebde7f14835485e6f2f090b52d0b7f3d890cef6f24a8523139296a02ca393885"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/index.json": {
+    "module": "ui",
+    "sha256": "9302a37b6e5e4a6e008c761e47351d2d875e12a182bdf08bb5833c146d2ff4da"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/integrations/fragment.css": {
+    "module": "ui",
+    "sha256": "aec7f21946b933961941ba3c6a304fc5ee1b5539c429aec57c5964a86477411a"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/integrations/fragment.html": {
+    "module": "ui",
+    "sha256": "e68b8a6073feceddff0c446cb5ae231a65dc1841818b9ce360fc0d5d1f5e92b0"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/integrations/fragment.js": {
+    "module": "ui",
+    "sha256": "6a0b62aa6ae7721ad6e02a7c5d03d2213e70469cf4694e3679107ab235f4e86a"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/integrations/meta.json": {
+    "module": "ui",
+    "sha256": "4318406be971097378ee0d40a12a60c05ede753d33ef75d9a8c6b68d103bbf93"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/notify/fragment.css": {
+    "module": "ui",
+    "sha256": "d7821a2d0669c4d535733607cbbcadb44f78c41b60a6bfae8b6831b7163a01f9"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/notify/fragment.html": {
+    "module": "ui",
+    "sha256": "be0c1d0f3195989d2d546292a75f07d4112487d45ffc407ced32192dac91dfff"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/notify/fragment.js": {
+    "module": "ui",
+    "sha256": "5000f10419af891be9d215c432446b6fb4124a4b78de82fb73d8f21a9e872fd2"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/notify/meta.json": {
+    "module": "ui",
+    "sha256": "0993b53271e289d8189e27df90d55c54ee762732337bd2eebbc5f0b4bf783e0e"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/pipeline-board/fragment.css": {
+    "module": "ui",
+    "sha256": "0d5103eaf7e050e5ed95f41bf63681111c205406e022e022050d16bfe5c3f40d"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/pipeline-board/fragment.html": {
+    "module": "ui",
+    "sha256": "b7017f2c6542f7aa07985b7defa0711a7576303a4269f254af89108c48458168"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/pipeline-board/fragment.js": {
+    "module": "ui",
+    "sha256": "00fc824caceaf8728438fb1dbdd7960fa8e779c1aa3599152ba681d168298865"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/pipeline-board/meta.json": {
+    "module": "ui",
+    "sha256": "81a142e5168f4fdee3259d5054f2bd83156dd5c7458546aebbc92a94c06b9b52"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/search/fragment.css": {
+    "module": "ui",
+    "sha256": "a951621b80158e6c166e95a25b5a9d9632c531853ba735695417ad292a416432"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/search/fragment.html": {
+    "module": "ui",
+    "sha256": "b90f62a91702fb4e02234911df33306da7ad5162bedeca1e8528d28bcf620450"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/search/fragment.js": {
+    "module": "ui",
+    "sha256": "d6d5bdf94b7e87e21e8e94991098f78bac35c5cce98c722cdf1a95453158c024"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/search/meta.json": {
+    "module": "ui",
+    "sha256": "39e3050213a891659a351e6fd11d774a17415f64cc52ca232cad1d22c576f987"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/slider/fragment.css": {
+    "module": "ui",
+    "sha256": "5e0e1ee6f67fac8b07929064c87d72b7ef5af4042d6a3427c8c9ae0f7b91aeb3"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/slider/fragment.html": {
+    "module": "ui",
+    "sha256": "b195d96195e3d9d6d8ae2a528d40a85f2b2fea50c81f8a2d17e2973d1cca81ac"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/slider/fragment.js": {
+    "module": "ui",
+    "sha256": "10ef8ca3ce629428eb3ca6f18228e4c4d0cfd2e0965cb511b164a4421fe33597"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/slider/meta.json": {
+    "module": "ui",
+    "sha256": "0b6248d35c9a5ec4fd8341028e50c1766a6093e23ae5a01d753328d2d807fdbf"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/stat/fragment.css": {
+    "module": "ui",
+    "sha256": "4fd01fd085a6f5449182f21a76a5b5c7d56ba52097ceb6976740362c00c7ca02"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/stat/fragment.html": {
+    "module": "ui",
+    "sha256": "b2a47c8b48eea92e1ff03511c55e004f8b8cc4e787a406a94dcb34dd084ce449"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/stat/fragment.js": {
+    "module": "ui",
+    "sha256": "6ccd03a0e1dbbcce57885dbeb37a435d1f745ae0f9181a9cbca569c9baeb88de"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/stat/meta.json": {
+    "module": "ui",
+    "sha256": "59cf5be292f4a2a198ed91a0cf742ddb8cf3c856c680747f057d936c2ce9886a"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/terminal-run/fragment.css": {
+    "module": "ui",
+    "sha256": "6b1badd66c7f714cb2f2fe959c2738adb3d1caaab2651d0a1aafc27267170e1d"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/terminal-run/fragment.html": {
+    "module": "ui",
+    "sha256": "94b215847a0b59c1b581fa424046f5910842ab8dd8f3803f523142df26b2fe76"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/terminal-run/fragment.js": {
+    "module": "ui",
+    "sha256": "a2dfa7b1e2d7e056328cd6bde7c9a586c084d73372f6af6904d68beb8744e9dc"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/terminal-run/meta.json": {
+    "module": "ui",
+    "sha256": "a1d0fd71e39ac67cb45d1c725a5e56ce2e82ca3503b8bcdb440e47daad738bc0"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/toggles/fragment.css": {
+    "module": "ui",
+    "sha256": "e5dc1b4e1727280748db6a701f42e99ca8689c095c4e441a894f1c6e2f4f109a"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/toggles/fragment.html": {
+    "module": "ui",
+    "sha256": "e1449d62ca83679139ab16c2532aa3ef9034d0afdfdd7547620aea03cac78a7f"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/toggles/fragment.js": {
+    "module": "ui",
+    "sha256": "cb9eb394e3cd3f36dc41eb43ac951c9f4e19982b87cb5763c02172052f5c734a"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/toggles/meta.json": {
+    "module": "ui",
+    "sha256": "c2811c407f6312f27dcd8e9a899fa4353d2750ed1a19b0db42657be8981ddfd2"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/ui.js": {
+    "module": "ui",
+    "sha256": "853d2b13f1c2b5d40e7c5304f3b04c904a4cd6087a726f2c2b2252711662724f"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/voice/fragment.css": {
+    "module": "ui",
+    "sha256": "ce099dd37f7de7c54286be4dd18794eb2c10874760d50f3c73d2ec466a7f606b"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/voice/fragment.html": {
+    "module": "ui",
+    "sha256": "23dc77ff2d8f8c98c7a3ebef850680d61d6b97fd190f92a3c4db1aec275a3b7f"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/voice/fragment.js": {
+    "module": "ui",
+    "sha256": "6dd19c8504ce65cd1735aa4e2a6de8545affaadc1c93b1c1b6337c64a67668aa"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/voice/meta.json": {
+    "module": "ui",
+    "sha256": "5d2962c29269e6531a2642fd1627eac2b08e51fd2bd5f01885ee220e6ae20c49"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/window/fragment.css": {
+    "module": "ui",
+    "sha256": "c1958ddb93aea085a5494ed2b3112ce1e5d303e670b7fcbc4954906d901cf163"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/window/fragment.html": {
+    "module": "ui",
+    "sha256": "9aa0e1a3d873f7597afb26e9501eeaffd535b2792233fb07455eb047d3c1fc27"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/window/fragment.js": {
+    "module": "ui",
+    "sha256": "275924e306b35fd0b4a76c4329079e36c47f9399feaa9435b471f15e59dcefcc"
+  },
+  ".claude/skills/design-taste-frontend/assets/ui/window/meta.json": {
+    "module": "ui",
+    "sha256": "a30b48bda6ce2ec6291913fa52fbbe218029d76df687b9b6288a39820b968bc0"
+  },
+  ".claude/skills/design-taste-frontend/references/cards.md": {
+    "module": "ui",
+    "sha256": "83dcb71f5b12414eb23871e7c2bd611272cf5e1089324842ef6b7bb019318e63"
+  },
+  ".claude/skills/design-taste-frontend/references/generation.md": {
+    "module": "ui",
+    "sha256": "2fb1c08491652b8762de0372729faceec8c9245b51010c8c71e52d3d95c0ee67"
+  },
+  ".claude/skills/design-taste-frontend/references/seo.md": {
+    "module": "ui",
+    "sha256": "f556ad7572ed366775e1f2553a2f336bc91b37ffe8e431b38b2c8c2a585bc9af"
+  },
+  ".claude/skills/design-taste-frontend/scripts/fonts.mjs": {
+    "module": "ui",
+    "sha256": "48e8c4caa9b7e3a0d8b02605b632eecff7ce5da9368a036bc53a88a822aa2763"
+  },
+  ".claude/skills/design-taste-frontend/scripts/lib/hero-dealt.mjs": {
+    "module": "ui",
+    "sha256": "631c2d4e41e77ac536639714b61ca277886fc5e26123a4f70c11806728a146d7"
+  },
+  ".claude/skills/design-taste-frontend/scripts/media.mjs": {
+    "module": "ui",
+    "sha256": "3ce73f23934b9165fa81132e1161483b4d6cd1543aec466461ba364178cdcfbd"
+  },
+  ".claude/skills/gsap-core/LICENSE": {
+    "module": "ui",
+    "sha256": "51b04b06556662dd817e8f4aa6d06bc7139dc73739e1319a7233cfde3e147b90"
+  },
+  ".claude/skills/gsap-core/SKILL.md": {
+    "module": "ui",
+    "sha256": "6cb57575bb4723b9dddcd906df717268ae2f6922f4b0d54481ddc2017d378cb4"
+  },
+  ".claude/skills/gsap-plugins/LICENSE": {
+    "module": "ui",
+    "sha256": "51b04b06556662dd817e8f4aa6d06bc7139dc73739e1319a7233cfde3e147b90"
+  },
+  ".claude/skills/gsap-plugins/SKILL.md": {
+    "module": "ui",
+    "sha256": "5838b856c74c07fbc9fa99b6dfd1eee34ea554c3e530c30e0d58014b707d70a4"
+  },
+  ".claude/skills/gsap-react/LICENSE": {
+    "module": "ui",
+    "sha256": "51b04b06556662dd817e8f4aa6d06bc7139dc73739e1319a7233cfde3e147b90"
+  },
+  ".claude/skills/gsap-react/SKILL.md": {
+    "module": "ui",
+    "sha256": "fd65df61305e05e6d776e09b325c86b27e2dc9007b69c6971ff476eec1c94a4f"
+  },
+  ".claude/skills/gsap-scrolltrigger/LICENSE": {
+    "module": "ui",
+    "sha256": "51b04b06556662dd817e8f4aa6d06bc7139dc73739e1319a7233cfde3e147b90"
+  },
+  ".claude/skills/gsap-scrolltrigger/SKILL.md": {
+    "module": "ui",
+    "sha256": "060ad6649fceb8b73ee478b3cdfa3ad372aa5b8054794752fe2faff01bbcf853"
+  },
+  ".claude/skills/gsap-timeline/LICENSE": {
+    "module": "ui",
+    "sha256": "51b04b06556662dd817e8f4aa6d06bc7139dc73739e1319a7233cfde3e147b90"
+  },
+  ".claude/skills/gsap-timeline/SKILL.md": {
+    "module": "ui",
+    "sha256": "b2b207defef7c9e8a93d40543e83c1d1f3b15f954698203365ccf52710a857e5"
+  },
+  ".claude/skills/remove-animations/LICENSE": {
+    "module": "core",
+    "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+  },
+  ".claude/skills/remove-animations/SKILL.md": {
+    "module": "core",
+    "sha256": "66f4a15d59672bdf5f1098e21ccbf4b559d97a2d851a04bd701925a57b9e9f7f"
+  },
+  ".claude/tools/image-view.py": {
+    "module": "core",
+    "sha256": "0a16fba5d2101801dfa2c4ea810b01cb71d07bb586ca20ad65833b74dd6728a5"
+  },
+  ".claude/tools/kit-notes.mjs": {
+    "module": "core",
+    "sha256": "4139170b1169f4e73acb4c445b86708d954c3a6b33627767b372f027e6f43990"
+  },
+  ".claude/tools/legal-check.mjs": {
+    "module": "core",
+    "sha256": "4be186bd9791fd4eaea481aed7ab84124ca19fe737b5bfb7c0c8b5e491c0f3dc"
+  },
+  ".claude/tools/public-bar.mjs": {
+    "module": "core",
+    "sha256": "e077f6ad186f0797e715c8de50ae80389c291938379bb0845f7f537c48b49e30"
   }
 }

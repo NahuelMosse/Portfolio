@@ -178,6 +178,7 @@ function render(s) {
   if (!s.input.keep.includes('type') && f.family) {
     p(`## 3. Type — ${f.family}`);
     p('```html'); p(fontLink(f)); p('```');
+    p('The link names the family and weights; the screen ships them self-hosted, never from the font CDN: `node <skill>/scripts/fonts.mjs "<Family>" --weights <w> --out public/fonts` downloads them with their licence (`references/type.md` §5, `reference/legal.md` LEG-05).');
     p(`\`font-family: "${f.family}", ${f.fallback || 'system-ui, sans-serif'}\`. Weights ${(f.weights || []).join(', ')}. Sizes: ${Object.entries(f.sizes || {}).map(([k, v]) => `${k} ${v}px`).join(' · ')}.${f.note ? ' ' + f.note : ''}${f.second ? ' Second face: ' + f.second + '.' : ''}`);
     p('Numbers: `font-variant-numeric: tabular-nums` on every table, KPI and anything that updates. Sentence case; no tracked capitals.'); p();
   }

@@ -146,6 +146,9 @@ When the brief supplies no proof, use what is true by construction:
 - If a testimonial or logo section is explicitly requested and no real ones exist, build the section
   with plainly fictional sample content and say so in your final report so it is replaced before
   launch. Do not put real company names or real people in it.
+- A claim the page needs but cannot prove yet (a figure, a guarantee, a certification) goes in the
+  report with the evidence it needs ("Delivery in 24 h: needs the courier's terms"). It does not go on
+  the page in a softer wording.
 
 **Sample details are different from proof, and they are expected.** Where the brief gives the shape of
 the content but not every detail (six rooms "from €140", "a short menu", twelve speakers), write the
@@ -170,6 +173,15 @@ the client confirms or replaces it.
 - Step labels that duplicate numbers: "Step 1", "Phase 02".
 - Three parallel items everywhere: three features, three stats, three steps. Use the number the
   content has.
+- A chain of what it is not: "No setup, no contracts, no surprises", "Sin vueltas, sin letra chica,
+  sin sorpresas". Say what it does, with the fact.
+- Questions the same line answers: "The result? 3× faster.", "¿El resultado? Menos espera." Write the
+  sentence.
+- Exclamation marks, in either language. The fact carries the energy.
+- Every line built to land. One or two lines on a page can be the punch; the rest inform.
+- Sample people called Sarah, Emily or John Doe, or Juan Pérez and María González. Pick names that
+  fit the place and the trade, varied in length and origin.
+- "Experts say", "studies show", "many teams" with no source named. Name it or cut the line.
 
 ## 7. Micro-typography
 

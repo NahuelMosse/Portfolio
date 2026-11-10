@@ -8,7 +8,7 @@
 //   card.md · 4 each ASM is tagged `@<ASM>` (or `@assumption:<ASM>`) or declared uncovered in the Log · 5 no tagged test touched since the RED
 //   commit · 6 the diff and the `## Tasks` agree · 7 the gate: every line of `## Gate` passed on this code (once.mjs records) and no check verify.mjs adds failed ·
 //   8 the judge: judge.md at risk high (the plan judge), every ACT closed or declared · 9 required.mjs (mutation, linter, scope).
-// closing.md carries `## Passed`, `## Failed`, `## Could not run`, `## Judge`, `## Assumptions`, `## Notes` (the `closing:` lines of the Log, when there are any), `## Needs a person` (the tests the Log declares replaced), `Cost: …` and the seal line publish checks before a merge between its begin
+// closing.md carries `## Passed`, `## Failed`, `## Could not run`, `## Judge`, `## Assumptions`, `## Notes` (the `closing:` lines of the Log, when there are any), `## Needs a person` (the tests the Log declares replaced), `## Kit notes` (the `kit:` lines of the Log), `Cost: …` and the seal line publish checks before a merge between its begin
 // and end markers; a second run regenerates the block and touches nothing outside it. A closing.md written by hand (no block) is
 // left as it is. `--check` prints and writes nothing. At poc only 1 and the capture round (7) run; the closing is `## Shown`, `## Assumptions`, `## Capture round`.
 // `## Assumptions` lists the untested ASMs and one line «N of N tagged» for the rest; modules off for the same reason are one line.
@@ -21,7 +21,7 @@ import { NOT_PRODUCTION, cardFiles, oneRound, cardStart, copiedFromKit, currentC
 import { actHold, actsOf, cardIdOf, gateBlock, readCard, requirementOf, riskOf, rolesOf, sectionOf, specTagsIn } from './card-doc.mjs';
 import { closingCost } from './card-cost.mjs';
 import { FROZEN_TAG } from './guard-paths.mjs';
-import { specsCheck } from './gate-checks.mjs';
+import { noLookOf, specsCheck } from './gate-checks.mjs';
 import { active, isPoc } from './kit.mjs';
 import { readRecord } from './once.mjs';
 import { declaredUnmutated, missing, writeSessionLines } from './required.mjs';
@@ -53,7 +53,8 @@ export const sealed = (root, cardDir, text) => {
 };
 
 const PLAN_FILE = /^[\w@.-]+(?:\/[\w@.-]+)*\.(?:m?[jt]sx?|cjs|cts|py|go|cs|java|kt|rb|php|dart|html?|s?css|vue|svelte|sql|md|json|ya?ml|sh|feature)$/;
-const TEST_SOURCE = /\.(m?[jt]sx?|cjs|cts|py|go|cs|java|kt|rb|php|dart|feature)$/;
+const TEST_SOURCE = /\.(m?[jt]sx?|cjs|cts|py|go|cs|java|kt|rb|php|dart|feature|c|cc|cpp|cxx|rs|swift)$/;
+const BINARY_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'avif', 'ico', 'mp4', 'webm', 'mov', 'mp3', 'wav', 'pdf', 'zip', 'gz', 'woff', 'woff2', 'ttf', 'otf', 'glb', 'bin'];
 const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const textOf = (path) => (existsSync(path) ? readFileSync(path, 'utf8') : '');
 
@@ -65,15 +66,18 @@ const taggedFiles = (root, id, rev = null) => {
 };
 
 // What critique.md says: the lowest score it gives (`polish:`, `motion:`, the number after `→` in `Total:`) and its open blockers
-// (`Blocker: <text>` lines that are not «none» and do not say closed or resolved).
+// (`Blocker: <text>` lines that are not «none» and do not say closed or resolved), and the rubric lines it could not see
+// (`not inspected`), which the close names so the PR does not read them as passed.
 export const critiqueOf = (text) => {
+  const notInspected = text.split('\n').filter((l) => /\bnot inspected\b/i.test(l))
+    .map((l) => l.replace(/^[\s\-*#]+/, '').replace(/\*\*/g, '').trim());
   const scores = [
     ...[...text.matchAll(/^\W*(?:polish|motion)\W*:\s*(\d+(?:[.,]\d+)?)/gim)].map((m) => Number(m[1].replace(',', '.'))),
     ...[...text.matchAll(/^\W*Total\b[^\n]*?→\s*(\d+(?:[.,]\d+)?)/gim)].map((m) => Number(m[1].replace(',', '.'))),
   ];
   const blockers = [...text.matchAll(/^\W*Blockers?\W*:[ \t*_]*(.+)$/gim)].map((m) => m[1].trim())
     .filter((b) => !/^(?:none|ninguno|ninguna|no|-|—|n\/a)\b/i.test(b) && !/\b(?:closed|resolved|cerrado|resuelto)\b/i.test(b));
-  return { score: scores.length ? Math.min(...scores) : null, blockers };
+  return { score: scores.length ? Math.min(...scores) : null, blockers, notInspected };
 };
 
 const runOnce = (root, { write = true } = {}) => {
@@ -125,7 +129,11 @@ const runOnce = (root, { write = true } = {}) => {
   verdict(4, 'each ASM is tagged or declared uncovered', untagged.filter((a) => !new RegExp(`uncovered[^\\n]*${escape(a)}|${escape(a)}[^\\n]*uncovered`, 'i').test(log))
     .map((a) => `${a} has no \`@${a}\` test and no \`uncovered\` line in the Log`), `${asms.length - untagged.length} of ${asms.length} tagged${untagged.length ? `; declared uncovered: ${untagged.join(', ')}` : ''}`);
 
-  const red = id ? git(root, ['log', '--reverse', '--format=%H', '-G', `@${id}-S[0-9]+`, '--', '.', ':(exclude)specs', ':(exclude).claude']).stdout?.trim().split('\n').filter(Boolean)[0] : null;
+  // Searched only from the card's start and never in binaries: over a whole history of images the pickaxe took 4 min 47 s.
+  // A start without `~1` is the root commit, which a `<start>..HEAD` range would leave out: the whole history is searched then.
+  const start = id ? cardStart(root, cardDir) : 'HEAD';
+  const red = id ? git(root, ['log', '--reverse', '--format=%H', '-G', `@${id}-S[0-9]+`, ...(start.endsWith('~1') ? [`${start}..HEAD`] : []), '--', '.', ':(exclude)specs', ':(exclude).claude',
+    ...BINARY_EXTENSIONS.map((ext) => `:(exclude,glob)**/*.${ext}`)]).stdout?.trim().split('\n').filter(Boolean)[0] : null;
   if (exempt.level?.testsFrozen === false) add(5, 'no tagged test touched since RED', 'skipped', `the grade ${grade} leaves committed tests editable`);
   else if (!red) add(5, 'no tagged test touched since RED', 'could not run', 'no commit holds tests tagged for this card');
   else {
@@ -193,7 +201,7 @@ const runOnce = (root, { write = true } = {}) => {
 
   // 10. the critic of the look, when the card has a critique.md: a score under 7, an open blocker or a critique older than the screen is not a pass
   if (existsSync(join(cardDir, 'critique.md'))) {
-    const { score, blockers } = critiqueOf(textOf(join(cardDir, 'critique.md')));
+    const { score, blockers, notInspected } = critiqueOf(textOf(join(cardDir, 'critique.md')));
     const bad = [];
     if (score === null) bad.push(`${rel('critique.md')} gives no score (\`polish: N\`)`);
     else if (score < 7) bad.push(`score ${score} is under 7`);
@@ -207,9 +215,11 @@ const runOnce = (root, { write = true } = {}) => {
       const dirty = git(root, ['status', '--porcelain', '--', ...screens.map((f) => `:(literal)${f}`)]).stdout?.trim();
       if (after.length || dirty) bad.push(`the critique is stale: presentation files changed after ${at.slice(0, 9)} (${after.length ? `${after.length} commit${after.length === 1 ? '' : 's'}` : 'uncommitted changes'}); it cannot pass the card on that critique`);
     }
+    if (notInspected.length) note += `; not inspected: ${notInspected.map((l) => (l.length > 120 ? `${l.slice(0, 120)}…` : l)).join(' · ')}`;
     verdict(10, 'critique', bad, `score ${score}, no open blocker, no presentation change after ${at ? at.slice(0, 9) : 'it'}${note}`);
-  } else if (risk?.lenses?.includes('visual') && grade === 'production' && !exempt.without?.has('design-critic')) {
+  } else if (risk?.lenses?.includes('visual') && grade === 'production' && !exempt.without?.has('design-critic') && !noLookOf(doc)) {
     // METHOD step 3 launches the critic; a visual card at production without its critique.md is a look nobody judged.
+    // A remove-only or a plain card adds no look to judge.
     add(10, 'critique', 'could not run', `no ${rel('critique.md')}: the design-critic never looked at this screen; launch it with the path of card.md and the URL of the app before the close`);
   }
 
@@ -237,13 +247,56 @@ const judgeSummary = (risk, acts) => {
 // «modules a, b off by decision: <reason>»: the modules that share a reason go on one line.
 export const offLines = (offs) => [...Map.groupBy(offs, (o) => o.reason)].map(([reason, group]) => `module${group.length > 1 ? 's' : ''} ${group.map((o) => o.name).join(', ')} off by decision: ${reason}`);
 
+// The `closing:` lines of the Log, which the close carries into `## Notes`.
+const logNotes = (doc) => (doc.split(/^## Log\b.*$/m)[1] ?? '').split('\n').filter((l) => /^\s*[-*]\s*L\d+.*closing:/.test(l))
+  .map((l) => `- ${l.replace(/^\s*[-*]\s*/, '').replace(/closing:\s*/, '')}`);
+
+// The `kit:` lines of the Log: what the agent noted about the kit itself, carried into `## Kit notes` and the kit's notes.
+export const kitLines = (doc) => (doc.split(/^## Log\b.*$/m)[1] ?? '').split('\n').filter((l) => /^\s*[-*]\s*L\d+.*\bkit:\s*\S/.test(l))
+  .map((l) => l.replace(/^\s*[-*]\s*/, '').replace(/^.*?\bkit:\s*/, ''));
+const kitSection = (doc) => { const k = kitLines(doc); return k.length ? ['', '## Kit notes', ...k.map((l) => `- ${l}`)] : []; };
+
+// What this card taught about the kit, into its notes (tools/kit-notes.mjs): the checks left failed or not run, the
+// waivers and the rules declared wrong in the Log, the `kit:` lines and the dealt designs the designer adjusted. Once per
+// card and signal: a close run again records nothing new.
+export const harvest = async (root, result) => {
+  try {
+    const { record } = await import('./kit-notes.mjs');
+    const doc = readCard(result.cardDir) ?? '';
+    const base = { repo: basename(root), card: basename(result.cardDir), once: true };
+    const log = (doc.split(/^## Log\b.*$/m)[1] ?? '').split('\n');
+    const notes = [
+      ...result.checks.filter((c) => ['failed', 'could not run'].includes(c.state)).map((c) => ({ kind: c.state === 'failed' ? 'failed' : 'could-not-run', key: `close:${c.label}`, text: c.detail ?? c.state })),
+      ...log.flatMap((l) => { const m = l.match(/\bdeclared · ([\w-]+) · (.*)$/); return m ? [{ kind: 'waiver', key: `declared:${m[1]}`, text: m[2] }] : []; }),
+      ...log.flatMap((l) => { const m = l.match(/\brule (\S+) is wrong:\s*(.*)$/); return m ? [{ kind: 'rule-wrong', key: `rule:${m[1]}`, text: m[2] }] : []; }),
+      ...kitLines(doc).map((text) => ({ kind: 'agent', key: 'agent', text })),
+      ...textOf(join(result.cardDir, 'rondas.md')).split('\n').flatMap((l) => { const m = l.match(/[^.]*\(adjusted[^)]*\)[^.]*/i); return m ? [{ kind: 'adjusted', key: 'design:adjusted', text: m[0] }] : []; }),
+    ];
+    for (const n of notes) record({ ...base, ...n });
+    return notes.length;
+  } catch { return 0; }
+};
+
+// The head of the PR a maintainer reads first: what the card changes (its title and specs), why (the requirement, cut at
+// 600 characters), and what breaks for whoever already uses it (`## Changes to existing behavior`).
+const bulletsOf = (text) => (text ?? '').split('\n').filter((l) => /^\s*[-*]\s+\S/.test(l)).map((l) => l.trim());
+export const prHead = (doc) => {
+  const title = doc.match(/^#\s+(.+)$/m)?.[1]?.trim() ?? '';
+  const specs = bulletsOf(sectionOf(doc, 'Specs')).filter((l) => /^[-*]\s+S\d+\b/.test(l));
+  const why = requirementOf(doc).replace(/^\s*(?:[-*]\s*)?L1\s*·\s*/, '').replace(/\s+/g, ' ').trim();
+  // sectionOf matches a heading by its first word: `## Changes to existing behavior`.
+  const breaking = bulletsOf(sectionOf(doc, 'Changes')).filter((l) => !/^[-*]\s+none\b/i.test(l));
+  return ['## What', [title, ...specs].filter(Boolean).join('\n') || 'none', '', '## Why', why ? (why.length > 600 ? `${why.slice(0, 600)}…` : why) : 'none',
+    '', '## Breaking changes', breaking.length ? breaking.join('\n') : 'none', ''];
+};
+
 const blockOf = (root, cardDir, { doc, checks, acts, risk, asms, untagged, off, grade, manifest, base, since }) => {
-  const parts = [BEGIN, '## Passed', bullets(checks, 'passed'), '', '## Failed', bullets(checks, 'failed'), '', '## Could not run', bullets(checks, 'could not run'),
+  const parts = [BEGIN, ...prHead(doc), '## Passed', bullets(checks, 'passed'), '', '## Failed', bullets(checks, 'failed'), '', '## Could not run', bullets(checks, 'could not run'),
     '', '## Judge', judgeSummary(risk, acts), '', '## Assumptions',
     asms.length ? [...untagged.map((a) => `- ${a} · untested`), `${asms.length - untagged.length} of ${asms.length} tagged`].join('\n') : 'none'];
-  const notes = (doc.split(/^## Log\b.*$/m)[1] ?? '').split('\n').filter((l) => /^\s*[-*]\s*L\d+.*closing:/.test(l))
-    .map((l) => `- ${l.replace(/^\s*[-*]\s*/, '').replace(/closing:\s*/, '')}`);
+  const notes = logNotes(doc);
   if (notes.length) parts.push('', '## Notes', ...notes);
+  parts.push(...kitSection(doc));
   const swaps = replacementsOf(doc);
   const clones = [...declaredClones(cardDir)];
   const kept = [...declaredOverdesign(cardDir)];
@@ -284,20 +337,23 @@ const blockOf = (root, cardDir, { doc, checks, acts, risk, asms, untagged, off, 
 const resultLine = (bad) => `Result: ${bad.length ? `not passed — ${bad.map((c) => `${c.label} (${c.state})`).join(', ')}` : 'passed'}`;
 
 // The short closing of a poc card: what was shown, the assumptions and the capture round.
-const pocBlockOf = ({ doc, checks, grade, manifest }) => {
+const pocBlockOf = (root, { doc, checks, grade, manifest }) => {
   const lines = (name) => (sectionOf(doc, name) ?? '').split('\n').map((l) => l.trim().replace(/^[-*]\s*/, '')).filter(Boolean);
   const specs = lines('Specs');
   const asms = specs.filter((l) => /\bASM-\d+/.test(l));
   const shown = specs.filter((l) => !asms.includes(l));
   const round = checks.find((c) => c.n === 7);
+  const notRun = git(root, ['remote']).stdout?.trim() ? [] : ['- publication · no remote: no push, PR or CI'];
+  const notes = logNotes(doc);
   return [BEGIN, '## Shown', shown.length ? shown.map((l) => `- ${l}`).join('\n') : 'none', '', '## Assumptions',
     asms.length ? asms.map((l) => `- ${l}`).join('\n') : 'none', '', '## Capture round', `${round.state}${round.detail ? ` — ${round.detail}` : ''}`,
+    '', '## Could not run', notRun.length ? notRun.join('\n') : 'none', ...(notes.length ? ['', '## Notes', ...notes] : []), ...kitSection(doc),
     '', `Grade: ${grade} — ${manifest?.grade?.reason ?? ''}`, END].join('\n');
 };
 
 const writeClosing = (root, cardDir, ctx) => {
   const path = join(cardDir, 'closing.md');
-  const body = (ctx.poc ? pocBlockOf(ctx) : blockOf(root, cardDir, ctx)).slice(0, -END.length);
+  const body = (ctx.poc ? pocBlockOf(root, ctx) : blockOf(root, cardDir, ctx)).slice(0, -END.length);
   const block = `${body}${sealLine(root, cardDir, body)}\n${END}`;
   const bad = ctx.checks.filter((c) => !['passed', 'skipped'].includes(c.state));
   if (existsSync(path)) {
@@ -320,6 +376,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     console.error('No card in progress: nothing to close.');
     process.exit(2);
   }
+  if (!check) await harvest(process.cwd(), result);
   for (const c of result.checks) console.log(`${c.n} · ${c.label} · ${c.state}${c.detail ? ` — ${c.detail}` : ''}`);
   for (const l of offLines(result.off)) console.log(l);
   for (const f of new Set(result.wrote)) console.log(`${f}: line added`);

@@ -114,7 +114,10 @@ export const riskWordsIn = (text) => {
   const out = [];
   for (const m of src.matchAll(RISK_WORDS)) {
     const word = m[0];
-    if (GATED.test(word)) {
+    // An assumption that rules a thing out («ASM-09 · no authentication») brings no risk; the requirement's own
+    // negated auth words («sin sesión iniciada ve…») still describe an auth feature, so only ASM lines are spared.
+    const line = src.slice(src.lastIndexOf('\n', m.index) + 1, m.index);
+    if (GATED.test(word) || /-ASM-\d+/.test(line)) {
       const before = src.slice(0, m.index).split(/[.;:!?\n]/).pop().split(/\s+/).filter(Boolean).slice(-4).join(' ');
       if (NEGATION.test(before)) continue;
     }

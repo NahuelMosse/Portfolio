@@ -174,7 +174,18 @@ export function probe() {
   if (h1el && h1el.getBoundingClientRect().width > 0) {
     const cs = getComputedStyle(h1el); const size = parseFloat(cs.fontSize);
     const text = (h1el.innerText || '').replace(/\s+/g, ' ').trim();
-    h1 = { text: text.slice(0, 200), words: text.split(' ').filter(Boolean).length, lines: linesOf(h1el, size), size: round(size, 1), font: firstFam(cs.fontFamily) };
+    // Where the ink of the headline sits: centred when its gaps to the viewport edges match, left or right when one gap
+    // is clearly wider; a headline that fills the width says nothing.
+    const range = document.createRange(); range.selectNodeContents(h1el);
+    const ink = [...range.getClientRects()].filter((r) => r.width > 1);
+    let align = null;
+    if (ink.length) {
+      const gl = Math.min(...ink.map((r) => r.left)), gr = innerWidth - Math.max(...ink.map((r) => r.right));
+      align = Math.max(gl, gr) < innerWidth * 0.12 ? 'full' : Math.abs(gl - gr) < innerWidth * 0.06 ? 'center' : gl < gr ? 'left' : 'right';
+    }
+    const letters = text.replace(/[^\p{L}]/gu, '');
+    const caps = cs.textTransform === 'uppercase' || cs.fontVariantCaps === 'all-small-caps' || (letters.length > 1 && letters === letters.toUpperCase());
+    h1 = { text: text.slice(0, 200), words: text.split(' ').filter(Boolean).length, lines: linesOf(h1el, size), size: round(size, 1), font: firstFam(cs.fontFamily), align, caps };
   }
 
   // --- eyebrows: a small short label sitting directly above a heading block
@@ -381,6 +392,263 @@ export function probe() {
     cardRows.push({ count: same.length, iconTopped: iconTop >= same.length - 1 && iconTop >= 3, rounded: (parseFloat(getComputedStyle(same[0]).borderTopLeftRadius) || 0) >= 6, top: Math.round(same[0].getBoundingClientRect().top + SY) });
   }
 
+  // --- craft tells, with the thresholds of the impeccable detector (Apache 2.0)
+  const notContent = (el) => formish(el) || !!el.closest('[data-ui], nav, svg, button') || el.matches('img, video, canvas, picture, iframe');
+  const groundOf = (el) => bgBehind(el) || bodyBg;
+  const ownFill = (el, cs) => { const v = rgba(cs.backgroundColor); return v.a > 0.04 && hex(v) !== hex(groundOf(el.parentElement || document.body)); };
+  const outlined = (cs) => (parseFloat(cs.borderTopWidth) >= 1 && cs.borderTopStyle !== 'none' && rgba(cs.borderTopColor).a > 0.1) || (cs.boxShadow !== 'none' && !/^rgba\(0, 0, 0, 0\)/.test(cs.boxShadow));
+  const rounded = (cs) => ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius'].some((k) => (parseFloat(cs[k]) || 0) > 0);
+  // a coloured stripe on one side of a rounded box: a top, left or right border of 2–12px while the others are hairlines or none
+  const sideTabs = [];
+  for (const { el, cs, r } of big) {
+    if (notContent(el) || r.width < 120 || !rounded(cs) || (el.innerText || '').trim().length < 12) continue;
+    const side = (s) => { const w = parseFloat(cs[`border${s}Width`]) || 0; return { s, w, on: w > 0 && cs[`border${s}Style`] !== 'none' && rgba(cs[`border${s}Color`]).a > 0.3 }; };
+    const sides = ['Top', 'Right', 'Bottom', 'Left'].map(side);
+    const thick = sides.filter((x) => x.on && x.w >= 2);
+    if (thick.length !== 1 || thick[0].s === 'Bottom' || thick[0].w > 12 || sides.some((x) => x !== thick[0] && x.on && x.w > 1.5)) continue;
+    sideTabs.push(`${label(el)} (${thick[0].s.toLowerCase()} ${Math.round(thick[0].w)}px)`);
+  }
+  // a card inside a card: a rounded box with a border or a shadow inside another drawn box (a fill-only tile inside is not counted)
+  const cardish = (el, cs, r) => r.width >= 150 && r.height >= 80 && r.width < W * 0.9 && (parseFloat(cs.borderTopLeftRadius) || 0) >= 6 && !notContent(el);
+  const outerCards = big.filter(({ el, cs, r }) => cardish(el, cs, r) && (ownFill(el, cs) || outlined(cs)) && !el.matches('dialog, [role="dialog"]')).map((b) => b.el);
+  const nestedCards = big.filter(({ el, cs, r }) => cardish(el, cs, r) && outlined(cs) && outerCards.some((o) => o !== el && o.contains(el))).map((b) => label(b.el));
+  // type set against how text reads: running text with tight leading or wide tracking, long uppercase, letters crushed together
+  const prose = texts.filter((t) => t.chars >= 60 && t.size >= 12 && t.size <= 24 && !t.inCode && !t.inUI && !t.el.closest('button, nav'));
+  const sample = (t, v) => `"${t.text.slice(0, 32)}" ${v}`;
+  const tightLeading = prose.filter((t) => t.h >= t.size * t.lh * 1.8 && t.lh < 1.3).map((t) => sample(t, `${t.lh}×`));
+  const wideTracking = prose.filter((t) => !t.upper && t.ls > 0.05).map((t) => sample(t, `${t.ls}em`));
+  const capsBody = texts.filter((t) => t.upper && t.chars >= 80 && !t.inCode && !t.inUI).map((t) => sample(t, `${t.chars} chars`));
+  const crushed = texts.filter((t) => t.chars >= 3 && !t.inCode && t.ls < (t.size >= 40 ? -0.09 : -0.07)).map((t) => sample(t, `${t.ls}em at ${t.size}px`));
+  // heading levels that skip a step (h2 then h4): the outline screen readers walk has a hole
+  const skippedHeadings = []; let prevLevel = 0;
+  for (const h of document.querySelectorAll('h1, h2, h3, h4, h5, h6')) {
+    const r = h.getBoundingClientRect(); if (!r.width && !r.height) continue;
+    const lvl = +h.tagName[1];
+    if (prevLevel && lvl > prevLevel + 1) skippedHeadings.push(`h${prevLevel} → h${lvl} "${(h.innerText || '').trim().slice(0, 32)}"`);
+    prevLevel = lvl;
+  }
+  // the name of a working file shown to visitors («credits in CREDITS.md»): the build's notes leaked into the page. Code
+  // samples do not count, nor `.js`, which ends product names (Next.js).
+  const fileNames = new Set(); const fileWalk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n; (n = fileWalk.nextNode()) && fileNames.size < 6;) {
+    const p = n.parentElement;
+    if (!p || p.closest('code, pre, kbd, samp, script, style, noscript, template, [hidden], [aria-hidden="true"]') || !p.getClientRects().length) continue;
+    for (const f of n.data.matchAll(/\b[\w-]+\.(?:md|mdx|json|mjs|cjs|tsx?|jsx|ya?ml|env|log)\b/gi)) fileNames.add(f[0]);
+  }
+  // text pressed against the inside of its own box: under max(8px, half the font size) beside it, or max(4px, 0.3×) above and below
+  const surface = (el, cs) => ownFill(el, cs) || outlined(cs);
+  const textBox = new Map(); const rng = document.createRange();
+  const glyphs = (t) => { if (!textBox.has(t)) { rng.selectNodeContents(t.el); textBox.set(t, rng.getBoundingClientRect()); } return textBox.get(t); };
+  const cramped = [];
+  for (const { el, cs, r } of big) {
+    if (r.width < 120 || r.height < 40 || r.width >= W * 0.9 || notContent(el) || !surface(el, cs)) continue;
+    let worst = null;
+    for (const t of texts) {
+      // display type and decorative letters are placed as shapes; the inset rule is for text that is read
+      if (t.inUI || t.size > 32 || t.el.closest('[aria-hidden="true"]') || !el.contains(t.el)) continue;
+      let inner = false;
+      for (let p = t.el; p && p !== el; p = p.parentElement) { if (surface(p, getComputedStyle(p))) { inner = true; break; } }
+      if (inner) continue;
+      const g = glyphs(t);
+      const h = Math.min(g.left - r.left, r.right - g.right), v = Math.min(g.top - r.top, r.bottom - g.bottom);
+      if (h < -2 || v < -2) continue;
+      const hNeed = Math.max(8, t.size * 0.5), vNeed = Math.max(4, t.size * 0.3);
+      if (h < hNeed || v < vNeed) { worst = h < hNeed ? `${Math.round(h)}px beside "${t.text.slice(0, 24)}"` : `${Math.round(v)}px above or below "${t.text.slice(0, 24)}"`; break; }
+    }
+    if (worst) cramped.push(`${label(el)}: ${worst}`);
+  }
+  // a neutral grey ink set on a strong colour: the grey reads dirty, a tint of the ground reads as part of it
+  const greyOnColour = [];
+  for (const t of texts) {
+    if (t.chars < 4 || t.inCode || t.inUI) continue;
+    const fg = rgba(t.color); if (fg.a < 0.5) continue;
+    const f = hsl(fg); if (f.s > 0.25 || f.l < 0.3 || f.l > 0.8) continue;
+    const bg = bgBehind(t.el); if (!bg) continue;
+    const b = hsl(bg); if (b.s < 0.3 || b.l < 0.2 || b.l > 0.85) continue;
+    greyOnColour.push(`"${t.text.slice(0, 28)}" ${hex(fg)} on ${hex(bg)}`);
+  }
+  // justified text in a column of 45 characters or fewer (width / (0.5 × font size)) without hyphens: auto, over two lines or more;
+  // scripts that do not stretch word spaces (CJK, Thai, Arabic) are exempt
+  const NO_WORD_SPACES = /[؀-ۿݐ-ݿࢠ-ࣿ฀-๿ᄀ-ᇿ⺀-鿿ꥠ-꥿가-퟿豈-﫿ﭐ-﷿ﹰ-﻿ｦ-ﾟ]/;
+  const justified = [];
+  for (const t of texts) {
+    if (t.inCode || t.inUI || t.align !== 'justify' || t.chars < 20) continue;
+    const cs = getComputedStyle(t.el);
+    if ((cs.hyphens || cs.webkitHyphens) === 'auto') continue;
+    const letters = [...t.text.slice(0, 400)].filter((ch) => /\p{L}/u.test(ch));
+    if (letters.filter((ch) => NO_WORD_SPACES.test(ch)).length > letters.length / 2) continue;
+    const measure = t.w - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+    if (measure > 0 && measure / (t.size * 0.5) <= 45 && t.h >= t.size * t.lh * 1.8) justified.push(sample(t, `${Math.round(measure / (t.size * 0.5))} chars a line`));
+  }
+  // an h1 of 72px or more with 40 characters or more that takes 28% of the viewport height or 25% of its area
+  const oversizedH1 = [];
+  for (const h of document.querySelectorAll('h1')) {
+    const r = h.getBoundingClientRect(); const text = (h.innerText || '').trim();
+    if (r.width < 1 || r.height < 1 || getComputedStyle(h).visibility === 'hidden') continue;
+    const px = parseFloat(getComputedStyle(h).fontSize);
+    if (px >= 72 && text.length >= 40 && (r.height / H >= 0.28 || (r.width * r.height) / (W * H) >= 0.25)) oversizedH1.push(`"${text.slice(0, 40)}" ${Math.round(px)}px, ${Math.round(r.height / H * 100)}vh`);
+  }
+  // hairline-and-tile grids and repeating stripes painted as a background (the element or its ::before / ::after)
+  const HAIRLINE = /\b\d{1,3}(?:\.\d+)?px\s*,\s*(?:transparent|rgba\(\s*\d+,\s*\d+,\s*\d+,\s*0\s*\))\s+\d{1,3}(?:\.\d+)?px|(?:transparent|rgba\(\s*\d+,\s*\d+,\s*\d+,\s*0\s*\))\s+calc\(100%\s*-\s*\d{1,3}(?:\.\d+)?px\)/g;
+  const stripeKind = (cs) => {
+    const img = `${cs.backgroundImage} ${cs.maskImage || ''} ${cs.webkitMaskImage || ''}`;
+    for (const m of img.matchAll(/repeating-(?:linear|radial|conic)-gradient\(/g)) {
+      let depth = 1, i = m.index + m[0].length; const start = i;
+      for (; i < img.length && depth; i++) { if (img[i] === '(') depth++; else if (img[i] === ')') depth--; }
+      const stops = img.slice(start, i - 1).split(/,(?![^(]*\))/).map((s) => s.trim());
+      const last = stops[stops.length - 1].split(/\s+(?![^(]*\))/);
+      // a ramp that ends at the full length draws once across the box: a faceted fill, not stripes
+      if (!(last.length === 1 || /^(100%|360deg|1turn)$/.test(last[last.length - 1]))) return 'stripes';
+    }
+    const hairlines = (cs.backgroundImage.match(HAIRLINE) || []).length;
+    if (hairlines >= 2 && /\d(px)/.test(cs.backgroundSize)) return 'grid';
+    return null;
+  };
+  const stripeGrid = [];
+  for (const el of all) {
+    if (stripeGrid.length >= 6 || el.closest('[data-ui]') || el.tagName === 'SCRIPT' || el.tagName === 'STYLE') continue;
+    const r = el.getBoundingClientRect(); if (r.width < 1 || r.height < 1) continue;
+    for (const pseudo of [null, '::before', '::after']) {
+      const kind = stripeKind(getComputedStyle(el, pseudo));
+      if (kind) { stripeGrid.push(`${label(el)}${pseudo || ''} (${kind})`); break; }
+    }
+  }
+  // cards in a row that scrolls sideways, resting with a card against the row's edge and no gutter around it
+  const edgeFlush = [];
+  const scrolls = (cs) => /auto|scroll/.test(cs.overflowX);
+  for (const sc of all) {
+    if (edgeFlush.length >= 4 || sc === document.body || !scrolls(getComputedStyle(sc))) continue;
+    const sr = sc.getBoundingClientRect();
+    if (sc.scrollWidth <= sc.clientWidth + 8 || sc.scrollLeft > 4 || sr.width < 120 || sr.height < 60 || sr.top + SY > 2 * H) continue;
+    const scs = getComputedStyle(sc);
+    const paints = rgba(scs.backgroundColor).a > 0 || scs.backgroundImage !== 'none' || ['Left', 'Right'].some((s) => parseFloat(scs[`border${s}Width`]) > 0);
+    const inLeft = paints ? 0 : Math.max(0, sr.left), inRight = paints ? 0 : Math.max(0, W - sr.right);
+    const gutter = (v) => v >= 12 && v <= 48;
+    const contentLeft = sr.left + sc.clientLeft, contentRight = contentLeft + sc.clientWidth;
+    let firstRight = Infinity, lastLeft = -Infinity, worst = null, count = 0;
+    for (const card of sc.querySelectorAll('*')) {
+      const owner = (() => { for (let p = card.parentElement; p; p = p.parentElement) if (p === sc || scrolls(getComputedStyle(p))) return p; return null; })();
+      if (owner !== sc || card.matches('td, th, tr, thead, tbody, tfoot, caption, colgroup, col')) continue;
+      const r = card.getBoundingClientRect(); const cs = getComputedStyle(card);
+      if (r.width < 80 || r.height < 40 || cs.display === 'none' || cs.visibility === 'hidden') continue;
+      if (!(rgba(cs.backgroundColor).a > 0.5 || ['Top', 'Right', 'Bottom', 'Left'].filter((s) => parseFloat(cs[`border${s}Width`]) > 0).length >= 2)) continue;
+      firstRight = Math.min(firstRight, r.right); lastLeft = Math.max(lastLeft, r.left);
+      const leftGap = r.left - contentLeft, rightGap = contentRight - r.right;
+      const flushRight = leftGap >= 6 && rightGap < 8 && rightGap > -24 && !(rightGap >= 0 && gutter(inRight));
+      const flushLeft = rightGap >= 6 && leftGap < 8 && leftGap > -24 && !(leftGap >= 0 && gutter(inLeft));
+      if (!flushRight && !flushLeft) continue;
+      count++; const gap = Math.round(flushRight ? rightGap : leftGap);
+      if (!worst || gap < worst.gap) worst = { gap, edge: flushRight ? 'right' : 'left', card };
+    }
+    // one card, or cards stacked in a column, is not a row that scrolls past an edge
+    if (count && firstRight <= lastLeft + 1) edgeFlush.push(`${label(sc)}: ${count} card(s) flush against the ${worst.edge} edge (${worst.gap}px, e.g. ${label(worst.card)})`);
+  }
+  // a clipping box (overflow hidden or clip) that cuts a menu, listbox, tooltip or popover positioned out of it
+  const clippedLayers = [];
+  const POPOVER = '[popover], dialog[open], [role="dialog"], [role="listbox"], [role="menu"], [role="menubar"], [role="tooltip"]';
+  const clipsAxis = (cs) => { const ov = (v) => /hidden|clip/.test(v); const sc = /auto|scroll/.test(`${cs.overflow} ${cs.overflowX} ${cs.overflowY}`); return sc ? null : { x: ov(cs.overflowX) || ov(cs.overflow), y: ov(cs.overflowY) || ov(cs.overflow) }; };
+  for (const layer of document.querySelectorAll(POPOVER)) {
+    if (clippedLayers.length >= 4 || getComputedStyle(layer).position !== 'absolute' || layer.matches(':modal')) continue;
+    const lr = layer.getBoundingClientRect(); if (lr.width < 1 || lr.height < 1) continue;
+    for (let p = layer.parentElement; p && p !== document.body && p !== document.documentElement; p = p.parentElement) {
+      const ax = clipsAxis(getComputedStyle(p)); if (!ax || (!ax.x && !ax.y)) continue;
+      const pr = p.getBoundingClientRect(); if (pr.width <= 0 || pr.height <= 0) continue;
+      // the nearest clipping box is the one that cuts the layer; a carousel or ticker window cuts on purpose
+      if (!/carousel|slider|swiper|marquee|ticker|viewport|track/i.test(`${p.className} ${p.id}`) && ((ax.x && (lr.left < pr.left - 2 || lr.right > pr.right + 2)) || (ax.y && (lr.top < pr.top - 2 || lr.bottom > pr.bottom + 2)))) clippedLayers.push(`${label(p)} clips ${label(layer)}`);
+      break;
+    }
+  }
+
+  // --- spacing and rhythm (Gestalt proximity): a heading sits closer to what it introduces than to what came before
+  const readable = texts.filter((t) => !t.inUI && !t.el.closest('nav, header, footer, button, [aria-hidden="true"]'));
+  const headingRhythm = []; let rhythmMeasured = 0;
+  for (const h of document.querySelectorAll('h2, h3, h4')) {
+    if (h.closest('nav, header, footer, [data-ui], button, [aria-hidden="true"]')) continue;
+    const r = h.getBoundingClientRect(); if (r.width < 1 || r.height < 1) continue;
+    const top = r.top + SY, bottom = r.bottom + SY;
+    let above = Infinity, below = Infinity;
+    for (const t of readable) {
+      if (h.contains(t.el) || t.el.contains(h) || t.right <= r.left || t.left >= r.right) continue;
+      if (t.bottom <= top + 1) above = Math.min(above, top - t.bottom);
+      else if (t.top >= bottom - 1) below = Math.min(below, t.top - bottom);
+    }
+    if (!isFinite(above) || !isFinite(below) || below > 160) continue;
+    rhythmMeasured++;
+    if (above <= below + 2) headingRhythm.push(`"${(h.innerText || '').trim().slice(0, 28)}" ${Math.round(above)}px above, ${Math.round(below)}px below`);
+  }
+  // one gap everywhere is no rhythm: the gap each stack of blocks uses, counted once per stack
+  const stackGaps = [];
+  for (const p of all) {
+    if (p.closest('[data-ui], nav, svg') || formish(p)) continue;
+    const kids = [...p.children].filter((k) => { const r = k.getBoundingClientRect(); const cs = getComputedStyle(k); return r.width > 0 && r.height > 0 && !/absolute|fixed/.test(cs.position) && !/inline/.test(cs.display); });
+    if (kids.length < 2) continue;
+    const gaps = new Set();
+    for (let i = 1; i < kids.length; i++) {
+      const a = kids[i - 1].getBoundingClientRect(), b = kids[i].getBoundingClientRect();
+      if (b.top >= a.bottom - 1 && b.left < a.right && b.right > a.left) { const g = Math.round(b.top - a.bottom); if (g >= 4) gaps.add(Math.round(g / 4) * 4); }
+    }
+    stackGaps.push(...gaps);
+  }
+  const gapCount = new Map(); for (const g of stackGaps) gapCount.set(g, (gapCount.get(g) || 0) + 1);
+  const topGap = [...gapCount.entries()].sort((a, b) => b[1] - a[1])[0];
+  const monotonous = stackGaps.length >= 10 && topGap && topGap[1] / stackGaps.length >= 0.8 ? { gap: topGap[0], share: round(topGap[1] / stackGaps.length) } : null;
+  // two text sizes so close they read as a mistake rather than a step (16 and 17, 32 and 34)
+  // from the body up: interface labels at 12–15px step by a pixel on purpose
+  const usedSizes = [...sizeChars.entries()].filter(([s, c]) => s >= 16 && c >= 40).map(([s]) => s).sort((a, b) => a - b);
+  const nearSizes = []; for (let i = 1; i < usedSizes.length; i++) if (usedSizes[i] / usedSizes[i - 1] < 1.08) nearSizes.push(`${usedSizes[i - 1]}/${usedSizes[i]}px`);
+  // a heading whose last line holds a single short word (text-wrap: balance prevents it)
+  const headingTop = Math.max(0, ...[...document.querySelectorAll('h1, h2, h3')].filter((h) => h.getBoundingClientRect().height > 2 && h.textContent.trim()).map((h) => parseFloat(getComputedStyle(h).fontSize)));
+  const orphans = [];
+  for (const h of document.querySelectorAll('h1, h2, h3')) {
+    const cs = getComputedStyle(h); if (/balance|pretty/.test(cs.textWrap || cs.textWrapStyle || '') || h.closest('[aria-hidden="true"]')) continue;
+    // lines set by hand (a <br>, a block per line or per letter) are the author's, not the browser's
+    if (h.querySelector('br') || [...h.querySelectorAll('*')].some((k) => !/^inline/.test(getComputedStyle(k).display))) continue;
+    const words = (h.innerText || '').trim().split(/\s+/); if (words.length < 4) continue;
+    rng.selectNodeContents(h); const lines = new Map();
+    for (const q of rng.getClientRects()) { if (q.width < 1) continue; const k = Math.round(q.top / 4); const l = lines.get(k) || { left: q.left, right: q.right }; l.left = Math.min(l.left, q.left); l.right = Math.max(l.right, q.right); lines.set(k, l); }
+    const ws = [...lines.entries()].sort((a, b) => a[0] - b[0]).map(([, l]) => l.right - l.left);
+    if (ws.length >= 2 && ws[ws.length - 1] < Math.max(...ws) * 0.2) orphans.push(`"${(h.innerText || '').trim().slice(0, 36)}"`);
+  }
+  // touch targets on a phone: under 24×24 with a neighbour closer than 24px fails WCAG 2.5.8; controls under 44px are hard to hit
+  const targets = { small: [], short: [] };
+  if (W < 600) {
+    const hits = [...document.querySelectorAll('a[href], button, input:not([type=hidden]), select, textarea, [role="button"], [role="link"]')].filter((el) => {
+      const r = el.getBoundingClientRect(); const cs = getComputedStyle(el);
+      if (r.width < 1 || r.height < 1 || cs.visibility === 'hidden' || el.closest('[data-ui], [aria-hidden="true"], [inert]')) return false;
+      // a picture of an app scaled down with a transform is an illustration, not controls to press
+      if (el.offsetHeight && (r.height < el.offsetHeight * 0.9 || r.width < el.offsetWidth * 0.9)) return false;
+      // a link inside a sentence is exempt (WCAG 2.5.8, inline)
+      return !(el.matches('a') && /inline/.test(cs.display) && el.parentElement && el.parentElement.matches('p, li, span, td, dd, label, small'));
+    }).map((el) => { const r = el.getBoundingClientRect(); return { el, r, cx: r.left + r.width / 2, cy: r.top + r.height / 2 }; });
+    for (const t of hits) {
+      const name = `${t.el.tagName.toLowerCase()} «${(t.el.innerText || t.el.value || t.el.getAttribute('aria-label') || '').trim().slice(0, 20)}» ${Math.round(t.r.width)}×${Math.round(t.r.height)}`;
+      if ((t.r.width < 24 || t.r.height < 24) && hits.some((o) => o !== t && !o.el.contains(t.el) && !t.el.contains(o.el) && Math.hypot(o.cx - t.cx, o.cy - t.cy) < 24)) targets.small.push(name);
+      else if (t.el.matches('button, input, select, [role="button"]') && t.r.height < 44 && !t.el.matches('input[type=checkbox], input[type=radio]')) targets.short.push(name);
+    }
+  }
+
+  // --- findability (Google Search Central, ogp.me, web.dev): what a public page needs in its head and its images
+  const meta = (sel) => (document.head && document.head.querySelector(sel)?.getAttribute('content') || '').trim();
+  const firstScreenImg = (i) => { const r = i.getBoundingClientRect(); return r.top + SY < H && r.width * r.height >= W * H * 0.08; };
+  const shown = (el) => { const r = el.getBoundingClientRect(); return r.width > 1 && r.height > 1 && getComputedStyle(el).visibility !== 'hidden'; };
+  const GENERIC_LINK = /^(click here|here|learn more|read more|more|this|go|start|link|continue|aquí|acá|click aquí|clic aquí|haga clic aquí|leer más|ver más|más|saber más|más información|este enlace|continuar)$/i;
+  const seo = {
+    title: (document.title || '').trim(),
+    description: meta('meta[name="description" i]'),
+    lang: document.documentElement.getAttribute('lang') || '',
+    viewport: meta('meta[name="viewport" i]'),
+    robots: meta('meta[name="robots" i]'),
+    canonical: [...document.querySelectorAll('link[rel="canonical" i]')].map((l) => l.getAttribute('href') || ''),
+    ogMissing: ['og:title', 'og:type', 'og:image', 'og:url'].filter((p) => !meta(`meta[property="${p}"]`)),
+    twitterCard: meta('meta[name="twitter:card" i]'),
+    jsonld: [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => { try { const j = JSON.parse(s.textContent); const items = Array.isArray(j) ? j : j['@graph'] || [j]; return items.every((i) => i && i['@type']) ? 'ok' : 'without @type'; } catch { return 'not valid JSON'; } }),
+    imgNoAlt: [...document.images].filter((i) => shown(i) && !i.hasAttribute('alt') && !i.closest('[aria-hidden="true"]')).map((i) => (i.currentSrc || i.src || '').split('/').pop().slice(0, 40)).slice(0, 6),
+    // a picture with no reserved box makes the page jump while it loads (CLS)
+    imgNoSize: [...document.querySelectorAll('img, video, iframe')].filter((i) => { if (!shown(i) || i.getBoundingClientRect().width < 32) return false; const cs = getComputedStyle(i); return !(i.getAttribute('width') && i.getAttribute('height')) && cs.aspectRatio === 'auto' && !/absolute|fixed/.test(cs.position); }).map((i) => (i.currentSrc || i.src || i.tagName).split('/').pop().slice(0, 40)).slice(0, 6),
+    lazyHero: [...document.images].filter((i) => i.loading === 'lazy' && shown(i) && firstScreenImg(i)).map((i) => (i.currentSrc || i.src).split('/').pop().slice(0, 40)),
+    genericLinks: [...new Set([...document.querySelectorAll('a[href]')].filter((a) => shown(a) && !a.getAttribute('aria-label') && GENERIC_LINK.test((a.innerText || '').replace(/[→›»>]/g, '').trim())).map((a) => (a.innerText || '').trim()))].slice(0, 6),
+  };
+
   // --- hero media
   const heroMedia = [];
   for (const b of big) {
@@ -410,16 +678,16 @@ export function probe() {
   // pictures that were not drawn by the page's own code: photographs, footage, raster artwork.
   // Inline SVG and .svg files do not count; cropped interface fragments (data-ui) are counted apart.
   const svgSrc = (u) => /\.svg(\?|#|$)|^data:image\/svg/i.test(u || '');
-  let realPictures = 0, videoCount = 0; const pictureSamples = [];
+  let realPictures = 0, videoCount = 0, widestPicture = 0; const pictureSamples = [];
   for (const el of all) {
     if (el.closest('[data-ui]') || el.closest('svg')) continue;
     const r = el.getBoundingClientRect(); if (r.width < 120 || r.height < 90 || r.width * r.height < 160 * 120) continue;
     if (el.tagName === 'IMG') {
       const src = el.currentSrc || el.src;
-      if (el.naturalWidth > 0 && !svgSrc(src)) { realPictures++; if (pictureSamples.length < 8) pictureSamples.push(src.split('/').pop().slice(0, 48)); }
+      if (el.naturalWidth > 0 && !svgSrc(src)) { realPictures++; widestPicture = Math.max(widestPicture, r.width / W); if (pictureSamples.length < 8) pictureSamples.push(src.split('/').pop().slice(0, 48)); }
       continue;
     }
-    if (el.tagName === 'VIDEO') { realPictures++; videoCount++; continue; }
+    if (el.tagName === 'VIDEO') { realPictures++; videoCount++; widestPicture = Math.max(widestPicture, r.width / W); continue; }
     const bg = getComputedStyle(el).backgroundImage;
     if (bg && bg.includes('url(')) { const u = (bg.match(/url\(["']?([^"')]+)/) || [])[1]; if (!svgSrc(u)) realPictures++; }
   }
@@ -469,8 +737,29 @@ export function probe() {
   });
   const clippedContent = clipped.filter((el) => !clipped.some((o) => o !== el && o.contains(el))).slice(0, 4).map((el) => `${el.tagName.toLowerCase()}${el.classList.length ? '.' + [...el.classList].slice(0, 2).join('.') : ''} «${(el.innerText || el.value || el.getAttribute('aria-label') || '').trim().slice(0, 24)}»`);
   const blendText = texts.filter((t) => { for (let p = t.el, i = 0; p && p !== document.body && i < 6; p = p.parentElement, i++) if (/difference|exclusion/.test(getComputedStyle(p).mixBlendMode)) return true; return false; }).length;
+  // three small empty dots in a row over a picture: the "window" a screenshot was dressed in
+  const fakeChrome = [...document.querySelectorAll('div,span,header,figure > *')].filter((bar) => {
+    const kids = [...bar.children];
+    if (kids.length !== 3 || bar.textContent.trim()) return false;
+    const dots = kids.map((k) => ({ r: k.getBoundingClientRect(), cs: getComputedStyle(k) }));
+    if (!dots.every(({ r, cs }) => r.width >= 4 && r.width <= 16 && Math.abs(r.width - r.height) <= 1 && parseFloat(cs.borderRadius) >= r.width * 0.4)) return false;
+    const frame = bar.parentElement?.closest('figure, div, a, article, section');
+    return !!frame?.querySelector('img, video, picture, canvas');
+  }).length;
+  // a list of three or more items where every item leads with a check mark: a glyph, a ::before glyph, or a check icon
+  const CHECK = /^[\s]*[✓✔☑✅]/u;
+  const leadsWithCheck = (li) => {
+    if (CHECK.test(li.textContent) || CHECK.test(getComputedStyle(li, '::before').content.replace(/^["']|["']$/g, ''))) return true;
+    const first = li.firstElementChild;
+    if (!first || !/^(svg|i|span|img)$/i.test(first.tagName) || first.textContent.trim()) return false;
+    return /check|tick/i.test(`${first.getAttribute('class') || ''} ${first.getAttribute('data-lucide') || ''} ${first.getAttribute('aria-label') || ''} ${first.getAttribute('alt') || ''} ${first.getAttribute('src') || ''}`);
+  };
+  const checkLists = [...document.querySelectorAll('ul, ol')].filter((list) => {
+    const items = [...list.children].filter((c) => c.tagName === 'LI');
+    return items.length >= 3 && items.every(leadsWithCheck);
+  }).length;
   const bodyText = document.body.innerText || '';
-  const emoji = (bodyText.match(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu) || []);
+  const emoji =(bodyText.match(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu) || []);
   const doc = document.documentElement; const pageH = Math.max(doc.scrollHeight, document.body.scrollHeight);
   const headingStats = headings.map(({ _el, ...h }) => h);
   const heroOut = hero ? (({ _el, ...h }) => h)(hero) : null;
@@ -480,7 +769,7 @@ export function probe() {
     viewport: { w: W, h: H },
     page: { height: pageH, screens: round(pageH / H, 1), words: bodyText.split(/\s+/).filter(Boolean).length,
       img: document.images.length, video: document.querySelectorAll('video').length, canvas: document.querySelectorAll('canvas').length, svg: document.querySelectorAll('svg').length, sections: document.querySelectorAll('section').length,
-      horizontalOverflow: doc.scrollWidth > W + 2 ? doc.scrollWidth - W : 0, overflowCulprits, uiFragments, uiAbuse, realPictures, videoCount, uiPictures, pictureSamples, blendText, sideScrollers, clippedContent, brokenImages, emoji: [...new Set(emoji)].slice(0, 10),
+      horizontalOverflow: doc.scrollWidth > W + 2 ? doc.scrollWidth - W : 0, overflowCulprits, uiFragments, uiAbuse, realPictures, videoCount, widestPicture: round(widestPicture), uiPictures, pictureSamples, blendText, sideScrollers, clippedContent, fakeChrome, checkLists, brokenImages, emoji: [...new Set(emoji)].slice(0, 10),
       videosNoPoster: [...document.querySelectorAll('video')].filter((v) => !v.getAttribute('poster') && v.getBoundingClientRect().width >= 160).length },
     hero: heroOut, h1,
     headings: headingStats.slice(0, 40),
@@ -502,10 +791,40 @@ export function probe() {
     },
     buttons: { count: buttons.length, inHero: buttons.filter((b) => b.top < H).length, radius: mode(buttons.map((b) => b.radius)), height: mode(buttons.map((b) => b.h)), withShadow: buttons.filter((b) => b.shadow).length, withGradient: buttons.filter((b) => b.gradient).length, mono: buttons.filter((b) => b.mono).length, upper: buttons.filter((b) => b.upper).length, heroLabels: buttons.filter((b) => b.top < H).map((b) => b.text).filter(Boolean).slice(0, 5) },
     surfaces: { shadowStatic, shadowOverlay, shadowSamples, gradients, scrims, gradientSamples, gradientText, hairlines, hairlineSamples, outlinedBoxes, dashed, blurred, roundedBoxes, boxRadius: mode(boxRadii) ?? 0, squareMedia, roundedMedia, mediaRadius: mode(mediaRadii) ?? 0, textShadow: texts.filter((t) => t.textShadow).length, cardRows: cardRows.slice(0, 8) },
+    craft: { sideTabs, nestedCards, tightLeading, wideTracking, capsBody, crushed, skippedHeadings, fileNames: [...fileNames], cramped, greyOnColour, justified, oversizedH1, stripeGrid, edgeFlush, clippedLayers, headingRhythm, rhythmMeasured, monotonous, nearSizes, orphans, targets, headingTop },
+    seo,
     heroMedia: heroMedia.slice(0, 4), nav,
     fontsLoaded: [...loaded].slice(0, 12),
   };
 }
+
+// textSpacing() applies the reader overrides of WCAG 1.4.12 (line height 1.5, paragraph spacing 2×, letters 0.12em,
+// words 0.16em) and returns the text that a clipping box then cuts: a box of fixed height that only fits the text as set.
+export function textSpacing() {
+  const clipping = (el) => { for (let p = el, i = 0; p && p !== document.body && i < 5; p = p.parentElement, i++) { const cs = getComputedStyle(p); if (/hidden|clip/.test(cs.overflowX + cs.overflowY) && cs.webkitLineClamp === 'none' && cs.textOverflow !== 'ellipsis' && (p.scrollHeight > p.clientHeight + 2 || p.scrollWidth > p.clientWidth + 2)) return p; } return null; };
+  const leaves = [...document.body.querySelectorAll('*')].slice(0, 6000).filter((el) => {
+    if (/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE|OPTION)$/.test(el.tagName) || el.closest('svg, [aria-hidden="true"], [data-ui]')) return false;
+    if (![...el.childNodes].some((n) => n.nodeType === 3 && n.nodeValue.trim().length > 2)) return false;
+    const r = el.getBoundingClientRect(); const scaled = el.offsetHeight && r.height < el.offsetHeight * 0.9;
+    return r.width > 0 && r.height > 0 && !scaled && el.checkVisibility({ opacityProperty: true, visibilityProperty: true }) && el.innerText.trim();
+  });
+  const before = new Set(leaves.filter(clipping));
+  const style = document.createElement('style');
+  style.textContent = '*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}p{margin-bottom:2em!important}';
+  document.head.appendChild(style);
+  const cut = leaves.filter((el) => !before.has(el) && clipping(el)).slice(0, 6).map((el) => `${el.tagName.toLowerCase()}${typeof el.className === 'string' && el.className ? '.' + el.className.trim().split(/\s+/)[0] : ''} «${(el.innerText || '').trim().slice(0, 24)}»`);
+  style.remove();
+  return cut;
+}
+
+// VITALS is installed before the page loads and keeps the layout shifts and the largest paint as they happen (web.dev).
+export const VITALS = `(() => {
+  const v = window.__vitals = { cls: 0, lcp: null, lcpTag: null };
+  try {
+    new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) v.cls += e.value; }).observe({ type: 'layout-shift', buffered: true });
+    new PerformanceObserver((l) => { const e = l.getEntries().at(-1); if (e) { v.lcp = Math.round(e.startTime); v.lcpTag = e.element ? e.element.tagName.toLowerCase() : null; } }).observe({ type: 'largest-contentful-paint', buffered: true });
+  } catch {}
+})()`;
 
 // frame() runs at each scroll position the inspector photographs. It reports large text that something
 // else is lying on top of (a picture sliding over a headline), and how much of the screen holds anything.

@@ -23,7 +23,7 @@ attack or probe against the running app. The `node-ts` examples assume code unde
 commands was run: they are syntax to validate on first use, and several `-P` regexes need `rg` with PCRE2.
 Source numbers `Bn` are in Sources.
 
-**Data-protection norm:** the one the product falls under, named in `system-design.md` (GDPR, Ley 25.326 in Argentina, LGPD…).
+**Data-protection norm:** the one the product falls under, named in `system-design.md` (GDPR, Ley 25.326 in Argentina, LGPD…). What a site must show for it (privacy page, cookies before consent, consumer buttons, email) is `legal.md`.
 The Argentine references below are one example.
 
 ## Rules that are criteria
@@ -219,7 +219,7 @@ Each rule is a cheap command the agent runs over its own diff. The frequency fig
 
 **SEC-AI-10** — No `console.log(req.body)`/`console.log(err)` that dumps passwords or tokens. · How C · criterion P2 · Check: as SEC-SECR-10 · Source B4, B12.
 
-**SEC-AI-11** — No `fetch(req.query.url)` nor another user URL without an allow-list (SSRF). · How C · criterion S3 · Check: node-ts `rg -n "(fetch|axios\.(get|post)|got)\(\s*req\.(query|body|params)" src/` is empty · Source B1 (V1.3.6).
+**SEC-AI-11** — No `fetch(req.query.url)` nor another user URL without an allow-list (SSRF). A user value that only fills a path segment on a fixed host is not SSRF; one that chooses the host, the scheme or the port is. · How C · criterion S3 · Check: node-ts `rg -n "(fetch|axios\.(get|post)|got)\(\s*req\.(query|body|params)" src/` is empty · Source B1 (V1.3.6).
 
 ## 10. If the app uses an LLM (LLM)
 

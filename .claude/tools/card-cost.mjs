@@ -11,6 +11,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { linesOf } from './transcript.mjs';
 
 export const PRICE = {
   'claude-opus-5-5': { input: 4, output: 20, write5m: 5.00, write1h: 8.00, read: 0.20 },
@@ -60,25 +61,25 @@ const tokenOf = (n) => {
   return wholeToken.get(n);
 };
 const names = (value, card) => { const text = JSON.stringify(value ?? '').toLowerCase().replace(/\\\\/g, '/'); return card.names.some((n) => tokenOf(n).test(text)); };
-const promptOf = (lines) => {
-  for (const line of lines) {
-    let entry;
-    try { entry = JSON.parse(line); } catch { continue; }
-    if (entry.type === 'user') return entry.message?.content ?? '';
-  }
-  return '';
-};
+// The messages of one transcript, streamed: a long session's main transcript passes 512 MB. Only a line with `"usage"` is
+// parsed; the first user line is the prompt that tells a subagent of this card from another one.
 const messagesOf = (file, sinceMs = null, root = null, card = null) => {
   const last = new Map();
-  const lines = readFileSync(file, 'utf8').split('\n').filter(Boolean);
-  const whole = card !== null && file !== card.main && names(promptOf(lines), card);
-  for (const [i, line] of lines.entries()) {
+  let prompt = null;
+  let i = 0;
+  for (const line of linesOf(file)) {
+    i += 1;
+    if (prompt === null && line.includes('"user"')) {
+      try { const entry = JSON.parse(line); if (entry.type === 'user') prompt = entry.message?.content ?? ''; } catch { /* a half-written line */ }
+    }
+    if (!line.includes('"usage"')) continue;
     let entry;
     try { entry = JSON.parse(line); } catch { continue; }
     const m = entry.message;
     if (!m?.usage || !m.model) continue;
     if (sinceMs !== null && !(Date.parse(entry.timestamp) >= sinceMs)) continue;
     if (root !== null && !inside(entry.cwd, root)) continue;
+    const whole = card !== null && file !== card.main && names(prompt ?? '', card);
     if (card !== null && !whole && !inside(entry.cwd, card.own) && !names(m.content, card)) continue;
     last.set(m.id ?? `no-id-${file}-${i}`, m);
   }

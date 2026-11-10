@@ -60,7 +60,10 @@ const R = [
   ['WARN', 'scale-zero', /scale\(\s*0\s*\)|\bscale-0\b/, 'Entering from scale(0). Start at 0.95–0.98 with opacity 0.'],
   ['WARN', 'h-screen', /\bh-screen\b|height\s*:\s*100vh/, '100vh jumps on mobile. Use 100svh / 100dvh.'],
   ['WARN', 'bounce', /animate-(bounce|ping|pulse)\b/, 'Looping attention animation (bounce / ping / pulse dot).'],
+  ['WARN', 'native-dialog', /(?<![\w.$])alert\s*\(|\bwindow\.(?:alert|confirm|prompt)\s*\(/, 'A browser alert, confirm or prompt. Say it on the page: a message next to what it is about, or a dialog in the style of the site.'],
+  ['WARN', 'oops', /(?:>|["'`])\s*(?:Oops|Whoops|Uh[- ]oh|¡Ups)\b/i, 'A cute error line. Say what failed and what to do next.'],
 ];
+if (!appMode) R.push(['WARN', 'placeholder-data', /\b(John|Jane) Doe\b|\bAcme( Inc| Corp)?\b|\bFirstname Lastname\b|\b123 Main St\b/, 'Placeholder data on the page. A real name, client or address, or none.']);
 if (appMode) {
   for (const r of R) if (r[1] in APP_LEVEL) r[0] = APP_LEVEL[r[1]];
   R.push(['FAIL', 'placeholder-data', /\b(John|Jane) Doe\b|\bAcme( Inc| Corp)?\b|\bexample\.com\b|\bFirstname Lastname\b|\b123 Main St\b/, 'Placeholder data. Use believable names, amounts that add up and real units for this product.']);
@@ -92,11 +95,38 @@ function oneHueTextRamps(text) {
 
 const findings = [];
 let emDashes = 0;
+
+// Copy tells of the impeccable detector (Apache 2.0), read on the text of markup files: "<abstract noun> theater", and runs of
+// aphoristic sentences ("Not a X. A Y." and "Z. No W." / "Z. Just W."), three or more.
+const MARKUP = new Set(['.html', '.htm', '.jsx', '.tsx', '.vue', '.svelte', '.astro', '.mdx']);
+const THEATER_HEADS = new Set(['accessibility', 'accountability', 'agile', 'alignment', 'compliance', 'diversity', 'engagement', 'governance', 'growth', 'hiring', 'hygiene', 'innovation', 'inclusion', 'kindness', 'leadership', 'metrics', 'privacy', 'process', 'productivity', 'quality', 'safety', 'security', 'strategy', 'sustainability', 'transparency', 'trust', 'wellness']);
+const NOT_A = /\bNot an? [a-z][^.!?]{1,40}[.!]\s+[A-Z][^.!?]{1,60}[.!]/g;
+const SHORT_REBUTTAL = /\b[A-Z][^.!?]{4,80}[.!]\s+(No|Just)\s+[a-z][^.!?]{2,60}[.!]/g;
+const NEG = '(?:no|sin|without|zero|cero|ni)';
+const NEGATION_LIST = new RegExp(`(?<![\\p{L}])${NEG}\\s+[^,.;:!?]{1,30},\\s*${NEG}\\s+[^,.;:!?]{1,30},\\s*(?:(?:and|y|e)\\s+)?${NEG}\\s+[\\p{L}\\p{N}]`, 'iu');
+const SELF_ANSWERED = /(?<=^\s*|[.!?]\s+)¿?[\p{Lu}][\p{L}\p{N}'’]*(?:\s+[\p{L}\p{N}'’]+){0,2}\?\s+[\p{Lu}\p{N}][^.!?]{0,40}[.!]/gu;
+function copyTells(source, rel) {
+  const text = source.replace(/<script\b[^>]*>[\s\S]*?<\/script>|<style\b[^>]*>[\s\S]*?<\/style>|<!--[\s\S]*?-->/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  for (const m of text.matchAll(/\b(\w+)\s+theater\b/gi)) {
+    if (THEATER_HEADS.has(m[1].toLowerCase())) { findings.push({ level: 'WARN', id: 'theater-slop-phrase', file: rel, line: 0, match: m[0].trim().slice(0, 70), message: 'A dismissive "<abstract noun> theater" phrase. Say what is actually done, and why it matters.' }); break; }
+  }
+  const hits = [...text.matchAll(NOT_A), ...text.matchAll(SHORT_REBUTTAL)];
+  if (hits.length >= 3) findings.push({ level: 'WARN', id: 'aphoristic-cadence', file: rel, line: 0, match: `${hits.length} aphoristic constructions: ${hits[0][0].trim().slice(0, 50)}`, message: 'A run of short aphorisms ("Not a X. A Y.", "Z. No W."). Write plain sentences that carry a fact each.' });
+  // Three tells of the marketingskills copywriting skill and humanise-text (MIT), in English and Spanish: a chain of three
+  // negations, a question of one to three words answered at once ("The result? 3× faster."), and the exclamation habit.
+  const negations = text.match(NEGATION_LIST);
+  if (negations) findings.push({ level: 'WARN', id: 'negation-list', file: rel, line: 0, match: negations[0].trim().slice(0, 70), message: 'A list of what it is not ("No setup, no contracts, no surprises"). Say what it does, with the fact that proves it.' });
+  const answered = [...text.matchAll(SELF_ANSWERED)];
+  if (answered.length >= 2) findings.push({ level: 'WARN', id: 'self-answered', file: rel, line: 0, match: `${answered.length}: ${answered[0][0].trim().slice(0, 50)}`, message: 'Questions answered by the same line ("The result? 3× faster."). State the fact as a sentence.' });
+  const shouted = [...source.matchAll(/>([^<>{}]+)</g)].reduce((n, m) => n + (m[1].match(/[\p{L}\p{N}]!|¡/gu) || []).length, 0);
+  if (shouted >= 3) findings.push({ level: 'WARN', id: 'exclamation', file: rel, line: 0, match: `${shouted} exclamations`, message: 'Exclamation marks in the copy. Remove them: the fact carries the energy, not the punctuation.' });
+}
 for (const file of files) {
   const rel = relative(process.cwd(), file).split('\\').join('/');
   const text = readFileSync(file, 'utf8');
   const lines = text.split(/\r?\n/);
   const rampLines = oneHueTextRamps(text);
+  if (MARKUP.has(extname(file))) copyTells(text, rel);
   let inCode = false; let selector = ''; let pending = '';
   lines.forEach((line, i) => {
     // track the CSS selector we are inside, so rules scoped to [data-ui] (interface fragments) keep their own lines

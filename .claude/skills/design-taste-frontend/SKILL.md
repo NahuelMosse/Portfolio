@@ -39,7 +39,8 @@ section carrying its full content. The skill is built to give you that; do not t
 
 In the commands below `<skill>` is this skill's folder. Run them from the project's root, so the
 working files land in `.taste-skill/` there. The scripts need Node 22+ and an installed Chrome, Edge
-or Chromium, and install nothing. `assets.mjs` also needs network access; it uses no API keys.
+or Chromium, and install nothing. `assets.mjs` and `fonts.mjs` (the dealt typeface, self-hosted with its
+licence) also need network access; they use no API keys.
 
 ## Page or app screen
 
@@ -68,6 +69,9 @@ charts, real data that adds up, one finding stated, cropped and scaled the way t
 treats a picture. A fragment that looks like a working product is the strongest picture a software page
 has; grey bars and lorem numbers are the weakest. When a request mixes both (a landing page and the
 dashboard behind it), build each with its own run and one shared palette and typeface.
+Ready-made fragments (a chat, a calendar, a terminal run, a diff, a pipeline board, a stat, a search,
+notifications and more) are in `assets/ui/<name>/` with their recipes in `references/cards.md`: start from
+one and rewrite every word and number with the product's own.
 
 ## The run
 
@@ -77,8 +81,8 @@ Do these in order. Steps 1–5 take a few minutes and decide whether the page is
 
 Find out what is real: the subject, the audience, the one thing the page must get someone to do, the
 stack, any existing brand (colours, fonts, logo), and above all **what imagery truly exists**: the
-project's own photographs or product shots, a real interface that can be shown, an image generation
-tool you can call, or nothing. Do not plan around pictures you do not have. Nothing of its own is
+project's own photographs or product shots, a real interface that can be shown, an image or video
+generator that is connected (`scripts/media.mjs detect`, and your own tool list), or nothing. Do not plan around pictures you do not have. Nothing of its own is
 rarely nothing at all: the subject's city, street, materials and history are in open archives and
 museums, free to use with a credit (step 6, `scripts/assets.mjs`).
 
@@ -120,6 +124,10 @@ suit the subject was the commonest cause of a weak page. Then deal the full shee
 ```bash
 node <skill>/scripts/draw.mjs <the same arguments, without --options> --direction <chosen id>
 ```
+
+With a generator connected that draws legible layouts, a comp of the first screen in the chosen direction (one per
+direction still in doubt, three at most) is cheaper to judge than a build: `references/generation.md` §12. Without
+one, go on.
 
 - `--sector`: `node <skill>/scripts/draw.mjs --list sectors`. Pick the closest.
 - `--sections`: roles from `--list roles` (features, showcase, how-it-works, testimonial, proof, stats,
@@ -241,14 +249,18 @@ Write the whole page as a copy deck (plain text) before markup, following `refer
 ### 6. Build it, still
 
 Build the page with motion switched off in your head; a page that needs animation to look finished is
-not finished. Order of work:
+not finished. Before the first line of CSS, write the spatial thesis in one sentence (what is biggest,
+what the eye meets second, where the void is and what closes it) and draw each section as an ASCII
+wireframe at desktop and at phone width; build from the drawing. Order of work:
 
 1. **Tokens.** Colour and type roles from the sheet as CSS custom properties. Everything downstream
    references tokens only. `<skill>/assets/base.css` is a neutral foundation you may start from (reset, token
    names, fluid type steps, grid, focus and selection styles, the motion helpers); it has no look of
    its own.
 2. **The hero, exactly as the blueprint describes it,** at desktop and at phone width. Get the big
-   thing big and the small things small before anything else exists.
+   thing big and the small things small before anything else exists. Without it every page falls back to
+   the same first screen (wordmark and pill, left headline, paragraph, full-width button): the inspector
+   fails `hero-not-dealt` when the headline's alignment or case is not the blueprint's.
 3. **Each section from its blueprint,** with this project's content. Keep the geometry, change the
    subject. Neighbouring sections must not share a layout. **Carry the idea into every section,**
    pricing, FAQ and footer included: the commonest failure in the study, even among good sites, is a
@@ -335,8 +347,11 @@ and the reduced-motion page; with scenes on the sheet, `inspect.mjs` also films 
 `lint.mjs` scans source for banned patterns and stock phrases. `inspect.mjs` opens the page in a real
 browser at 1440, 768 and 390 pixels, measures it (headline line counts, type sizes, fonts actually
 loaded, colours, rules, shadows, gradients, contrast, overflow, and the frame: equal margins, sections
-huddled on one side, blank stretches, the title, untitled sections, text against the screen edge) and
-saves screenshots to `.taste-skill/inspect/`. Fix every `FAIL`. Treat each `WARN` as wrong unless you can defend it to a
+huddled on one side, blank stretches, the title, untitled sections, text against the screen edge; the
+craft of spacing and type, touch targets and the reader's text spacing; and findability: the head,
+alt and size on images, link names, layout shift and largest paint, per `references/seo.md`) and
+saves screenshots to `.taste-skill/inspect/` (another page of the site to `.taste-skill/inspect/<page>/`, so
+each keeps its own report; `--root <dir>` serves a built site whose links start at its root, `/style.css`). Fix every `FAIL`. Treat each `WARN` as wrong unless you can defend it to a
 designer in one sentence. Re-run until there are no `FAIL`s. Do not argue with the meter and do not
 hide things from it. The inspector serves local files over a throwaway local server; if the page must
 also open straight from the file system, open `index.html` that way once before you finish.
@@ -354,7 +369,16 @@ with `references/critique.md`: the fourteen passes, the Awwwards-weighted score,
 down in its format, fix the top three problems, run the inspector again, look again. Three rounds at
 most.
 
+A passing gate is the floor, not the grade: a portfolio that passed with 0 FAIL, its first screen a bare
+name and its work in 220px strips, was valued at a twentieth of the person's own pages. So the last
+round is the price test in `references/critique.md`: the page side by side with a real page at the price
+it is meant to be worth, judged in pairs. Two of its failures are measured now: with pictures of its own
+on the sheet (`--have`) a first screen without one is `own-pictures-hidden`, and a portfolio or studio
+whose widest picture is under 45% of the screen is `work-thumbnails`.
+
 Judge only the pictures. If a problem is visible in a screenshot, it is real, whatever the code says.
+Squint at each one first (or look at it small and blurred): the order in which the shapes appear must be
+the order the page means, and the groups must read as groups from their spacing alone.
 
 ### 9. Move
 
@@ -419,6 +443,8 @@ These hold on every build, whatever the direction. `inspect.mjs` measures them.
 | **No emoji, no gradient blobs, no decorative shapes, no fake dashboards of grey bars.** | A real picture, a real interface fragment, or nothing. |
 | **No styled accent word** in a headline (italic, serif, coloured, underlined). | One face, one colour. The words carry the emphasis. |
 | **Two typefaces at most,** usually one. | The dealt type system. |
+| **No accent stripe** on one side of a rounded card or callout; **no card inside a card.** | The fill one step from the page, a heading, or space. |
+| **A craft floor:** running text at 1.3 line-height or more and tracking of 0.05em or less, no long uppercase, display tracking no tighter than about -0.04em, an inset of at least max(8px, half the font size) inside every box, heading levels in order, no neutral grey text on a coloured ground. | `references/tells.md` §5b. |
 
 Three places keep their own conventions and are left alone by the inspector: real code in
 `<pre>`/`<code>` (monospace is correct there), real tables and form fields (they may have lines), and
@@ -457,6 +483,8 @@ Short form. Numbers are from the study unless marked as house style.
 - Asymmetry inside the grid, never in the frame: the two outer margins are equal, and an off-centre
   heading is answered by something at the far side of the grid.
 - The gap between sections is clearly larger than any gap inside one: 120–240px on desktop (the study's median is about 240).
+- Every gap from one 4px scale, in three levels: inside a group 8–16, between groups 24–48, between
+  sections the gap above. A heading has about twice the space above it as below.
 - Each section has a different composition from its neighbours; none is a card grid.
 
 **Colour**
@@ -484,6 +512,8 @@ Short form. Numbers are from the study unless marked as house style.
 - Nested corners: a rounded shape inside another, with a gap under 32px between them, takes the outer
   radius minus the gap; when that comes to 2px or less, the inner shape is square.
 - Navigation: wordmark, three to five plain links, one action. No bar chrome.
+- On a phone, buttons and fields are 44px tall or more, and no control is under 24×24px with another
+  within 24px.
 - A control explains how to use it by its form, its label and its place. When it seems to need a
   sentence on how to operate it, redesign the control instead of adding the sentence. What a field
   accepts is different. First remove the limit where you can: a date picker, or a parser that takes
@@ -545,13 +575,16 @@ open collections could not be searched.
 | `references/colour.md` | Applying the palette: roles, proportions, tone steps, dark pages, contrast. |
 | `references/layout.md` | Grid, margins, rhythm, section variety, navigation, footer, the phone composition. |
 | `references/imagery.md` | Choosing, finding, crediting, cropping and treating pictures; what to do with none. |
+| `references/generation.md` | Before the first prompt to an image or video model: what may be used, the written look, the shot list, the prompt, the set, what reads as generated, delivery, footage, and design comps of the first screen. |
 | `references/motion.md` | Step 9. Budget, tokens, recipes, reduced motion. |
 | `references/scenes.md` | Step 6, when the sheet deals scroll scenes: putting one on a page, filling, fitting, the phone, checking, the catalogue. |
 | `references/critique.md` | Step 8. How to look, how to score, what to fix first. |
+| `references/seo.md` | A public page: title, description, canonical, sharing cards, structured data, images, links, web vitals; what the inspector checks and what it cannot. |
 | `references/tells.md` | The dated registry of generated-page tells and what each is replaced by. |
 | `references/research.md` | The study: method, numbers, what the best and worst sites do. Cite it, do not guess. |
 | `scripts/draw.mjs` | Deals and reprints the direction; `--photos`, `--site <id>` for more references; `--app` deals an app style instead. |
 | `scripts/assets.mjs` | Step 6: searches open collections for real pictures of the subject's world; `--get` downloads with the credit, `--credits` prints them. |
+| `scripts/media.mjs` | `detect` what can generate; `still` an approved picture to AVIF and WebP per width with its `<picture>`; `loop` a clip to a seamless muted loop in H.264 and AV1 with its poster. |
 | `scripts/lint.mjs` · `scripts/inspect.mjs` | The gate. |
 | `scripts/scenes.mjs` | The gate for scroll scenes: each scene at 0-100% of its hold, desktop, phone, reduced motion. |
 | `assets/base.css` · `assets/base.js` | An optional neutral foundation to build on. |

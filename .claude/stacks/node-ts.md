@@ -15,7 +15,8 @@ whole profile would be re-read on every request of the card.
   the verification commands live once as `verify:*` scripts of `package.json`.
 - `node --test` lines run with `--test-concurrency=1`, or 4 (or half the cores) when the tests isolate their own port and database
   and a stable ×3 run (`tools/repeat.mjs`) confirms it. Playwright and axe are development dependencies; browsers install with
-  `PLAYWRIGHT_SKIP_BROWSER_GC=1 npx playwright install chromium`.
+  `PLAYWRIGHT_SKIP_BROWSER_GC=1 npx playwright install chromium`. A browser test whose browser is missing fails, never `{ skip }`:
+  the gate counts any skip, even a conditional one, as its spec not run.
 - The `## Gate` lines of `card.md`, one per check, run by `verify.mjs`: `suite: node --test {affected}`, `lint: npx eslint <src test e2e>`,
   `mutate <file>: node --test <that file's unit tests>` (production: every logic file; mvp: the domain; poc: none),
   `attacks: node .claude/tools/attack.mjs --json <flags>` (profile backend; url from `APP_URL`), `motion: npm run motion`, `app: node src/main.mjs` (takes `PORT` and `DATA_DIR` from the environment).
@@ -23,6 +24,8 @@ whole profile would be re-read on every request of the card.
   new tests ×3 stable (`npx playwright test --grep "@$ID" --repeat-each=3`, or
   `node .claude/tools/repeat.mjs 3 -- node --test --test-concurrency=1 <files>`); the red run with `--timeout=5000 --retries=0`
   (Node: `timeout 30 node --test --test-timeout=5000 --test-force-exit <files>`), never in the final suite.
+- A test that starts a server closes it in `after` with `server.closeAllConnections()` before `server.close()`: a keep-alive connection
+  that `fetch` leaves open makes Node abort at the forced exit on Windows (UV_HANDLE_CLOSING) with every test green.
 - Mutation of a logic file: `node .claude/tools/mutate.mjs <file> --since <card-start> --equivalents specs/<card>/equivalents.md -- <unit suite>`,
   never over the browser suite. ZAP: once per card, at the end.
 - `node --test` takes a glob (`"test/**/*.test.mjs"`), never a folder: Node 24 runs a folder as if it were a test file, and fails.
@@ -55,11 +58,12 @@ or the card has a screen (`## Screen: states and motion`).
 The list `agents/builder.md` points to; each one failed in practice.
 - The focused submit is never `disabled` while sending: `aria-disabled="true"` and the click ignored. `disabled` drops the focus to `body`.
 - A busy indicator is seen while its state holds: never `hidden` or `display: none` on its icon; `aria-busy="true"`, not `""`.
-- A test file ends clean: `server.close()` with `closeAllConnections()` and the database closed. A previous test that leaves handles is fixed with `closeAllConnections`, never a pause: with a handle open, Windows aborts `--test-force-exit` with `UV_HANDLE_CLOSING`.
+- A test file ends clean: `server.close()` with `closeAllConnections()` and the database closed, never a pause. Its `fetch` calls send `connection: close`: a connection fetch keeps alive makes Node 24 on Windows abort `--test-force-exit` with `Assertion failed: !(handle->flags & UV_HANDLE_CLOSING)` after every test passed, and `closeAllConnections` does not reach it. In a file the card does not touch that abort is the runtime, not the change: `once.mjs` (every verify line) runs it again without the forced exit; do not debug it.
 - URLs in tests are built with `new URL` or `encodeURIComponent`; a body at a byte limit with a helper that counts bytes, not characters.
 - A test that the contract matches the app takes the statuses from real responses, never from a list in the test.
-- A screen's logic (validation, messages, the payload) lives in a pure module `presentation/<name>-state.js` that `node --test` imports, mutated like the domain (the DOM file is wiring), and the server has an HTTP test under node: mutation runs only node tests, and browser-only coverage leaves every mutant alive.
+- A screen's logic (validation, messages, the payload, and every decision of its flow: the state a response status leads to, the field that takes the focus, whether a submit goes out, the key that sends) lives in a pure module `presentation/<name>-state.js` that `node --test` imports, mutated like the domain; the DOM file only reads the DOM, calls those functions and writes what they return, with no `if` of its own beyond a null check, and the server has an HTTP test under node: mutation runs only node tests, and browser-only coverage leaves every mutant alive.
 - A static server sends `.mjs` and `.js` as `text/javascript` and serves only its public folder.
+- A browser test runs axe or reads a color only after the state's animations end (`await page.evaluate(() => Promise.all(document.getAnimations().filter((a) => a.effect?.getComputedTiming().endTime !== Infinity).map((a) => a.finished.catch(() => {}))))`; a spinner never ends): mid-fade, text fails contrast that it passes at rest.
 
 ## HTTP defaults: JS idioms
 

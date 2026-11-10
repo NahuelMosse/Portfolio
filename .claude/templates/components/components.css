@@ -118,12 +118,13 @@
 /* A label may carry its icon: they sit on one line, centered on each other. */
 .btn .btn__label { display: inline-flex; align-items: center; gap: var(--space-2); }
 /* A label swap: the one that leaves goes up and out in 90 ms, the one that arrives comes from below in 160. */
-.btn .btn__label, .btn .btn__state { transition: opacity var(--motion-swap-out), transform var(--motion-swap-out); }
-.btn:not([data-state]) .btn__label { transition: opacity var(--motion-swap-in), transform var(--motion-swap-in); }
-.btn .btn__state { display: flex; align-items: center; justify-content: center; gap: var(--space-2); opacity: 0; transform: translateY(var(--swap-y)); pointer-events: none; }
-.btn[data-state] .btn__label { opacity: 0; transform: translateY(calc(var(--swap-y) * -1)); }
+/* What is hidden is also `visibility: hidden`: its text leaves innerText, find in page and the tab order, and screen readers do not announce it. */
+.btn .btn__label, .btn .btn__state { transition: opacity var(--motion-swap-out), transform var(--motion-swap-out), visibility var(--motion-swap-out); }
+.btn:not([data-state]) .btn__label { transition: opacity var(--motion-swap-in), transform var(--motion-swap-in), visibility var(--motion-swap-in); }
+.btn .btn__state { display: flex; align-items: center; justify-content: center; gap: var(--space-2); opacity: 0; visibility: hidden; transform: translateY(var(--swap-y)); pointer-events: none; }
+.btn[data-state] .btn__label { opacity: 0; visibility: hidden; transform: translateY(calc(var(--swap-y) * -1)); }
 .btn[data-state="loading"], .btn[aria-busy="true"] { cursor: progress; }
-.btn[data-state="loading"] .btn__state--loading, .btn[data-state="success"] .btn__state--success, .btn[data-state="error"] .btn__state--error { opacity: 1; transform: none; transition: opacity var(--motion-swap-in), transform var(--motion-swap-in); }
+.btn[data-state="loading"] .btn__state--loading, .btn[data-state="success"] .btn__state--success, .btn[data-state="error"] .btn__state--error { opacity: 1; visibility: visible; transform: none; transition: opacity var(--motion-swap-in), transform var(--motion-swap-in), visibility var(--motion-swap-in); }
 /* A rotating arc: a faint ring and a round-capped arc on it (`pathLength` 100, so 72 is three
    quarters), the whole drawing turning. */
 .spinner { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; }
@@ -245,8 +246,9 @@ kbd.key { display: inline-grid; place-items: center; min-width: 20px; height: 20
 .field__icon--saving { color: var(--text-faint); }
 .field__foot, .field__message { margin-top: 6px; font-size: var(--text-xs); line-height: 16px; }
 .field__foot:empty { display: none; }
-.field__foot { display: flex; justify-content: space-between; gap: var(--space-3); color: var(--text-soft); transition: opacity var(--duration-fast) var(--ease-out); }
-.field[data-state="invalid"] .field__foot > :not(.field__counter) { opacity: 0; }
+.field__foot { display: flex; justify-content: space-between; gap: var(--space-3); color: var(--text-soft); }
+.field__foot > * { transition: opacity var(--duration-fast) var(--ease-out), visibility var(--duration-fast); }
+.field[data-state="invalid"] .field__foot > :not(.field__counter) { opacity: 0; visibility: hidden; }
 .field__counter { margin-left: auto; font-variant-numeric: tabular-nums; transition: color var(--motion-hover); }
 .field__counter[data-near] { color: color-mix(in oklab, var(--danger), var(--text) 25%); }
 /* The message never moves the page: it takes the help row. A field that can say an error and has no help keeps that
@@ -256,10 +258,10 @@ kbd.key { display: inline-grid; place-items: center; min-width: 20px; height: 20
 /* In a form grid every field keeps that row, so the labels of all rows are one rhythm apart whatever each field can say. */
 .form-grid > .field:not(:has(> .field__foot:not(:empty))) { padding-bottom: 22px; }
 .form-grid:has(> .field) { row-gap: var(--space-3); }
-.field__error { font-size: var(--text-xs); color: color-mix(in oklab, var(--danger), var(--text) 25%); opacity: 0; transform: translateY(-3px); transition: opacity var(--duration-fast) var(--ease-out), transform var(--motion-pop); }
+.field__error { font-size: var(--text-xs); color: color-mix(in oklab, var(--danger), var(--text) 25%); opacity: 0; visibility: hidden; transform: translateY(-3px); transition: opacity var(--duration-fast) var(--ease-out), transform var(--motion-pop), visibility var(--duration-fast); }
 .field__error > span { display: flex; align-items: center; gap: 6px; min-height: 16px; }
 .field__error > span:not(:empty)::before { content: ""; flex: none; width: 14px; height: 14px; background: currentColor; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM7.25 4.5h1.5v4.5h-1.5Zm0 6h1.5v1.5h-1.5Z'/%3E%3C/svg%3E") center / contain no-repeat; }
-.field[data-state="invalid"] .field__error { opacity: 1; transform: none; }
+.field[data-state="invalid"] .field__error { opacity: 1; visibility: visible; transform: none; }
 :is(.comp, .stack, .form-grid):has(> .field) { gap: var(--field-gap) var(--space-4); }
 :is(.comp, .stack):has(> .field) { --gap: var(--field-gap); gap: var(--field-gap); }
 .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4) var(--space-4); align-items: start; }
@@ -276,8 +278,8 @@ kbd.key { display: inline-grid; place-items: center; min-width: 20px; height: 20
 @media (hover: hover) and (pointer: fine) { .editable:hover { background: var(--surface-hover); } }
 .editable input { width: 100%; height: var(--control-sm); padding: 0 6px; margin: 0 -6px; border: 1px solid var(--border-focus); border-radius: var(--radius-control); background: var(--field-bg); box-shadow: 0 0 0 3px var(--focus-soft); outline: none; }
 .editable[data-state="saving"] { color: var(--text-faint); }
-.editable__status { font-size: var(--text-xs); color: var(--success); opacity: 0; transform: translateX(-4px); transition: opacity var(--duration-fast) var(--ease-out), transform var(--duration-normal) var(--ease-out); }
-.editable[data-state="saved"] .editable__status { opacity: 1; transform: none; }
+.editable__status { font-size: var(--text-xs); color: var(--success); opacity: 0; visibility: hidden; transform: translateX(-4px); transition: opacity var(--duration-fast) var(--ease-out), transform var(--duration-normal) var(--ease-out), visibility var(--duration-fast); }
+.editable[data-state="saved"] .editable__status { opacity: 1; visibility: visible; transform: none; }
 
 /* ── Checkbox and radio: the mark draws itself; checked is the accent, the value of the control ── */
 .checkbox, .radio { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 24px; cursor: pointer; user-select: none; }
@@ -699,10 +701,10 @@ kbd.key { display: inline-grid; place-items: center; min-width: 20px; height: 20
 :root:has(.toasts > .toast:not([data-leaving])) .selection-bar[data-open] { transition-delay: var(--ms-100); }
 .toast { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 44px var(--space-3) var(--space-4); border: 0; outline: 1px solid transparent; border-radius: var(--radius); overflow: hidden; background: var(--surface-overlay); box-shadow: var(--shadow-overlay), var(--overlay-edge); color: var(--text); font-size: var(--text-sm); font-weight: var(--weight-medium); touch-action: pan-y; transform-origin: bottom center; transform: translateY(var(--y, 0px)) scale(var(--s, 1)); animation: toast-in var(--motion-toast-in) backwards; transition: opacity var(--motion-toast), transform var(--motion-slide), translate var(--motion-slide); }
 @keyframes toast-in { from { opacity: 0; transform: translateY(100%); } }
-.toast > * { transition: opacity var(--duration-fast) ease; }
+.toast > * { transition: opacity var(--duration-fast) ease, visibility var(--duration-fast); }
 .toasts:not([data-expanded]) .toast:not([data-front]) { max-height: var(--_front); }
-.toasts:not([data-expanded]) .toast:not([data-front]) > * { opacity: 0; }
-.toast[data-hidden] { opacity: 0; pointer-events: none; }
+.toasts:not([data-expanded]) .toast:not([data-front]) > * { opacity: 0; visibility: hidden; }
+.toast[data-hidden] { opacity: 0; visibility: hidden; pointer-events: none; }
 .toast[data-leaving] { opacity: 0; pointer-events: none; transform: translateY(calc(var(--y, 0px) + 10px)) scale(var(--s, 1)); transition-duration: var(--motion-toast-out); }
 .toast[data-dragging] { transition: none; cursor: grabbing; user-select: none; }
 .toast[data-tone="error"] { --_ring: color-mix(in oklab, var(--danger) 32%, transparent); background: color-mix(in oklab, var(--danger) 9%, var(--surface-overlay)); border-color: var(--_ring); box-shadow: 0 0 0 1px var(--_ring), var(--shadow-overlay), var(--overlay-edge); color: color-mix(in oklab, var(--danger), var(--text) 60%); }
@@ -911,10 +913,10 @@ button.card { width: 100%; text-align: left; font: inherit; color: inherit; }
 .table .skeleton--box { width: 18px; height: 18px; border-radius: 5px; }
 .table .skeleton--end { margin-left: auto; width: 20px; }
 .table-card { position: relative; }
-.selection-bar { position: fixed; z-index: 12; bottom: var(--space-5); left: calc(50% + var(--sidebar) / 2); display: flex; align-items: center; gap: var(--space-1); padding: 5px 5px 5px var(--space-4); border-radius: var(--radius); color: var(--text-inverse); font-size: var(--text-sm); white-space: nowrap; opacity: 0; transform: translate(-50%, 24px) scale(0.96); pointer-events: none; transition: opacity var(--motion-toast), transform var(--motion-slide); }
+.selection-bar { position: fixed; z-index: 12; bottom: var(--space-5); left: calc(50% + var(--sidebar) / 2); display: flex; align-items: center; gap: var(--space-1); padding: 5px 5px 5px var(--space-4); border-radius: var(--radius); color: var(--text-inverse); font-size: var(--text-sm); white-space: nowrap; opacity: 0; transform: translate(-50%, 24px) scale(0.96); visibility: hidden; pointer-events: none; transition: opacity var(--motion-toast), transform var(--motion-slide), visibility var(--motion-toast); }
 /* The bar's surface is its ::before, so the Toolbar Expandable inside can make it follow the height of the panel it opens. */
 .selection-bar::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--surface-inverse); box-shadow: var(--shadow-3); transform-origin: 0 0; }
-.selection-bar[data-open] { opacity: 1; transform: translate(-50%, 0) scale(1); pointer-events: auto; }
+.selection-bar[data-open] { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); pointer-events: auto; }
 .selection-bar__count { display: inline-flex; align-items: center; gap: 4px; margin-right: var(--space-2); font-variant-numeric: tabular-nums; }
 .selection-bar kbd.key { margin-left: 2px; border-color: transparent; background: color-mix(in oklab, var(--text-inverse) 16%, transparent); color: inherit; }
 /* The bar is a Toolbar Expandable (a panel opens above its actions): its surface is the bar's own, inverse, so the

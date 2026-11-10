@@ -831,6 +831,9 @@ enough for the defaults.
 - **A joined input and action** (a read-only link and its Copy button) share a border and square
   their inner corners.
 - **Toggles** 28x16 to 33x20. The on colour is a semantic green or near-black, not the brand accent.
+- **A field's error** sits under that field, says what is wrong with this value and how to fix it
+  ("Use a date after 01/03/2026", not "Invalid input"), and appears when the person leaves the field
+  or submits, never while typing the first character. Whatever was typed stays in the field.
 - **Disabled** controls stay legible and say why they are disabled: the study's disabled Save
   (#cecece on #f4f4f4, about 1.4:1) and its plan-locked panel at 30% opacity are flagged as
   unreadable.
@@ -1055,6 +1058,11 @@ td.num, th.num { text-align: right; }
 - **First run** (the whole screen empty): keep the frame and the title, and put the first action where
   the data will appear, with a setup progress at its true percentage if there are steps (one screen
   shows "Complete your setup" at 67%; another a four-cell getting-started strip above its tables).
+  An empty list says in one sentence what it will hold, and its button creates the first item there,
+  without a detour ("No invoices yet. Invoices you send appear here." + "New invoice"). A setup list
+  has 3 to 7 steps, ticks off on its own when the step is done, and can be dismissed. A guided tour
+  has 5 steps at most and closes at any step; a screen that needs more is not explaining itself.
+  (Onboarding patterns from marketingskills, MIT.)
 - **Loading** (house rule; not in the study): the final layout with each value replaced by a flat grey
   bar at its real size (a 24px value gets a 24px-tall bar; rows keep their pitch), labels and headers
   shown at once, no shimmer gradient, and no shift of the layout when the data lands. A refresh of

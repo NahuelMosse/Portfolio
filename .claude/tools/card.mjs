@@ -18,12 +18,12 @@ export const isProductionPath = (root, path) => {
   const rel = relative(root, path).split(sep).join('/');
   return rel !== '' && !rel.startsWith('..') && !isAbsolute(rel) && !NOT_PRODUCTION.test(rel);
 };
-export const NOT_PRODUCTION = /^(specs|\.claude|\.specify|scripts|docs)\/|(^|\/)(e2e|tests?|__tests__)\/|\.(md|json|ya?ml|lock)$|(^|\/)[^/]*\.(test|spec)\.|(^|\/)(test_[^/]*|[^/]*_test|conftest)\.py$|_test\.go$|^\.|(^|\/)(playwright|vitest|jest|eslint|tsconfig|jsconfig)[^/]*$|(^|\/)design\/components\/(serve\.mjs|gallery\.html)$/;
+export const NOT_PRODUCTION = /^(specs|\.claude|\.specify|scripts|docs)\/|(^|\/)(e2e|tests?|__tests__|__mocks__|integration_test|cypress|fixtures|vendor)\/|\.(stories|min)\.[jt]sx?$|\.(md|json|ya?ml|lock)$|(^|\/)[^/]*\.(test|spec)\.|(^|\/)(test_[^/]*|[^/]*_test|conftest)\.py$|_test\.go$|^\.|(^|\/)(playwright|vitest|jest|eslint|tsconfig|jsconfig)[^/]*$|(^|\/)design\/components\/(serve\.mjs|gallery\.html)$/;
 export const IS_CODE = /\.(m?[jt]sx?|cjs|cts|py|go|cs|java|kt|rb|php|dart)$/;
-export const IS_TEST = /\.(spec|test)\.[cm]?[tj]sx?$|(^|[\\/])test_[^\\/]*\.py$|_test\.(py|go|dart)$|Tests?\.(cs|java|kt)$|\.feature$/;
+export const IS_TEST = /\.(spec|test)\.[cm]?[tj]sx?$|(^|[\\/])test_[^\\/]*\.(py|c|cc|cpp|cxx)$|_(test|unittest)\.(py|go|dart|c|cc|cpp|cxx)$|Tests?\.(cs|java|kt)$|\.feature$/;
 
 // The configs of what gets verified: loosening them is approving without fixing.
-export const IS_VERIFICATION_CONFIG = /(^|\/)(eslint\.config\.[cm]?[jt]s|\.eslintrc(\.[a-z]+)?|playwright\.config\.[cm]?[jt]s|stryker\.conf(ig)?\.[a-z]+|\.c8rc(\.json)?|\.nycrc(\.json)?|jest\.config\.[cm]?[jt]s|vitest\.config\.[cm]?[jt]s|tsconfig[^/]*\.json|ruff\.toml|\.ruff\.toml|mypy\.ini|pytest\.ini|\.golangci\.[a-z]+|\.axerc[^/]*)$/;
+export const IS_VERIFICATION_CONFIG = /(^|\/)(eslint\.config\.[cm]?[jt]s|\.eslintrc(\.[a-z]+)?|playwright\.config\.[cm]?[jt]s|stryker\.conf(ig)?\.[a-z]+|\.c8rc(\.json)?|\.nycrc(\.json)?|jest\.config\.[cm]?[jt]s|vitest\.config\.[cm]?[jt]s|tsconfig[^/]*\.json|ruff\.toml|\.ruff\.toml|mypy\.ini|pytest\.ini|\.golangci\.[a-z]+|\.axerc[^/]*|\.prettierrc[^/]*|prettier\.config\.[cm]?[jt]s|biome\.jsonc?)$/;
 
 // What kind of file a path is is defined once in signals.mjs and re-exported here so no import breaks. They are
 // heuristics; a false negative is for the judge to catch. Paths are relative, with `/`.
@@ -124,10 +124,12 @@ export const namedIn = (lines, file, root = process.cwd()) => {
 
 // A file of `design/components/` that is byte for byte the kit's own and that a File map line declares as a set —`design/components/
 // — copied from the kit`—: the set is one line of the map, not one line per file. A copy the card changed is its own file.
-const KIT_SET = 'design/components/';
+// The copy under the served folder (`public/design/components/`) is declared the same way, by its own folder.
+const KIT_SET = /^((?:public|static|www|wwwroot)\/)?design\/components\//;
 export const copiedFromKit = (root, map, file) => {
-  if (!file.startsWith(KIT_SET) || !map.some((l) => /copied from the kit/i.test(l) && pathTokens(l).includes(KIT_SET))) return false;
-  try { return readFileSync(join(root, '.claude', 'templates', 'components', file.slice(KIT_SET.length))).equals(readFileSync(join(root, file))); } catch { return false; }
+  const at = file.match(KIT_SET)?.[0];
+  if (!at || !map.some((l) => /copied from the kit/i.test(l) && pathTokens(l).includes(at))) return false;
+  try { return readFileSync(join(root, '.claude', 'templates', 'components', file.slice(at.length))).equals(readFileSync(join(root, file))); } catch { return false; }
 };
 
 // A file named loosely —a bare name or the end of a path— resolved against the paths the map's lines hold: the one
@@ -163,6 +165,11 @@ const ABSOLUTE = /(?:^|[\s"'(])((?:[A-Za-z]:[\\/]|\/)[^\s"'`|;&<>()]+)/g;
 const LEADING_CD = /^\s*cd\s+(?:"([^"]+)"|'([^']+)'|([^\s;&|]+))\s*(?:&&|;)/;
 const CONFIG_OPTION = /--config(?:=|\s+)(?:"([^"]+)"|'([^']+)'|([^\s"'`|;&<>()]+))/g;
 const NOT_THE_WORK = /(?:^|[\\/])(?:node_modules|\.git|ms-playwright|\.cache)(?:[\\/]|$)/;
+// The directory a shell command moves to before anything else (`cd <dir> &&` or `;`), or null.
+export const leadingCd = (cwd, command) => {
+  const cd = String(command ?? '').match(LEADING_CD);
+  return cd ? resolve(cwd, native(cd[1] ?? cd[2] ?? cd[3])) : null;
+};
 const touchedBy = (cwd, { tool_name: tool, tool_input: data = {} } = {}) => {
   const direct = [data.file_path, data.notebook_path].filter((p) => typeof p === 'string' && p);
   if (direct.length) return direct.map((p) => resolve(cwd, native(p)));
@@ -207,7 +214,7 @@ export const kitRootOf = (path) => {
     dir = up;
   }
 };
-export const SOFT = new Set(['trim-output', 'session-record', 'light-images', 'edit-count', 'no-pending-close', 'context-cap', 'turn-budget', 'shell-writes']);
+export const SOFT = new Set(['trim-output', 'session-record', 'light-images', 'edit-count', 'no-pending-close', 'context-cap', 'turn-budget', 'shell-writes', 'kit-feedback']);
 const real = (p) => { try { return realpathSync.native(p); } catch { return resolve(p); } };
 
 // A hook reads its call from fd 0. Once the call was read here, an imported hook of another kit
@@ -353,9 +360,11 @@ export const capMinutes = (planText) => {
   return m ? Number(m[1].replace(',', '.')) * (/^h/i.test(m[2]) ? 60 : 1) : null;
 };
 
-// Minutes since the commit that froze the card's snapshot; null if that commit does not exist yet.
+// Minutes since the commit that added the card's snapshot; null if that commit does not exist yet. Not the last commit
+// that touched it: every Log line commits card.md again. Measured: a worktree whose Log was committed at 191 % of the cap
+// read 0 % and let new agents start.
 export const minutesSinceSnapshot = (cwd, cardDir) => {
-  const sec = git(cwd, ['log', '-1', '--format=%ct', '--', frozenOf(cardDir) ?? join(cardDir, 'card.md')]).stdout?.trim();
+  const sec = git(cwd, ['log', '--diff-filter=A', '--format=%ct', '--', frozenOf(cardDir) ?? join(cardDir, 'card.md')]).stdout?.trim().split('\n').filter(Boolean).at(-1);
   return sec ? (Date.now() / 1000 - Number(sec)) / 60 : null;
 };
 

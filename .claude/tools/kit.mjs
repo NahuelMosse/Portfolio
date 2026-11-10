@@ -430,7 +430,8 @@ export const lateSignals = (root, cardDir, options) => {
 // and i18n from signals that came in while it was being written.
 export const LATE_ADVICE = (mod, grade = 'production') => (grade === 'poc'
   ? `\`node .claude/tools/kit.mjs confirm-off ${mod} --reason "out of scope at poc: <what the card brings>"\`, and the finding is noted as \`<ID>-OUT-NN\` in the card's ambiguities.md; the module is not turned on at poc`
-  : `\`node .claude/tools/kit.mjs on ${mod}\` or ` +
+  : `if the card does not ask for what brought the signal (files you added on your own), remove them; else ` +
+    `\`node .claude/tools/kit.mjs on ${mod}\` or ` +
     `\`node .claude/tools/kit.mjs confirm-off ${mod} --reason "<why it stays off although the card brings this>"\``);
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -794,7 +795,9 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     else if (command === 'profile') turnProfile(root, name, rest[0], flag(rest, '--reason'), flag(rest, '--card-open'));
     else if (command === 'repair') repair(root);
     else if (command === 'e2e') setE2e(root, name);
-    else fail('kit.mjs status | on <module> | off <module> --reason "…" | confirm-off <module> --reason "…" | grade <poc|mvp|production> --reason "…" | profile <on|off> <web|backend|flutter> --reason "…" | repair | e2e <path>');
+    // What the kit learned while used, grouped into candidates (tools/kit-notes.mjs report): proposals, never applied.
+    else if (command === 'notes') await import('./kit-notes.mjs').then((n) => console.log(n.reportOf(n.aggregate(n.readNotes(), n.readResolutions()))));
+    else fail('kit.mjs status | on <module> | off <module> --reason "…" | confirm-off <module> --reason "…" | grade <poc|mvp|production> --reason "…" | profile <on|off> <web|backend|flutter> --reason "…" | repair | e2e <path> | notes');
   } catch (e) {
     fail(`kit.mjs failed: ${e.message}`);
   }

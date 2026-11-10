@@ -76,7 +76,7 @@ round; **the next batch** runs the rounds. A batch that opens with the handoff o
 
 **Assets.** To show real objects or places use a real photo or video. 3D only when the product itself is the
 protagonist, by `.claude/reference/3d.md`. Rules, keyless sources and licenses: `.claude/reference/assets.md`; the measure of the set (sharpness,
-warmth): `python .claude/tools/asset-audit.py --help`. Each asset is credited in `specs/<card>/CREDITS.md`. GSAP has its own free license, it is not MIT.
+warmth): `python .claude/tools/asset-audit.py --help`. Each asset is credited in `specs/<card>/CREDITS.md`. A picture or clip made with a generator follows the skill's `references/generation.md` (the written look and the shot list before the first prompt, the rejection pass, `scripts/media.mjs` for delivery). With a generator connected, a comp of the first screen before the build is optional and follows its §12. GSAP has its own free license, it is not MIT.
 
 **After the critic.** On a card with grade `production`, your last free round comes before the `design-critic`, which commits `specs/<card>/critique.md`.
 Any change to a presentation file after it makes the critique stale. With no blocker, you are not launched again. With a blocker, you fix
@@ -96,6 +96,8 @@ holds, and the gate's `busy` and `focus` checks fail otherwise. `<html lang>` is
 1. Run the whole round in one call: `node .claude/tools/design-round.mjs <url> --gpu --out specs/<card>/rondas/r<k> [--steps <steps>.json]`
    (viewport captures at 390, 768, 1024 and 1440, load at 0/600/2000 ms, one per section, the rules of `.claude/reference/excellence.md` measured,
    waves, console, renderer). Never a full page. A software renderer (SwiftShader) in `round.json` voids the motion timings.
+   An image over 1568 px a side (an asset, a reference sheet) is read through `python .claude/tools/image-view.py <img>`
+   (a copy at 1568 px) or `--crop X,Y,W,H` (one region at full resolution, for a detail the reduced copy loses).
 2. `Read` the key captures of the round (within the image budget above) next to the sheet of the reference, the same state and width, and copy the numbers of the rules
    (ratio, line height, tracking, sizes, grain, waves) into `rondas.md` under `## Round <k>`. Run the same `motion-audit.mjs` on your screen
    (`--measure --frames --click <cta> --scroll-story --out specs/<card>/rondas/r<k>`, which writes `report.json` there; stdout is not the report) and `node

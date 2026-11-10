@@ -230,6 +230,14 @@ function imageryMode(input) {
   if (['physical-product', 'ecommerce'].includes(input.sector)) return 'no-product-photo';
   return 'atmosphere';
 }
+const WORK_SECTORS = ['personal-portfolio', 'agency'];
+function hasOwnPictures(input) { return ['photography', 'product-photo', 'product-ui', 'video'].some((h) => (input.have || []).includes(h)); }
+// The widest picture a hero blueprint names, in % of the width, or null when it names none.
+function heroPictureWidth(h) {
+  const widths = [...String(h.blueprint || '').matchAll(/\b(\d{2})(?:%|vw)(?: of the (?:viewport|screen))?(?: width)? wide\b/gi)].map((m) => +m[1]);
+  return widths.length ? Math.max(...widths) : null;
+}
+const SMALL_PICTURE = 55;
 function pictureLed(x) { return (x.tags || []).includes('photo-led') || (x.tags || []).includes('object-led'); }
 function worksWithoutPictures(x) { return !pictureLed(x) || (x.tags || []).some((t) => ['ui-led', 'type-led', 'colour-field'].includes(t)); }
 
@@ -242,6 +250,11 @@ function directionPool(input) {
   // directions built on photographs of the subject are not dealt when the subject cannot be photographed honestly
   const mode = imageryMode(input);
   if (mode === 'interface' || mode === 'no-product-photo') { const plain = pool.filter((d) => !d.needsPictures); if (plain.length >= 3) pool = plain; }
+  // a subject with real pictures, screens or footage of its own opens with them: a first screen of words alone
+  // hides the strongest thing the page has, and beside real pages it reads as the cheapest of them
+  if (hasOwnPictures(input)) { const shown = pool.filter((d) => !d.firstScreenWithoutPicture); if (shown.length >= 3) pool = shown; }
+  // the work is what a portfolio or studio sells, and a page of thumbnails never shows it at a size that can be read
+  if (WORK_SECTORS.includes(input.sector)) { const legible = pool.filter((d) => !d.picturesOnlySmall); if (legible.length >= 3) pool = legible; }
   if (input.tone) { const toned = pool.filter((d) => (d.tones || []).includes(input.tone)); if (toned.length >= 2) pool = toned; }
   if (!pool.length) pool = L.directions.filter((d) => !input.avoid.includes(d.id));
   return pool;
@@ -325,6 +338,10 @@ function dealHero(dir, input, exclude) {
   let pool = L.heroes.filter((h) => (dir.heroes || []).includes(h.id) || (h.directions || []).includes(dir.id));
   if (!pool.length) pool = L.heroes;
   if (imageryMode(input) !== 'interface' && !input.have.includes('product-ui')) { const plain = pool.filter((h) => !softwareOnly(h)); if (plain.length) pool = plain; }
+  // A project with pictures of its own opens with one large (the inspector's own-pictures-hidden). A hero whose
+  // picture is a strip cannot be enlarged without dropping its composition, and a builder told to enlarge it falls
+  // back to the default first screen: such heroes are not dealt to it.
+  if (hasOwnPictures(input)) { const large = pool.filter((h) => (heroPictureWidth(h) ?? 100) >= SMALL_PICTURE); if (large.length >= 2) pool = large; }
   const ok = pool.filter((h) => !exclude.includes(h.id) && (h.needs || []).every((n) => n === 'photography' || input.have.includes(n)));
   return pick(fresh(ok.length ? ok : pool.filter((h) => !exclude.includes(h.id)).length ? pool.filter((h) => !exclude.includes(h.id)) : pool, recent('hero', 3)));
 }
@@ -515,6 +532,10 @@ function adjustments(bp, s) {
   if (bp.archetype && /single action[^.;]{0,40}?\b(?:text link|underlined (?:text )?link)/i.test(text)) notes.push('Its action is a text link: the primary action on the first screen is a real button (filled or solid-bordered, 44px or taller), placed where the blueprint puts the link. A second action may stay a link.');
   if (s.type?.class === 'condensed-heavy' && /\d+(?:\.\d+)?vw/.test(text)) notes.push('Its vw sizes assume a face of normal width: with this condensed display face, size the words to fill the measure the blueprint gives them instead of copying the vw value.');
   if (/\b0[1-9]\b(?![:.,]\d)|numbered|index number/i.test(text)) notes.push('It numbers things 01, 02: drop the numbers unless they are real data (a price, a date, a count).');
+  if (bp.archetype && hasOwnPictures(s.input || {})) {
+    const width = heroPictureWidth(bp);
+    if (width !== null && width < SMALL_PICTURE) notes.push(`Its picture is ${width}% of the width: this project has pictures of its own, so the first screen's largest one holds 30% of the screen's area or more (the inspector's own-pictures-hidden). Enlarging it would drop this composition: deal another hero (\`draw.mjs --redraw hero\`) instead of reshaping this one.`);
+  }
   return notes;
 }
 // Every blueprint of a role that suits this direction and this build's real assets.
@@ -603,6 +624,7 @@ function render(s) {
     const t = s.type;
     p(`## 3. Type — ${t.name}`); p(t.note);
     p('```html'); for (const l of [...new Set([t.display.css, t.text.css].filter(Boolean))]) p(l); p('```');
+    p('The link names the faces and weights; the page ships them self-hosted, never from the font CDN: `node <skill>/scripts/fonts.mjs "<Family>" --weights <w> --out public/fonts` downloads them with their licence (`references/type.md` §5, LEG-05).');
     p(`- Display: **${t.display.family}** — ${t.display.settings}`);
     p(`- Text: **${t.text.family}** — ${t.text.settings}`);
     if (t.scale) { p('```css'); p(':root {'); for (const [k, v] of Object.entries(t.scale)) p(`  --${k}: ${v};`); p('}'); p('```'); }

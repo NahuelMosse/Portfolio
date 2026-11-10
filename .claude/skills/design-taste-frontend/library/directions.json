@@ -1,6 +1,7 @@
 [
  {
   "id": "name-as-monument",
+  "firstScreenWithoutPicture": true,
   "name": "The name as a monument",
   "sectors": [
    "agency",
@@ -657,6 +658,7 @@
  },
  {
   "id": "contact-sheet",
+  "picturesOnlySmall": true,
   "name": "The contact sheet",
   "sectors": [
    "personal-portfolio",
@@ -1019,6 +1021,7 @@
  },
  {
   "id": "type-only-statement",
+  "firstScreenWithoutPicture": true,
   "name": "Type and nothing else",
   "sectors": [
    "saas",
