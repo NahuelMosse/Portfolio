@@ -116,6 +116,7 @@ not_read: none; the "Equipo WMS Justo" photo is .media-source/justo-team-present
 
 ```
 refactor-tests: e2e/scene-media.spec.ts has two evaluateAll callbacks typed HTMLVideoElement and HTMLImageElement that fail `npx tsc --noEmit`; only the parameter types change, no assertion; e2e/pieces.spec.ts @PF-1-S16 matched data-asset without the size suffix the ASSETS.md ids carry (pf-proj-dev-kit-4x5), so its selector becomes a prefix match
+public-allow: e2e/*.spec.ts [email] · the contact email the site itself publishes (ASM-04); the tests assert the mailto the page carries
 suite: npx playwright test {affected}
 lint: npx eslint .
 types: npx tsc --noEmit
