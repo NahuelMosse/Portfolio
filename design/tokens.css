@@ -195,6 +195,13 @@
   --dur-preloader-out: 460ms;
   --dur-caret-delay: 160ms;
   --dur-caret-step: 24ms;
+  --dur-panel: 320ms;
+  --dur-panel-fade: 240ms;
+  --dur-panel-close: 200ms;
+  --dur-panel-lag: 60ms;
+  --dur-panel-lag-long: 80ms;
+  --ease-panel: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-panel-close: cubic-bezier(0.4, 0, 1, 1);
 
   /* semantic */
   --background: var(--ink);

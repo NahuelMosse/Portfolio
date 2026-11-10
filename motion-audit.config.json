@@ -1,0 +1,8 @@
+{
+  "ignore": [
+    { "id": "no-feedback:4be7362f25", "reason": "the current step of the group index (li[aria-current]) is already full bone with its rule; hover has nothing to add, press still scales" },
+    { "id": "no-feedback:8efe14f787", "reason": "the current step of the group index (li[aria-current]) is already full bone with its rule; hover has nothing to add, press still scales" },
+    { "id": "no-feedback:2e897e83ab", "reason": "the current step of the group index (li[aria-current]) is already full bone with its rule; hover has nothing to add, press still scales" },
+    { "id": "no-feedback:895ad2fb04", "reason": "the current step of the employer index (li[aria-current]) is already full bone with its rule; hover has nothing to add, press still scales" }
+  ]
+}

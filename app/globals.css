@@ -252,9 +252,9 @@ img[data-src][data-loaded] {
     border-color var(--motion-control) var(--ease-out),
     color var(--motion-control) var(--ease-out),
     transform var(--motion-control) var(--ease-out),
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s 0s;
+    opacity var(--dur-panel) var(--ease-panel),
+    translate var(--dur-panel) var(--ease-panel),
+    visibility var(--dur-zero) var(--dur-zero);
 }
 
 /* the index and the sound toggle are typed caps in the bar, not pills */
@@ -340,8 +340,8 @@ img[data-src][data-loaded] {
 
 .sound-toggle .sound-bars b {
   transition:
-    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform var(--dur-panel-fade) var(--ease-panel),
+    opacity var(--dur-panel-fade) var(--ease-panel);
 }
 
 html[data-sound="off"] .sound-toggle .sound-bars b {
@@ -546,14 +546,14 @@ html:not([data-sound="idle"]) .cover-cue {
     border-color var(--motion-control) var(--ease-out),
     color var(--motion-control) var(--ease-out),
     transform var(--motion-control) var(--ease-out),
-    max-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    padding-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    padding-right 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-left-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-right-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    margin-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s 0s;
+    max-width var(--dur-panel) var(--ease-panel),
+    padding-left var(--dur-panel) var(--ease-panel),
+    padding-right var(--dur-panel) var(--ease-panel),
+    border-left-width var(--dur-panel) var(--ease-panel),
+    border-right-width var(--dur-panel) var(--ease-panel),
+    margin-left var(--dur-panel) var(--ease-panel),
+    opacity var(--dur-panel) var(--ease-panel),
+    visibility var(--dur-zero) var(--dur-zero);
 }
 
 .corner-pair .corner-cta[data-visible="false"] {
@@ -569,14 +569,14 @@ html:not([data-sound="idle"]) .cover-cue {
     border-color var(--motion-control) var(--ease-out),
     color var(--motion-control) var(--ease-out),
     transform var(--motion-control) var(--ease-out),
-    max-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    padding-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    padding-right 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-left-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-right-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    margin-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 200ms cubic-bezier(0.4, 0, 1, 1),
-    visibility 0s 320ms;
+    max-width var(--dur-panel) var(--ease-panel),
+    padding-left var(--dur-panel) var(--ease-panel),
+    padding-right var(--dur-panel) var(--ease-panel),
+    border-left-width var(--dur-panel) var(--ease-panel),
+    border-right-width var(--dur-panel) var(--ease-panel),
+    margin-left var(--dur-panel) var(--ease-panel),
+    opacity var(--dur-panel-close) var(--ease-panel-close),
+    visibility var(--dur-zero) var(--dur-panel);
 }
 
 /* the gap between the two exists only while both are shown */
@@ -591,14 +591,14 @@ html:not([data-sound="idle"]) .cover-cue {
     border-color var(--motion-control) var(--ease-out),
     color var(--motion-control) var(--ease-out),
     transform var(--motion-control) var(--ease-out),
-    max-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    padding-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    padding-right 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-left-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-right-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    margin-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1) 60ms,
-    visibility 0s 0s;
+    max-width var(--dur-panel) var(--ease-panel),
+    padding-left var(--dur-panel) var(--ease-panel),
+    padding-right var(--dur-panel) var(--ease-panel),
+    border-left-width var(--dur-panel) var(--ease-panel),
+    border-right-width var(--dur-panel) var(--ease-panel),
+    margin-left var(--dur-panel) var(--ease-panel),
+    opacity var(--dur-panel) var(--ease-panel) var(--dur-panel-lag),
+    visibility var(--dur-zero) var(--dur-zero);
 }
 
 /* ---------- scenes: one full-bleed illustration, its copy laid over the dark of it ---------- */
@@ -1022,7 +1022,7 @@ html:not([data-sound="idle"]) .cover-cue {
 /* load-in wipes up with clip-path and fill-mode backwards: the boxes never leave the screen, and GSAP's scroll fade (transform, opacity inline) owns them once it ends */
 @media (prefers-reduced-motion: no-preference) {
   .cover-foot .layer-sheet {
-    animation: cover-rise var(--dur-cover-rise) cubic-bezier(0.22, 1, 0.36, 1) var(--dur-fade) backwards;
+    animation: cover-rise var(--dur-cover-rise) var(--ease-panel) var(--dur-fade) backwards;
   }
 }
 @keyframes cover-rise {
@@ -1420,8 +1420,8 @@ html:not([data-sound="idle"]) .cover-cue {
     background: var(--ink);
     border-top: 1px solid var(--bone-30);
     transition:
-      translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
-      right 320ms cubic-bezier(0.22, 1, 0.36, 1);
+      translate var(--dur-panel) var(--ease-panel),
+      right var(--dur-panel) var(--ease-panel);
   }
 
   /* Let's talk leaves to the left, the Top square enters from the right: one timing, so the moves read as pushes */
@@ -1471,9 +1471,9 @@ html:not([data-sound="idle"]) .cover-cue {
     text-transform: uppercase;
     transition:
       transform var(--motion-control) var(--ease-out),
-      translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
-      width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s 0s;
+      translate var(--dur-panel) var(--ease-panel),
+      width var(--dur-panel) var(--ease-panel),
+      visibility var(--dur-zero) var(--dur-zero);
   }
 
   /* the label takes its space from the arrow only when it shows, so the square's arrow sits centred */
@@ -1485,9 +1485,9 @@ html:not([data-sound="idle"]) .cover-cue {
     opacity: 0;
     white-space: nowrap;
     transition:
-      max-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-      margin-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 240ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+      max-width var(--dur-panel) var(--ease-panel),
+      margin-left var(--dur-panel) var(--ease-panel),
+      opacity var(--dur-panel-fade) var(--ease-panel) var(--dur-panel-lag-long);
   }
 
   /* Let's talk has slid out: the Top square takes the full width and names itself */
@@ -1515,9 +1515,9 @@ html:not([data-sound="idle"]) .cover-cue {
     visibility: hidden;
     transition:
       transform var(--motion-control) var(--ease-out),
-      translate 320ms cubic-bezier(0.22, 1, 0.36, 1),
-      width 320ms cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s 320ms;
+      translate var(--dur-panel) var(--ease-panel),
+      width var(--dur-panel) var(--ease-panel),
+      visibility var(--dur-zero) var(--dur-panel);
   }
 }
 
@@ -2495,9 +2495,9 @@ margin-bottom: 0.2em;
     font-size: min(var(--text-small), 1.9svh, 3.2vw);
   }
 
-  /* the free height is shared in two auto margins, the one under the word wider by the top padding: the address and the networks
+  /* the free height is shared in two auto margins, the one under the word wider by the top padding, so the address and the networks
      sit a little closer to the roll, which stays pinned above the © line. The padding grows with the height left over past the
-     shortest phone (667px), where the block already fills the screen */
+     shortest phone (--phone-short-height), where the block already fills the screen */
   .contact-scene .contact-tiles {
     flex: none;
     margin-block: auto;

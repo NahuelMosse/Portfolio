@@ -7,13 +7,13 @@
 @property --field {
   syntax: "<color>";
   inherits: true;
-  initial-value: #b3261e;
+  initial-value: transparent;
 }
 
 @property --on {
   syntax: "<color>";
   inherits: true;
-  initial-value: #ede4d0;
+  initial-value: transparent;
 }
 
 .show {
@@ -632,7 +632,7 @@
   transition:
     opacity var(--beat-fade) var(--ease-out),
     transform var(--beat-fade) var(--ease-out),
-    visibility 0s linear var(--beat-fade);
+    visibility var(--dur-zero) linear var(--beat-fade);
 }
 
 .show-beat[data-on] {
