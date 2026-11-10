@@ -1,5 +1,4 @@
-import { sceneAsset } from "@/features/film"
-import { deferredPlate, plateSrcSet } from "@/features/film/presentation/plate"
+import { deferredPlate, plateSrcSet, sceneAsset } from "@/features/film"
 
 const WIDE = "(min-width: 1280px)"
 

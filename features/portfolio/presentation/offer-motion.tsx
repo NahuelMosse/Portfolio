@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+// kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
 import { MOTION, gsap, motionAllowed } from "@/features/film/motion"
 
 // The offer holds for a stretch of scroll with its bottom on the screen's bottom edge, so OFFER, its note and both doors all show; while it holds, the doors' plate pushes in and the doors themselves stay still.

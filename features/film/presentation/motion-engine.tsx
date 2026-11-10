@@ -23,6 +23,7 @@ export function MotionEngine() {
     const root = document.documentElement
     root.classList.add("has-motion")
 
+    // kit-overdesign: the load listener would pass its Event as ScrollTrigger.refresh(safe); the arrow calls it with no argument
     const refresh = () => ScrollTrigger.refresh()
     window.addEventListener("load", refresh)
 

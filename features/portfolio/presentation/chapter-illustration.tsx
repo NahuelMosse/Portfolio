@@ -1,6 +1,5 @@
 import type { ReactNode } from "react"
-import { sceneAsset } from "@/features/film"
-import { deferredPlate, plateSrcSet } from "@/features/film/presentation/plate"
+import { deferredPlate, plateSrcSet, sceneAsset } from "@/features/film"
 
 type ChapterIllustrationProps = {
   asset: string

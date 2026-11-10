@@ -47,7 +47,7 @@ export function SoundToggle({ src }: { src?: string }) {
       const el = audio.current
       if (!el) return
       if (document.hidden) el.pause()
-      else if (phaseRef.current === "on") void el.play().catch(() => {})
+      else if (phaseRef.current === "on") void el.play().catch(() => setPhase("off"))
     }
     document.addEventListener("visibilitychange", onVisibility)
     return () => document.removeEventListener("visibilitychange", onVisibility)

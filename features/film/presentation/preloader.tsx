@@ -187,6 +187,7 @@ export function Preloader({ plate }: PreloaderProps) {
       html.classList.remove("is-preloading", "is-revisit", "is-landing")
       node.removeAttribute("data-state")
       setStatus("Portfolio loaded")
+      // storage blocked (private mode, policy) only means the next visit plays the full preloader again
       try { sessionStorage.setItem(SEEN_KEY, "1") } catch {}
     }
     const land = () => {

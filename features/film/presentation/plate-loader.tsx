@@ -64,6 +64,7 @@ function settle(node: Deferred, cap: number | null): Promise<void> {
       node.load()
       return
     }
+    // a decode that fails still reveals the plate: the browser paints the loaded image on its own schedule
     const ready = () => (node.decode ? node.decode().catch(() => undefined) : Promise.resolve()).then(done)
     node.addEventListener("load", ready, { once: true })
     node.addEventListener("error", done, { once: true })

@@ -1,7 +1,5 @@
 import type { CSSProperties } from "react"
-import { sceneAsset } from "@/features/film"
-import { DEFERRED_BLANK } from "@/features/film/presentation/deferred"
-import { deferredPlate, plateSrcSet } from "@/features/film/presentation/plate"
+import { DEFERRED_BLANK, deferredPlate, plateSrcSet, sceneAsset } from "@/features/film"
 import { experience } from "./content"
 import { ChapterWord } from "./chapter-word"
 import { BEATS_PER_EMPLOYER, ExperienceMotion } from "./experience-motion"

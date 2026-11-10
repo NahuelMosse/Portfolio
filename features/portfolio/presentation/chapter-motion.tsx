@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+// kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
 import { MOTION, gsap, motionAllowed } from "@/features/film/motion"
 
 // The chapter words rise letter by letter as they arrive, their fine detail drawing in beside them; the projects and experience words then

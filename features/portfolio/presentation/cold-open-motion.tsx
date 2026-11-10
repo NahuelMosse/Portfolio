@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+// kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
 import { MOTION, gsap, motionAllowed } from "@/features/film/motion"
 
 const PIN_LENGTH = "+=15%"
