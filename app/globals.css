@@ -1435,10 +1435,10 @@ html:not([data-sound="idle"]) .cover-cue {
     flex-direction: column-reverse;
   }
 
-  /* the plate rides up so his face clears the ID sheet, which sits over the lower third above the sound cue */
+  /* the plate rides up so his face clears the sound cue and the ID sheet, which sit at the foot of the cover */
   .cover-scene .scene-art img {
     object-position: 50% 100%;
-    translate: 0 -72px;
+    translate: 0 -104px;
   }
 
   .cover-foot {
@@ -1447,11 +1447,18 @@ html:not([data-sound="idle"]) .cover-cue {
     padding-top: var(--space-4);
   }
 
+  /* the ID sheet ends 8px above the fixed hire bar; the sound cue rides right above it */
   .cover-foot .layer-sheet {
     position: absolute;
-    inset: auto 0 calc(100% + 7.6rem) 0;
+    inset: auto 0 calc(100% + var(--hire-bar-height) + 8px) 0;
     padding: var(--space-4) var(--gutter-right) 0 var(--gutter-left);
     background: linear-gradient(to top, var(--ink-85) 62%, transparent);
+  }
+
+  /* the sheet is 12.5rem tall (11.6rem when the role fits one line, 10.3rem on short phones): the cue sits 8px above it */
+  .sound-cue-chip {
+    --sheet-height: 12.5rem;
+    bottom: calc(var(--hire-bar-height) + 16px + var(--sheet-height));
   }
 
   .id-sheet {
@@ -1483,10 +1490,20 @@ html:not([data-sound="idle"]) .cover-cue {
   }
 }
 
+@media (min-width: 400px) and (max-width: 700px) {
+  .sound-cue-chip {
+    --sheet-height: 11.6rem;
+  }
+}
+
 /* short phones: the plate rides higher and the sheet's rows tighten so it still clears his chin */
 @media (max-width: 700px) and (max-height: 760px) {
+  .sound-cue-chip {
+    --sheet-height: 10.3rem;
+  }
+
   .cover-scene .scene-art img {
-    translate: 0 -96px;
+    translate: 0 -128px;
   }
 
   .id-sheet .sheet-row {
