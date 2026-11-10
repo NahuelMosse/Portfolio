@@ -334,7 +334,7 @@ html[data-sound="idle"] .sound-toggle .sound-bars {
 }
 
 .sound-cue {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 30;
