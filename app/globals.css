@@ -2326,6 +2326,19 @@ margin-bottom: 0.2em;
     margin-top: 0;
   }
 
+  /* inside the block: the hint sits clear of the address, the first rule clear of the hint, the rows are tall like desktop. */
+  .contact-scene .band-hint {
+    margin-top: clamp(10px, 1.6svh, 16px);
+  }
+
+  .contact-scene .band-halves {
+    margin-top: clamp(16px, 3svh, 28px);
+  }
+
+  .contact-scene .band-half {
+    padding-block: clamp(12px, 3.2svh, 28px);
+  }
+
   .contact-scene .band-hint {
     flex-direction: column;
     gap: var(--space-1);
