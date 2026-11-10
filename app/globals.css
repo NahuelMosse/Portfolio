@@ -2117,19 +2117,33 @@ margin-bottom: 0.2em;
 
   .contact-scene .credits-roll {
     display: grid;
-    gap: var(--space-1);
-    margin-top: 0;
-    opacity: 0.6;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    opacity: 1;
   }
 
   .contact-scene .roll-band,
   .contact-scene .roll-marquee {
     padding-block: 0;
-    line-height: 1;
+    line-height: 1.15;
+  }
+
+  .contact-scene .roll-marquee {
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .contact-scene .roll-list {
+    gap: var(--space-3);
   }
 
   .contact-scene .roll-item {
-    font-size: min(1.1rem, 2.2svh);
+    font-size: min(1.2rem, 2.6svh);
+    color: var(--bone);
+  }
+
+  .contact-scene .contact-tiles {
+    align-content: stretch;
   }
 
   .contact-scene .roll-item img {
@@ -2206,42 +2220,36 @@ margin-bottom: 0.2em;
     padding-bottom: 0;
   }
 
-  /* each door is a screen of its own: its text sits centred in the free height and its button is anchored to the panel's foot */
+  /* one composed screen: the word block, then the two doors at their own height; the free height is shared evenly between the
+     word, the doors and the foot, and each button sits right under its text */
+  .offer-scene .scene-copy {
+    justify-content: space-evenly;
+    padding-bottom: var(--space-3);
+  }
+
   .offer-scene .offer {
-    gap: 0;
+    gap: var(--space-2);
   }
 
   .offer-scene .folder {
-    padding-block: var(--space-4);
-    min-height: calc(100svh - var(--top-bar-height) - var(--size-word) - 2rem - var(--space-2));
-  }
-
-  .offer-scene .folder[data-offer-card="tpm"] {
-    min-height: calc(100svh - var(--top-bar-height));
+    padding-block: var(--space-3);
+    min-height: 0;
   }
 
   .offer-scene .folder > p.folder-tab:first-child {
-    margin-block: auto var(--space-2);
+    margin-block: 0 var(--space-2);
   }
 
   .offer-scene .folder .door {
-    margin-top: auto;
+    margin-top: var(--space-2);
   }
 
   .offer-scene .folder .proof-link {
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-1);
   }
 
   .offer-scene .folder h3 {
     margin-bottom: var(--space-2);
-  }
-}
-
-/* a short phone: the doors keep their content height, nothing is stretched */
-@media (max-width: 700px) and (max-height: 640px) {
-  .offer-scene .folder,
-  .offer-scene .folder[data-offer-card="tpm"] {
-    min-height: 0;
   }
 }
 
