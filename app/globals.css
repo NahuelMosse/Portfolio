@@ -1928,22 +1928,19 @@ margin-bottom: 0.2em;
     margin-bottom: 0;
   }
 
-  /* exactly one screen under the top bar: the plate holds him at the top, the doors take the dark lower part */
   .offer-scene[data-has-art] {
-    height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.6 - 2rem);
-    min-height: 0;
+    min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.6 - 2rem);
   }
 
   .offer-scene .scene-art img {
-    object-position: 55% 0%;
+    object-position: 72% 30%;
   }
 
   .offer-scene .scene-copy {
     justify-content: flex-end;
-    height: 100%;
     min-height: 0;
     padding: calc(var(--size-word) * 0.4 + var(--space-2)) 0 var(--space-3);
-    background: linear-gradient(to top, var(--ink-70), transparent 60%);
+    background: none;
   }
 
   .offer-scene .folder-tab {
@@ -2050,35 +2047,8 @@ margin-bottom: 0.2em;
   }
 }
 
-/* a tablet that is not tall enough for his face above both doors: the doors keep name, line and button */
-@media (min-width: 701px) and (max-width: 1099px) and (max-height: 1100px) {
-  .offer-scene .folder p:not(.folder-tab):nth-of-type(3),
-  .offer-scene .proof-link {
-    display: none;
-  }
-}
-
 @media (max-width: 700px) {
   .offer-scene .scene-copy {
-    padding-bottom: calc(var(--space-2) + var(--hire-bar-height));
-  }
-
-  /* one screen: each door keeps its name, one line and its button; the tab, the detail and the proof link are left out of the phone */
-  .offer-scene .folder {
-    padding-block: var(--space-2);
-  }
-
-  .offer-scene .folder-tab,
-  .offer-scene .folder p:not(.folder-tab):nth-of-type(3),
-  .offer-scene .proof-link {
-    display: none;
-  }
-
-  .offer-scene .folder h3 {
-    margin-bottom: var(--space-1, 0.25rem);
-  }
-
-  .offer-scene .folder p {
-    margin-bottom: var(--space-2);
+    padding-bottom: calc(var(--space-3) + var(--hire-bar-height));
   }
 }
