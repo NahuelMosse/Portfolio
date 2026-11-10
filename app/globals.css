@@ -2257,7 +2257,8 @@ margin-bottom: 0.2em;
      margins, between the title and the first door and between the doors, so the last door ends on the screen's foot and each
      button sits right under its text */
   .offer-scene {
-    --size-word: clamp(3.5rem, 16vw, 4.25rem);
+    --size-word: clamp(4.5rem, 21vw, 5.5rem);
+    --size-word-phone: var(--size-word);
   }
 
   .offer-scene .scene-copy {
@@ -2285,7 +2286,7 @@ margin-bottom: 0.2em;
   }
 
   .offer-scene .folder {
-    padding-block: clamp(16px, 4.5svh - 12px, 28px);
+    padding-block: clamp(8px, 2svh, 20px);
     min-height: 0;
   }
 
@@ -2305,20 +2306,58 @@ margin-bottom: 0.2em;
   }
 
   .offer-scene .folder h3 {
-    font-size: min(5vw, 1.4rem);
+    font-size: clamp(1.5rem, 6.4vw, 1.625rem);
+    line-height: 1.1;
     margin-bottom: var(--space-1);
-    white-space: nowrap;
   }
 
   .offer-scene .folder p {
-    font-size: 0.8125rem;
-    line-height: 1.35;
+    font-size: 1rem;
+    line-height: 1.45;
     margin-block: 0 6px;
   }
 
   .offer-scene .folder p.folder-tab {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     margin-block: 0 var(--space-1);
+  }
+
+  .offer-scene .folder .door {
+    font-size: 0.875rem;
+  }
+
+  .offer-scene .folder .proof-link {
+    font-size: 1rem;
+  }
+}
+
+/* short phones: the copy keeps every word at 14.5px so the two doors still share one screen (up to 10% taller on the smallest) */
+@media (max-width: 700px) and (max-height: 760px) {
+  .offer-scene {
+    --size-word: clamp(4rem, 17vw, 4.5rem);
+  }
+
+  .offer-scene .folder p {
+    font-size: 0.90625rem;
+    line-height: 1.35;
+    margin-block: 0 4px;
+  }
+
+  .offer-scene .folder h3 {
+    font-size: 1.375rem;
+  }
+
+  .offer-scene .folder {
+    padding-block: 6px;
+  }
+
+  .offer-scene .folder .door {
+    padding-block: 8px;
+    margin-top: var(--space-1);
+  }
+
+  .offer-scene .offer {
+    gap: var(--space-1);
   }
 }
 
