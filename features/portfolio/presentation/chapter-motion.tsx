@@ -17,10 +17,8 @@ export function ChapterMotion() {
           scrollTrigger: { trigger: title, start: "top bottom", end: "top 55%", scrub: MOTION.scrub },
         })
         arrival.fromTo(title.querySelectorAll(".chapter-letter"), { yPercent: 135 }, { yPercent: 0, stagger: 0.05, ease: "power3.out" }, 0)
-        arrival.fromTo(title.querySelector(".chapter-detail i"), { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1 }, 0)
-        // the catalog text is wiped in, not faded: at any scroll position it reads at full contrast
-        arrival.fromTo(title.querySelectorAll(".chapter-detail span"), { clipPath: "inset(0% 100% 0% 0%)", x: -12 }, { clipPath: "inset(0% 0% 0% 0%)", x: 0 }, 0)
-        arrival.fromTo(title.querySelector(".chapter-detail b"), { autoAlpha: 0, x: -12 }, { autoAlpha: 1, x: 0 }, 0)
+        // the detail line is one piece wiped in from the left, not faded: at any scroll position its text reads at full contrast
+        arrival.fromTo(title.querySelector(".chapter-detail"), { clipPath: "inset(-50% 100% -50% 0%)" }, { clipPath: "inset(-50% 0% -50% 0%)" }, 0)
 
         if (title.dataset.chapterTitle === "projects" || title.dataset.chapterTitle === "experience") {
           gsap.fromTo(
