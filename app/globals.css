@@ -1395,7 +1395,6 @@ html:not([data-sound="idle"]) .cover-cue {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
     width: var(--hire-bar-height);
     height: var(--hire-bar-height);
     border: 1px solid var(--bone);
@@ -1403,7 +1402,6 @@ html:not([data-sound="idle"]) .cover-cue {
     color: var(--bone);
     font-family: var(--font-label);
     font-size: 1.25rem;
-    letter-spacing: var(--label-tracking);
     text-transform: uppercase;
     transition:
       transform var(--motion-control) var(--ease-out),
@@ -1412,13 +1410,17 @@ html:not([data-sound="idle"]) .cover-cue {
       visibility 0s 0s;
   }
 
+  /* the label takes its space from the arrow only when it shows, so the square's arrow sits centred */
   .bar-top-label {
     max-width: 0;
+    margin-left: 0;
     overflow: hidden;
+    letter-spacing: var(--label-tracking);
     opacity: 0;
     white-space: nowrap;
     transition:
       max-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      margin-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
       opacity 240ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
   }
 
@@ -1429,6 +1431,7 @@ html:not([data-sound="idle"]) .cover-cue {
 
   body:has(.hire-bar[data-yield="true"]) .bar-top-label {
     max-width: 12em;
+    margin-left: 0.75rem;
     opacity: 1;
   }
 
