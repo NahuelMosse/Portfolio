@@ -495,7 +495,7 @@ html:not([data-sound="idle"]) .cover-cue {
   transform: scale(var(--press-scale));
 }
 
-/* Back to top, then Let's talk, at the right edge: a hidden control leaves the row, so the other stays on the edge */
+/* Back to top, then Let's talk, at the right edge: a hidden control stays in the row and collapses its width, so the other slides along */
 .corner-pair {
   position: fixed;
   right: var(--space-4);
@@ -503,35 +503,70 @@ html:not([data-sound="idle"]) .cover-cue {
   z-index: 40;
   display: flex;
   align-items: center;
-  gap: var(--space-2);
 }
 
-.corner-cta[data-visible="false"] {
-  position: absolute;
-  right: 0;
-  bottom: 0;
+.corner-pair .corner-cta {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 16em;
+  margin-left: 0;
+  transition:
+    background var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out),
+    max-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding-right 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-left-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-right-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s 0s;
+}
+
+.corner-pair .corner-cta[data-visible="false"] {
+  max-width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border-left-width: 0;
+  border-right-width: 0;
   opacity: 0;
-  translate: 0 6px;
   visibility: hidden;
   transition:
     background var(--motion-control) var(--ease-out),
     border-color var(--motion-control) var(--ease-out),
     color var(--motion-control) var(--ease-out),
     transform var(--motion-control) var(--ease-out),
+    max-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding-right 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-left-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-right-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 200ms cubic-bezier(0.4, 0, 1, 1),
-    translate 200ms cubic-bezier(0.4, 0, 1, 1),
-    visibility 0s 200ms;
+    visibility 0s 320ms;
+}
+
+/* the gap between the two exists only while both are shown */
+.corner-pair .corner-top[data-visible="true"] + .corner-cta[data-visible="true"] {
+  margin-left: var(--space-2);
 }
 
 /* when both arrive together, Let's talk leads and Top follows */
-.corner-top[data-visible="true"] {
+.corner-pair .corner-top[data-visible="true"] {
   transition:
     background var(--motion-control) var(--ease-out),
     border-color var(--motion-control) var(--ease-out),
     color var(--motion-control) var(--ease-out),
     transform var(--motion-control) var(--ease-out),
+    max-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding-right 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-left-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-right-width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin-left 320ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 320ms cubic-bezier(0.22, 1, 0.36, 1) 60ms,
-    translate 320ms cubic-bezier(0.22, 1, 0.36, 1) 60ms,
     visibility 0s 0s;
 }
 
@@ -1608,15 +1643,16 @@ html:not([data-sound="idle"]) .cover-cue {
   }
 
   .corner-cta,
-  .corner-cta[data-visible="false"],
-  .corner-top[data-visible="true"],
+  .corner-pair .corner-cta,
+  .corner-pair .corner-cta[data-visible="false"],
+  .corner-pair .corner-top[data-visible="true"],
   .bar-top,
   .bar-top[data-visible="false"] {
     translate: none;
     transition: opacity 150ms linear, visibility 0s 0s;
   }
 
-  .corner-cta[data-visible="false"],
+  .corner-pair .corner-cta[data-visible="false"],
   .bar-top[data-visible="false"] {
     transition: opacity 150ms linear, visibility 0s 150ms;
   }
@@ -2491,7 +2527,14 @@ margin-bottom: 0.2em;
     box-sizing: border-box;
     min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.5 - 1.1rem);
     justify-content: flex-end;
-    padding-bottom: 0;
+    padding-bottom: var(--hire-bar-height);
+  }
+
+  /* the bottom bar takes the last 56px: the ending is one screen above it */
+  .contact-scene[data-has-art] {
+    height: calc(100svh - var(--hire-bar-height));
+    min-height: calc(100svh - var(--hire-bar-height));
+    margin-bottom: var(--hire-bar-height);
   }
 
   .offer-scene .offer {
@@ -2511,7 +2554,7 @@ margin-bottom: 0.2em;
 
   .offer-scene .folder {
     flex: 1 1 0;
-    padding-block: var(--space-4);
+    padding-block: var(--space-3);
     min-height: auto;
   }
 
@@ -2556,15 +2599,19 @@ margin-bottom: 0.2em;
   }
 }
 
-/* short phones: the copy keeps every word at 14.5px so the two doors still share one screen (up to 10% taller on the smallest) */
+/* short phones: the copy keeps every word at 14.5px so the two doors share the screen above the bottom bar */
 @media (max-width: 700px) and (max-height: 760px) {
   .offer-scene {
     --size-word: min(35vw, 8svh);
   }
 
+  .offer-scene .folder .proof-link {
+    margin-block: 0 var(--space-1);
+  }
+
   .offer-scene .folder p {
     font-size: 0.90625rem;
-    line-height: 1.35;
+    line-height: 1.3;
     margin-block: 0 4px;
   }
 
@@ -2573,7 +2620,7 @@ margin-bottom: 0.2em;
   }
 
   .offer-scene .folder {
-    padding-block: 12px;
+    padding-block: 8px;
   }
 
   .offer-scene .folder .door {
