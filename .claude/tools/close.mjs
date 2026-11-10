@@ -14,7 +14,7 @@
 // `## Assumptions` lists the untested ASMs and one line «N of N tagged» for the rest; modules off for the same reason are one line.
 // Exits 0 if every check passed (or was skipped), 1 otherwise, 2 with no card in progress («No card in progress»).
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { NOT_PRODUCTION, cardFiles, oneRound, cardStart, copiedFromKit, currentCard, fileMapLines, git, keyOf, namedIn, relativeTo, taskTokens } from './card.mjs';
@@ -297,6 +297,25 @@ export const prHead = (doc) => {
     '', '## Breaking changes', breaking.length ? breaking.join('\n') : 'none', ''];
 };
 
+// A frozen test file edited only in its titles, comments, string literals or local names: the same spec tags, and the same
+// assertion lines once strings, comments and plain identifiers are blanked (the assertion calls, members, numbers and
+// operators stay). Measured: a card that translated ~400 test files left 195 such edits for a person to confirm.
+const ASSERT_LINE = /\b(?:assert\w*|expect|should)\b/;
+const KEEP_WORDS = new Set(['assert', 'expect', 'should', 'self', 'not', 'is', 'in', 'and', 'or', 'None', 'True', 'False', 'null', 'undefined', 'true', 'false', 'await', 'raises']);
+const assertionShape = (text) => String(text).replace(/\r\n?/g, '\n')
+  .replace(/"""[\s\S]*?"""|'''[\s\S]*?'''|`(?:\\.|[^`\\])*`|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'/g, '""')
+  .replace(/\/\*[\s\S]*?\*\/|\/\/.*$|#.*$/gm, '')
+  .split('\n').filter((l) => ASSERT_LINE.test(l))
+  .map((l) => l.trim().replace(/(\.)?\b([A-Za-z_]\w*)\b/g, (m, dot, w) => (dot || KEEP_WORDS.has(w) || /^assert/.test(w) ? m : 'x')).replace(/\s+/g, ''));
+export const sameTestShape = (before, after) => {
+  const tags = (s) => [...(String(s).match(new RegExp(FROZEN_TAG.source, 'g')) ?? [])].sort().join(' ');
+  return tags(before) !== '' && tags(before) === tags(after) && assertionShape(before).join('\n') === assertionShape(after).join('\n');
+};
+
+// A PR body takes 65 536 characters: each kind of item past CAP_ITEMS is counted in closing.md and listed whole beside it.
+const CAP_ITEMS = 25;
+export const PR_BODY_MAX = 65_536;
+
 const blockOf = (root, cardDir, { doc, checks, acts, risk, asms, untagged, off, grade, manifest, base, since }) => {
   const parts = [BEGIN, ...prHead(doc), '## Passed', bullets(checks, 'passed'), '', '## Failed', bullets(checks, 'failed'), '', '## Could not run', bullets(checks, 'could not run'),
     '', '## Judge', judgeSummary(risk, acts), '', '## Assumptions',
@@ -315,16 +334,32 @@ const blockOf = (root, cardDir, { doc, checks, acts, risk, asms, untagged, off, 
   const isRename = (r) => { const old = tagsOf(r.name); const kept = tagsOf(r.byName); return Boolean(refactor) && old.size > 0 && [...old].every((t) => kept.has(t)); };
   const swaps = replacementsOf(doc).filter((r) => !isRename(r));
   const renames = replacementsOf(doc).filter(isRename);
-  const edited = refactor ? git(root, ['diff', '--numstat', `${base}..HEAD`]).stdout.split('\n').filter(Boolean).map((l) => l.split('\t'))
-    .filter(([, , f]) => f && IS_TEST_FILE.test(f) && !f.startsWith('.claude/') && FROZEN_TAG.test(git(root, ['show', `${base}:${f}`]).stdout ?? '')) : [];
+  const touched = refactor ? git(root, ['diff', '--numstat', `${base}..HEAD`]).stdout.split('\n').filter(Boolean).map((l) => l.split('\t'))
+    .filter(([, , f]) => f && IS_TEST_FILE.test(f) && !f.startsWith('.claude/'))
+    .map(([plus, minus, f]) => ({ plus, minus, f, before: git(root, ['show', `${base}:${f}`]).stdout ?? '' }))
+    .filter(({ before }) => FROZEN_TAG.test(before)) : [];
+  const now = (f) => { try { return readFileSync(join(root, f), 'utf8'); } catch { return ''; } };
+  const reworded = touched.filter(({ f, before }) => sameTestShape(before, now(f)));
+  const edited = touched.filter((t) => !reworded.includes(t));
+  const extra = [];
+  const capped = (kind, lines) => {
+    if (lines.length <= CAP_ITEMS) return lines;
+    extra.push(`## ${kind}`, ...lines, '');
+    return [...lines.slice(0, CAP_ITEMS), `- … and ${lines.length - CAP_ITEMS} more ${kind}: the whole list is in ${relativeTo(root, join(cardDir, 'closing-items.md'))}`];
+  };
   if (swaps.length || clones.length || kept.length || unmutated.length || edited.length) parts.push('', '## Needs a person',
-    ...swaps.map((r) => `- replaced test: ${r.file} "${r.name}" by ${r.by} "${r.byName}" — ${r.why}; confirm the old test was wrong and the new one is not looser`),
-    ...clones.map(([file, why]) => `- duplication left in place (K4): ${file} — ${why}; confirm the two copies must differ`),
-    ...kept.map(([file, why]) => `- structure kept on purpose (overdesign): ${file} — ${why}; confirm the problem asks for it`),
-    ...unmutated.map(([file, why]) => `- left unmutated: ${file} — ${why}; confirm its tests are enough without mutation`),
-    ...edited.map(([plus, minus, f]) => `- frozen test edited by the refactor (${refactor}): ${f} (+${plus} −${minus}); confirm no assertion was loosened: \`git diff ${base.slice(0, 9)}..HEAD -- ${f}\``));
+    ...capped('replaced tests', swaps.map((r) => `- replaced test: ${r.file} "${r.name}" by ${r.by} "${r.byName}" — ${r.why}; confirm the old test was wrong and the new one is not looser`)),
+    ...capped('duplications (K4)', clones.map(([file, why]) => `- duplication left in place (K4): ${file} — ${why}; confirm the two copies must differ`)),
+    ...capped('structures kept', kept.map(([file, why]) => `- structure kept on purpose (overdesign): ${file} — ${why}; confirm the problem asks for it`)),
+    ...capped('unmutated files', unmutated.map(([file, why]) => `- left unmutated: ${file} — ${why}; confirm its tests are enough without mutation`)),
+    ...capped('edited frozen tests', edited.map(({ plus, minus, f }) => `- frozen test edited by the refactor (${refactor}): ${f} (+${plus} −${minus}); confirm no assertion was loosened: \`git diff ${base.slice(0, 9)}..HEAD -- ${f}\``)));
+  const items = join(cardDir, 'closing-items.md');
+  if (extra.length) writeFileSync(items, `# ${cardIdOf(cardDir)} — every item of ## Needs a person\n\n${extra.join('\n')}`);
+  else if (existsSync(items)) rmSync(items);
   const decisions = offLines([...off].map(([name, o]) => ({ name, reason: o.reason }))).map((l) => `- ${l}`);
   if (renames.length) decisions.push(`- tests renamed by the refactor (${refactor}): ${renames.length} replaced keeping their tags — ${[...new Set(renames.map((r) => r.file))].join(', ')}`);
+  if (reworded.length) decisions.push(`- frozen tests reworded by the refactor (${refactor}): ${reworded.length} edited keeping their tags and assertions (titles, comments, strings, local names) — ` +
+    `${reworded.slice(0, 10).map((t) => t.f).join(', ')}${reworded.length > 10 ? `, and ${reworded.length - 10} more` : ''}`);
   if (grade !== 'production') decisions.push(`- grade: ${grade} — ${manifest?.grade?.reason ?? ''}`);
   if (decisions.length) parts.push('', '## Decisions of the repo', ...decisions);
   const cardPath = relativeTo(root, join(cardDir, 'card.md'));
@@ -376,12 +411,16 @@ const writeClosing = (root, cardDir, ctx) => {
     if (from < 0 || to < from) return 'kept';
     const head = text.slice(0, from).replace(/^Result: .*$/m, resultLine(bad));
     writeFileSync(path, `${head}${block}${text.slice(to + END.length)}`);
-    return 'regenerated';
+    return fits(path, 'regenerated');
   }
   // closing.md is the PR body (`--body-file`) and is not edited by hand, so the attribution footer of a PR is written here,
   // outside the sealed block.
   writeFileSync(path, `# ${ctx.card} — closing\n\n${resultLine(bad)}\n\n${block}\n\n${FOOTER}\n`);
-  return 'written';
+  return fits(path, 'written');
+};
+const fits = (path, state) => {
+  const size = readFileSync(path, 'utf8').length;
+  return size > PR_BODY_MAX ? `${state}, but it is ${size} characters and a PR body takes ${PR_BODY_MAX}: \`gh pr create --body-file\` will refuse it` : state;
 };
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {

@@ -50,6 +50,9 @@ export const classesIn = (text) => {
   return out;
 };
 
+// The files that can write a screen's markup. A docstring of a Python or Go file that names `<table>` is not a screen.
+export const MARKUP_FILE = /\.(html?|vue|svelte|astro|php|m?[jt]sx?|cjs|cts)$/;
+
 // The classes a stylesheet defines in its selectors; the declarations are emptied first, so `0.5rem` or `a.woff2` do not count.
 export const classesDefined = (css) => new Set([...String(css).replace(/\/\*[\s\S]*?\*\//g, '').replace(/\{[^{}]*\}/g, '{}')
   .matchAll(/\.(-?[a-z_][\w-]*)/gi)].map((m) => m[1]));
@@ -71,8 +74,9 @@ export const classesAt = (root, base) => {
 
 // The covered elements a piece of markup writes, as `<tag class="…">` or through a helper (`el('button', { class: … })`),
 // with the classes each one carries. A hidden input carries a value, it is not a control.
+// Comments are not markup: a `<table>` named in `<!-- -->` or `/* */` writes no control.
 export const coveredIn = (text) => {
-  const flat = flatten(text);
+  const flat = flatten(String(text).replace(/<!--[\s\S]*?-->|\/\*[\s\S]*?\*\//g, ''));
   const out = [];
   for (const m of flat.matchAll(new RegExp(`<(${TAGS})\\b([^>]*)>`, 'g'))) {
     if (m[1] === 'input' && /\btype\s*=\s*\{?["'`]?hidden\b/i.test(m[2])) continue;

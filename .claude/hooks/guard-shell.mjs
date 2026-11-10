@@ -156,6 +156,12 @@ const reachOf = (path, seen = new Set()) => {
     const forms = `(?:^|[\\s;&|(])\\$?${n}\\s*=([^;\\n&|]*)|\\bfor(?:each)?\\s*\\(?\\s*\\$?${n}\\s+in\\s+([^;\\n)]*)|\\bprintf\\s+-v\\s+${n}\\s+([^;\\n&|]*)|\\$\\{${n}:?=([^}]*)\\}|\\bSet-Variable\\s+(?:-Name\\s+)?\\$?${n}\\s+(?:-Value\\s+)?([^;\\n&|]*)|\\bSet-Variable\\s+-Value\\s+([^;\\n&|]*?)\\s+-Name\\s+\\$?${n}\\b`;
     for (const m of cmd.matchAll(new RegExp(forms, 'gi'))) {
       const value = (m[1] ?? m[2] ?? m[3] ?? m[4] ?? m[5] ?? m[6] ?? '').trim();
+      // A partial path (`out/$f.txt`) over literal values is each value spelled into it.
+      if (!bare && !/[`$*?[]/.test(value)) {
+        const words = m[2] !== undefined ? value.split(/\s+/) : [value];
+        for (const w of words) reach.push(String(path).replace(new RegExp(`\\$\\{?${n}\\}?(?!\\w)`, 'g'), w.replace(/^["']|["']$/g, '')));
+        continue;
+      }
       if (!bare) return cmd;
       if (!/[`$]/.test(value)) { reach.push(value); continue; }
       // A temp folder plus a literal name, or a `mktemp`, is a scratch path the line spells in full.

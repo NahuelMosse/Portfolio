@@ -61,7 +61,7 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, realp
 import { cpus } from 'node:os';
 import { delimiter, isAbsolute, join, relative, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { asOneArg, cardFiles, commandDir, oneRound, originOf, ownBase, currentCard, cardStart, existedAt, fileMapLines, git, keyOf, IS_CODE, IS_TEST, RAW_COLOR, RAW_DURATION, RAW_LAYOUT, DECLARES_TOKEN } from './card.mjs';
+import { asOneArg, cardFiles, commandDir, oneRound, originOf, ownBase, currentCard, cardStart, existedAt, fileMapLines, git, keyOf, IS_CODE, IS_TEST, RENAME, RAW_COLOR, RAW_DURATION, RAW_LAYOUT, DECLARES_TOKEN } from './card.mjs';
 import { active, addedOf, isPoc } from './kit.mjs';
 import { expandScripts, launchesPlaywright, takeLock } from './browser-lock.mjs';
 import { endsWithLine } from './final-line.mjs';
@@ -71,7 +71,7 @@ import { CARD_FILE, cardIdOf, fencedBlocks, readCard, requirementOf, riskOf, sec
 import { cardChecks, noLookOf, noVisualCheck, probeRecords, screenChecks, specsCheck, visualInstruments } from './gate-checks.mjs';
 import { detectIn } from './signals.mjs';
 import { affected } from './affected.mjs';
-import { catalogFindings, classesAt, classesDefined, classesIn, setFindings, setSheets, usesCatalog } from './component-set.mjs';
+import { catalogFindings, classesAt, classesDefined, classesIn, MARKUP_FILE, setFindings, setSheets, usesCatalog } from './component-set.mjs';
 import { escalate } from './risk.mjs';
 import { changedBetween, snapshot } from './tree-snapshot.mjs';
 import { IS_TEST_FILE, committedTagged } from './guard-paths.mjs';
@@ -768,7 +768,7 @@ export const design = (root, cardDir, off = new Set()) => {
 
   // Composed, not drawn: what the catalog or the set solves is installed or reused, never written again.
   // Code that builds the DOM through a helper (`el('main', { class: … })`) is markup too.
-  const markup = written.filter((f) => !/^design\//.test(f) && (/\.(html?|vue|svelte)$/.test(f) || IS_CODE.test(f)));
+  const markup = written.filter((f) => !/^design\//.test(f) && MARKUP_FILE.test(f));
   const markupAdded = markup.map((f) => ({ file: f, text: added(root, base, f).join('\n') }));
   if (!off.has('component-set') && usesCatalog(root)) problems.push(...catalogFindings(markupAdded, classesAt(root, base)));
   else if (!off.has('component-set')) {
@@ -843,7 +843,7 @@ const addedLines = (root, base, files) => {
   const origins = files.map((f) => originOf(root, base, f)).filter(Boolean);
   const from = ownBase(root, base);
   const out = new Map(files.map((f) => [f, existedAt(root, from, f) || originOf(root, base, f) ? [] : null]));
-  const diff = git(root, ['diff', '-U0', '--no-color', '-M80%', from, '--', ...files, ...origins]).stdout ?? '';
+  const diff = git(root, ['diff', '-U0', '--no-color', RENAME, from, '--', ...files, ...origins]).stdout ?? '';
   let file = null;
   for (const l of diff.split(/\r?\n/)) {
     if (l.startsWith('+++ ')) { file = l.slice(4).replace(/^b\//, ''); continue; }

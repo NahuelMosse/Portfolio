@@ -34,7 +34,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync, appendFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { cardFiles, cardStart, currentCard, fileMapLines, git, originOf, ownBase, pathTokens } from './card.mjs';
+import { cardFiles, cardStart, currentCard, fileMapLines, git, originOf, ownBase, pathTokens, RENAME } from './card.mjs';
 import { nextLogNumber, requirementOf, rolesOf } from './card-doc.mjs';
 import { describe, detect, detectIn, evidenceOf, kindOf } from './signals.mjs';
 
@@ -365,7 +365,7 @@ export const addedOf = (root, base, f) => {
   if (BINARY.test(f)) return [];
   // A moved file diffs against where it came from (originOf): a move adds only what it changed.
   const origin = originOf(root, base, f);
-  const d = git(root, ['diff', '-U0', '-M80%', ownBase(root, base), '--', f, ...(origin ? [origin] : [])]).stdout ?? '';
+  const d = git(root, ['diff', '-U0', RENAME, ownBase(root, base), '--', f, ...(origin ? [origin] : [])]).stdout ?? '';
   if (!d) {
     const path = join(root, f);
     return existsSync(path) ? (() => { try { return readFileSync(path, 'utf8').split('\n').map((text, i) => ({ n: i + 1, text })); } catch { return []; } })() : [];

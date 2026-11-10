@@ -5,7 +5,8 @@
 // by signal writes nothing, and that is also what a wait has to learn from the ceiling.
 import { writeSync } from 'node:fs';
 
-export const FINAL_LINE = /^\S+: exit (-?\d+) in \d+(?:\.\d+)? min$/;
+// As the very last line, the caller's own `<tool>: exit <N>` (`; echo "gh: exit $?"`) counts too, without the minutes.
+export const FINAL_LINE = /^\S+: exit (-?\d+)(?: in \d+(?:\.\d+)? min)?$/;
 
 // The tools that write the line (those that call `endsWithLine`).
 const TOOLS = 'verify|mutate|attack|repeat|probe|pairs|showreel|release|flutter-gate';

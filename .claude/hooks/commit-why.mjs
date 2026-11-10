@@ -90,7 +90,7 @@ if (inCard) {
     const diff = spawnSync('git', ['diff', all ? 'HEAD' : '--cached', '-U0', '--no-color'], { cwd: inCard.root, encoding: 'utf8', maxBuffer: 1 << 28 });
     const found = diff.status === 0 ? bar.publicFindings(bar.addedLines(diff.stdout), { level: 'poc', allow: declared.allow }) : [];
     if (found.length) {
-      reject(`The commit carries what a public repo never does (${found.length}): ${found.slice(0, 5).join('; ')}.\n` +
+      reject(`The commit carries what a public repo never does (${found.length}): ${found.slice(0, 50).join('; ')}${found.length > 50 ? `; and ${found.length - 50} more` : ''}.\n` +
         'Fix the lines and stage them again, or declare in ## Gate `public-allow: <file> [<kind>] · <why>`; only the user skips the whole bar.');
     }
   }

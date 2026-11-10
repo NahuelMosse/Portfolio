@@ -881,7 +881,7 @@ export const publicCheck = (root, cardDir) => {
     spawnSync('git', ['ls-files', '--error-unmatch', f], { cwd: root }).status !== 0);
   const lines = [...addedLines(diff.stdout), ...untracked.flatMap((f) => { try { return readFileSync(join(root, f), 'utf8').split('\n').map((line) => ({ file: f, line })); } catch { return []; } })];
   const found = publicFindings(lines, { allow });
-  return [found.length ? failed('public', `${found.length} line${found.length > 1 ? 's' : ''} a public repo does not carry: ${found.slice(0, 5).join('; ')}` +
+  return [found.length ? failed('public', `${found.length} line${found.length > 1 ? 's' : ''} a public repo does not carry: ${found.slice(0, 50).join('; ')}${found.length > 50 ? `; and ${found.length - 50} more` : ''}` +
     ' · fix them, or declare in ## Gate `public-allow: <file> [<kind>] · <why>`; only the user skips the whole bar') : ok('public', `${lines.length} added lines, ready for a public repo`)];
 };
 

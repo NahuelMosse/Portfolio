@@ -427,11 +427,14 @@ export const ownBase = (root, base) => remembered(owns, `${root}\0${base}`, () =
   return base;
 });
 
-// A file the card only moved (git sees a rename at 80 % similarity or more) is judged against where it came from: its old
-// classes, clones and interfaces are the repo's, not the card's. `originOf` is that path at the card's start, or null.
+// A file the card moved (git sees a rename at 50 % similarity or more) is judged against where it came from: its old
+// classes, clones and interfaces are the repo's, not the card's; only the lines it changed in the move are. `originOf` is
+// that path at the card's start, or null. 50 %, git's own default: a file moved and translated keeps about half its lines
+// (measured: 90 test files moved and translated read as new duplication at 80 %).
+export const RENAME = '-M50%';
 const renames = new Map();
 export const renamesOf = (root, base) => remembered(renames, `${root}\0${base}`, () => new Map(
-  (git(root, ['diff', '--name-status', '-M80%', '--diff-filter=R', ownBase(root, base)]).stdout ?? '').split('\n')
+  (git(root, ['diff', '--name-status', RENAME, '--diff-filter=R', ownBase(root, base)]).stdout ?? '').split('\n')
     .map((l) => l.split('\t')).filter((p) => p.length === 3 && /^R\d+/.test(p[0])).map(([, from, to]) => [to, from])));
 export const originOf = (root, base, file) => renamesOf(root, base).get(file) ?? null;
 
