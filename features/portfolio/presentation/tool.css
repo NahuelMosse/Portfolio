@@ -25,6 +25,14 @@
   letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   text-decoration: none;
+  transition:
+    background-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out);
+}
+
+.show .show-meta a:active {
+  transform: scale(var(--press-scale));
 }
 
 .show .show-meta a::after {

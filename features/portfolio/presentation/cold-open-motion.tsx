@@ -25,7 +25,8 @@ export function ColdOpenMotion() {
       })
       // scaled from its top edge, so his hair never rises under the top bar
       timeline.fromTo(cover, { scale: COVER_START }, { scale: 1, duration: 1 }, 0)
-      timeline.to(mark, { scale: 1.18, autoAlpha: 0, transformOrigin: "50% 50%", duration: 0.6, ease: MOTION.easeOut }, 0.1)
+      // opacity, not autoAlpha: the page's only h1 stays in the accessibility tree once it has faded
+      timeline.to(mark, { scale: 1.18, opacity: 0, transformOrigin: "50% 50%", duration: 0.6, ease: MOTION.easeOut }, 0.1)
       timeline.to(name, { autoAlpha: 0, duration: 0.3 }, 0.1)
       // from an explicit brightness(1): tweening from "none" starts at brightness(0) and flashes the cover black
       timeline.fromTo(cover, { filter: "brightness(1)" }, { filter: "brightness(0.5)", duration: 1 }, 0)

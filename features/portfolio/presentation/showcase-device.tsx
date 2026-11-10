@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
-import { SceneMedia } from "@/features/film/presentation/scene-media"
-import { DEFERRED_BLANK } from "@/features/film/presentation/deferred"
+// kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
+import { DEFERRED_BLANK, SceneMedia } from "@/features/film/motion"
 import type { Piece, ScreenFrame } from "./content"
 import { deferredPiece, pieceBar, pieceThumb } from "./piece-image"
 

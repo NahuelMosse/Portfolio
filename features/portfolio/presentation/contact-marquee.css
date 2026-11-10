@@ -22,7 +22,13 @@
   transform: rotate(-3deg);
   transition:
     background-color var(--motion-control) var(--ease-out),
-    color var(--motion-control) var(--ease-out);
+    color var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
+    opacity var(--motion-control) var(--ease-out);
+}
+
+.band:active {
+  opacity: 0.7;
 }
 
 .band[data-copied] {

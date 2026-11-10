@@ -1774,6 +1774,10 @@ html:not([data-sound="idle"]) .cover-cue {
   color: inherit;
 }
 
+.folder .proof-link:hover {
+  color: var(--red);
+}
+
 .folder .door {
   border-color: var(--panel-ink);
   background: var(--panel-ink);
@@ -2531,7 +2535,7 @@ margin-bottom: 0.2em;
 
   .contact-scene .end-of-file {
     margin-top: 0;
-    font-size: 12px;
+    font-size: min(12px, 3.5vw);
   }
 
   .contact-scene .band-hint,

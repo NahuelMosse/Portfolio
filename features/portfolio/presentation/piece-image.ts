@@ -1,4 +1,5 @@
-import { DEFERRED_BLANK } from "@/features/film/presentation/deferred"
+// kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
+import { DEFERRED_BLANK } from "@/features/film/motion"
 import bars from "./piece-bars.json"
 import widths from "./piece-widths.json"
 

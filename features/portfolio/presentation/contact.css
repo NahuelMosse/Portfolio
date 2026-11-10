@@ -37,9 +37,14 @@
   transition: transform var(--motion-control) var(--ease-out);
 }
 
-a:hover .contact-arrow,
 a:focus-visible .contact-arrow {
   transform: translateX(var(--space-2));
+}
+
+@media (hover: hover) {
+  a:hover .contact-arrow {
+    transform: translateX(var(--space-2));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

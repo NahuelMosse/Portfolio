@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { smoothScroll } from "@/features/film/presentation/motion-engine"
+// kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
+import { smoothScroll } from "@/features/film/motion"
 
 // The scroll through a group is one timeline in "runs": each project holds for HOLD_BEATS steps of one run (its beats, its screens
 // swapping) and then the group turns to the next project over TURN runs. The CSS height of the section is built from the same

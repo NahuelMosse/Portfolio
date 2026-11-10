@@ -2,7 +2,7 @@ import { CharacterSheet } from "./character-sheet"
 import { ChapterIllustration } from "./chapter-illustration"
 import { ColdOpenMotion } from "./cold-open-motion"
 import { identity } from "./content"
-import { SoundBars } from "@/features/film/presentation/sound-toggle"
+import { SoundBars } from "@/features/film"
 
 // The cold open: his illustration with the sealed envelope, NAWI over its dark top, the identification sheet,
 // and the door. On a phone the sheet and the door follow the illustration in flow.

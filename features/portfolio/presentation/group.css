@@ -75,7 +75,20 @@
   text-transform: inherit;
   color: var(--bone-70);
   cursor: pointer;
-  transition: color var(--beat-fade) var(--ease-out);
+  transition:
+    color var(--beat-fade) var(--ease-out),
+    transform var(--motion-control) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .group-index button:hover {
+    color: var(--bone);
+  }
+}
+
+.group-index button:active {
+  color: var(--bone);
+  transform: scale(var(--press-scale));
 }
 
 /* narrow: the numerals are what shows, the name is still read by the button */
