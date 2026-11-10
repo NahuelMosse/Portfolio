@@ -2222,9 +2222,13 @@ margin-bottom: 0.2em;
 
   /* one composed screen: the word block, then the two doors at their own height; the free height is shared evenly between the
      word, the doors and the foot, and each button sits right under its text */
+  .offer-scene {
+    --size-word: clamp(3.5rem, 16vw, 4.25rem);
+  }
+
   .offer-scene .scene-copy {
     justify-content: space-evenly;
-    padding-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
   }
 
   .offer-scene .offer {
@@ -2232,24 +2236,40 @@ margin-bottom: 0.2em;
   }
 
   .offer-scene .folder {
-    padding-block: var(--space-3);
+    padding-block: clamp(16px, 4.5svh - 12px, 28px);
     min-height: 0;
   }
 
   .offer-scene .folder > p.folder-tab:first-child {
-    margin-block: 0 var(--space-2);
+    margin-block: 0 var(--space-1);
   }
 
   .offer-scene .folder .door {
+    min-height: 44px;
+    box-sizing: border-box;
+    padding-block: 12px;
     margin-top: var(--space-2);
   }
 
   .offer-scene .folder .proof-link {
-    margin-bottom: var(--space-1);
+    margin-bottom: 0;
   }
 
   .offer-scene .folder h3 {
-    margin-bottom: var(--space-2);
+    font-size: min(5vw, 1.4rem);
+    margin-bottom: var(--space-1);
+    white-space: nowrap;
+  }
+
+  .offer-scene .folder p {
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    margin-block: 0 6px;
+  }
+
+  .offer-scene .folder p.folder-tab {
+    font-size: 0.75rem;
+    margin-block: 0 var(--space-1);
   }
 }
 
