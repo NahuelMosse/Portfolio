@@ -13,7 +13,7 @@ const SEARCH_AGENTS = [
 ]
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nahuelmosse.vercel.app"
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nawi.dev"
   const disallow = ["/api/", "/private/"]
 
   return {

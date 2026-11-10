@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   authors: [{ name: "Nahuel Mosse", url: "https://github.com/NahuelMosse" }],
   creator: "Nahuel Mosse",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://nahuelmosse.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://nawi.dev"),
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",

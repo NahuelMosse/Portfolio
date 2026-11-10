@@ -1,6 +1,6 @@
 import { experience, identity, offer, projects } from "@/features/portfolio/presentation/content"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nahuelmosse.vercel.app"
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nawi.dev"
 
 export const revalidate = 3600
 
