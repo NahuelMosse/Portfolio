@@ -8,13 +8,12 @@ import { SoundToggle } from "./sound-toggle"
 type TopBarProps = {
   chapters: readonly ChapterLink[]
   skipLabel: string
-  hire: { label: string; href: string }
   soundSrc?: string
 }
 
-// The page's one bar: the NAWI mark, the chapter index in typed caps, Let's talk and the sound toggle.
+// The page's one bar: the NAWI mark, the chapter index in typed caps and the sound toggle.
 // On a phone the index and the skip link open from a menu button.
-export function TopBar({ chapters, skipLabel, hire, soundSrc }: TopBarProps) {
+export function TopBar({ chapters, skipLabel, soundSrc }: TopBarProps) {
   const [open, setOpen] = useState(false)
   const menu = useId()
 
@@ -25,7 +24,6 @@ export function TopBar({ chapters, skipLabel, hire, soundSrc }: TopBarProps) {
         <SkipIntro label={skipLabel} />
         <ChapterIndex chapters={chapters} onJump={() => setOpen(false)} />
       </div>
-      <a data-top-hire="" className="film-control top-hire" href={hire.href}>{hire.label}</a>
       <SoundToggle src={soundSrc} />
       <Button
         type="button"

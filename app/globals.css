@@ -248,14 +248,14 @@ img[data-src][data-loaded] {
 }
 
 /* the index, the skip link and the sound toggle are typed caps in the bar, not pills */
-.top-bar .film-control:not(.top-hire, .menu-button) {
+.top-bar .film-control:not(.menu-button) {
   border-color: transparent;
   background: transparent;
   padding: var(--space-2) var(--space-2);
   min-height: 44px;
 }
 
-.top-bar .film-control:not(.top-hire, .menu-button):hover {
+.top-bar .film-control:not(.menu-button):hover {
   background: transparent;
   border-color: transparent;
   color: var(--red);
@@ -431,21 +431,8 @@ html:not([data-sound="idle"]) .cover-cue {
   gap: var(--space-2);
 }
 
-.top-hire {
-  border-color: var(--bone);
-  background: var(--bone);
-  color: var(--ink);
-}
-
-.top-hire::after,
 .door::after {
   content: " →";
-}
-
-.top-hire:hover {
-  background: var(--red);
-  border-color: var(--red);
-  color: var(--bone);
 }
 
 .menu-button,
@@ -1288,8 +1275,7 @@ html:not([data-sound="idle"]) .cover-cue {
     padding: 0 var(--space-3);
   }
 
-  .top-nav,
-  .top-hire {
+  .top-nav {
     display: none;
   }
 
@@ -1379,7 +1365,7 @@ html:not([data-sound="idle"]) .cover-cue {
     flex-direction: column;
   }
 
-  .top-hire {
+  .sound-toggle {
     margin-left: auto;
   }
 
@@ -1987,10 +1973,6 @@ margin-bottom: 0.2em;
 @media (max-width: 1099px) {
   /* the offer's drawing is covered by the doors here: it is not drawn, so it is not fetched; the ink stays behind */
   .scene-art-wide {
-    display: none;
-  }
-
-  .top-hire {
     display: none;
   }
 

@@ -15,7 +15,7 @@ const CHAPTERS = [
   { id: "contact", label: "05 CONTACT", heading: "#contact-title", land: { selector: ".contact-scene", edge: "top", wide: true } },
 ] as const
 
-// One invitation for the top bar and the phone bar: the contact scene.
+// The one invitation, to the contact scene: the corner call to action and the phone bar.
 const TALK = { label: "Let’s talk", href: "#contact" }
 
 export default function Home() {
@@ -27,7 +27,6 @@ export default function Home() {
         chapters={CHAPTERS}
         skipLabel="Skip intro"
         cta={TALK}
-        hire={TALK}
       >
         <HeroPoster />
         <Projects />
