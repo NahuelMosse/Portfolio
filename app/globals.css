@@ -247,7 +247,7 @@ img[data-src][data-loaded] {
     transform var(--motion-control) var(--ease-out);
 }
 
-/* the index, the skip link and the sound toggle are typed caps in the bar, not pills */
+/* the index and the sound toggle are typed caps in the bar, not pills */
 .top-bar .film-control:not(.menu-button) {
   border-color: transparent;
   background: transparent;
@@ -492,14 +492,21 @@ html:not([data-sound="idle"]) .cover-cue {
   transform: scale(var(--press-scale));
 }
 
-.corner-cta {
+/* Back to top, then Let's talk, at the right edge: a hidden control leaves the row, so the other stays on the edge */
+.corner-pair {
   position: fixed;
   right: var(--space-4);
   bottom: var(--space-4);
   z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .corner-cta[data-visible="false"] {
+  position: absolute;
+  right: 0;
+  bottom: 0;
   opacity: 0;
   visibility: hidden;
 }
@@ -1306,7 +1313,7 @@ html:not([data-sound="idle"]) .cover-cue {
     min-width: 48px;
   }
 
-  .corner-cta {
+  .corner-pair {
     display: none;
   }
 
@@ -1314,7 +1321,7 @@ html:not([data-sound="idle"]) .cover-cue {
     position: fixed;
     inset: auto 0 0 0;
     z-index: 45;
-    display: block;
+    display: flex;
     background: var(--ink);
     border-top: 1px solid var(--bone-30);
     transition: transform var(--motion-control) var(--ease-out);
@@ -1324,7 +1331,8 @@ html:not([data-sound="idle"]) .cover-cue {
     transform: translateY(100%);
   }
 
-  .hire-bar a {
+  .hire-bar a:first-child {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1340,6 +1348,34 @@ html:not([data-sound="idle"]) .cover-cue {
 
   .hire-bar a:active {
     transform: scale(var(--press-scale));
+  }
+
+  .hire-bar .bar-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--hire-bar-height);
+    min-width: 48px;
+    min-height: var(--hire-bar-height);
+    border-left: 1px solid var(--bone-30);
+    background: var(--ink);
+    color: var(--bone);
+    font-family: var(--font-label);
+    font-size: 1.5rem;
+    transition: transform var(--motion-control) var(--ease-out);
+  }
+
+  .hire-bar .bar-top:focus-visible {
+    outline: 2px solid var(--bone);
+    outline-offset: -4px;
+  }
+
+  .hire-bar .bar-top[data-visible="false"] {
+    width: 0;
+    min-width: 0;
+    border-left-width: 0;
+    overflow: hidden;
+    visibility: hidden;
   }
 
 }

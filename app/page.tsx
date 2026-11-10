@@ -25,7 +25,6 @@ export default function Home() {
     <>
       <FilmShell
         chapters={CHAPTERS}
-        skipLabel="Skip intro"
         cta={TALK}
       >
         <HeroPoster />
