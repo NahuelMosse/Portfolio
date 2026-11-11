@@ -45,3 +45,6 @@ overflow: node .claude/tools/overflow.mjs
 ## Log
 
 - L1 · cosas que vi, el boton de let's talk es 1 pixel menos alto que el de la flechita, es justo el borde lo que queda mas alto. Ademas hay una detallito, porque let's talk ocupa toda la parte de atras de la barra de busqueda, pero cuando desaparece ya no la ocupa mas, queda negra esa seccion, y el boton de la flecha queda raro con esa extension de let's talk que queda hasta abajo de la barra de busqueda, porque el boton de la flecha nunca lo hace y creo que quedaria raro / el elemento de arriba de offer se ve two doors en dos lineas, cuando entra perfectaemnte en una y pasa lo mismo con buenos aires.
+- L2 · 2026-11-11 · kit: npm ci crawled (registry ~20 min per package, disk copy ~1 file/s under contention with other worktrees); node_modules is a junction to D:/projects/Portfolio-d/node_modules, same lockfile
+- L3 · 2026-11-11 · kit: time-cap counted 14000+ min since card.md's commit on a card committed minutes before
+- L4 · 2026-11-11 · replaces: e2e/mobile-bar-edges.spec.ts and e2e/chapter-note-line.spec.ts (RED 367a0aa) · page.mouse.wheel is unsupported in mobile WebKit · by: e2e/mobile-bar-edges-scroll.spec.ts and e2e/chapter-note-line-scroll.spec.ts, same tags, window.scrollBy steps
