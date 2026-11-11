@@ -41,7 +41,7 @@ function StatusBar() {
 // One face of the device: the screen's still, or the live capture while it is the one on. A phone's face carries its status bar and
 // starts below it; a capture that came with a bar of its own is cropped so the bar is not drawn twice.
 function Face({ piece, on, role, frame }: { piece: Piece; on: boolean; role: Role; frame: ScreenFrame }) {
-  const live = piece.kind === "capture" && on && role === "main"
+  const live = piece.kind === "capture" && on
   const source = piece.kind === "capture" ? piece.poster : piece.src
   const bar = frame === "phone" ? pieceBar(source) : null
   const style = bar ? ({ "--bar": bar.bg, "--trim": bar.trim ?? 0 } as CSSProperties) : undefined
