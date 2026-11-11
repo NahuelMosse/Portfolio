@@ -24,7 +24,7 @@ export type Story = {
 
 // A real piece of work: a screen, a photo or a capture of a live page.
 export type Piece =
-  | { kind: "screen" | "photo"; frame: ScreenFrame; src: string; alt: string; caption: string; whole?: true }
+  | { kind: "screen" | "photo"; frame: ScreenFrame; src: string; alt: string; caption: string }
   | { kind: "capture"; frame: ScreenFrame; video: string; poster: string; alt: string; caption: string }
 
 // What the piece is shown in: an app screen in a phone frame, a web page in a browser frame.
@@ -49,16 +49,6 @@ const screen = (frame: ScreenFrame, src: string, alt: string, caption: string): 
   caption,
 })
 
-// A screen whose frame takes the capture's own ratio, so it is shown whole.
-const wholeScreen = (frame: ScreenFrame, src: string, alt: string, caption: string): Piece => ({
-  kind: "screen",
-  frame,
-  src: `/film/pieces/${src}.webp`,
-  alt,
-  caption,
-  whole: true,
-})
-
 export const projects: readonly Project[] = [
   {
     id: "grit",
@@ -71,10 +61,9 @@ export const projects: readonly Project[] = [
     links: [],
     pieces: [
       screen("phone", "grit-hoy", "Grit's Today screen with the active training session", "Today"),
-      screen("phone", "grit-serie", "Grit's set entry screen, with 80 kg typed in", "Logging a set"),
-      screen("phone", "grit-descanso", "Grit's rest timer counting down between sets", "Rest timer"),
-      screen("phone", "grit-completado", "Grit's summary of the completed session", "Session summary"),
       screen("phone", "grit-ejercicio", "Grit's exercise detail with a 60 kg record", "Exercise detail"),
+      screen("phone", "grit-progreso", "Grit's progress screen with its charts", "Progress"),
+      screen("phone", "grit-completado", "Grit's summary of the completed session", "Workout complete"),
     ],
   },
   {
@@ -87,11 +76,12 @@ export const projects: readonly Project[] = [
     stack: ["Browser game", "itch.io"],
     links: [{ label: "Play Triaje", href: "https://nahuelmosse.itch.io/triaje" }],
     pieces: [
-      screen("browser", "triaje-title", "The title screen of the Triaje game", "Title screen"),
-      screen("browser", "triaje-play-2", "A shift of Triaje in play, with the waiting room open", "In play"),
       screen("browser", "triaje-page", "The Triaje page on itch.io at desktop width", "Triaje on itch.io"),
-      screen("browser", "triaje-scrolled", "The Triaje page on itch.io, further down", "Further down the page"),
-      wholeScreen("phone", "triaje-mobile", "The Triaje page on itch.io on a phone", "On a phone"),
+      screen("browser", "triaje-chart", "A patient's intake chart in Triaje, with triage level 3 picked", "Intake chart"),
+      screen("browser", "triaje-room", "Triaje's waiting room on the first shift, with its drawn patients", "Waiting room"),
+      screen("phone", "triaje-mobile", "The Triaje page on itch.io on a phone", "Triaje on itch.io, on a phone"),
+      screen("phone", "triaje-chart-390", "A patient's intake chart in Triaje on a phone", "Intake chart, on a phone"),
+      screen("phone", "triaje-room-390", "Triaje's waiting room on a phone", "Waiting room, on a phone"),
     ],
   },
   {
@@ -152,7 +142,7 @@ export const projects: readonly Project[] = [
         video: "/film/pieces/cebador-1280.webm",
         poster: "/film/pieces/cebador-1280-poster.webp",
         alt: "The Cebador site scrolling at desktop width",
-        caption: "Live, on desktop",
+        caption: "Live",
       },
       {
         kind: "capture",
@@ -162,10 +152,10 @@ export const projects: readonly Project[] = [
         alt: "The Cebador site scrolling on a phone",
         caption: "Live, on a phone",
       },
-      screen("browser", "cebador-s2-1280", "The Cebador site's origin section at desktop width", "Origin, on desktop"),
-      screen("browser", "cebador-s3-1280", "The Cebador site's reviews section at desktop width", "Reviews, on desktop"),
-      screen("phone", "cebador-s2-390", "The Cebador site's origin section on a phone", "Origin, on a phone"),
-      screen("phone", "cebador-s3-390", "The Cebador site's reviews section on a phone", "Reviews, on a phone"),
+      screen("browser", "cebador-sabor-1280", "The Cebador site's flavor scene, the can over its origin, at desktop width", "Flavor"),
+      screen("browser", "cebador-tienda-1280", "The Cebador site's shop at desktop width", "Shop"),
+      screen("phone", "cebador-sabor-390", "The Cebador site's flavor scene on a phone", "Flavor, on a phone"),
+      screen("phone", "cebador-tienda-390", "The Cebador site's shop on a phone", "Shop, on a phone"),
     ],
   },
   {
@@ -183,10 +173,10 @@ export const projects: readonly Project[] = [
     pieces: [
       screen("browser", "sonria-hero-1440", "The Sonría site's first screen at desktop width, with the urgency card", "Home"),
       screen("browser", "sonria-tratamientos-1440", "The Sonría site's treatments with indicative prices at desktop width", "Treatments"),
-      screen("browser", "sonria-turno-1440", "The Sonría site's four-step appointment at desktop width", "Appointment"),
+      screen("browser", "sonria-equipo-1440", "The Sonría site's team section at desktop width, with the office", "Team"),
       screen("phone", "sonria-hero-390", "The Sonría site's first screen on a phone, with the urgency by WhatsApp", "Home, on a phone"),
       screen("phone", "sonria-tratamientos-390", "The Sonría site's treatments on a phone", "Treatments, on a phone"),
-      screen("phone", "sonria-turno-390", "The Sonría site's appointment on a phone", "Appointment, on a phone"),
+      screen("phone", "sonria-equipo-390", "The Sonría site's team section on a phone", "Team, on a phone"),
     ],
   },
   {
@@ -204,10 +194,10 @@ export const projects: readonly Project[] = [
     pieces: [
       screen("browser", "miga-hero-1440", "The Miga site's first screen at desktop width, over a sourdough loaf", "Home"),
       screen("browser", "miga-lista-1440", "The Miga site's list of the day's bread with prices at desktop width", "Today's bread"),
-      screen("browser", "miga-pedir-1440", "The Miga site's order-to-pickup steps at desktop width", "How to order"),
+      screen("browser", "miga-local-1440", "The Miga site's shop address and hours at desktop width", "The shop"),
       screen("phone", "miga-hero-390", "The Miga site's first screen on a phone", "Home, on a phone"),
       screen("phone", "miga-lista-390", "The Miga site's list of the day's bread on a phone", "Today's bread, on a phone"),
-      screen("phone", "miga-pedir-390", "The Miga site's order-to-pickup steps on a phone", "How to order, on a phone"),
+      screen("phone", "miga-local-390", "The Miga site's shop address on a phone", "The shop, on a phone"),
     ],
   },
   {
@@ -220,9 +210,9 @@ export const projects: readonly Project[] = [
     stack: ["Flutter", "REST API"],
     links: [{ label: "Repository", href: "https://github.com/NahuelMosse/ClubNahuelMosse" }],
     pieces: [
-      screen("phone", "club-login", "ClubNahuelMosse login screen", "Login"),
+      screen("phone", "club-inicio", "ClubNahuelMosse home screen with the day's bookings", "Home"),
       screen("phone", "club-sedes", "ClubNahuelMosse venue list", "Venues"),
-      screen("phone", "club-horarios", "ClubNahuelMosse court schedule", "Schedule"),
+      screen("phone", "club-cancha", "ClubNahuelMosse court page with its photo", "Court"),
       screen("phone", "club-listo", "ClubNahuelMosse reservation confirmed", "Booked"),
     ],
   },

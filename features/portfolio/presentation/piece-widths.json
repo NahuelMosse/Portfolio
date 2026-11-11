@@ -7,38 +7,39 @@
  "cebador-390-poster": [
   360
  ],
- "cebador-s2-1280": [
+ "cebador-sabor-1280": [
   480,
   800,
   1200
  ],
- "cebador-s2-390": [
-  390
+ "cebador-sabor-390": [
+  480,
+  780
  ],
- "cebador-s3-1280": [
+ "cebador-tienda-1280": [
   480,
   800,
   1200
  ],
- "cebador-s3-390": [
-  390
+ "cebador-tienda-390": [
+  480,
+  780
  ],
- "club-horarios": [
-  360
+ "club-cancha": [
+  480,
+  780
+ ],
+ "club-inicio": [
+  480,
+  780
  ],
  "club-listo": [
-  360
- ],
- "club-login": [
   360
  ],
  "club-sedes": [
   360
  ],
  "grit-completado": [
-  390
- ],
- "grit-descanso": [
   390
  ],
  "grit-ejercicio": [
@@ -55,12 +56,12 @@
  "grit-live": [
   390
  ],
+ "grit-progreso": [
+  390
+ ],
  "grit-progress": [
   480,
   490
- ],
- "grit-serie": [
-  390
  ],
  "grit-today": [
   390
@@ -108,12 +109,21 @@
   480,
   780
  ],
- "miga-pedir-1440": [
+ "miga-local-1440": [
   480,
   800,
   1200
  ],
- "miga-pedir-390": [
+ "miga-local-390": [
+  480,
+  780
+ ],
+ "sonria-equipo-1440": [
+  480,
+  800,
+  1200
+ ],
+ "sonria-equipo-390": [
   480,
   780
  ],
@@ -135,14 +145,14 @@
   480,
   780
  ],
- "sonria-turno-1440": [
+ "triaje-chart-390": [
+  480,
+  780
+ ],
+ "triaje-chart": [
   480,
   800,
   1200
- ],
- "sonria-turno-390": [
-  480,
-  780
  ],
  "triaje-mobile": [
   480,
@@ -153,17 +163,11 @@
   800,
   1200
  ],
- "triaje-play-2": [
+ "triaje-room-390": [
   480,
-  800,
-  1200
+  780
  ],
- "triaje-scrolled": [
-  480,
-  800,
-  1200
- ],
- "triaje-title": [
+ "triaje-room": [
   480,
   800,
   1200
