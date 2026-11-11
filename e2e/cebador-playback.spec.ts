@@ -1,5 +1,8 @@
 import { test, expect, type Page } from "@playwright/test"
 
+// Headless Chromium rasterizes in software unless told otherwise, which caps the page below what a real browser presents.
+test.use({ launchOptions: { args: ["--enable-gpu-rasterization", "--ignore-gpu-blocklist"] } })
+
 const VIEWPORTS = [
   { width: 1440, height: 900 },
   { width: 390, height: 844 },
@@ -101,7 +104,15 @@ test("the phone follows the main capture's clock within 0.2 s by its speed and n
         let maxDrift = 0
         let loops = 0
         let previous = lead.currentTime
-        own.addEventListener("seeking", () => seeks++)
+        // the browser itself fires a seeking when a looping video wraps from its end to its start: that one is not a correction
+        let before = own.currentTime
+        own.addEventListener("timeupdate", () => {
+          if (own.currentTime > 1) before = own.currentTime
+        })
+        own.addEventListener("seeking", () => {
+          const wrap = own.currentTime < 1 && before > own.duration - 1.5
+          if (!wrap) seeks++
+        })
         const start = performance.now()
         const timer = window.setInterval(() => {
           if (lead.currentTime < previous - 1) loops++
