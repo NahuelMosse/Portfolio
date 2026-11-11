@@ -733,11 +733,9 @@ html:not([data-sound="idle"]) .cover-cue {
   text-transform: uppercase;
 }
 
-.chapter-detail span {
-  white-space: nowrap;
-}
-
+/* its width makes the empty rule count in the line's fit-content width, so the note wraps only when it does not fit */
 .chapter-detail i {
+  width: var(--space-6);
   flex: 0 0 var(--space-6);
   border-top: var(--rule) solid var(--bone-70);
 }
