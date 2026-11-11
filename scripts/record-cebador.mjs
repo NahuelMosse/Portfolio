@@ -17,9 +17,9 @@ const FPS = 30
 const SECONDS = 10.5
 const FRAMES = FPS * SECONDS
 const LOADER_WAIT_MS = 8000
-const MAX_BYTES = 1.5 * 1024 * 1024
+const MAX_BYTES = 1_500_000
 // crf steps tried in order until the file fits the budget
-const CRF_STEPS = [30, 34, 38, 42, 46]
+const CRF_STEPS = [30, 31, 32, 33, 34, 36, 38, 42, 46]
 const OUT = join(process.cwd(), "public", "film", "pieces")
 const TARGETS = [
   { name: "cebador-1280", viewport: { width: 1280, height: 720 }, encoded: { width: 960, height: 540 }, key: "1280" },
