@@ -38,7 +38,7 @@ not_read: none
 suite: npx playwright test e2e/mobile-bar-edges-scroll.spec.ts e2e/chapter-note-line-scroll.spec.ts e2e/mobile-viewport.spec.ts e2e/chapter-numerals.spec.ts e2e/wide-screens-offer-detail-clear.spec.ts e2e/wide-screens-clear.spec.ts
 lint: npx eslint .
 types: npx tsc --noEmit
-app: npx next dev --webpack
+app: npx next build --webpack && npx next start
 overflow: node .claude/tools/overflow.mjs
 ```
 
@@ -49,3 +49,4 @@ overflow: node .claude/tools/overflow.mjs
 - L3 · 2026-11-11 · kit: time-cap counted 14000+ min since card.md's commit on a card committed minutes before
 - L4 · 2026-11-11 · replaces: e2e/mobile-bar-edges.spec.ts and e2e/chapter-note-line.spec.ts (RED 367a0aa) · page.mouse.wheel is unsupported in mobile WebKit · by: e2e/mobile-bar-edges-scroll.spec.ts and e2e/chapter-note-line-scroll.spec.ts, same tags, window.scrollBy steps
 - L5 · 2026-11-11 · evidence: e2e/phone-390, phone-layout, phone-glance, lets-talk-doors and wide-screens-offer-detail already fail on main (nawi.dev, 13 failed / 29 passed); on this branch the same set gives 11 failed / 37 passed, every failure among main's and none new; those files leave the gate's suite line, which keeps the ones green on main
+- L6 · 2026-11-11 · evidence: under next dev the walking tests lose their page mid-run ("Execution context was destroyed" in mobile-bar-edges-scroll, a 1249 px scroll back in mobile-viewport @PF-3-ASM-07, which PF-3 L14 already found unstable on main); the gate's app is the production build (next build --webpack, next start), as nawi.dev serves it
