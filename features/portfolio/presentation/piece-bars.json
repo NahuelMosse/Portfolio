@@ -34,7 +34,7 @@
   "trim": 0.04
  },
  "cebador-390-poster": {
-  "bg": "#320f16",
+  "bg": "#320e16",
   "tone": "light"
  },
  "cebador-sabor-390": {
@@ -70,7 +70,7 @@
   "tone": "dark"
  },
  "triaje-mobile": {
-  "bg": "#0e141b",
+  "bg": "#090809",
   "tone": "light"
  },
  "triaje-chart-390": {

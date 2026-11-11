@@ -79,7 +79,7 @@ export const projects: readonly Project[] = [
       screen("browser", "triaje-page", "The Triaje page on itch.io at desktop width", "Triaje on itch.io"),
       screen("browser", "triaje-chart", "A patient's intake chart in Triaje, with triage level 3 picked", "Intake chart"),
       screen("browser", "triaje-room", "Triaje's waiting room on the first shift, with its drawn patients", "Waiting room"),
-      screen("phone", "triaje-mobile", "The Triaje page on itch.io on a phone", "Triaje on itch.io, on a phone"),
+      screen("phone", "triaje-mobile", "Triaje's first screen on a phone: the shift map with its Start the shift button", "Triaje on itch.io, on a phone"),
       screen("phone", "triaje-chart-390", "A patient's intake chart in Triaje on a phone", "Intake chart, on a phone"),
       screen("phone", "triaje-room-390", "Triaje's waiting room on a phone", "Waiting room, on a phone"),
     ],

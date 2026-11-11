@@ -37,6 +37,8 @@ suite: npx playwright test e2e/project-turn-measured.spec.ts e2e/project-turn-sm
 lint: npx eslint .
 types: npx tsc --noEmit
 app: npx next build && npx next start
+public-allow: specs/PF-6-cebador-video-fps/sessions.md [path] · already in main; the merge of main into this branch carries it unchanged
+public-allow: specs/PF-7-triaje-phone-first-screen/sessions.md [path] · already in main; the merge of main into this branch carries it unchanged
 ```
 
 ## Log

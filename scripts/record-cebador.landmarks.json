@@ -1,0 +1,54 @@
+{
+  "390": [
+    {
+      "section": "hero",
+      "second": 0
+    },
+    {
+      "section": "flavors",
+      "second": 1.5
+    },
+    {
+      "section": "origin",
+      "second": 3.5
+    },
+    {
+      "section": "ingredients",
+      "second": 5.5
+    },
+    {
+      "section": "reviews",
+      "second": 7.5
+    },
+    {
+      "section": "where-to-buy",
+      "second": 9
+    }
+  ],
+  "1280": [
+    {
+      "section": "hero",
+      "second": 0
+    },
+    {
+      "section": "flavors",
+      "second": 1.5
+    },
+    {
+      "section": "origin",
+      "second": 3.5
+    },
+    {
+      "section": "ingredients",
+      "second": 5.5
+    },
+    {
+      "section": "reviews",
+      "second": 7.5
+    },
+    {
+      "section": "where-to-buy",
+      "second": 9
+    }
+  ]
+}
