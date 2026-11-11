@@ -94,10 +94,8 @@
 /* narrow: the numerals are what shows, the name is still read by the button */
 .group-index span {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
   clip-path: inset(50%);
+  pointer-events: none;
   white-space: nowrap;
 }
 
@@ -140,11 +138,9 @@
 
 .group-card .show-copy h4 {
   position: absolute;
-  width: 1px;
-  height: 1px;
   margin: 0;
-  overflow: hidden;
   clip-path: inset(50%);
+  pointer-events: none;
   white-space: nowrap;
 }
 
@@ -175,10 +171,8 @@
 
   .group-index span {
     position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
     clip-path: none;
+    pointer-events: auto;
   }
 }
 
@@ -209,7 +203,7 @@
     position: sticky;
     top: 0;
     height: 100svh;
-    overflow: clip;
+    contain: paint;
     isolation: isolate;
     background: var(--ink);
   }

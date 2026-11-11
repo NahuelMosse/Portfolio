@@ -131,10 +131,8 @@
 /* the stamp shows the confirmation; the status line only speaks it to screen readers */
 .band-status {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
   clip-path: inset(50%);
+  pointer-events: none;
   white-space: nowrap;
 }
 

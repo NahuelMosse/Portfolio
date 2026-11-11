@@ -7,7 +7,7 @@ export const identity = {
   role: "Technical Lead · Technical Project Manager",
   base: "Buenos Aires",
   knownFor: "designing, building and leading digital products",
-  email: "nahuelgamail@gmail.com",
+  email: "contact@nahuelmosse.com",
   github: "https://github.com/NahuelMosse",
   linkedin: "https://linkedin.com/in/nahuelmosse",
 } as const

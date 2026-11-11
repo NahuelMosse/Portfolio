@@ -617,6 +617,7 @@ html:not([data-sound="idle"]) .cover-cue {
   position: absolute;
   inset: 0;
   z-index: -1;
+  overflow-x: clip;
   mask-image: linear-gradient(to bottom, transparent, var(--ink-black) 16%, var(--ink-black) 84%, transparent), linear-gradient(to right, transparent, var(--ink-black) 7%, var(--ink-black) 93%, transparent);
   mask-composite: intersect;
 }
@@ -676,10 +677,10 @@ html:not([data-sound="idle"]) .cover-cue {
   font-size: var(--size-word-long-phone);
 }
 
-/* the letters rise out of a mask; its padding keeps descenders unclipped without moving the word */
+/* the letters rise out of a mask that cuts only below the word; its padding keeps descenders unclipped without moving the word */
 .chapter-letters {
   display: inline-block;
-  overflow: hidden;
+  clip-path: inset(-1em -0.5em 0);
   vertical-align: top;
   padding-bottom: 0.25em;
   margin-bottom: -0.25em;
@@ -698,7 +699,6 @@ html:not([data-sound="idle"]) .cover-cue {
 @media (min-width: 701px) {
   .chapter-word {
     font-size: var(--size-word);
-    white-space: nowrap;
   }
 
   .chapter-word[data-long] {
@@ -837,7 +837,7 @@ html:not([data-sound="idle"]) .cover-cue {
   font-size: var(--size-nawi);
   line-height: var(--poster-leading);
   letter-spacing: -0.02em;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
   color: var(--bone);
   /* screen keeps the letters bone over shadow and lifts to white in the lamp light: no inverted hue */
   mix-blend-mode: screen;
@@ -915,6 +915,7 @@ html:not([data-sound="idle"]) .cover-cue {
   font-size: var(--text-small);
   letter-spacing: var(--label-tracking-fine);
   text-transform: uppercase;
+  overflow-wrap: anywhere;
   opacity: 0.7;
 }
 
@@ -1242,11 +1243,13 @@ html:not([data-sound="idle"]) .cover-cue {
   text-transform: uppercase;
   text-align: center;
   text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 
 /* the roll runs edge to edge under the credits sheet */
 .credits-roll {
   margin-top: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
 }
 
 /* fine film grain over the print, drawn by the browser */
@@ -1263,6 +1266,7 @@ html:not([data-sound="idle"]) .cover-cue {
 
 .roll-band {
   position: relative;
+  min-width: 0;
   padding-block: var(--space-3);
 }
 
@@ -1852,7 +1856,6 @@ html:not([data-sound="idle"]) .cover-cue {
   .contact-scene .chapter-word[data-chapter-word] {
     margin-left: calc(var(--gutter-left) * -1 + var(--space-1));
     font-size: 16.5vw;
-    white-space: nowrap;
   }
 }
 
@@ -1934,15 +1937,14 @@ margin-bottom: 0.2em;
     margin-bottom: 0;
   }
 
-  /* the ending is exactly one screen: the top bar's strip on top, the content spread over the rest, the © line last */
+  /* the ending fills one screen and grows only when its text needs more: the top bar's strip on top, the content spread over the rest, the © line last */
   .contact-scene[data-has-art] {
-    height: 100svh;
     min-height: 100svh;
   }
 
   .contact-scene[data-has-art] .scene-copy {
     box-sizing: border-box;
-    height: 100%;
+    min-height: 100svh;
     gap: var(--space-4);
     /* the 1px keeps the © line inside the screen when the page height has a fraction */
     padding-block: calc(var(--top-bar-height) + var(--space-3)) 1px;
@@ -2226,7 +2228,6 @@ margin-bottom: 0.2em;
 
   .offer-scene .chapter-word {
     font-size: var(--size-word);
-    white-space: nowrap;
   }
 
   .offer-scene .offer {
@@ -2275,15 +2276,14 @@ margin-bottom: 0.2em;
     padding-bottom: calc(var(--space-5) + var(--hire-bar-height));
   }
 
-  /* the ending is exactly one screen, from its top: the word, the address, the networks, the roll and the © line share 100svh */
+  /* the ending fills one screen from its top and grows only when its text needs more: the word, the address, the networks, the roll and the © line share it */
   .contact-scene[data-has-art] {
-    height: 100svh;
     min-height: 100svh;
   }
 
   .contact-scene[data-has-art] .scene-copy {
     box-sizing: border-box;
-    height: 100%;
+    min-height: 100svh;
     justify-content: flex-start;
     gap: var(--space-2);
     padding-block: calc(var(--top-bar-height) + var(--space-1)) 1px;
@@ -2422,7 +2422,6 @@ margin-bottom: 0.2em;
   .end-of-file {
     padding-bottom: 0;
     text-align: left;
-    white-space: nowrap;
     font-size: min(var(--text-small), 3vw);
   }
 }
@@ -2570,9 +2569,12 @@ margin-bottom: 0.2em;
 
   /* the bottom bar takes the last 56px: the ending is one screen above it */
   .contact-scene[data-has-art] {
-    height: calc(100svh - var(--hire-bar-height));
     min-height: calc(100svh - var(--hire-bar-height));
     margin-bottom: var(--hire-bar-height);
+  }
+
+  .contact-scene[data-has-art] .scene-copy {
+    min-height: calc(100svh - var(--hire-bar-height));
   }
 
   .offer-scene .offer {
@@ -2689,4 +2691,21 @@ margin-bottom: 0.2em;
     translate: none;
   }
 
+}
+
+/* visually hidden yet read by screen readers: clipped to nothing at its own size, so no box holds text it cuts off */
+.sr-only {
+  width: auto;
+  height: auto;
+  inset: auto 0 0 0;
+  white-space: normal;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  clip-path: inset(50%);
+  pointer-events: none;
+}
+
+.sr-only * {
+  white-space: inherit;
 }

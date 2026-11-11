@@ -76,7 +76,7 @@
   position: sticky;
   top: 0;
   height: 100svh;
-  overflow: clip;
+  contain: paint;
   isolation: isolate;
   background: var(--field);
   color: var(--on);
@@ -432,7 +432,7 @@
 
 .show-glass {
   position: relative;
-  overflow: hidden;
+  contain: paint;
   border-radius: calc(var(--radius-phone) - var(--device-bezel));
   background: var(--ink);
 }
@@ -467,7 +467,7 @@
 .show-rig[data-device="phone"] .show-screen {
   box-sizing: border-box;
   padding-top: var(--status-h);
-  overflow: hidden;
+  contain: paint;
   background: var(--bar);
 }
 
@@ -615,10 +615,8 @@
 /* the poster word is the project's name; its heading is for the page's outline and the readers that use it */
 .show .show-copy h3 {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
   clip-path: inset(50%);
+  pointer-events: none;
   white-space: nowrap;
 }
 
