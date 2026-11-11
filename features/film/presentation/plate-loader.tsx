@@ -159,22 +159,24 @@ export function PlateLoader() {
     })
     added.observe(document.body, { childList: true, subtree: true })
 
-    // the queue opens when the title gives way, once the cover has told how fast the line is
+    // The queue opens when the title gives way and the page has loaded, once the cover has told how fast the line is. Waiting for
+    // the load event keeps the queue from holding it: an image started before it fires delays it, and the tab would show the page
+    // as still loading for as long as the queue runs.
     const start = () => {
+      if (open || html.classList.contains("is-preloading") || document.readyState !== "complete") return
       open = true
+      title.disconnect()
       cap = lineCap(connection)
       pump()
     }
-    const title = new MutationObserver(() => {
-      if (html.classList.contains("is-preloading")) return
-      title.disconnect()
-      start()
-    })
-    if (html.classList.contains("is-preloading")) title.observe(html, { attributes: true, attributeFilter: ["class"] })
-    else start()
+    const title = new MutationObserver(start)
+    title.observe(html, { attributes: true, attributeFilter: ["class"] })
+    addEventListener("load", start, { once: true })
+    start()
 
     return () => {
       removeEventListener("scroll", roam)
+      removeEventListener("load", start)
       watcher.disconnect()
       added.disconnect()
       title.disconnect()

@@ -1,4 +1,4 @@
-import { deferredPlate, plateSrcSet, sceneAsset } from "@/features/film"
+import { PlateSources, deferredPlate, plateSrcSet, sceneAsset } from "@/features/film"
 
 const WIDE = "(min-width: 1280px)"
 
@@ -12,7 +12,7 @@ function files(prefix: string, name: string) {
 }
 
 // The backdrop of a project section: one illustration for a wide screen and one for a phone, a texture of the product's world
-// under everything. A missing file is an error, not a section without its backdrop.
+// under everything, served as WebP. A missing file is an error, not a section without its backdrop.
 export function ProjectBackdrop({ name }: BackdropProps) {
   const { wide, tall } = files("bg", name)
   return (
@@ -34,7 +34,8 @@ export function ProjectPlate({ name }: BackdropProps) {
   if (!sceneAsset(wide, "webp") || !sceneAsset(tall, "webp")) return null
   return (
     <picture data-plate={name} data-portrait={portrait ? "" : undefined} className="plate">
-      <source media={WIDE} data-srcset={plateSrcSet(wide)} sizes="100vw" />
+      <PlateSources id={wide} media={WIDE} sizes="100vw" />
+      <PlateSources id={tall} sizes="100vw" />
       <img {...deferredPlate(tall, "100vw")} alt="" decoding="async" />
     </picture>
   )

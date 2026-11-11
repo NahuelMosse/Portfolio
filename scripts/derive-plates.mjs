@@ -1,6 +1,7 @@
 // The film's images as served. Every webp in public/film (and public/film/pieces) gets copies at the widths a screen asks for,
 // in public/film/r/<width>/ under the same file name, plus a tiny blurred proof the server pages inline as the placeholder,
-// listed in features/film/presentation/plates.json (the pieces' widths in piece-widths.json). Only the cover also gets AVIF: it is the one image on the critical path.
+// listed in features/film/presentation/plates.json (the pieces' widths in piece-widths.json). Every plate also gets AVIF copies:
+// they keep the halftone at about half the bytes of the WebP, which stays as the fallback.
 // A tall plate is held near 70 KB at 480 px. The sources are never touched; a copy newer than its
 // source is kept, so a rerun only does what changed. Run: node scripts/derive-plates.mjs
 import { createHash } from "node:crypto"
@@ -20,7 +21,8 @@ const PIECE = [480, 800, 1200]
 const WEBP_QUALITY = 68
 const TALL_BUDGET = 70 * 1024
 const AVIF = { quality: 42, effort: 4 }
-const AVIF_IDS = new Set(["ill-cover-16x9", "ill-cover-9x16"])
+// the project backdrops stay WebP only: their spec names the file each width shows
+const hasAvif = (id) => !id.startsWith("pieces/") && !id.startsWith("bg-")
 
 const sources = [
   ...readdirSync(ROOT).filter((f) => f.endsWith(".webp")).map((f) => f.slice(0, -5)),
@@ -67,7 +69,7 @@ for (const id of sources) {
       await write(webp, await (blur ? image.blur(blur) : image).webp({ quality, effort: 6 }).toBuffer())
     }
     const avif = join(OUT, String(w), `${id}.avif`)
-    if (AVIF_IDS.has(id) && !fresh(avif, source)) await write(avif, await sharp(source).resize({ width: w }).avif(AVIF).toBuffer())
+    if (hasAvif(id) && !fresh(avif, source)) await write(avif, await sharp(source).resize({ width: w }).avif(AVIF).toBuffer())
   }
   if (id.startsWith("pieces/")) {
     pieces[id.slice(7)] = widths
@@ -76,7 +78,7 @@ for (const id of sources) {
   // the copies keep the source's file name, so the address carries a fingerprint of its pixels: a redrawn plate is never served from a cache
   const v = createHash("sha1").update(readFileSync(source)).digest("hex").slice(0, 8)
   const entry = { width, height, widths, v }
-  if (AVIF_IDS.has(id)) entry.avif = true
+  if (hasAvif(id)) entry.avif = true
   entry.lqip = `data:image/webp;base64,${(await sharp(source).resize({ width: 16 }).webp({ quality: 40 }).toBuffer()).toString("base64")}`
   manifest[id] = entry
 }

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { deferredPlate, plateSrcSet, sceneAsset } from "@/features/film"
+import { PlateSources, deferredPlate, plateSrcSet, sceneAsset } from "@/features/film"
 
 type ChapterIllustrationProps = {
   asset: string
@@ -49,7 +49,8 @@ export function ChapterIllustration({ asset, tallAsset, fittedAsset, eager, wide
             </picture>
           ) : (
             <picture>
-              {tallId && <source media={PHONE} data-srcset={plateSrcSet(tallId)} sizes={sizes} />}
+              {tallId && <PlateSources id={tallId} media={PHONE} sizes={sizes} />}
+              <PlateSources id={wideId} sizes={sizes} />
               <img {...deferredPlate(wideId, sizes)} alt="" decoding="async" />
             </picture>
           )}

@@ -153,19 +153,29 @@
   position: absolute;
   inset: 0;
   z-index: 3;
+  overflow: hidden;
   pointer-events: none;
-  background:
-    radial-gradient(
-      ellipse 80% 55% at calc(8% + var(--p) * 40%) -8%,
-      var(--bone-30),
-      transparent 70%
-    ),
-    linear-gradient(
-      to bottom,
-      transparent 55%,
-      color-mix(in srgb, var(--shade-deep) 55%, transparent)
-    );
+  background: linear-gradient(
+    to bottom,
+    transparent 55%,
+    color-mix(in srgb, var(--shade-deep) 55%, transparent)
+  );
   mix-blend-mode: soft-light;
+}
+
+/* The cone is painted once on a sheet twice the stage's width, from half a stage to its left, and slides by transform: a gradient
+   whose position follows the scroll is repainted, and re-blended, over the whole stage on every frame. On the sheet the cone's
+   80% of the stage is 40%, its 8% start is 29%, and the 40% of the stage it slides is 20%. */
+.show-light::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -50%;
+  width: 200%;
+  background: radial-gradient(ellipse 40% 55% at 29% -8%, var(--bone-30), transparent 70%);
+  transform: translate3d(calc(var(--p) * 20%), 0, 0);
+  will-change: transform;
 }
 
 /* ---- the strip: the kind of chapter and a tab for each project in it ---- */

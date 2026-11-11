@@ -73,6 +73,10 @@ const IDLE_MS = 140
 // A group is a tall section with one pinned stage. The track and the hold go to the section as the CSS variables --track and --hold,
 // so every layer moves with the scroll without a render per frame; only the project and the beat on show are state.
 // A section rendered on the server has no ref to hand over: it passes the selector of its host and the beats it holds for.
+// The scroll never reads layout: the section's place on the page is measured when something resizes, and each frame only does the
+// arithmetic from the scroll position, read in the scroll event before any group writes. A variable is written only when its value
+// changes, so a group out of view costs nothing: reading a box, or scrollY itself, after another group wrote its variables would
+// force a full style pass per group per frame.
 export function useGroupTrack(count: number, { beats = BEATS_PER_PROJECT, host }: { beats?: number; host?: string } = {}) {
   const scene = useRef<HTMLElement>(null)
   const [shown, setShown] = useState({ project: 0, beat: 0 })
@@ -81,20 +85,40 @@ export function useGroupTrack(count: number, { beats = BEATS_PER_PROJECT, host }
     const node = scene.current ?? (host ? document.querySelector<HTMLElement>(host) : null)
     if (!node) return
     let frame = 0
+    let top = 0
+    let run = 0
+    let track = ""
+    let held = ""
+    let y = window.scrollY
 
     const measure = () => {
       frame = 0
-      const rect = node.getBoundingClientRect()
-      const run = rect.height - window.innerHeight
-      const progress = run > 0 ? -rect.top / run : 0
+      const progress = run > 0 ? (y - top) / run : 0
       const moment = momentAt(progress, count, beats)
-      node.style.setProperty("--track", moment.track.toFixed(4))
-      node.style.setProperty("--hold", moment.hold.toFixed(4))
+      const nextTrack = moment.track.toFixed(4)
+      const nextHeld = moment.hold.toFixed(4)
+      if (nextTrack !== track) node.style.setProperty("--track", (track = nextTrack))
+      if (nextHeld !== held) node.style.setProperty("--hold", (held = nextHeld))
       setShown((last) => (last.project === moment.project && last.beat === moment.beat ? last : { project: moment.project, beat: moment.beat }))
     }
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(measure)
     }
+    const scrolled = () => {
+      y = window.scrollY
+      schedule()
+    }
+    const place = () => {
+      const rect = node.getBoundingClientRect()
+      y = window.scrollY
+      top = rect.top + y
+      run = rect.height - window.innerHeight
+      schedule()
+    }
+    // the section moves when anything above it changes height, and its run when it or the window does
+    const placer = new ResizeObserver(place)
+    placer.observe(node)
+    placer.observe(document.body)
 
     // the device stands in what the caption leaves: each card gets the height of its own caption (the tallest of its beats)
     const sizer = new ResizeObserver((entries) => {
@@ -131,22 +155,24 @@ export function useGroupTrack(count: number, { beats = BEATS_PER_PROJECT, host }
       rest()
     }
 
+    place()
     measure()
-    window.addEventListener("scroll", schedule, { passive: true })
+    window.addEventListener("scroll", scrolled, { passive: true })
     window.addEventListener("scroll", rest, { passive: true })
-    window.addEventListener("resize", schedule)
+    window.addEventListener("resize", place)
     window.addEventListener("touchstart", press, { passive: true })
     window.addEventListener("touchend", release, { passive: true })
     window.addEventListener("touchcancel", release, { passive: true })
     return () => {
-      window.removeEventListener("scroll", schedule)
+      window.removeEventListener("scroll", scrolled)
       window.removeEventListener("scroll", rest)
-      window.removeEventListener("resize", schedule)
+      window.removeEventListener("resize", place)
       window.removeEventListener("touchstart", press)
       window.removeEventListener("touchend", release)
       window.removeEventListener("touchcancel", release)
       window.clearTimeout(idle)
       sizer.disconnect()
+      placer.disconnect()
       if (frame) cancelAnimationFrame(frame)
     }
   }, [count, beats, host])

@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react"
-import { DEFERRED_BLANK, deferredPlate, plateSrcSet, sceneAsset } from "@/features/film"
+import { DEFERRED_BLANK, PlateSources, deferredPlate, sceneAsset } from "@/features/film"
 import { experience } from "./content"
 import { ChapterWord } from "./chapter-word"
 import { BEATS_PER_EMPLOYER, ExperienceMotion } from "./experience-motion"
@@ -81,7 +81,8 @@ export function Experience() {
                     <div className="show-art">
                       {drawn && (
                         <picture data-plate={employer.id} className="plate">
-                          <source media="(min-width: 1280px)" data-srcset={plateSrcSet(wide)} sizes="100vw" />
+                          <PlateSources id={wide} media="(min-width: 1280px)" sizes="100vw" />
+                          <PlateSources id={tall} sizes="100vw" />
                           <img {...deferredPlate(tall, "100vw")} alt="" decoding="async" />
                         </picture>
                       )}
