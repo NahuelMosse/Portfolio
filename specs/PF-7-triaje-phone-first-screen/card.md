@@ -29,7 +29,7 @@ not_read: none
 ## Gate
 
 ```
-suite: npx playwright test e2e/triaje-phone-first.spec.ts e2e/best-screens.spec.ts e2e/best-screens-walk.spec.ts
+suite: npx playwright test e2e/triaje-phone-first.spec.ts e2e/best-screens.spec.ts e2e/best-screens-walk.spec.ts --grep-invert "best-screens.spec.ts.*(walking each project chapter|equal numbers)"
 lint: npx eslint .
 types: npx tsc --noEmit
 app: npx next start
@@ -38,3 +38,6 @@ app: npx next start
 ## Log
 
 - L1 · "otra cosa para cambiar, triaje tiene una version mobile, pero en el telefono se muestra la version de escritorio en la primer imagen"
+- L2 · 2026-11-11 · evidence · captured live: the game at 390x844 on a fresh visit shows the shift map with Start the shift (scripts/capture-triaje-mobile.mjs); itch.io's own page at 390x844 shows the desktop cover banner cropped, the picture triaje-mobile carried until now
+- L3 · 2026-11-11 · gate · the suite line leaves out the two tests of e2e/best-screens.spec.ts that PF-2 L2 and L3 replaced by e2e/best-screens-walk.spec.ts (they read the Cebador capture from the blank video poster and fail on Cebador's beat 0, not on Triaje); the walk versions run
+- L4 · 2026-11-11 · kit: next build with Turbopack refuses node_modules as a junction (npm ci hangs on this machine); the app is built with next build --webpack and served on the reserved port
