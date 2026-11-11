@@ -139,10 +139,34 @@ export function PlateLoader() {
       },
       { rootMargin: AHEAD },
     )
+    // A project of a group waits clipped off the pinned stage until its turn, so the image's own box never meets the view: it is
+    // fetched when its group is within two screens and the project is the one on show or next to it.
+    const pinsNear = new Set<Element>()
+    const pinWatcher = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) pinsNear.add(entry.target)
+          else pinsNear.delete(entry.target)
+        }
+        promoteCards()
+      },
+      { rootMargin: AHEAD },
+    )
+    document.querySelectorAll(".group-pin").forEach((pin) => pinWatcher.observe(pin))
+    const promoteCards = () => {
+      for (const node of waiting) {
+        const card = node.closest(".group-card")
+        if (!card) continue
+        const pin = card.closest(".group-pin")
+        if (card.hasAttribute("data-reachable") && pin && pinsNear.has(pin)) near.add(node)
+        else near.delete(node)
+      }
+      pump()
+    }
     const join = (node: Deferred) => {
       if (node.hasAttribute("data-loaded") || waiting.has(node)) return
       waiting.add(node)
-      watcher.observe(node)
+      if (!node.closest(".group-card")) watcher.observe(node)
     }
     const watch = (root: ParentNode) => root.querySelectorAll<Deferred>(DEFERRED_SELECTOR).forEach(join)
     watch(document)
@@ -156,8 +180,9 @@ export function PlateLoader() {
           watch(node)
         })
       }
+      promoteCards()
     })
-    added.observe(document.body, { childList: true, subtree: true })
+    added.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-reachable"] })
 
     // The queue opens when the title gives way and the page has loaded, once the cover has told how fast the line is. Waiting for
     // the load event keeps the queue from holding it: an image started before it fires delays it, and the tab would show the page
@@ -178,6 +203,7 @@ export function PlateLoader() {
       removeEventListener("scroll", roam)
       removeEventListener("load", start)
       watcher.disconnect()
+      pinWatcher.disconnect()
       added.disconnect()
       title.disconnect()
     }

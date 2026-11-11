@@ -226,7 +226,9 @@
   .group-card {
     --d: calc(var(--i) - var(--track, 0));
     --ahead: max(var(--d), 0);
-    --p: calc(var(--cur) * var(--hold, 0) + (1 - var(--cur)) * 0.5);
+    /* the card's drift: its hold on its own turn, whole once the track has passed it and nothing before it arrives; it follows
+       --track alone, so the handoff halfway through a turn moves nothing */
+    --p: clamp(0, calc(var(--hold, 0) - var(--d) * 1000), 1);
     position: absolute;
     inset: 0;
     height: 100%;

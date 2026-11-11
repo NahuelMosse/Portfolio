@@ -41,15 +41,15 @@ function StatusBar() {
 // One face of the device: the screen's still, or the live capture while it is the one on. A phone's face carries its status bar and
 // starts below it; a capture that came with a bar of its own is cropped so the bar is not drawn twice.
 function Face({ piece, on, role, frame }: { piece: Piece; on: boolean; role: Role; frame: ScreenFrame }) {
-  const live = piece.kind === "capture" && on
   const source = piece.kind === "capture" ? piece.poster : piece.src
   const bar = frame === "phone" ? pieceBar(source) : null
   const style = bar ? ({ "--bar": bar.bg, "--trim": bar.trim ?? 0 } as CSSProperties) : undefined
   return (
     <div className="show-screen" data-on={on ? "" : undefined} data-tone={bar?.tone} style={style}>
       {bar && <StatusBar />}
-      {live ? (
-        <SceneMedia capture poster={piece.poster} video={piece.video} alt={piece.alt} />
+      {piece.kind === "capture" ? (
+        // the same poster image stays mounted whether the capture plays or not, so turning it on never swaps a picture
+        <SceneMedia capture poster={piece.poster} video={on ? piece.video : undefined} alt={piece.alt} />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img {...deferredPiece(source, SCREEN_SIZES[role])} alt={role === "main" ? piece.alt : ""} decoding="async" />
@@ -112,7 +112,8 @@ function useShownShape(rig: RefObject<HTMLDivElement | null>, active: number): n
   useEffect(() => {
     const img = rig.current?.querySelectorAll(".show-screen")[active]?.querySelector("img")
     if (!img) return
-    const read = () => img.naturalHeight && setShape(img.naturalWidth / img.naturalHeight)
+    // the 1x1 placeholder is not the capture: its shape would size the screen for a frame and then change
+    const read = () => img.naturalHeight && !img.currentSrc.startsWith("data:") && setShape(img.naturalWidth / img.naturalHeight)
     read()
     img.addEventListener("load", read)
     return () => img.removeEventListener("load", read)
