@@ -165,6 +165,7 @@ export const projects: readonly Project[] = [
       screen("browser", "cebador-s2-1280", "The Cebador site's origin section at desktop width", "Origin, on desktop"),
       screen("browser", "cebador-s3-1280", "The Cebador site's reviews section at desktop width", "Reviews, on desktop"),
       screen("phone", "cebador-s2-390", "The Cebador site's origin section on a phone", "Origin, on a phone"),
+      screen("phone", "cebador-s3-390", "The Cebador site's reviews section on a phone", "Reviews, on a phone"),
     ],
   },
   {

@@ -13,7 +13,7 @@ const BAKED = new Set(["club-login", "club-sedes", "club-horarios", "club-listo"
 const PHONE_PIECES = [
   "grit-hoy", "grit-serie", "grit-descanso", "grit-completado", "grit-ejercicio",
   "club-login", "club-sedes", "club-horarios", "club-listo",
-  "cebador-390-poster", "cebador-s2-390",
+  "cebador-390-poster", "cebador-s2-390", "cebador-s3-390",
   "sonria-hero-390", "sonria-tratamientos-390", "sonria-turno-390",
   "miga-hero-390", "miga-lista-390", "miga-pedir-390",
   "triaje-mobile",

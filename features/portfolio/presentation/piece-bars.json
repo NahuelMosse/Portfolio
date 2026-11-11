@@ -40,12 +40,16 @@
   "trim": 0.04
  },
  "cebador-390-poster": {
-  "bg": "#1f080d",
+  "bg": "#320f16",
   "tone": "light"
  },
  "cebador-s2-390": {
   "bg": "#f1e8da",
   "tone": "dark"
+ },
+ "cebador-s3-390": {
+  "bg": "#1e080d",
+  "tone": "light"
  },
  "sonria-hero-390": {
   "bg": "#ffffff",

@@ -157,11 +157,11 @@ Real pieces (screens, captures, photos) are not generated: they are listed in th
 
 Captured or fetched by the session from the live pages and repositories of the owner, converted to webp (stills) and webm (captures), metadata stripped.
 
-- `film/pieces/cebador-1280.webm`, `cebador-390.webm` and their posters: screen captures of https://nahuelmosse.github.io/cebador-landing/ at 1280 and 390.
+- `film/pieces/cebador-1280.webm`, `cebador-390.webm` and their posters (each video's first frame): screen captures of https://nahuelmosse.github.io/cebador-landing/ at 1280 and 390, cut to open on the loaded page (the site's intro loader stays out) and retimed to one 10.5 s timeline, so both show each section at the same second.
 - `film/pieces/club-*.webp`: the README screens docs/capturas 01-login, 03-sedes, 05-horarios and 07-listo of github.com/NahuelMosse/ClubNahuelMosse.
 - `film/pieces/grit-*.webp`: screens of the app, rendered by its golden tests in the private Grit repository.
 - `film/pieces/triaje-*.webp`: captures of https://nahuelmosse.itch.io/triaje; `triaje-title.webp` and `triaje-play-2.webp` are the running game (title screen, a shift with the waiting room open), taken from the itch.io iframe with Playwright.
-- `film/pieces/cebador-s2-1280.webp`, `cebador-s3-1280.webp`, `cebador-s2-390.webp`: Playwright screenshots of the origin and reviews sections of https://nahuelmosse.github.io/cebador-landing/ at 1280 and 390.
+- `film/pieces/cebador-s2-1280.webp`, `cebador-s3-1280.webp`, `cebador-s2-390.webp`, `cebador-s3-390.webp`: Playwright screenshots of the origin and reviews sections of https://nahuelmosse.github.io/cebador-landing/ at 1280 and 390.
 - `film/pieces/kit-report.webp`, `kit-report-test.webp`: the Playwright HTML report of a green run of this repository's end-to-end specs, and one test of it open.
 - `film/pieces/kit-skill-motion-audit.webp`, `kit-skill-http-attack.webp`, `kit-skill-migrations-safe.webp`: Playwright screenshots at 1280 of github.com/NahuelMosse/<skill>, the three published skills. The PF-1 card.md is not on a public repository, so there is no capture of it.
 - `film/justo-team.webp`: the "Equipo WMS Justo" presentation photo, resized, metadata stripped.
