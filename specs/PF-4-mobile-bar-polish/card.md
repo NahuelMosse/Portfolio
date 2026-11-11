@@ -26,7 +26,7 @@ not_read: none
 ## Changes to existing behavior
 
 - the phone's hire bar (below 701 px): no dark 1 px line above Let's talk; Let's talk's bone is a background image over ink · e2e/mobile-viewport.spec.ts "the Let's talk bar keeps 56 px on the bottom edge" (@PF-3-ASM-04), e2e/phone-390.spec.ts and e2e/lets-talk-doors.spec.ts stay valid
-- the chapter notes never break inside themselves, at every width · e2e/chapter-numerals.spec.ts and e2e/wide-screens-offer-detail*.spec.ts stay valid
+- the empty rule of the chapter's detail line has a width, so the line's fit-content width counts it and a note wraps only when it does not fit, at every width · e2e/chapter-numerals.spec.ts and e2e/wide-screens-offer-detail*.spec.ts stay valid
 
 ## Look
 
@@ -50,3 +50,10 @@ overflow: node .claude/tools/overflow.mjs
 - L4 · 2026-11-11 · replaces: e2e/mobile-bar-edges.spec.ts and e2e/chapter-note-line.spec.ts (RED 367a0aa) · page.mouse.wheel is unsupported in mobile WebKit · by: e2e/mobile-bar-edges-scroll.spec.ts and e2e/chapter-note-line-scroll.spec.ts, same tags, window.scrollBy steps
 - L5 · 2026-11-11 · evidence: e2e/phone-390, phone-layout, phone-glance, lets-talk-doors and wide-screens-offer-detail already fail on main (nawi.dev, 13 failed / 29 passed); on this branch the same set gives 11 failed / 37 passed, every failure among main's and none new; those files leave the gate's suite line, which keeps the ones green on main
 - L6 · 2026-11-11 · evidence: under next dev the walking tests lose their page mid-run ("Execution context was destroyed" in mobile-bar-edges-scroll, a 1249 px scroll back in mobile-viewport @PF-3-ASM-07, which PF-3 L14 already found unstable on main); the gate's app is the production build (next build --webpack, next start), as nawi.dev serves it
+- L7 · 2026-11-11 · evidence: on the production build every PF-4 test passes in Chromium and WebKit; the gate fails only on e2e/mobile-viewport.spec.ts:105 (@PF-3-ASM-07, webkit, 717 px back), unstable on main per PF-3 L14 and green on nawi.dev in this card's baseline run; past the time cap no further run was allowed to separate it from this change
+- L8 · 2026-11-11 · closing: ASM-01 · el píxel es la línea oscura superior de la barra: Let's talk y la flecha comparten borde superior, inferior y 56 px, en reposo y scrolleando
+- L9 · 2026-11-11 · closing: ASM-02 · de las dos lecturas (ambos se extienden bajo la barra de Safari, o ninguno) se toma ninguno: todo lo que toca el borde inferior tiene fondo ink y el bone de Let's talk es una imagen sobre ese ink, porque Safari 26 tiñe la franja con el background-color del elemento fijo; solo un iPhone real confirma la franja ink con la barra visible y colapsada
+- L10 · 2026-11-11 · closing: ASM-03 · la nota sobre la palabra de capítulo (Two doors, Buenos Aires y las demás) va en una línea cuando entra, a 320, 375 y 390 px; si no entra se parte y nada sale de la pantalla
+- L11 · 2026-11-11 · closing: para una persona · la suite del gate falla solo en e2e/mobile-viewport.spec.ts:105 (@PF-3-ASM-07, 717 px de retroceso en WebKit), inestable en main según PF-3 L14 y verde contra nawi.dev en la corrida base; pasado el tope de tiempo no se pudo separar de este cambio
+- L12 · 2026-11-11 · closing: para una persona · reemplazos (L4): e2e/mobile-bar-edges.spec.ts y e2e/chapter-note-line.spec.ts usan page.mouse.wheel, que WebKit móvil no soporta; los reemplazan los *-scroll.spec.ts con los mismos tags; los originales siguen en el repo y fallan en WebKit
+- L13 · 2026-11-11 · closing: para una persona · ya fallan en main antes de esta card (nawi.dev 13 fallidos; esta rama 11, todos entre esos): phone-390, phone-layout, phone-glance, lets-talk-doors, wide-screens-offer-detail
