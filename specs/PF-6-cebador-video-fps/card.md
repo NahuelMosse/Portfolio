@@ -42,3 +42,4 @@ app: npx next start
 ## Log
 
 - L1 · "el video de cebador en la pantalla se ve a pocos fps, haciendo que se sienta trabada la pagina"
+- L2 · 2026-11-11 · measured · ffprobe: cebador-1280.webm 960x540 and cebador-390.webm 360x780, VP9, 20 fps, 210 frames in 10.5 s; mpdecimate keeps 173 and 183 new pictures (about 16.5 and 17.4 a second): the files carry fewer than 20 distinct frames a second
