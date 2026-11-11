@@ -1,8 +1,8 @@
-import { useEffect, useRef, type CSSProperties } from "react"
+import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react"
 // kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
 import { DEFERRED_BLANK, SceneMedia } from "@/features/film/motion"
 import type { Piece, ScreenFrame } from "./content"
-import { deferredPiece, pieceBar, pieceShape, pieceThumb } from "./piece-image"
+import { deferredPiece, pieceBar, pieceThumb } from "./piece-image"
 
 type Role = "main" | "second"
 
@@ -97,13 +97,29 @@ function useFollowMain(role: Role) {
   return rig
 }
 
+// a screen is a desktop page until its image says otherwise
+const DESKTOP_SHAPE = 1.6
+
+// A browser's screen takes the shape of the capture on show: its width over its height, read from the image once it has loaded.
+function useShownShape(rig: RefObject<HTMLDivElement | null>, active: number): number {
+  const [shape, setShape] = useState(DESKTOP_SHAPE)
+  useEffect(() => {
+    const img = rig.current?.querySelectorAll(".show-screen")[active]?.querySelector("img")
+    if (!img) return
+    const read = () => img.naturalHeight && setShape(img.naturalWidth / img.naturalHeight)
+    read()
+    img.addEventListener("load", read)
+    return () => img.removeEventListener("load", read)
+  }, [rig, active])
+  return shape
+}
+
 // A device lit and shadowed by the scene it stands in: its screen light on the field, a cast shadow on the floor, a rim of lamp
 // light on its edge and a sheen that sweeps across the glass as the page scrolls. Its screens change with the story's beats.
 export function ShowcaseDevice({ kind, screens, active, role }: DeviceProps) {
   const shown = screens[active]
   const rig = useFollowMain(role)
-  // a browser's screen takes the shape of the capture on show
-  const shape = { "--shape": pieceShape(shown.kind === "capture" ? shown.poster : shown.src) } as CSSProperties
+  const shape = { "--shape": useShownShape(rig, active) } as CSSProperties
   return (
     <div ref={rig} className="show-rig" data-device={kind} data-role={role} style={shape}>
       <Glow screens={screens} active={active} />

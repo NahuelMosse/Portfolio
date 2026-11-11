@@ -325,6 +325,13 @@
     --show-strip: 2.75rem;
   }
 
+  /* a group farther than a screen from the view is not rendered; its height is set, so the page keeps its length.
+     The section only: the credits marquee carries a utility class of the same name */
+  section.group {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 100svh;
+  }
+
   .group-head {
     padding-bottom: 0;
   }
@@ -433,6 +440,8 @@
 @media (prefers-reduced-motion: no-preference) and (max-width: 1099px) and (orientation: portrait) and (max-height: 760px) {
   .group-card {
     --copy-pad: var(--space-3);
+    --zone-top: calc(var(--top-bar-height) + var(--show-strip));
+    --zone-bottom: var(--text-top);
   }
 
   .group-card .show-text {
