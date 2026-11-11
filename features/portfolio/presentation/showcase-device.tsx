@@ -79,7 +79,26 @@ function Glow({ screens, active }: { screens: readonly Piece[]; active: number }
 
 // The phone beside the browser plays the same story on the same clock: both captures are cut to one timeline, and the phone's video
 // follows the main one's time, so each section shows on both screens at once whichever video loaded first.
-const DRIFT = 0.15
+// A phone more than a second off (its first catch-up) jumps once; a smaller gap is closed by playing a little faster or slower.
+const SEEK_AT = 1
+const SETTLED = 0.04
+const RATE_PER_SECOND = 2
+const RATE_RANGE = 0.1
+
+// How far the phone is behind the main one (positive) or ahead (negative), on the loop's circle: a main that just looped back
+// to the start is ahead of a phone at the end, not a whole loop behind.
+function loopDrift(lead: HTMLVideoElement, own: HTMLVideoElement): number {
+  const length = lead.duration
+  const gap = lead.currentTime - own.currentTime
+  if (!Number.isFinite(length) || length <= 0) return gap
+  const wrapped = ((((gap + length / 2) % length) + length) % length) - length / 2
+  return wrapped
+}
+
+function rateFor(drift: number): number {
+  if (Math.abs(drift) < SETTLED) return 1
+  return Math.min(1 + RATE_RANGE, Math.max(1 - RATE_RANGE, 1 + drift * RATE_PER_SECOND))
+}
 
 // The browser refuses a play() with a DOMException (autoplay policy, an interrupted load): the follow loop tries again on its next tick.
 // Anything else is a bug and reaches the caller.
@@ -96,7 +115,9 @@ function useFollowMain(role: Role) {
       const lead = rig.current?.parentElement?.querySelector<HTMLVideoElement>('.show-rig[data-role="main"] .show-screen[data-on] video')
       if (!own || !lead || own.readyState < 2 || lead.readyState < 2) return
       if (lead.paused !== own.paused) void (lead.paused ? own.pause() : own.play().catch(refuseUnlessAutoplay))
-      if (Math.abs(own.currentTime - lead.currentTime) > DRIFT) own.currentTime = lead.currentTime
+      const drift = loopDrift(lead, own)
+      if (Math.abs(drift) > SEEK_AT) own.currentTime = lead.currentTime
+      else own.playbackRate = rateFor(drift)
     }, 250)
     return () => window.clearInterval(timer)
   }, [role])
