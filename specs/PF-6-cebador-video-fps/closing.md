@@ -21,7 +21,7 @@ PF-6 · the Cebador captures play smooth
 - 3 · every tag is a spec of card.md — 2 tagged files
 - 4 · each ASM is tagged or declared uncovered — 4 of 4 tagged
 - 5 · no tagged test touched since RED — none of 1 tagged file since e01d0b36e
-- 6 · diff and Tasks agree — 19 files in the diff against 1b1dc62b71debfd31ac26f8cd6318cf92f19c123~1; features/portfolio/presentation/piece-widths.json is in Tasks, not in the diff; features/film/presentation/plates.json is in Tasks, not in the diff; derive-plates.mjs is in Tasks, not in the diff; derive-bars.mjs is in Tasks, not in the diff
+- 6 · diff and Tasks agree — 20 files in the diff against 1b1dc62b71debfd31ac26f8cd6318cf92f19c123~1; features/portfolio/presentation/piece-widths.json is in Tasks, not in the diff; features/film/presentation/plates.json is in Tasks, not in the diff; derive-plates.mjs is in Tasks, not in the diff; derive-bars.mjs is in Tasks, not in the diff
 - 8 · judge · skipped — risk.json says review: medium
 - 9 · required.mjs — mutation, linter and scope ran and passed on this code
 
@@ -37,6 +37,11 @@ no judge: risk large · medium; the gate is the whole review
 ## Assumptions
 4 of 4 tagged
 
+## Notes
+- L14 · 2026-11-11 · la suite del gate falla solo en e2e/scene-media.spec.ts @PF-1-S24 y @PF-1-ASM-20, tests de PF-1 que no leen las capturas de Cebador ni showcase-device.tsx; los tests de esta card y best-screens-walk pasan; no se corrió main para comparar
+- L15 · 2026-11-11 · e2e/cebador-playback.spec.ts se editó después de su commit RED (6047f66 a b65e8fb): flags de rasterizado por GPU en headless y el contador de seeks ignora el salto propio del loop al volver al inicio; una persona aprueba o rechaza esa edición
+- L16 · 2026-11-11 · PF-6-ASM-02 (30 fps presentados) dio 27 a 28 fps con la máquina cargada por otros agentes y pasó en la verificación completa; es sensible a la carga y conviene mirarlo en un navegador real
+
 ## Kit notes
 - the shell write of a committed tagged test by a builder was not blocked (guard-shell), while the main thread's restore of the same file was
 - next build with Turbopack refuses node_modules as a junction (npm ci hung on this machine, node_modules points at an identical install); the builds here are next build --webpack
@@ -48,8 +53,8 @@ no judge: risk large · medium; the gate is the whole review
 - module security-l2 off by decision: opt-in module, not chosen at install
 - grade: mvp — full design control for the portfolio revamp: design line, component set and screen audit
 
-Cost: USD 10.58 (card-runner 7.34, builder 2.37, main 0.88) · the messages of this card
-close.mjs seal: PF-6 sha256:53ee4275eb9f837699d4bc098d57b8f879321b018dd2e5089ea0d50d8f8ab09f
+Cost: USD 11.63 (card-runner 8.38, builder 2.37, main 0.88) · the messages of this card
+close.mjs seal: PF-6 sha256:4c384552776549143a81d5169beebc2a6c27410bbc854bcf70a64ec5ea6a6ed8
 <!-- close.mjs:end -->
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
