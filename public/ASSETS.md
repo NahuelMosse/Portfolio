@@ -157,7 +157,7 @@ Real pieces (screens, captures, photos) are not generated: they are listed in th
 
 Captured or fetched by the session from the live pages and repositories of the owner, converted to webp (stills) and webm (captures), metadata stripped.
 
-- `film/pieces/cebador-1280.webm`, `cebador-390.webm` and their posters: screen captures of https://nahuelmosse.github.io/cebador-landing/ at 1280 and 390.
+- `film/pieces/cebador-1280.webm`, `cebador-390.webm` and their posters: screen captures of https://nahuelmosse.github.io/cebador-landing/ at 1280 and 390, cut to open on the loaded page (the site's intro loader stays out).
 - `film/pieces/club-*.webp`: the README screens docs/capturas 01-login, 03-sedes, 05-horarios and 07-listo of github.com/NahuelMosse/ClubNahuelMosse.
 - `film/pieces/grit-*.webp`: screens of the app, rendered by its golden tests in the private Grit repository.
 - `film/pieces/triaje-*.webp`: captures of https://nahuelmosse.itch.io/triaje; `triaje-title.webp` and `triaje-play-2.webp` are the running game (title screen, a shift with the waiting room open), taken from the itch.io iframe with Playwright.
