@@ -4,84 +4,417 @@
 # replaced by e2e/best-screens-walk.spec.ts (PF-2-best-screens)
 best-screens.spec.ts › the best, most visual screens of each project › walking each project chapter with the wheel at 1440x900 and 390x844, every beat shows the planned visual screens of that project, loaded @PF-2-S1 @PF-2-S2 @PF-2-ASM-01
 best-screens.spec.ts › the best, most visual screens of each project › desktop and phone screens of a project come in equal numbers and show the same section on the same beat @PF-2-ASM-02
-# replaced by e2e/designer-line.spec.ts (PF-1-cinematic-portfolio)
-case-file-assets.spec.ts › the cold open starts the crimson thread at the sealed envelope @PF-1-ASM-21
-# replaced by e2e/case-file-layout.spec.ts (PF-1-cinematic-portfolio)
-case-file.spec.ts › wide › each chapter title straddles the edge with the chapter before, one lamp light travels down the page onto what is read and ends on the sealed file, the thread never breaks and its ends tie around the sealed file, his photos cross two seams, paper backs only the identification sheet, the two folders and the credits sheet, the cases alternate sides with the first and fourth larger, one HUD rail with a tick per chapter runs the page, and no full-width background change sits between chapters @PF-1-ASM-26
-# replaced by e2e/contact-email.spec.ts (PF-1-cinematic-portfolio)
-contact-links.spec.ts › contact at 390: three real links, a copy action, nothing to type @PF-1-ASM-26
-contact-links.spec.ts › contact at 1440: three real links, a copy action, nothing to type @PF-1-ASM-26
-contact-marquee.spec.ts › contact at 390: three real links, a copy action, nothing to type, the drawing covers the section @PF-1-ASM-26
-contact-marquee.spec.ts › contact at 1440: three real links, a copy action, nothing to type, the drawing covers the section @PF-1-ASM-26
-credits.spec.ts › the end credits offer email and LinkedIn, and GitHub as a secondary link after the two doors @PF-1-ASM-04
-project-presentation.spec.ts › the contact channels › the copy button says Copied in a live region and goes back @PF-1-ASM-26
-# replaced by e2e/case-file.spec.ts (PF-1-cinematic-portfolio)
-credits.spec.ts › each chapter title straddles the edge with the chapter before, the one red disc travels down behind every chapter with scroll and is the rising disc at the closing, each deity looks or reaches toward the next chapter, one HUD rail with a tick per chapter runs the whole page, and no full-width background change sits between chapters @PF-1-ASM-26
-film.spec.ts › the cold open frames him with a character sheet saying class Technical Lead · Technical Project Manager, base Buenos Aires and an off-duty line naming CS2, Rocket League, Minecraft, Smite, The Witcher 3, Cyberpunk 2077, chess and Formula 1 with no game logo or art, in thin-line frames, four-point stars are the only ornament, images sit in arch masks reached by leader lines, and the sheet has no stat bar, level or number @PF-1-ASM-21
-scene-media.spec.ts › the page shows the backdrop and the closing in 16:9 on wide screens and 9:16 on tall ones, the doors, the scenes, the closing, the torn paper and the grain, each listed in ASSETS.md as made in Gemini @PF-1-ASM-20
-# replaced by e2e/fonts-two-families.spec.ts (PF-1-cinematic-portfolio)
-fonts-two-faces.spec.ts › Boska and Courier Prime load from the site itself, no element falls back to a system font or uses Inter, Geist, Roboto, Montserrat, Bebas Neue or Anton, and NAWI in Boska spans the viewport width (90% on a phone, 55% beside the id sheet on a wide screen) without leaving it at 390 @PF-1-ASM-15
-fonts-two-faces.spec.ts › Boska and Courier Prime load from the site itself, no element falls back to a system font or uses Inter, Geist, Roboto, Montserrat, Bebas Neue or Anton, and NAWI in Boska spans the viewport width (90% on a phone, 55% beside the id sheet on a wide screen) without leaving it at 1280 @PF-1-ASM-15
-fonts-two-faces.spec.ts › NAWI in Boska is the largest text of the site with Nahuel Mosse beneath it in Courier Prime, the hero says I'm Nawi, and the page title, metadata, llms.txt, portfolio.json and both email doors say Nahuel Mosse @PF-1-ASM-19
+
 # replaced by e2e/project-turn-measured.spec.ts (PF-5-smooth-project-transitions)
 project-turn-smooth.spec.ts › at 1440x900 › frame by frame through a turn, no layer of the two projects steps back or jumps, the handoff included @PF-5-S3 @PF-5-ASM-02
-project-turn-smooth.spec.ts › at 1440x900 › walking the turns there is no layout shift and no image starts loading while in view @PF-5-S1 @PF-5-ASM-03
 project-turn-smooth.spec.ts › at 390x844 › frame by frame through a turn, no layer of the two projects steps back or jumps, the handoff included @PF-5-S3 @PF-5-ASM-02
-# replaced by e2e/slow-line-painted.spec.ts (PF-5-smooth-project-transitions)
-slow-line.spec.ts › @PF-1-ASM-44 at 1910 every image a section shows is painted once the visitor is there
-slow-line.spec.ts › @PF-1-ASM-44 at 390 every image a section shows is painted once the visitor is there
+project-turn-smooth.spec.ts › at 1440x900 › walking the turns there is no layout shift and no image starts loading while in view @PF-5-S1 @PF-5-ASM-03
+project-turn-smooth.spec.ts › at 390x844 › walking the turns there is no layout shift and no image starts loading while in view @PF-5-S1 @PF-5-ASM-03
 
 # replaced by e2e/retired-list.spec.ts (PF-8-broken-tests-and-local-paths)
 retired-tests.spec.ts › every test kept out of the gate names its reason and its Log line @PF-8-S1 @PF-8-ASM-01 @PF-8-ASM-02
 
-# replaced by e2e/pf1-projects-today.spec.ts (PF-8-broken-tests-and-local-paths)
+# replaced by e2e/retired-bulk.spec.ts (PF-8-broken-tests-and-local-paths)
+retired-list.spec.ts › every test kept out of the gate names its reason and its Log line @PF-8-S1 @PF-8-ASM-01 @PF-8-ASM-02
+
+# retired: fails on main, the 1440 Cebador capture presents about 28 frames a second against its 29.67 floor
+cebador-playback.spec.ts › with the Cebador stage in view at 1440x900 and 390x844 the browser presents at least 30 new frames a second of each capture @PF-6-S1 @PF-6-S2 @PF-6-ASM-02
+
+# retired: fails on main, it scrolls with mouse.wheel, which mobile WebKit does not support
+chapter-note-line.spec.ts › on a 390x844, a 375x667 and a 320x568 phone in webkit Two doors, Buenos Aires and every chapter note sit on one line inside the screen @PF-4-S4 @PF-4-S5 @PF-4-ASM-03
+mobile-bar-edges.spec.ts › on a 390x844 and a 375x667 phone in webkit the Let's talk face and the arrow square share their top, bottom and 56 px height while scrolling @PF-4-S1 @PF-4-ASM-01
+mobile-bar-edges.spec.ts › on a phone in webkit every element on the bottom edge of the screen has the ink background color, and Let's talk still shows bone @PF-4-S2 @PF-4-S3 @PF-4-ASM-02
+
+# retired: fails on main, the page has more tall sections than the ones it expects to find skipped
+mobile-memory-far.spec.ts › walking a 390x844 phone, every tall section farther than a screen from the view is skipped and the page height holds @PF-3-S1 @PF-3-ASM-01
+mobile-memory-skip.spec.ts › walking a 390x844 phone, every project group and the experience scene farther than a screen from the view is skipped and the page height holds @PF-3-S1 @PF-3-ASM-01
+
+# retired: PF-1 frozen suite retired by the user; covered by e2e/smoke.spec.ts
+asm35-cold-open-end.spec.ts › 1910x912 the sheet and the corner button are visible at the end of the cold-open pin @PF-1-ASM-35
+asm35-cold-open-end.spec.ts › 1920x1080 the sheet and the corner button are visible at the end of the cold-open pin @PF-1-ASM-35
+asm35-cold-open-end.spec.ts › 2560x1080 the sheet and the corner button are visible at the end of the cold-open pin @PF-1-ASM-35
+asm35-cold-open.spec.ts › 1910x912 the cover scale goes from above 1.05 to about 1 across the cold-open pin @PF-1-ASM-35
+asm35-cold-open.spec.ts › 1440x900 the cover scale goes from above 1.05 to about 1 across the cold-open pin @PF-1-ASM-35
+asm35-cold-open.spec.ts › reduced motion › the cold open has no pin and no transform @PF-1-ASM-35
+asm35-engine.spec.ts › desktop › lenis is active on desktop and the page still scrolls natively @PF-1-ASM-35
+asm35-engine.spec.ts › desktop › a chapter link scrolls to its chapter through lenis @PF-1-ASM-35
+asm35-engine.spec.ts › reduced motion › lenis and has-motion are off @PF-1-ASM-35
+asm35-engine.spec.ts › phone › lenis is off on touch: native scroll @PF-1-ASM-35
+asm35-engine.spec.ts › phone › the sticky HIRE ME bar does not cover the footer at the end of the page @PF-1-ASM-35
+asm35-experience-handoff.spec.ts › no tick of the experience handoff shows an empty stage @PF-1-ASM-35
+asm35-experience-rest.spec.ts › 1910x912 only one employer is on screen at rest, with no neighbour peeking in @PF-1-ASM-35
+asm35-experience-rest.spec.ts › 1440x900 only one employer is on screen at rest, with no neighbour peeking in @PF-1-ASM-35
+asm35-experience-rest.spec.ts › 1280x720 only one employer is on screen at rest, with no neighbour peeking in @PF-1-ASM-35
+asm35-experience.spec.ts › 1910x912 › each art is whole at 4:3 and no copy touches its art @PF-1-ASM-35
+asm35-experience.spec.ts › 1910x912 › only one employer is on screen at rest, with no neighbour peeking in @PF-1-ASM-35
+asm35-experience.spec.ts › 1440x900 › each art is whole at 4:3 and no copy touches its art @PF-1-ASM-35
+asm35-experience.spec.ts › 1440x900 › only one employer is on screen at rest, with no neighbour peeking in @PF-1-ASM-35
+asm35-experience.spec.ts › 1280x720 › each art is whole at 4:3 and no copy touches its art @PF-1-ASM-35
+asm35-experience.spec.ts › 1280x720 › only one employer is on screen at rest, with no neighbour peeking in @PF-1-ASM-35
+asm35-experience.spec.ts › 390x844 › each art is whole at 4:3 and no copy touches its art @PF-1-ASM-35
+asm35-experience.spec.ts › 390x844 › only one employer is on screen at rest, with no neighbour peeking in @PF-1-ASM-35
+asm35-experience.spec.ts › reduced motion › the scenes are stacked and static, all text visible @PF-1-ASM-35
+case-file-assets.spec.ts › the page shows the desk in 16:9 on wide screens and 9:16 on tall ones, the wall strip, the cold open loop, one still-life exhibit per case, the open folder, the sealed file, the torn paper and the grain, each listed in ASSETS.md as made in Gemini, Codex or Kling, and no generated image shows a person @PF-1-ASM-20
+case-file-assets.spec.ts › the cold open starts the crimson thread at the sealed envelope @PF-1-ASM-21
+case-file-layout-contracts.spec.ts › the cold open shows the desk edge to edge, the name and a Hire me door by second 5 at 390 @PF-1-S8 @PF-1-S19
+case-file-layout-contracts.spec.ts › the cold open shows the desk edge to edge, the name and a Hire me door by second 5 at 1280 @PF-1-S8 @PF-1-S19
+case-file-layout-contracts.spec.ts › the four chapters keep their order and the offer sits inside the end credits before the closing @PF-1-ASM-01
+case-file-layout-contracts.spec.ts › the credits roll runs edge to edge in the end credits after the credits sheet and before the footer @PF-1-S22
+case-file-layout-contracts.spec.ts › each project holds at least three real pieces and the pieces outnumber the text fields @PF-1-S26 @PF-1-ASM-22 @PF-1-S16
+case-file-layout-contracts.spec.ts › every piece is clipped, graded and grained, and no bare img sits in a chapter @PF-1-ASM-10
+case-file-layout-contracts.spec.ts › each door opens an email with its own subject and the two door labels read as written @PF-1-ASM-12
+case-file-layout-contracts.spec.ts › the cold open backdrop, NAWI and the identification sheet move at different depths and stay still under reduced motion @PF-1-ASM-24
+case-file-layout-contracts.spec.ts › the identification sheet carries the facts of the subject and the credits sheet the off-duty line, with no game art @PF-1-ASM-21 @PF-1-ASM-09
+case-file-layout-contracts.spec.ts › at 390 only the hire bar is fixed, the title is in the first screen and no text leaves the viewport outside the piece rows @PF-1-ASM-27 @PF-1-S9
+case-file-layout-contracts.spec.ts › the thread has a stop per case and per employer and every chapter keeps its label and title @PF-1-ASM-25 @PF-1-ASM-26 @PF-1-S20 @PF-1-S24
+case-file-layout-contracts.spec.ts › the delivered scene media of the page answers 200 and is listed in ASSETS.md @PF-1-ASM-20 @PF-1-S2
+case-file-layout-delivered.spec.ts › 390 › at 390 and 1440 the page is one dark canvas where no image stands alone as a rectangle, each case is typed on it with its pieces in frames, paper backs only the identification sheet, the two folders and the credits sheet, the thread is a spine with a pin per case and per employer, and a photo of him not delivered leaves no box while a delivered one is the cover of the cold open @PF-1-ASM-26
+case-file-layout-delivered.spec.ts › 1440 › at 390 and 1440 the page is one dark canvas where no image stands alone as a rectangle, each case is typed on it with its pieces in frames, paper backs only the identification sheet, the two folders and the credits sheet, the thread is a spine with a pin per case and per employer, and a photo of him not delivered leaves no box while a delivered one is the cover of the cold open @PF-1-ASM-26
+case-file-layout-disk.spec.ts › 390 › at 390 and 1440 the page is one dark canvas where no image stands alone as a rectangle, each case is typed on it with its pieces in frames, paper backs only the identification sheet, the two folders and the credits sheet, the thread is a spine with a pin per case and per employer, and a photo of him not delivered leaves no box while a delivered one is the cover of the cold open @PF-1-ASM-26
+case-file-layout-disk.spec.ts › 1440 › at 390 and 1440 the page is one dark canvas where no image stands alone as a rectangle, each case is typed on it with its pieces in frames, paper backs only the identification sheet, the two folders and the credits sheet, the thread is a spine with a pin per case and per employer, and a photo of him not delivered leaves no box while a delivered one is the cover of the cold open @PF-1-ASM-26
+case-file-layout.spec.ts › 390 › at 390 and 1440 the page is one dark canvas where no image stands alone as a rectangle, each case is typed on it with its pieces in frames, paper backs only the identification sheet, the two folders and the credits sheet, the thread is a spine with a pin per case and per employer, and an undelivered photo of him leaves no box @PF-1-ASM-26
+case-file-layout.spec.ts › 1440 › at 390 and 1440 the page is one dark canvas where no image stands alone as a rectangle, each case is typed on it with its pieces in frames, paper backs only the identification sheet, the two folders and the credits sheet, the thread is a spine with a pin per case and per employer, and an undelivered photo of him leaves no box @PF-1-ASM-26
+case-file.spec.ts › the page shows the desk in 16:9 on wide screens and 9:16 on tall ones, the wall strip, the cold open loop, one still-life exhibit per case, the open folder, the sealed file, the torn paper and the grain, each listed in ASSETS.md as made in Gemini or Kling, and no generated image shows a person @PF-1-ASM-20
+case-file.spec.ts › wide › the cold open shows him holding the sealed envelope where the thread starts, height lines behind him, and the identification sheet with two photos of him and Subject NAWI, Name Nahuel Mosse, Role Technical Lead · Technical Project Manager, Base Buenos Aires and Known for, one Active stamp, no stat bar, level or prisoner board; the credits sheet holds the off-duty line naming CS2, Rocket League, Minecraft, Smite, The Witcher 3, Cyberpunk 2077, chess and Formula 1 with no game logo or art @PF-1-ASM-21
+case-file.spec.ts › wide › each chapter title straddles the edge with the chapter before, one lamp light travels down the page onto what is read and ends on the sealed file, the thread never breaks and its ends tie around the sealed file, his photos cross two seams, paper backs only the identification sheet, the two folders and the credits sheet, the cases alternate sides with the first and fourth larger, one HUD rail with a tick per chapter runs the page, and no full-width background change sits between chapters @PF-1-ASM-26
+case-file.spec.ts › phone › at 390 the page is one column, the thread is the spine at the left edge with the chapter numbers, each case's pieces swipe sideways with the next one cut at the edge and a counter, what, problem and role open with a toggle with the first case open, a fixed Hire me bar at the bottom is at least 48 px tall, no text is under 14 px and only the piece rows scroll sideways @PF-1-ASM-27
+certifications-curated.spec.ts › the roll lists the two studies and the three curated certifications, one list read and the copies hidden @PF-1-ASM-18 @PF-1-ASM-26
+certifications-curated.spec.ts › the TPM offer links to the tools group and the tools are three projects @PF-1-ASM-23 @PF-1-ASM-26
+chapter-arrival.spec.ts › at 1910x912 the Offer word clears the top bar and Let's talk is out of sight @PF-1-ASM-39
+chapter-arrival.spec.ts › at 1910x912 Let's talk is one screen with its content spread over it @PF-1-ASM-39
+chapter-arrival.spec.ts › at 1920x1080 the Offer word clears the top bar and Let's talk is out of sight @PF-1-ASM-39
+chapter-arrival.spec.ts › at 1920x1080 Let's talk is one screen with its content spread over it @PF-1-ASM-39
+chapter-arrival.spec.ts › at 2560x1080 the Offer word clears the top bar and Let's talk is out of sight @PF-1-ASM-39
+chapter-arrival.spec.ts › at 2560x1080 Let's talk is one screen with its content spread over it @PF-1-ASM-39
+chapter-arrival.spec.ts › at 1440x900 the Offer word clears the top bar and Let's talk is out of sight @PF-1-ASM-39
+chapter-arrival.spec.ts › at 1440x900 Let's talk is one screen with its content spread over it @PF-1-ASM-39
+chapter-arrival.spec.ts › at 1280x720 the Offer word clears the top bar and Let's talk is out of sight @PF-1-ASM-39
+chapter-arrival.spec.ts › at 1280x720 Let's talk is one screen with its content spread over it @PF-1-ASM-39
+chapter-numerals.spec.ts › @PF-1-ASM-26 chapter numerals match the nav order
+cold-open-short.spec.ts › cold open at 1910x912: the sheet starts below NAWI's baseline and the corner button clears the hero button @PF-1-ASM-30
+cold-open-short.spec.ts › cold open at 1920x900: the sheet starts below NAWI's baseline and the corner button clears the hero button @PF-1-ASM-30
+cold-open-short.spec.ts › cold open at 1680x800: the sheet starts below NAWI's baseline and the corner button clears the hero button @PF-1-ASM-30
+cold-open-short.spec.ts › cold open at 2560x1080: the sheet starts below NAWI's baseline and the corner button clears the hero button @PF-1-ASM-30
+cold-open-short.spec.ts › cold open at 1440x700: the sheet starts below NAWI's baseline and the corner button clears the hero button @PF-1-ASM-30
+contact-drawing.spec.ts › contact drawing at 390x844: seen whole, the seal clear of the panels and the band, no vertical seam @PF-1-ASM-29
+contact-drawing.spec.ts › contact drawing at 1280x720: seen whole, the seal clear of the panels and the band, no vertical seam @PF-1-ASM-29
+contact-drawing.spec.ts › contact drawing at 1440x900: seen whole, the seal clear of the panels and the band, no vertical seam @PF-1-ASM-29
+contact-drawing.spec.ts › contact drawing at 1920x1080: seen whole, the seal clear of the panels and the band, no vertical seam @PF-1-ASM-29
+contact-drawing.spec.ts › contact drawing at 2560x1080: seen whole, the seal clear of the panels and the band, no vertical seam @PF-1-ASM-29
+contact-email.spec.ts › contact at 390: three real links, a copy action, nothing to type @PF-1-ASM-26
+contact-email.spec.ts › contact at 1440: three real links, a copy action, nothing to type @PF-1-ASM-26
+contact-email.spec.ts › the end credits offer email and LinkedIn, and GitHub as a secondary link after the two doors @PF-1-ASM-04
+contact-email.spec.ts › the copy button says Copied in a live region and goes back @PF-1-ASM-26
+contact-footer.spec.ts › footer at 1910x912 is inside the contact scene on its red ground @PF-1-ASM-33
+contact-footer.spec.ts › footer at 1920x1080 is inside the contact scene on its red ground @PF-1-ASM-33
+contact-footer.spec.ts › footer at 1440x900 is inside the contact scene on its red ground @PF-1-ASM-33
+contact-footer.spec.ts › footer at 1280x720 is inside the contact scene on its red ground @PF-1-ASM-33
+contact-footer.spec.ts › footer at 2560x1080 is inside the contact scene on its red ground @PF-1-ASM-33
+contact-footer.spec.ts › footer at 390x844 is inside the contact scene on its red ground @PF-1-ASM-33
+contact-links.spec.ts › contact at 390: three real links, a copy action, nothing to type @PF-1-ASM-26
+contact-links.spec.ts › contact at 1440: three real links, a copy action, nothing to type @PF-1-ASM-26
+contact-marquee.spec.ts › contact at 390: three real links, a copy action, nothing to type, the drawing covers the section @PF-1-ASM-26
+contact-marquee.spec.ts › contact at 1440: three real links, a copy action, nothing to type, the drawing covers the section @PF-1-ASM-26
+contact-marquee.spec.ts › contact honors reduced motion: no running animation inside the block @PF-1-ASM-26
+contact-one-screen.spec.ts › contact at 1910x912: LET'S TALK to the footer fits one screen and the tiles clear the footer @PF-1-ASM-29
+contact-one-screen.spec.ts › contact at 1920x1080: LET'S TALK to the footer fits one screen and the tiles clear the footer @PF-1-ASM-29
+contact-one-screen.spec.ts › contact at 1440x900: LET'S TALK to the footer fits one screen and the tiles clear the footer @PF-1-ASM-29
+contact-one-screen.spec.ts › contact at 1280x720: LET'S TALK to the footer fits one screen and the tiles clear the footer @PF-1-ASM-29
+contact-one-screen.spec.ts › contact at 2560x1080: LET'S TALK to the footer fits one screen and the tiles clear the footer @PF-1-ASM-29
+contact-tiles-roll.spec.ts › at 1910x912 the tiles are at least 1.8x taller and the roll rows are closer and smaller @PF-1-ASM-39
+content.spec.ts › the page has only cold open, projects, experience and end credits @PF-1-S4
+content.spec.ts › experience and projects are the body of the page @PF-1-S5
+content.spec.ts › experience shows Grupo ST, Smart Warehousing, Visma, Frávega and Jüsto, each with what it was, the problem and his role @PF-1-ASM-05
+content.spec.ts › experience and projects carry the most screen time of the page @PF-1-S13
+content.spec.ts › no percentage, multiplier or before-after figure appears in experience or projects @PF-1-S14
+content.spec.ts › each project has what it is, the problem and his role, and nothing else @PF-1-S15
+content.spec.ts › the personal projects are The card is the specification, Grit, Guardia, Cebador and ClubNahuelMosse in that order, the kit links to motion-audit, http-attack and migrations-safe, Guardia links to nahuelmosse.itch.io/triaje, Grit has no link, and NASA Calendar, Compound Interest Calculator and Gym App are gone @PF-1-ASM-06
+content.spec.ts › the personal projects shown are public or private repositories of github.com/NahuelMosse @PF-1-S25
+content.spec.ts › the four chapters come in the order cold open, projects, experience, end credits, the offer sits inside the end credits before the doors, and projects take more screen height than experience @PF-1-ASM-01
+cover-handoff.spec.ts › walking by 300px ticks to PROJECTS at 1910x912 shows no empty flat band @PF-1-ASM-40
+cover-handoff.spec.ts › the cover shows his whole head below the top bar at 1910x912 @PF-1-ASM-40
+cover-handoff.spec.ts › NAWI on the cover is at least 41vw at 1910x912 @PF-1-ASM-40
+cover-handoff.spec.ts › walking by 300px ticks to PROJECTS at 1920x1080 shows no empty flat band @PF-1-ASM-40
+cover-handoff.spec.ts › the cover shows his whole head below the top bar at 1920x1080 @PF-1-ASM-40
+cover-handoff.spec.ts › NAWI on the cover is at least 41vw at 1920x1080 @PF-1-ASM-40
+cover-handoff.spec.ts › walking by 300px ticks to PROJECTS at 2560x1080 shows no empty flat band @PF-1-ASM-40
+cover-handoff.spec.ts › the cover shows his whole head below the top bar at 2560x1080 @PF-1-ASM-40
+cover-handoff.spec.ts › NAWI on the cover is at least 41vw at 2560x1080 @PF-1-ASM-40
+cover-handoff.spec.ts › walking by 300px ticks to PROJECTS at 1440x900 shows no empty flat band @PF-1-ASM-40
+cover-handoff.spec.ts › the cover shows his whole head below the top bar at 1440x900 @PF-1-ASM-40
+cover-handoff.spec.ts › NAWI on the cover is at least 41vw at 1440x900 @PF-1-ASM-40
+cover-handoff.spec.ts › walking by 300px ticks to PROJECTS at 1280x720 shows no empty flat band @PF-1-ASM-40
+cover-handoff.spec.ts › the cover shows his whole head below the top bar at 1280x720 @PF-1-ASM-40
+cover-handoff.spec.ts › NAWI on the cover is at least 41vw at 1280x720 @PF-1-ASM-40
+cover-handoff.spec.ts › no cover text touches NAWI's glyphs and the sheet heading clears the N's foot by 12px at 1910x912 @PF-1-ASM-40
+cover-handoff.spec.ts › no cover text touches NAWI's glyphs and the sheet heading clears the N's foot by 12px at 1920x1080 @PF-1-ASM-40
+cover-handoff.spec.ts › no cover text touches NAWI's glyphs and the sheet heading clears the N's foot by 12px at 2560x1080 @PF-1-ASM-40
+cover-handoff.spec.ts › no cover text touches NAWI's glyphs and the sheet heading clears the N's foot by 12px at 1440x900 @PF-1-ASM-40
+cover-handoff.spec.ts › no cover text touches NAWI's glyphs and the sheet heading clears the N's foot by 12px at 1280x720 @PF-1-ASM-40
+credits-english.spec.ts › the roll lists the two studies and the three certifications in English, one list read and the copies hidden @PF-1-ASM-41
+credits-liceo-8.spec.ts › the roll lists Analista en Informática 2025 and Técnico Electromecánico 2021, the nine certifications with Platzi 2026 and 2023 and Liceo Nivel 8, 7 and 6, not Ingeniería Informática, and the page names no games: no off-duty line @PF-1-ASM-18 @PF-1-ASM-21
+credits.spec.ts › one crimson thread runs from the cold open through every chapter, grows with scroll, and ends split into the two doors; every chapter has a figure crossing into the next and none sits in a closed frame @PF-1-ASM-25
+credits.spec.ts › the end credits offer email and LinkedIn, and GitHub as a secondary link after the two doors @PF-1-ASM-04
+credits.spec.ts › the soundtrack is off until the toggle is pressed @PF-1-ASM-08
+credits.spec.ts › a call to action is in view in every chapter after the cold open @PF-1-S17
+credits.spec.ts › each door opens an email with its own subject and three prompts in the body; the credits end on the two doors @PF-1-ASM-12
+credits.spec.ts › the chapter index jumps by click and by keyboard, past the cover to the projects heading; every link, door, index item and sound toggle answers hover, a visible focus ring and press @PF-1-S18
+credits.spec.ts › the wheel scrolls natively, every chapter reads with sound off, focus lands on the chapter heading after a jump and the index's projects link is focusable at second 1 and lands past the cover @PF-1-ASM-13
+credits.spec.ts › the completed studies and the certifications move right to left without end and keep moving after a full loop @PF-1-S21
+credits.spec.ts › the credits roll sits in the end credits, full-bleed, directly before the two doors @PF-1-S22
+credits.spec.ts › the roll lists Analista en Informática 2025 and Técnico Electromecánico 2021, the eight certifications with Platzi 2026 and 2023 and Liceo Nivel 7 and 6, not Ingeniería Informática; hover and focus pause it, one list is read and the copies are aria-hidden, reduced motion stands it still @PF-1-ASM-18
+credits.spec.ts › each chapter title straddles the edge with the chapter before, the one red disc travels down behind every chapter with scroll and is the rising disc at the closing, each deity looks or reaches toward the next chapter, one HUD rail with a tick per chapter runs the whole page, and no full-width background change sits between chapters @PF-1-ASM-26
+designer-line-rest.spec.ts › at 390 and 1440 the cold open shows him with nothing held toward the camera, NAWI at least 85% of the viewport wide flush to one edge, the identification sheet as ruled fine type with no bordered box, body text in General Sans at 16 px or more, Courier only in short uppercase labels, and every button a rectangle, never a pill @PF-1-ASM-26 @PF-1-ASM-21
+designer-line-words.spec.ts › at 1440 each chapter word is uppercase Boska, large, tight and inside the viewport @PF-1-ASM-21
+designer-line-words.spec.ts › at 390 each chapter word is uppercase Boska, large, tight and inside the viewport @PF-1-ASM-21
+designer-line.spec.ts › at 390 and 1440 the cold open shows him with nothing held toward the camera, NAWI at least 85% of the viewport wide flush to one edge, the identification sheet as ruled fine type with no bordered box, each chapter word uppercase in Boska at least 15% of the viewport wide at 1440 and 3rem at 390 with line height under 0.9, body text in General Sans at 16 px or more, Courier only in short uppercase labels, and every button a rectangle, never a pill @PF-1-ASM-26 @PF-1-ASM-21
+ending-block.spec.ts › the ending block at 1910x912 holds word, tiles, roll and footer in one red screen @PF-1-ASM-36
+ending-block.spec.ts › the ending block at 1920x1080 holds word, tiles, roll and footer in one red screen @PF-1-ASM-36
+ending-block.spec.ts › the ending block at 2560x1080 holds word, tiles, roll and footer in one red screen @PF-1-ASM-36
+ending-block.spec.ts › the ending block at 1440x900 holds word, tiles, roll and footer in one red screen @PF-1-ASM-36
+ending-block.spec.ts › the ending block at 1280x720 holds word, tiles, roll and footer in one red screen @PF-1-ASM-36
+experience-photos.spec.ts › @PF-1-ASM-26 experience photos at 1440: chapter cap and Jüsto zoom on him
+experience-photos.spec.ts › @PF-1-ASM-26 experience photos at 390: chapter cap and Jüsto zoom on him
+experience-scene.spec.ts › @PF-1-ASM-26 at 390 five posters each with its illustration, all text visible while scrolling, no click
+experience-scene.spec.ts › @PF-1-ASM-26 at 390 the experience shows no photo of him, no image gap under the illustrations
+experience-scene.spec.ts › @PF-1-ASM-26 at 1440 five posters each with its illustration, all text visible while scrolling, no click
+experience-scene.spec.ts › @PF-1-ASM-26 at 1440 the experience shows no photo of him, no image gap under the illustrations
+experience-scene.spec.ts › @PF-1-ASM-26 at 1440 the vertical scroll carries a pinned track sideways by transform alone
+experience-scene.spec.ts › @PF-1-ASM-26 at 390 each poster sticks and the next slides over it
+experience-scene.spec.ts › reduced motion › @PF-1-ASM-26 under reduced motion the posters are static and stacked, all text in the flow
+film.spec.ts › the page loads with no console error at 390 and 1280 @PF-1-S9
+film.spec.ts › each chapter enters with its title card when scrolled into view @PF-1-S10
+film.spec.ts › something moves on every chapter while scrolling @PF-1-S3
+film.spec.ts › no sideways scroll at 320, 768 and 1280 @PF-1-S9
+film.spec.ts › every chapter has full-bleed media and its own transition into the next @PF-1-S20
+film.spec.ts › Boska and General Sans load from the site itself, no element falls back to a system font or uses Inter, Geist, Roboto, Montserrat, Bebas Neue or Anton, and NAWI in Boska spans at least 90% of the viewport width at 390 @PF-1-ASM-15
+film.spec.ts › Boska and General Sans load from the site itself, no element falls back to a system font or uses Inter, Geist, Roboto, Montserrat, Bebas Neue or Anton, and NAWI in Boska spans at least 90% of the viewport width at 1280 @PF-1-ASM-15
+film.spec.ts › the cold open shows both Nawi and Nahuel Mosse @PF-1-S23
+film.spec.ts › the cold open backdrop, NAWI, his cut-out and the character sheet move at different depths with pointer and scroll, and stay still under reduced motion @PF-1-ASM-24
+film.spec.ts › the cold open frames him with a character sheet saying class Technical Lead · Technical Project Manager, base Buenos Aires and an off-duty line naming CS2, Rocket League, Minecraft, Smite, The Witcher 3, Cyberpunk 2077, chess and Formula 1 with no game logo or art, in thin-line frames, four-point stars are the only ornament, images sit in arch masks reached by leader lines, and the sheet has no stat bar, level or number @PF-1-ASM-21
+film.spec.ts › NAWI in Boska is the largest text of the site with Nahuel Mosse beneath it in General Sans, the hero says I'm Nawi, and the page title, metadata, llms.txt, portfolio.json and both email doors say Nahuel Mosse @PF-1-ASM-19
+film.spec.ts › the hero title is in Boska with the cut-out photo in front of it, the only accent color is the red token, and no projector, letterbox or film-credits element exists @PF-1-ASM-09
+fonts-two-faces.spec.ts › Boska and Courier Prime load from the site itself, no element falls back to a system font or uses Inter, Geist, Roboto, Montserrat, Bebas Neue or Anton, and NAWI in Boska spans the viewport width (90% on a phone, 55% beside the id sheet on a wide screen) without leaving it at 390 @PF-1-ASM-15
+fonts-two-faces.spec.ts › Boska and Courier Prime load from the site itself, no element falls back to a system font or uses Inter, Geist, Roboto, Montserrat, Bebas Neue or Anton, and NAWI in Boska spans the viewport width (90% on a phone, 55% beside the id sheet on a wide screen) without leaving it at 1280 @PF-1-ASM-15
+fonts-two-faces.spec.ts › NAWI in Boska is the largest text of the site with Nahuel Mosse beneath it in Courier Prime, the hero says I'm Nawi, and the page title, metadata, llms.txt, portfolio.json and both email doors say Nahuel Mosse @PF-1-ASM-19
+fonts.spec.ts › Boska, General Sans and Courier Prime load from the site itself, no element falls back to a system font or uses Inter, Geist, Roboto, Montserrat, Bebas Neue or Anton, and NAWI in Boska spans at least 90% of the viewport width without leaving it at 390 @PF-1-ASM-15
+fonts.spec.ts › Boska, General Sans and Courier Prime load from the site itself, no element falls back to a system font or uses Inter, Geist, Roboto, Montserrat, Bebas Neue or Anton, and NAWI in Boska spans at least 90% of the viewport width without leaving it at 1280 @PF-1-ASM-15
+hero-flow.spec.ts › hero flow at 320 › the id sheet, the line and the button stack in order without overlap while scrolling @PF-1-ASM-27 (320)
+hero-flow.spec.ts › hero flow at 390 › the id sheet, the line and the button stack in order without overlap while scrolling @PF-1-ASM-27 (390)
+hero-framing.spec.ts › cold open framing at 320x640 › the id sheet starts below the first screen's face and envelope @PF-1-ASM-26 (320x640)
+hero-framing.spec.ts › cold open framing at 390x844 › the id sheet starts below the first screen's face and envelope @PF-1-ASM-26 (390x844)
+hero-framing.spec.ts › cold open framing at 390x664 › the id sheet starts below the first screen's face and envelope @PF-1-ASM-26 (390x664)
+id-sheet-no-photos.spec.ts › the identification sheet at 1910x912 shows no portrait and still sits below NAWI's baseline @PF-1-ASM-34
+id-sheet-no-photos.spec.ts › the identification sheet at 390x844 shows no portrait and still sits below NAWI's baseline @PF-1-ASM-34
+illustrated-chapters.spec.ts › illustrated chapters at 390 › at 390 and 1440 every chapter is built around its full-bleed illustration with faded edges, each project's illustration is at least 70% of the viewport tall with its title over it, one line and its pieces at least 280 px wide at 1440, Problem and My role behind a toggle, experience lists each employer over its illustration, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26 (390)
+illustrated-chapters.spec.ts › illustrated chapters at 1440 › at 390 and 1440 every chapter is built around its full-bleed illustration with faded edges, each project's illustration is at least 70% of the viewport tall with its title over it, one line and its pieces at least 280 px wide at 1440, Problem and My role behind a toggle, experience lists each employer over its illustration, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26 (1440)
+image-no-gaps.spec.ts › @PF-1-ASM-26 no moving image leaves a gap inside its container at 1440x900
+image-no-gaps.spec.ts › @PF-1-ASM-26 no moving image leaves a gap inside its container at 390x844
+lets-talk-doors.spec.ts › the cold open shows the desk edge to edge, the name and the identification sheet by second 5, with no hire door, at 390 @PF-1-S8 @PF-1-S19
+lets-talk-doors.spec.ts › the cold open shows the desk edge to edge, the name and the identification sheet by second 5, with no hire door, at 1280 @PF-1-S8 @PF-1-S19
+lets-talk-doors.spec.ts › desktop has one Let's talk, the corner, with none in the top bar, and the phone bar carries the same link @PF-1-ASM-26 @PF-1-ASM-27
+lets-talk-doors.spec.ts › a Top button sits beside Let's talk once the cover is out of view, stays at the contact scene, and returns to the top with focus on the heading @PF-1-ASM-48
+lets-talk-doors.spec.ts › on a phone the hire bar ends in a Top square of at least 48px that returns to the top, hidden on the cover @PF-1-ASM-48
+lets-talk-doors.spec.ts › each door opens an email with its own subject and the two door labels read as written @PF-1-ASM-12
+machine-text.spec.ts › llms.txt and portfolio.json state the freelance and TPM positioning @PF-1-ASM-07
+machine-text.spec.ts › no percentage, multiplier or before-after figure in llms.txt, portfolio.json or the page metadata @PF-1-S14
+machine-text.spec.ts › the phone appears on no page, llms.txt or portfolio.json @PF-1-ASM-16
+native-english.spec.ts › every line a visitor reads is idiomatic English: the rewritten lines are on the page and the calques are gone @PF-1-ASM-42
+nav-landing.spec.ts › at 1910x912 every top link lands its chapter in its first beat from anywhere on the page @PF-1-ASM-43
+nav-landing.spec.ts › at 1440x900 every top link lands its chapter in its first beat from anywhere on the page @PF-1-ASM-43
+nav-landing.spec.ts › at 1280x720 every top link lands its chapter in its first beat from anywhere on the page @PF-1-ASM-43
+nav-landing.spec.ts › at 390x844 every top link lands its chapter in its first beat from anywhere on the page @PF-1-ASM-43
+nav-landing.spec.ts › Back to top lands at the very top from the middle and the foot of the page @PF-1-ASM-48
+nav-landing.spec.ts › Let's talk in the corner lands on Let's talk from the cover and from the middle @PF-1-ASM-43
+offer-word.spec.ts › the OFFER word is at least 16.5vw and the Offer is one screen at 1910x912 @PF-1-ASM-38
+offer-word.spec.ts › the OFFER word is at least 16.5vw and the Offer is one screen at 1920x1080 @PF-1-ASM-38
+offer-word.spec.ts › the OFFER word is at least 16.5vw and the Offer is one screen at 2560x1080 @PF-1-ASM-38
+offer-word.spec.ts › the OFFER word is at least 16.5vw and the Offer is one screen at 1440x900 @PF-1-ASM-38
+offer-word.spec.ts › the OFFER word is at least 16.5vw and the Offer is one screen at 1280x720 @PF-1-ASM-38
+offer.spec.ts › the TPM offer and its door name how he delivers with AI @PF-1-S27
+offer.spec.ts › the TPM offer says AI-first delivery with Spec-Driven Development and agents orchestrated with Claude Code, every requirement traced to a test and reviewed by a person on the pull request, links to the dev kit scene, and the Smart Warehousing and Grupo ST entries open with their AI work @PF-1-ASM-23
+offer.spec.ts › the offer names freelance product builds @PF-1-S6
+offer.spec.ts › the offer names Technical Project Manager for companies @PF-1-S7
+offer.spec.ts › the html lang is en @PF-1-ASM-02
+one-screen-sections.spec.ts › the Let's talk ending block is one screen at 1910x912 @PF-1-ASM-37
+one-screen-sections.spec.ts › the Let's talk ending block is one screen at 1920x1080 @PF-1-ASM-37
+one-screen-sections.spec.ts › the Let's talk ending block is one screen at 2560x1080 @PF-1-ASM-37
+one-screen-sections.spec.ts › 1910x912 › the cold open is one screen: its section is 100svh and everything it shows is inside @PF-1-ASM-37
+one-screen-sections.spec.ts › 1910x912 › the identification sheet does not touch NAWI and the hero button does not touch the corner button @PF-1-ASM-37
+one-screen-sections.spec.ts › 1910x912 › each project group is one pinned screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1910x912 › the experience stage is one screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1910x912 › the offer is one screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1920x1080 › the cold open is one screen: its section is 100svh and everything it shows is inside @PF-1-ASM-37
+one-screen-sections.spec.ts › 1920x1080 › the identification sheet does not touch NAWI and the hero button does not touch the corner button @PF-1-ASM-37
+one-screen-sections.spec.ts › 1920x1080 › each project group is one pinned screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1920x1080 › the experience stage is one screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1920x1080 › the offer is one screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1440x900 › the cold open is one screen: its section is 100svh and everything it shows is inside @PF-1-ASM-37
+one-screen-sections.spec.ts › 1440x900 › the identification sheet does not touch NAWI and the hero button does not touch the corner button @PF-1-ASM-37
+one-screen-sections.spec.ts › 1440x900 › each project group is one pinned screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1440x900 › the experience stage is one screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1440x900 › the offer is one screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1280x720 › the cold open is one screen: its section is 100svh and everything it shows is inside @PF-1-ASM-37
+one-screen-sections.spec.ts › 1280x720 › the identification sheet does not touch NAWI and the hero button does not touch the corner button @PF-1-ASM-37
+one-screen-sections.spec.ts › 1280x720 › each project group is one pinned screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1280x720 › the experience stage is one screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 1280x720 › the offer is one screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 2560x1080 › the cold open is one screen: its section is 100svh and everything it shows is inside @PF-1-ASM-37
+one-screen-sections.spec.ts › 2560x1080 › the identification sheet does not touch NAWI and the hero button does not touch the corner button @PF-1-ASM-37
+one-screen-sections.spec.ts › 2560x1080 › each project group is one pinned screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 2560x1080 › the experience stage is one screen @PF-1-ASM-37
+one-screen-sections.spec.ts › 2560x1080 › the offer is one screen @PF-1-ASM-37
+one-screen.spec.ts › contact at 1910x912: the drawing covers the block, LET'S TALK to the footer fits one screen, the seal shows @PF-1-ASM-29
+one-screen.spec.ts › offer at 1910x912: the whole section fits one screen with the drawing big behind translucent cards @PF-1-ASM-31
+one-screen.spec.ts › contact at 1920x1080: the drawing covers the block, LET'S TALK to the footer fits one screen, the seal shows @PF-1-ASM-29
+one-screen.spec.ts › offer at 1920x1080: the whole section fits one screen with the drawing big behind translucent cards @PF-1-ASM-31
+one-screen.spec.ts › contact at 1440x900: the drawing covers the block, LET'S TALK to the footer fits one screen, the seal shows @PF-1-ASM-29
+one-screen.spec.ts › offer at 1440x900: the whole section fits one screen with the drawing big behind translucent cards @PF-1-ASM-31
+one-screen.spec.ts › contact at 1280x720: the drawing covers the block, LET'S TALK to the footer fits one screen, the seal shows @PF-1-ASM-29
+one-screen.spec.ts › offer at 1280x720: the whole section fits one screen with the drawing big behind translucent cards @PF-1-ASM-31
+one-screen.spec.ts › contact at 2560x1080: the drawing covers the block, LET'S TALK to the footer fits one screen, the seal shows @PF-1-ASM-29
+one-screen.spec.ts › offer at 2560x1080: the whole section fits one screen with the drawing big behind translucent cards @PF-1-ASM-31
+pf1-projects-today.spec.ts › each project scene links to its live page or its repository, except Grit, which is private @PF-1-S5 @PF-8-S1
+pf1-projects-today.spec.ts › Sonría and Miga open their live site and their repository, and the other projects keep their links @PF-1-ASM-26 @PF-8-S1
+pf1-projects-today.spec.ts › wide, scrolling through a group carries each of its projects across the showcase, no click @PF-1-ASM-26 @PF-8-S1
+pf1-projects-today.spec.ts › tools at 1910x912 show an illustration, plain stack words and buttons, with no terminal or monospace @PF-1-ASM-32 @PF-8-S1
+pf1-projects-today.spec.ts › at 390 the certifications are rendered once, in the rotating band, and it never shows a gap @PF-1-ASM-26 @PF-8-S1
+pf1-projects-today.spec.ts › at 1440 the certifications are rendered once, in the rotating band, and it never shows a gap @PF-1-ASM-26 @PF-8-S1
+phone-390.spec.ts › phone 390 › at 390 only the hire bar is fixed, NAWI sits inside the first screen, no text leaves the viewport and no asset box is taller than a screen @PF-1-ASM-27 @PF-1-S9
+phone-390.spec.ts › phone 390 › at 390 the chapter index opens from the top bar menu, a fixed Hire me bar of at least 48 px sits at the bottom, no text is under 14 px and nothing scrolls sideways @PF-1-ASM-27
+phone-glance.spec.ts › phone glance › at 390 the page is one column, the chapter index opens from the top bar menu, each case's pieces swipe sideways with the next one cut at the edge and a counter, each case says what it is in one line of at most 12 words, a fixed Hire me bar at the bottom is at least 48 px tall, no text is under 14 px and only the piece rows scroll sideways @PF-1-ASM-27
+phone-layout.spec.ts › phone layout › at 390 only the hire bar is fixed, the controls scroll away, the cold open shows the title and the subject in the first screen, no text leaves the viewport outside the piece rows and no asset box is taller than a screen @PF-1-ASM-27 @PF-1-S9
 pieces.spec.ts › each project scene links to its live page or its repository, except Grit, which is private @PF-1-S5
+pieces.spec.ts › the freelance offer and the project scenes show more real pieces than text blocks @PF-1-S26
+pieces.spec.ts › each personal project shows at least three real pieces: Cebador a looping capture of nahuelmosse.github.io/cebador-landing at 390 and 1280 and a link to it, ClubNahuelMosse its four README screens, Guardia captures of nahuelmosse.itch.io/triaje, Grit screens of its app and design lab, the dev kit a real card, its tests and its pull request; the freelance offer in the end credits recalls a strip of them @PF-1-ASM-22
+pieces.spec.ts › the Jüsto scene shows the team presentation photo, treated @PF-1-S12
+pieces.spec.ts › every real screen and photo sits under a mask or clip-path with a grade filter and the grain overlay, never a bare rectangular img @PF-1-ASM-10
+pieces.spec.ts › each project scene has a generated visual reference beside its explanation @PF-1-S16
+project-backdrop.spec.ts › at 390 and 1440 each project section carries a full-bleed backdrop from its own file, its real interface large in a plain code-drawn frame with no blend and no perspective, its field color, numeral and word kept, legible stack chips on every product color, and the dev kit diagram a six-shape crimson path on the backdrop @PF-1-ASM-26
+project-glance-ai-line.spec.ts › at 390 and 1440 each project's real interface is its focal point, a phone interface at least 70% of the viewport's height at 1440 and 75% of its width at 390 and a laptop or monitor interface at least 55% of the viewport's width at 1440 and 90% at 390, sitting in the screen drawn in its illustration, whose visible part reaches at most twice the interface's width and 1.4 times its height; beside it only the title, one line of at most 12 words, the stack and the link, no What, Problem or My role and no text card among its pieces, at least three other pieces each at least 240 px wide are in view at once with the lead at 1440, at 390 the order is title, interface, line, stack and link, then the swiping row; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26
+project-groups.spec.ts › grouped project chapters › at 390 and 1440 the projects are four chapters by kind, apps, landings, game and dev kit, each one short pinned scene whose beats follow the scroll and whose tabs name its projects @PF-1-ASM-26
+project-groups.spec.ts › grouped project chapters › a click on a tab swaps the project on show with its own screens and links, and leaves the scroll where it was @PF-1-ASM-26
 project-groups.spec.ts › grouped project chapters › Sonría and Miga open their live site and their repository, and the other projects keep their links @PF-1-ASM-26
+project-groups.spec.ts › grouped project chapters › at 390 every tab is a tap of at least 44 by 44 px @PF-1-ASM-26
+project-groups.spec.ts › grouped project chapters › the real screens of the landings and the game are sharp at twice their displayed size @PF-1-ASM-26
+project-groups.spec.ts › grouped project chapters › under reduced motion each group is a still: the stage does not stick, every caption is on the page, nothing is tilted or moved, and the tabs still switch @PF-1-ASM-26
+project-groups.spec.ts › grouped project chapters › experience is one compact, scannable band with the five employers, their role, period and one line each, and the whole page is clearly shorter @PF-1-ASM-26
+project-poster-art.spec.ts › at 390 and 1440 each project is a full-bleed field of its product color with its real interface large in a device frame, a phone at least 70% of the viewport height at 1440 and 75% of its width at 390, a laptop or browser at least 55% of the width at 1440 and 90% at 390, its numeral and word in Boska uppercase at least 12% of the viewport wide at 1440, its ink illustration loaded on the field and covering neither the interface nor the text, an interface set in a drawn screen carrying a perspective transform, the dev kit lead an svg diagram with at most 12 words and no typed document, consecutive cases with different compositions, beside it the stack, one line of at most 12 words and the link @PF-1-ASM-26
+project-poster.spec.ts › at 390 and 1440 each project is a full-bleed field of its product color with its real interface in a plain device frame, a phone at least 70% of the viewport height at 1440 and 75% of its width at 390, a laptop or browser at least 55% of the width at 1440 and 90% at 390, its numeral and word in Boska uppercase at least 12% of the viewport wide at 1440, no project illustration loaded, consecutive cases with different compositions, beside it the stack, one line of at most 12 words and the link, and at 1440 at least three other pieces in view each at least 240 px wide; no What, Problem or My role and no text card among its pieces, at 390 the order is title, interface, line, stack and link, then the swiping row; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26
+project-presentation-terminal-height.spec.ts › at 390 the product device is large enough to read @PF-1-ASM-26
+project-presentation.spec.ts › the tools are terminals and the private kit is not on the page › a Tools group has three terminals with real output and no kit wording anywhere @PF-1-ASM-26
+project-presentation.spec.ts › the product is the hero › at 390 no project title is wider than the viewport, at rest and at the end of its beats @PF-1-ASM-26
+project-presentation.spec.ts › the product is the hero › at 390 the product device is large enough to read @PF-1-ASM-26
+project-presentation.spec.ts › the product is the hero › at 1440 no project title is wider than the viewport, at rest and at the end of its beats @PF-1-ASM-26
+project-presentation.spec.ts › the product is the hero › at 1440 the product device is large enough to read @PF-1-ASM-26
+project-presentation.spec.ts › the product is the hero › each beat of a project shows a different screen of the product @PF-1-ASM-26
+project-presentation.spec.ts › the contact channels › at 390 email, LinkedIn and GitHub are three tiles with glyph, handle and line, none overflowing @PF-1-ASM-26
+project-presentation.spec.ts › the contact channels › at 1440 email, LinkedIn and GitHub are three tiles with glyph, handle and line, none overflowing @PF-1-ASM-26
+project-presentation.spec.ts › the contact channels › the copy button says Copied in a live region and goes back @PF-1-ASM-26
 project-presentation.spec.ts › the footer › at 390 the certifications are rendered once, in the rotating band, and it never shows a gap @PF-1-ASM-26
 project-presentation.spec.ts › the footer › at 1440 the certifications are rendered once, in the rotating band, and it never shows a gap @PF-1-ASM-26
 project-scroll-groups.spec.ts › project groups shown by scrolling › wide, scrolling through a group carries each of its projects across the showcase, no click @PF-1-ASM-26
-# retired: the offer strip and the [data-piece] rows left the page (PF-1 L66, L141)
-pieces.spec.ts › the freelance offer and the project scenes show more real pieces than text blocks @PF-1-S26
-# retired: the [data-piece] rows, the dev kit piece scene and the offer strip left the page (PF-1 L66, L141)
-pieces.spec.ts › each personal project shows at least three real pieces: Cebador a looping capture of nahuelmosse.github.io/cebador-landing at 390 and 1280 and a link to it, ClubNahuelMosse its four README screens, Guardia captures of nahuelmosse.itch.io/triaje, Grit screens of its app and design lab, the dev kit a real card, its tests and its pull request; the freelance offer in the end credits recalls a strip of them @PF-1-ASM-22
-# retired: the Jüsto scene shows its illustration and logo, no team photo (no justo-team image on the page)
-pieces.spec.ts › the Jüsto scene shows the team presentation photo, treated @PF-1-S12
-# retired: [data-piece] frames no longer exist on the page (PF-1 L66, L141)
-pieces.spec.ts › every real screen and photo sits under a mask or clip-path with a grade filter and the grain overlay, never a bare rectangular img @PF-1-ASM-10
-# retired: the dev kit is no longer a project scene, it is the three tools (PF-1 L159, L192)
-pieces.spec.ts › each project scene has a generated visual reference beside its explanation @PF-1-S16
-# retired: per-project backdrop sections superseded by the grouped scrubbed scene (PF-1 L159)
-project-backdrop.spec.ts › at 390 and 1440 each project section carries a full-bleed backdrop from its own file, its real interface large in a plain code-drawn frame with no blend and no perspective, its field color, numeral and word kept, legible stack chips on every product color, and the dev kit diagram a six-shape crimson path on the backdrop @PF-1-ASM-26
-# retired: per-project spreads with a piece row superseded (PF-1 L140, L159)
-project-glance-ai-line.spec.ts › at 390 and 1440 each project's real interface is its focal point, a phone interface at least 70% of the viewport's height at 1440 and 75% of its width at 390 and a laptop or monitor interface at least 55% of the viewport's width at 1440 and 90% at 390, sitting in the screen drawn in its illustration, whose visible part reaches at most twice the interface's width and 1.4 times its height; beside it only the title, one line of at most 12 words, the stack and the link, no What, Problem or My role and no text card among its pieces, at least three other pieces each at least 240 px wide are in view at once with the lead at 1440, at 390 the order is title, interface, line, stack and link, then the swiping row; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26
-# retired: the dev kit chapter and the click tabs are gone, the fourth chapter is tools (PF-1 L152, L192; three-beats.spec.ts covers the beats)
-project-groups.spec.ts › grouped project chapters › at 390 and 1440 the projects are four chapters by kind, apps, landings, game and dev kit, each one short pinned scene whose beats follow the scroll and whose tabs name its projects @PF-1-ASM-26
-# retired: the click tabs were replaced by scroll-driven groups (PF-1 L152)
-project-groups.spec.ts › grouped project chapters › a click on a tab swaps the project on show with its own screens and links, and leaves the scroll where it was @PF-1-ASM-26
-# retired: there are no tabs, the groups are scroll-driven (PF-1 L152)
-project-groups.spec.ts › grouped project chapters › at 390 every tab is a tap of at least 44 by 44 px @PF-1-ASM-26
-# retired: it reaches each screen by clicking tabs, which were replaced by scroll-driven groups (PF-1 L152)
-project-groups.spec.ts › grouped project chapters › the real screens of the landings and the game are sharp at twice their displayed size @PF-1-ASM-26
-# retired: it pins on tabs and a relative stage; the page has no tabs (PF-1 L152)
-project-groups.spec.ts › grouped project chapters › under reduced motion each group is a still: the stage does not stick, every caption is on the page, nothing is tilted or moved, and the tabs still switch @PF-1-ASM-26
-# retired: experience is now pinned employer scenes of about 4000 px at 1440, not a compact band (PF-1 L147 superseded by asm35-experience)
-project-groups.spec.ts › grouped project chapters › experience is one compact, scannable band with the five employers, their role, period and one line each, and the whole page is clearly shorter @PF-1-ASM-26
-# retired: per-project poster art superseded (PF-1 L140, L159)
-project-poster-art.spec.ts › at 390 and 1440 each project is a full-bleed field of its product color with its real interface large in a device frame, a phone at least 70% of the viewport height at 1440 and 75% of its width at 390, a laptop or browser at least 55% of the width at 1440 and 90% at 390, its numeral and word in Boska uppercase at least 12% of the viewport wide at 1440, its ink illustration loaded on the field and covering neither the interface nor the text, an interface set in a drawn screen carrying a perspective transform, the dev kit lead an svg diagram with at most 12 words and no typed document, consecutive cases with different compositions, beside it the stack, one line of at most 12 words and the link @PF-1-ASM-26
-# retired: per-project poster fields superseded (PF-1 L140, L159)
-project-poster.spec.ts › at 390 and 1440 each project is a full-bleed field of its product color with its real interface in a plain device frame, a phone at least 70% of the viewport height at 1440 and 75% of its width at 390, a laptop or browser at least 55% of the width at 1440 and 90% at 390, its numeral and word in Boska uppercase at least 12% of the viewport wide at 1440, no project illustration loaded, consecutive cases with different compositions, beside it the stack, one line of at most 12 words and the link, and at 1440 at least three other pieces in view each at least 240 px wide; no What, Problem or My role and no text card among its pieces, at 390 the order is title, interface, line, stack and link, then the swiping row; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26
-# retired: the terminal was removed from the tools (PF-1 L192, L193)
-project-presentation-terminal-height.spec.ts › at 390 the product device is large enough to read @PF-1-ASM-26
-project-presentation.spec.ts › the tools are terminals and the private kit is not on the page › a Tools group has three terminals with real output and no kit wording anywhere @PF-1-ASM-26
-project-title-fit.spec.ts › at 390 a terminal is as tall as its output, with no dead black half @PF-1-ASM-26
-project-title-fit.spec.ts › at 1440 a terminal is as tall as its output, with no dead black half @PF-1-ASM-26
-# retired: the contact block is a ticker band and two inverting halves, not three glyph tiles (PF-1 L198, L211)
-project-presentation.spec.ts › the contact channels › at 390 email, LinkedIn and GitHub are three tiles with glyph, handle and line, none overflowing @PF-1-ASM-26
-project-presentation.spec.ts › the contact channels › at 1440 email, LinkedIn and GitHub are three tiles with glyph, handle and line, none overflowing @PF-1-ASM-26
-# retired: the group is one pinned scene at every width, not stacked posters on a phone (PF-1 L158)
 project-scroll-groups.spec.ts › project groups shown by scrolling › narrow, the headline comes first and every project is a stacked poster reached by scrolling @PF-1-ASM-26
-# retired: one pinned scene per project with a dev kit section was replaced by grouped scenes (PF-1 L146, L159)
+project-scroll-groups.spec.ts › project groups shown by scrolling › with reduced motion every width stacks the projects @PF-1-ASM-26
+project-scroll-groups.spec.ts › project groups shown by scrolling › the pages of the live site and the repositories are linked from their project @PF-1-ASM-26
 project-showcase.spec.ts › pinned project showcase › at 390 and 1440 each project is a tall section with a sticky stage whose beats follow the scroll, one caption at a time, and the index marks where the visitor is @PF-1-ASM-26
 project-showcase.spec.ts › pinned project showcase › under reduced motion each showcase is a still: the stage does not stick, every caption is on the page and nothing is tilted or moved @PF-1-ASM-26
-# replaced by e2e/pf1-projects-today.spec.ts (PF-8-broken-tests-and-local-paths)
+project-title-fit.spec.ts › at 390 every project title is whole, below the strip and clear of the device @PF-1-ASM-26
+project-title-fit.spec.ts › at 1440 every project title is whole, below the strip and clear of the device @PF-1-ASM-26
+project-title-fit.spec.ts › at 1280 every project title is whole, below the strip and clear of the device @PF-1-ASM-26
+project-title-fit.spec.ts › at 1920 every project title is whole, below the strip and clear of the device @PF-1-ASM-26
+project-title-fit.spec.ts › at 360 every project title is whole, below the strip and clear of the device @PF-1-ASM-26
+project-title-fit.spec.ts › at 390 a terminal is as tall as its output, with no dead black half @PF-1-ASM-26
+project-title-fit.spec.ts › at 1440 a terminal is as tall as its output, with no dead black half @PF-1-ASM-26
+project-wipe-transitions.spec.ts › projects wipe in over each other › at 390 every project of every group is reached by scrolling alone @PF-1-ASM-26
+project-wipe-transitions.spec.ts › projects wipe in over each other › at 390 a turn never shows two texts nor a ghosted field @PF-1-ASM-26
+project-wipe-transitions.spec.ts › projects wipe in over each other › at 1440 every project of every group is reached by scrolling alone @PF-1-ASM-26
+project-wipe-transitions.spec.ts › projects wipe in over each other › at 1440 a turn never shows two texts nor a ghosted field @PF-1-ASM-26
+project-wipe-transitions.spec.ts › projects wipe in over each other › with reduced motion each project is a still with its text and no transform @PF-1-ASM-26
+roll-brand-logos.spec.ts › the Platzi and EF SET roll items carry their brand mark at the text height @PF-1-ASM-39
+scene-media.spec.ts › the cold open plays generated video behind the name @PF-1-S1
+scene-media.spec.ts › every scene media file answers 200 and has its ASSETS.md entry with the free tool, the prompt and the license @PF-1-S2
+scene-media.spec.ts › the cold open fills the viewport edge to edge at 390 @PF-1-S8
+scene-media.spec.ts › the cold open fills the viewport edge to edge at 1280 @PF-1-S8
+scene-media.spec.ts › video is muted and looping with a poster; reduced motion shows only the poster @PF-1-ASM-03
+scene-media.spec.ts › no request leaves to an image or video generation API while browsing @PF-1-S11
+scene-media.spec.ts › paths outside public answer 404 @PF-1-ASM-11
+scene-media.spec.ts › by second 5 the name, the offer and a door are in view at 390 @PF-1-S19
+scene-media.spec.ts › by second 5 the name, the offer and a door are in view at 1280 @PF-1-S19
+scene-media.spec.ts › at 390 on throttled 4G the poster paints under 1.5 s, the cold open video is 3 MB or less and name, offer and a door show by 5 s @PF-1-ASM-14
+scene-media.spec.ts › at 1280 on throttled 4G the poster paints under 1.5 s, the cold open video is 3 MB or less and name, offer and a door show by 5 s @PF-1-ASM-14
+scene-media.spec.ts › a failed video keeps its poster, a failed poster a dark field, and the text stays legible @PF-1-ASM-17
+scene-media.spec.ts › every chapter shows at least one illustration of the world @PF-1-S24
+scene-media.spec.ts › the page shows the backdrop and the closing in 16:9 on wide screens and 9:16 on tall ones, the doors, the scenes, the closing, the torn paper and the grain, each listed in ASSETS.md as made in Gemini @PF-1-ASM-20
+seo.spec.ts › the raw HTML has one h1, a title, a description and a canonical URL @PF-1-ASM-44
+seo.spec.ts › the JSON-LD parses and names the WebSite, the Person and the ProfilePage about him @PF-1-ASM-44
+seo.spec.ts › who he is, what he does and where he is are in the HTML without JavaScript @PF-1-ASM-44
+seo.spec.ts › robots.txt lets search and AI search agents in and points to a sitemap that answers @PF-1-ASM-44
+seo.spec.ts › the share image answers as an image and llms.txt answers with his summary @PF-1-ASM-44
+slow-line-painted.spec.ts › @PF-1-ASM-44 at 1910 every image a section shows is painted once the visitor is there
+slow-line-painted.spec.ts › @PF-1-ASM-44 at 390 every image a section shows is painted once the visitor is there
+slow-line.spec.ts › @PF-1-ASM-44 at 1910 on a slow line the title covers the cold load, counts from 001, leaves once and holds back the rest
+slow-line.spec.ts › @PF-1-ASM-44 at 1910 every image a section shows is painted once the visitor is there
+slow-line.spec.ts › @PF-1-ASM-44 at 390 on a slow line the title covers the cold load, counts from 001, leaves once and holds back the rest
+slow-line.spec.ts › @PF-1-ASM-44 at 390 every image a section shows is painted once the visitor is there
+sound-visibility.spec.ts › a hidden tab pauses the soundtrack and coming back resumes it, with the toggle unchanged @PF-1-ASM-45
+sound-visibility.spec.ts › a soundtrack turned off stays off after the tab is hidden and shown @PF-1-ASM-45
+sound-visibility.spec.ts › scrolled past the cover, a click leaves the sound idle and the audio paused @PF-1-ASM-46
+sound-visibility.spec.ts › on the cover with its invitation on screen, a click starts the sound @PF-1-ASM-46
+sound-visibility.spec.ts › the toggle starts the sound from anywhere @PF-1-ASM-46
+sound-visibility.spec.ts › a key that scrolls the cover leaves the sound idle @PF-1-ASM-46
+sound-visibility.spec.ts › touch › a swipe that scrolls the page from the cover leaves the sound idle @PF-1-ASM-46
+three-beats.spec.ts › three beats per project › at 1910 and 390 every project has three beats and three ticks, the scroll walks all three, and its stack and links are visible on each of them @PF-1-ASM-43
 tools-plain.spec.ts › tools at 1910x912 show an illustration, plain stack words and buttons, with no terminal or monospace @PF-1-ASM-32
+tools-plain.spec.ts › tools at 390x844 show an illustration, plain stack words and buttons, with no terminal or monospace @PF-1-ASM-32
+wide-screens-clear.spec.ts › at 1280x720 the Projects word ends where the Apps group header text begins @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 1280x720 the Offer detail line starts below the last experience card @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 1366x768 the Projects word ends where the Apps group header text begins @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 1366x768 the Offer detail line starts below the last experience card @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 1536x864 the Projects word ends where the Apps group header text begins @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 1536x864 the Offer detail line starts below the last experience card @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 1920x900 the Projects word ends where the Apps group header text begins @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 1920x900 the Offer detail line starts below the last experience card @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 1920x1080 the Projects word ends where the Apps group header text begins @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 1920x1080 the Offer detail line starts below the last experience card @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 2560x1080 the Projects word ends where the Apps group header text begins @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 2560x1080 the Offer detail line starts below the last experience card @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 2560x1440 the Projects word ends where the Apps group header text begins @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 2560x1440 the Offer detail line starts below the last experience card @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 3440x1440 the Projects word ends where the Apps group header text begins @PF-1-ASM-28
+wide-screens-clear.spec.ts › at 3440x1440 the Offer detail line starts below the last experience card @PF-1-ASM-28
+wide-screens-offer-detail-clear.spec.ts › at 1280x720 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens-offer-detail-clear.spec.ts › at 1536x864 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens-offer-detail-clear.spec.ts › at 1920x1080 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens-offer-detail-clear.spec.ts › at 2560x1440 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens-offer-detail-clear.spec.ts › at 3440x1440 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens-offer-detail.spec.ts › at 1280x720 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens-offer-detail.spec.ts › at 1536x864 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens-offer-detail.spec.ts › at 1920x1080 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens-offer-detail.spec.ts › at 2560x1440 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens-offer-detail.spec.ts › at 3440x1440 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens.spec.ts › at 1280x720 the tools titles fit the viewport under the strip @PF-1-ASM-28
+wide-screens.spec.ts › at 1280x720 the Projects word clears the Apps group header @PF-1-ASM-28
+wide-screens.spec.ts › at 1280x720 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens.spec.ts › at 1366x768 the tools titles fit the viewport under the strip @PF-1-ASM-28
+wide-screens.spec.ts › at 1366x768 the Projects word clears the Apps group header @PF-1-ASM-28
+wide-screens.spec.ts › at 1366x768 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens.spec.ts › at 1536x864 the tools titles fit the viewport under the strip @PF-1-ASM-28
+wide-screens.spec.ts › at 1536x864 the Projects word clears the Apps group header @PF-1-ASM-28
+wide-screens.spec.ts › at 1536x864 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens.spec.ts › at 1920x900 the tools titles fit the viewport under the strip @PF-1-ASM-28
+wide-screens.spec.ts › at 1920x900 the Projects word clears the Apps group header @PF-1-ASM-28
+wide-screens.spec.ts › at 1920x900 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens.spec.ts › at 1920x1080 the tools titles fit the viewport under the strip @PF-1-ASM-28
+wide-screens.spec.ts › at 1920x1080 the Projects word clears the Apps group header @PF-1-ASM-28
+wide-screens.spec.ts › at 1920x1080 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens.spec.ts › at 2560x1080 the tools titles fit the viewport under the strip @PF-1-ASM-28
+wide-screens.spec.ts › at 2560x1080 the Projects word clears the Apps group header @PF-1-ASM-28
+wide-screens.spec.ts › at 2560x1080 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens.spec.ts › at 2560x1440 the tools titles fit the viewport under the strip @PF-1-ASM-28
+wide-screens.spec.ts › at 2560x1440 the Projects word clears the Apps group header @PF-1-ASM-28
+wide-screens.spec.ts › at 2560x1440 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens.spec.ts › at 3440x1440 the tools titles fit the viewport under the strip @PF-1-ASM-28
+wide-screens.spec.ts › at 3440x1440 the Projects word clears the Apps group header @PF-1-ASM-28
+wide-screens.spec.ts › at 3440x1440 the Offer detail line is not covered by the experience cards @PF-1-ASM-28
+wide-screens.spec.ts › the stylesheet declares the styled scrollbar @PF-1-ASM-28
