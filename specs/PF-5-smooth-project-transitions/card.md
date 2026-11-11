@@ -36,7 +36,7 @@ not_read: none
 suite: npx playwright test e2e/project-turn-measured.spec.ts e2e/project-turn-smooth.spec.ts e2e/project-wipe-transitions.spec.ts e2e/project-groups.spec.ts e2e/project-scroll-groups.spec.ts e2e/project-showcase.spec.ts e2e/mobile-memory.spec.ts e2e/mobile-memory-offscreen.spec.ts e2e/mobile-devices.spec.ts e2e/slow-line.spec.ts e2e/scene-media.spec.ts
 lint: npx eslint .
 types: npx tsc --noEmit
-app: npx next build && npx next start -p $PORT
+app: npx next build && npx next start
 ```
 
 ## Log
