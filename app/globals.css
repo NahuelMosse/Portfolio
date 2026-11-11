@@ -88,6 +88,20 @@ img[data-src][data-loaded] {
   }
 }
 
+/* on a phone a blur filter is a surface of its own for every image waiting to load: the proof shows unblurred and arrives without the
+   focus-in, so a tab that walks past many of them does not run out of memory */
+@media (max-width: 1099px) {
+  img[data-srcset]:not([data-loaded]),
+  img[data-src]:not([data-loaded]) {
+    filter: none;
+  }
+
+  img[data-srcset][data-loaded],
+  img[data-src][data-loaded] {
+    animation: none;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -1429,6 +1443,7 @@ html:not([data-sound="idle"]) .cover-cue {
     inset: auto 0 0 0;
     z-index: 45;
     display: flex;
+    height: var(--hire-bar-height);
     background: var(--ink);
     border-top: 1px solid var(--bone-30);
     transition:
@@ -1450,7 +1465,7 @@ html:not([data-sound="idle"]) .cover-cue {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: var(--hire-bar-height);
+    min-height: 0;
     background: var(--bone);
     color: var(--ink);
     font-family: var(--font-label);

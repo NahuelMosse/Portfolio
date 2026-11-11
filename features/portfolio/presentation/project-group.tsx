@@ -3,7 +3,7 @@
 import type { CSSProperties, ReactNode } from "react"
 import type { DeviceKind, Piece, Project } from "./content"
 import { ShowcaseDevice } from "./showcase-device"
-import { BEAT_RUN, BEATS_PER_PROJECT, TURN_RUN, startOf, useGroupTrack } from "./use-group-track"
+import { BEAT_RUN, BEATS_PER_PROJECT, TURN_RUN, pinnedRun, startOf, useGroupTrack } from "./use-group-track"
 import { Button } from "@/components/ui/button"
 
 // The three beats of a project's story, one per step of its hold: what it is, the problem, and his part in how it was built.
@@ -140,7 +140,7 @@ export function ProjectGroupScene({ id, label, noun, line, composition, items }:
     const node = scene.current
     if (!node) return
     const top = node.getBoundingClientRect().top + window.scrollY
-    window.scrollTo({ top: top + (node.offsetHeight - window.innerHeight) * startOf(position, count) })
+    window.scrollTo({ top: top + pinnedRun(node) * startOf(position, count) })
   }
 
   return (

@@ -202,7 +202,7 @@
   .group-pin {
     position: sticky;
     top: 0;
-    height: 100svh;
+    height: 100dvh;
     contain: paint;
     isolation: isolate;
     background: var(--ink);
@@ -247,6 +247,7 @@
   }
 
   .group-card .show-stage {
+    height: 100%;
     background: none;
     will-change: transform;
     transform: translate3d(
@@ -316,8 +317,9 @@
 }
 
 /* ---------- narrow (below 1100): the same pinned scene ----------
-   The tab is a 44px touch target. The caption is measured (--copy-h, set from its own height) and the device stands in what the
-   caption leaves, so the two never overlap and the device is never cropped by the caption. */
+   The tab is a 44px touch target. A phone holds no layer of its own that it can do without (Safari reloads a tab that runs out of
+   memory): nothing keeps will-change, the devices stand flat and the art holds still, and the moving parts inside the stage use
+   2D transforms. */
 @media (prefers-reduced-motion: no-preference) and (max-width: 1099px) {
   .group {
     --show-strip: 2.75rem;
@@ -338,38 +340,135 @@
     padding: 0 var(--space-2);
   }
 
-  /* the apps and the websites stand their devices in the same room whatever their caption's length, Cebador's: a longer caption
-     sinks the foot of the device behind its solid band, as the scene already does */
-  .group-card {
-    --avail: calc(100svh - var(--hero-top) - var(--copy-h, 15rem) + var(--space-4));
+  .group .group-card[data-reachable],
+  .group .group-card .show-stage,
+  .group .group-card .backdrop,
+  .group .group-card .plate {
+    will-change: auto;
   }
 
-  .group-card[data-layers="both"],
-  .group-card[data-kind="phone"] {
-    --avail: calc(100svh - var(--hero-top) - 23.75rem + var(--space-4));
+  .group .group-card .backdrop {
+    transform: none;
   }
 
-  .group-card .show-rig[data-device="phone"] {
-    --hero-height: max(min(var(--avail), calc(var(--hero-width) * 2.164)), 8rem);
-    width: auto;
-    aspect-ratio: 390 / 844;
+  .group .group-card .plate {
+    transform: scale(var(--mirror), 1);
   }
 
-  .group-card .show-rig[data-device="browser"] {
-    --hero-height: max(min(var(--avail), calc(var(--hero-width) * 0.8)), 8rem);
+  .group .group-card .show-word {
+    transform: translate(calc(var(--d) * 70vw * var(--wy) + var(--p) * min(2vw, var(--gutter-right) / 2)), calc(var(--d) * 45svh * var(--wx)));
   }
 
-  .group-card[data-layers="both"] .show-rig[data-device="browser"] {
-    --hero-height: max(min(calc(var(--avail) * 0.62), calc(var(--hero-width) * 0.8)), 8rem);
+  .group .group-card .show-rig {
+    transform: translate(calc(var(--dd) * 40vw * var(--wx)), calc(var(--dd) * 30svh * var(--wy))) rotate(calc(var(--dd) * 6deg))
+      scale(calc(1 - max(var(--dd), calc(var(--dd) * -1)) * 0.2));
+  }
+
+  .group .group-card .show-copy {
+    transform: translate(0, calc(var(--d) * 6svh));
   }
 
   .group-card .show-text {
     font-size: clamp(1.0625rem, 2.6vw, 1.5rem);
   }
+}
 
-  .group-card[data-layers="both"] .show-rig[data-role="second"] {
-    top: calc(var(--hero-top) + var(--avail) * 0.2);
-    height: max(calc(var(--avail) * 0.8), 8rem);
+/* a phone held upright: the caption's text sits at the foot (--text-top, from its measured height) and the devices stand in what lies
+   above it, as large as that leaves. The stage may be a short one (a browser bar shown), so the zone starts under the tabs and the
+   device rises over the poster word to keep a phone at 39 % of the screen; the caption's own gradient padding is not text, so a
+   device may sink into it. A browser takes the width between the gutters and the shape of its capture. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 1099px) and (orientation: portrait) {
+  .group-card {
+    --copy-pad: var(--space-6);
+    --text-top: calc(100dvh - var(--copy-h, 15rem) + var(--copy-pad));
+    --zone-top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-2));
+    --zone-bottom: calc(var(--text-top) - var(--space-2));
+    --device-top: max(var(--zone-top), min(var(--hero-top), calc(var(--zone-bottom) - 100dvh * 0.39)));
+    --avail: max(calc(var(--zone-bottom) - var(--device-top)), 8rem);
+    --peek: min(var(--space-5), calc(var(--device-top) - var(--zone-top)));
+  }
+
+  .group-card .show-rig {
+    top: var(--device-top);
+  }
+
+  /* a phone screen is 390:844: the rig is that shape inside its bezel */
+  .group .group-card .show-rig[data-device="phone"],
+  .group .group-card[data-layers="both"] .show-rig[data-role="second"] {
+    --hero-height: min(var(--avail), calc(var(--hero-width) * 2.164));
+    width: calc((var(--hero-height) - 2 * var(--device-bezel)) * 390 / 844 + 2 * var(--device-bezel));
+    height: var(--hero-height);
+    aspect-ratio: auto;
+  }
+
+  .group-card .show-rig[data-device="browser"] {
+    --browser-height: calc(var(--hero-width) / var(--shape, 1.6) + var(--space-5));
+    height: auto;
+    top: calc(var(--device-top) + max(0px, (var(--avail) - var(--browser-height)) / 2));
+  }
+
+  .group-card .show-rig[data-device="browser"] .show-device {
+    position: relative;
+  }
+
+  .group-card .show-rig[data-device="browser"] .show-glass {
+    aspect-ratio: var(--shape, 1.6);
+  }
+
+  /* a page with real phone screens: the phone stands in front over the page, which peeks above it */
+  .group .group-card[data-layers="both"] .show-rig[data-device="browser"] {
+    top: calc(var(--device-top) - var(--peek));
+  }
+
+  .group .group-card[data-layers="both"] .show-rig[data-role="second"] {
+    top: var(--device-top);
+  }
+
+  .group-card .show-copy {
+    padding-top: var(--copy-pad);
+  }
+}
+
+/* a short screen (the browser's bars shown): the caption gives the devices its gradient padding and tightens its lines */
+@media (prefers-reduced-motion: no-preference) and (max-width: 1099px) and (orientation: portrait) and (max-height: 760px) {
+  .group-card {
+    --copy-pad: var(--space-3);
+  }
+
+  .group-card .show-text {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .group-card .show-beats,
+  .group-card .show-meta,
+  .group-card .show-ticks {
+    margin-top: var(--space-1);
+  }
+
+  .group-card .show-meta {
+    row-gap: 0;
+  }
+
+  .group-card .show-meta .stack {
+    row-gap: 0;
+  }
+
+  .group-card .show-meta .stack li {
+    line-height: 1.1;
+  }
+
+  .group-card .show-meta a {
+    min-height: 2rem;
+    font-size: var(--text-small);
+  }
+
+  .group-card .show-copy {
+    padding-bottom: calc(var(--hire-bar-height) + var(--space-1));
+  }
+
+  .group-card .show-text {
+    margin-top: var(--space-1);
   }
 }
 

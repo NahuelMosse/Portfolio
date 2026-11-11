@@ -2,7 +2,7 @@ import { useEffect, useRef, type CSSProperties } from "react"
 // kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
 import { DEFERRED_BLANK, SceneMedia } from "@/features/film/motion"
 import type { Piece, ScreenFrame } from "./content"
-import { deferredPiece, pieceBar, pieceThumb } from "./piece-image"
+import { deferredPiece, pieceBar, pieceShape, pieceThumb } from "./piece-image"
 
 type Role = "main" | "second"
 
@@ -102,8 +102,10 @@ function useFollowMain(role: Role) {
 export function ShowcaseDevice({ kind, screens, active, role }: DeviceProps) {
   const shown = screens[active]
   const rig = useFollowMain(role)
+  // a browser's screen takes the shape of the capture on show
+  const shape = { "--shape": pieceShape(shown.kind === "capture" ? shown.poster : shown.src) } as CSSProperties
   return (
-    <div ref={rig} className="show-rig" data-device={kind} data-role={role}>
+    <div ref={rig} className="show-rig" data-device={kind} data-role={role} style={shape}>
       <Glow screens={screens} active={active} />
       <span className="show-cast" aria-hidden="true" />
       <figure className="show-device" data-frame={kind}>

@@ -1,9 +1,13 @@
 // kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
 import { DEFERRED_BLANK } from "@/features/film/motion"
 import bars from "./piece-bars.json"
+import shapes from "./piece-shapes.json"
 import widths from "./piece-widths.json"
 
 const WIDTHS: Record<string, number[]> = widths
+const SHAPES: Record<string, number> = shapes
+// a capture with no recorded shape is a desktop page
+const DESKTOP_SHAPE = 1.6
 
 type Bar = { bg: string; tone: "light" | "dark"; trim?: number }
 // a JSON import widens "light" | "dark" to string; scripts/derive-bars.mjs writes only those two tones
@@ -23,6 +27,11 @@ export function pieceSrcSet(src: string): string {
 // to crop when the capture came with a status bar of its own (scripts/derive-bars.mjs).
 export function pieceBar(src: string): Bar {
   return BARS[idOf(src)] ?? { bg: "#0b0b0b", tone: "light" }
+}
+
+// The shape of a piece, its width over its height (scripts/derive-shapes.mjs).
+export function pieceShape(src: string): number {
+  return SHAPES[idOf(src)] ?? DESKTOP_SHAPE
 }
 
 // The smallest copy, for a blurred glow behind a device.
