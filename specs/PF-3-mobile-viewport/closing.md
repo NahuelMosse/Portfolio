@@ -21,12 +21,12 @@ PF-3 · the site on a phone: no crash, the real screen, projects at their size
 - the desktop (1100 px and wider) does not change
 
 ## Passed
-- 1 · L1 intact — unchanged since 6e8b9a9a6
+- 1 · L1 intact — unchanged since c9009465c
 - 2 · every spec has a test — 6 specs, each with a tagged test
 - 3 · every tag is a spec of card.md — 6 tagged files
 - 4 · each ASM is tagged or declared uncovered — 7 of 7 tagged
-- 5 · no tagged test touched since RED — none of 3 tagged files since 714d50a49
-- 6 · diff and Tasks agree — 18 files in the diff against 6e8b9a9a63610f4511ecfb12075fa96cbd8a4d4e~1; features/portfolio/presentation/experience.css is in Tasks, not in the diff
+- 5 · no tagged test touched since RED — none of 3 tagged files since 7ed9ddc86
+- 6 · diff and Tasks agree — 18 files in the diff against c9009465cde59fa478e707e00deb081328bdc8a4~1; features/portfolio/presentation/experience.css is in Tasks, not in the diff
 - 8 · judge · skipped — risk.json says review: medium
 - 9 · required.mjs — mutation, linter and scope ran and passed on this code
 
@@ -48,6 +48,7 @@ no judge: risk large · medium; the gate is the whole review
 - L15 · 2026-11-11 · project-presentation.spec.ts:79 a 390 (@PF-1-ASM-26) falla bajo carga en paralelo y pasa con un solo worker: un salto directo a un grupo que content-visibility no renderizaba deja el título fuera de lugar unos 160 ms; regresión de PF-3 mitigada, no cerrada
 - L16 · 2026-11-11 · wide-screens.spec.ts:48 a 1366x768 (desktop) pasa aislado; PF-3 no cambia el desktop
 - L17 · 2026-11-11 · sin un iPhone real no se verificó que la barra de Safari se colapse (S2), el crash de memoria de iOS (S1) ni la banda svh/dvh (S3); solo emulado en Playwright WebKit y Chromium a 390x844 y 390x664
+- L18 · 2026-11-11 · rebasada sobre main con PF-2 (cd9d180), la suite da 59 fallidos / 48 pasados; además de los de main, fallan mobile-viewport.spec.ts:105, project-presentation.spec.ts:79 (390 y 1440) y wide-screens.spec.ts:48 (1280x720, 2560x1440), estos dos últimos de desktop, que PF-3 no cambia; no se corrió main con PF-2 para comparar
 
 ## Kit notes
 - the time-cap hook reads specs/.current of the session cwd (D:/projects/Portfolio = PF-1, 232 % of its cap), not this worktree's; PF-3's own 240 min cap was within budget when suites ran
@@ -63,8 +64,8 @@ no judge: risk large · medium; the gate is the whole review
 - module security-l2 off by decision: opt-in module, not chosen at install
 - grade: mvp — full design control for the portfolio revamp: design line, component set and screen audit
 
-Cost: USD 22.67 (card-runner 15.54, builder 5.58, main 1.55) · the messages of this card
-close.mjs seal: PF-3 sha256:1dd7a999c8a7983a56019f55e44b8ee61bdd861c52d111ff18bec3cccfb3ded0
+Cost: USD 23.26 (card-runner 16.13, builder 5.58, main 1.55) · the messages of this card
+close.mjs seal: PF-3 sha256:85bc17c43eab717cb0d3592af36aa42d8c9b7e40aa41f616bb3db8fb9c788eea
 <!-- close.mjs:end -->
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
