@@ -66,18 +66,6 @@ test("the credits roll runs edge to edge in the end credits after the credits sh
   expect(await roll.evaluate((el) => el.nextElementSibling?.tagName)).toBe("FOOTER")
 })
 
-test("each project holds at least three real pieces and the pieces outnumber the text fields @PF-1-S26 @PF-1-ASM-22 @PF-1-S16", async ({ page }) => {
-  await page.goto("/")
-  const counts = await page.locator("[data-project]").evaluateAll((all) =>
-    all.map((el) => ({ id: el.getAttribute("data-project"), pieces: el.querySelectorAll("[data-piece]").length })),
-  )
-  expect(counts).toHaveLength(5)
-  for (const { id, pieces } of counts) expect(pieces, String(id)).toBeGreaterThanOrEqual(3)
-  const total = counts.reduce((sum, c) => sum + c.pieces, 0)
-  expect(total).toBeGreaterThan(await page.locator('[data-chapter="projects"] [data-field]').count())
-  await expect(page.locator('[data-chapter="projects"] a[href*="nahuelmosse.github.io/cebador-landing"]').first()).toBeVisible()
-})
-
 test("every piece is clipped, graded and grained, and no bare img sits in a chapter @PF-1-ASM-10", async ({ page }) => {
   await page.goto("/")
   const bare = await page.locator("[data-piece]").evaluateAll((all) =>

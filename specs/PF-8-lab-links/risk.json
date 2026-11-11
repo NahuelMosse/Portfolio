@@ -1,0 +1,13 @@
+{
+  "size": "small",
+  "review": "low",
+  "lenses": [],
+  "modules": [],
+  "signals": [],
+  "words": [],
+  "files": [
+    "features/portfolio/presentation/content.ts",
+    "e2e/lab-links.spec.ts"
+  ],
+  "tasks": 1
+}
