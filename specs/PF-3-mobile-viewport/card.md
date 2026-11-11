@@ -53,3 +53,7 @@ overflow: node .claude/tools/overflow.mjs
 ## Log
 
 - L1 · "literalmente al usar la pagina en el telefono tira A problem repeatedly occurred on "https://nawi.dev/" cuando estoy scrolleando, ademas de que la barra de busqueda de safari nunca se va dejando el boton let's talk gigante, y en chrome se ve un poco mejor porque si baja la barra, pero igual deja todo ese espacio libre. eso hace que los proyectos se muestren muy chiquitos, los telefonos son diminutos y las pantallas no respetan la relacion de aspecto de una pantalla. ademas de que al scrollear se reinicia la pagina, no entiendo porque"
+- L2 · 2026-11-11 · kit: the time-cap hook reads specs/.current of the session cwd (D:/projects/Portfolio = PF-1, 232 % of its cap), not this worktree's; PF-3's own 240 min cap was within budget when suites ran
+- L3 · 2026-11-11 · method: the first builder committed RED tests and code in one commit (714d50a), not RED first
+- L4 · 2026-11-11 · triage: gate suite against a prod build of main (fce028c) 61 failed / 46 passed and of PF-3 56 failed / 51 passed; the PF-1 failures are pre-existing on main; project-presentation.spec.ts:79 and one-screen.spec.ts:59 fail only under parallel load (rerun single worker: 79 passes, :59 fails on main at 1280 and here at 1440); the only PF-3 regression is ASM-06 at 664
+- L5 · 2026-11-11 · could not run: without a real iPhone, Safari's bar collapsing (S2), the iOS tab memory crash itself (S1) and the URL bar's svh/dvh band (S3) are verified only by emulation in Playwright WebKit and Chromium at 390x844 and 390x664
