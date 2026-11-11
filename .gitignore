@@ -42,3 +42,6 @@ next-env.d.ts
 /specs/*/ref/requester-*
 /test-results/
 /playwright-report/
+
+# claude code scratch
+tmpclaude-*
