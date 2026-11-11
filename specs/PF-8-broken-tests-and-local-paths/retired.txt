@@ -33,3 +33,55 @@ slow-line.spec.ts › @PF-1-ASM-44 at 390 every image a section shows is painted
 
 # replaced by e2e/retired-list.spec.ts (PF-8-broken-tests-and-local-paths)
 retired-tests.spec.ts › every test kept out of the gate names its reason and its Log line @PF-8-S1 @PF-8-ASM-01 @PF-8-ASM-02
+
+# replaced by e2e/pf1-projects-today.spec.ts (PF-8-broken-tests-and-local-paths)
+pieces.spec.ts › each project scene links to its live page or its repository, except Grit, which is private @PF-1-S5
+project-groups.spec.ts › grouped project chapters › Sonría and Miga open their live site and their repository, and the other projects keep their links @PF-1-ASM-26
+project-presentation.spec.ts › the footer › at 390 the certifications are rendered once, in the rotating band, and it never shows a gap @PF-1-ASM-26
+project-presentation.spec.ts › the footer › at 1440 the certifications are rendered once, in the rotating band, and it never shows a gap @PF-1-ASM-26
+project-scroll-groups.spec.ts › project groups shown by scrolling › wide, scrolling through a group carries each of its projects across the showcase, no click @PF-1-ASM-26
+# retired: the offer strip and the [data-piece] rows left the page (PF-1 L66, L141)
+pieces.spec.ts › the freelance offer and the project scenes show more real pieces than text blocks @PF-1-S26
+# retired: the [data-piece] rows, the dev kit piece scene and the offer strip left the page (PF-1 L66, L141)
+pieces.spec.ts › each personal project shows at least three real pieces: Cebador a looping capture of nahuelmosse.github.io/cebador-landing at 390 and 1280 and a link to it, ClubNahuelMosse its four README screens, Guardia captures of nahuelmosse.itch.io/triaje, Grit screens of its app and design lab, the dev kit a real card, its tests and its pull request; the freelance offer in the end credits recalls a strip of them @PF-1-ASM-22
+# retired: the Jüsto scene shows its illustration and logo, no team photo (no justo-team image on the page)
+pieces.spec.ts › the Jüsto scene shows the team presentation photo, treated @PF-1-S12
+# retired: [data-piece] frames no longer exist on the page (PF-1 L66, L141)
+pieces.spec.ts › every real screen and photo sits under a mask or clip-path with a grade filter and the grain overlay, never a bare rectangular img @PF-1-ASM-10
+# retired: the dev kit is no longer a project scene, it is the three tools (PF-1 L159, L192)
+pieces.spec.ts › each project scene has a generated visual reference beside its explanation @PF-1-S16
+# retired: per-project backdrop sections superseded by the grouped scrubbed scene (PF-1 L159)
+project-backdrop.spec.ts › at 390 and 1440 each project section carries a full-bleed backdrop from its own file, its real interface large in a plain code-drawn frame with no blend and no perspective, its field color, numeral and word kept, legible stack chips on every product color, and the dev kit diagram a six-shape crimson path on the backdrop @PF-1-ASM-26
+# retired: per-project spreads with a piece row superseded (PF-1 L140, L159)
+project-glance-ai-line.spec.ts › at 390 and 1440 each project's real interface is its focal point, a phone interface at least 70% of the viewport's height at 1440 and 75% of its width at 390 and a laptop or monitor interface at least 55% of the viewport's width at 1440 and 90% at 390, sitting in the screen drawn in its illustration, whose visible part reaches at most twice the interface's width and 1.4 times its height; beside it only the title, one line of at most 12 words, the stack and the link, no What, Problem or My role and no text card among its pieces, at least three other pieces each at least 240 px wide are in view at once with the lead at 1440, at 390 the order is title, interface, line, stack and link, then the swiping row; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26
+# retired: the dev kit chapter and the click tabs are gone, the fourth chapter is tools (PF-1 L152, L192; three-beats.spec.ts covers the beats)
+project-groups.spec.ts › grouped project chapters › at 390 and 1440 the projects are four chapters by kind, apps, landings, game and dev kit, each one short pinned scene whose beats follow the scroll and whose tabs name its projects @PF-1-ASM-26
+# retired: the click tabs were replaced by scroll-driven groups (PF-1 L152)
+project-groups.spec.ts › grouped project chapters › a click on a tab swaps the project on show with its own screens and links, and leaves the scroll where it was @PF-1-ASM-26
+# retired: there are no tabs, the groups are scroll-driven (PF-1 L152)
+project-groups.spec.ts › grouped project chapters › at 390 every tab is a tap of at least 44 by 44 px @PF-1-ASM-26
+# retired: it reaches each screen by clicking tabs, which were replaced by scroll-driven groups (PF-1 L152)
+project-groups.spec.ts › grouped project chapters › the real screens of the landings and the game are sharp at twice their displayed size @PF-1-ASM-26
+# retired: it pins on tabs and a relative stage; the page has no tabs (PF-1 L152)
+project-groups.spec.ts › grouped project chapters › under reduced motion each group is a still: the stage does not stick, every caption is on the page, nothing is tilted or moved, and the tabs still switch @PF-1-ASM-26
+# retired: experience is now pinned employer scenes of about 4000 px at 1440, not a compact band (PF-1 L147 superseded by asm35-experience)
+project-groups.spec.ts › grouped project chapters › experience is one compact, scannable band with the five employers, their role, period and one line each, and the whole page is clearly shorter @PF-1-ASM-26
+# retired: per-project poster art superseded (PF-1 L140, L159)
+project-poster-art.spec.ts › at 390 and 1440 each project is a full-bleed field of its product color with its real interface large in a device frame, a phone at least 70% of the viewport height at 1440 and 75% of its width at 390, a laptop or browser at least 55% of the width at 1440 and 90% at 390, its numeral and word in Boska uppercase at least 12% of the viewport wide at 1440, its ink illustration loaded on the field and covering neither the interface nor the text, an interface set in a drawn screen carrying a perspective transform, the dev kit lead an svg diagram with at most 12 words and no typed document, consecutive cases with different compositions, beside it the stack, one line of at most 12 words and the link @PF-1-ASM-26
+# retired: per-project poster fields superseded (PF-1 L140, L159)
+project-poster.spec.ts › at 390 and 1440 each project is a full-bleed field of its product color with its real interface in a plain device frame, a phone at least 70% of the viewport height at 1440 and 75% of its width at 390, a laptop or browser at least 55% of the width at 1440 and 90% at 390, its numeral and word in Boska uppercase at least 12% of the viewport wide at 1440, no project illustration loaded, consecutive cases with different compositions, beside it the stack, one line of at most 12 words and the link, and at 1440 at least three other pieces in view each at least 240 px wide; no What, Problem or My role and no text card among its pieces, at 390 the order is title, interface, line, stack and link, then the swiping row; experience is a header illustration and one block per employer with logo, role, period, one line and the illustration of its system, no real capture of an employer's system is on the page, and his photos at work show; the cold open, offer and closing keep their faded full-bleed illustrations, no pins or torn paper are drawn, and an undelivered illustration leaves no box @PF-1-ASM-26
+# retired: the terminal was removed from the tools (PF-1 L192, L193)
+project-presentation-terminal-height.spec.ts › at 390 the product device is large enough to read @PF-1-ASM-26
+project-presentation.spec.ts › the tools are terminals and the private kit is not on the page › a Tools group has three terminals with real output and no kit wording anywhere @PF-1-ASM-26
+project-title-fit.spec.ts › at 390 a terminal is as tall as its output, with no dead black half @PF-1-ASM-26
+project-title-fit.spec.ts › at 1440 a terminal is as tall as its output, with no dead black half @PF-1-ASM-26
+# retired: the contact block is a ticker band and two inverting halves, not three glyph tiles (PF-1 L198, L211)
+project-presentation.spec.ts › the contact channels › at 390 email, LinkedIn and GitHub are three tiles with glyph, handle and line, none overflowing @PF-1-ASM-26
+project-presentation.spec.ts › the contact channels › at 1440 email, LinkedIn and GitHub are three tiles with glyph, handle and line, none overflowing @PF-1-ASM-26
+# retired: the group is one pinned scene at every width, not stacked posters on a phone (PF-1 L158)
+project-scroll-groups.spec.ts › project groups shown by scrolling › narrow, the headline comes first and every project is a stacked poster reached by scrolling @PF-1-ASM-26
+# retired: one pinned scene per project with a dev kit section was replaced by grouped scenes (PF-1 L146, L159)
+project-showcase.spec.ts › pinned project showcase › at 390 and 1440 each project is a tall section with a sticky stage whose beats follow the scroll, one caption at a time, and the index marks where the visitor is @PF-1-ASM-26
+project-showcase.spec.ts › pinned project showcase › under reduced motion each showcase is a still: the stage does not stick, every caption is on the page and nothing is tilted or moved @PF-1-ASM-26
+# replaced by e2e/pf1-projects-today.spec.ts (PF-8-broken-tests-and-local-paths)
+tools-plain.spec.ts › tools at 1910x912 show an illustration, plain stack words and buttons, with no terminal or monospace @PF-1-ASM-32
