@@ -22,6 +22,7 @@ not_read: none
   reuses: app/globals.css the phone block `@media (max-width: 700px)` with `.hire-bar` and `.bar-top`, and the `--ink`/`--bone` tokens of design/tokens.css
 - T2 · S4,S5,ASM-03 · app/globals.css (presentation) · tests: e2e/chapter-note-line.spec.ts "on a 390x844, a 375x667 and a 320x568 phone in Chromium and WebKit Two doors, Buenos Aires and every chapter note sit on one line inside the screen @PF-4-S4 @PF-4-S5 @PF-4-ASM-03"
   reuses: app/globals.css `.chapter-detail` (the fine detail around the chapter word)
+- T3 · merge of origin/main (PF-6, PF-7), not this card's change; built and tested by their own cards · features/portfolio/presentation/content.ts, features/portfolio/presentation/showcase-device.tsx, features/portfolio/presentation/piece-bars.json, public/ASSETS.md, public/film/pieces/cebador-1280-poster.webp, public/film/pieces/cebador-1280.webm, public/film/pieces/cebador-390-poster.webp, public/film/pieces/cebador-390.webm, public/film/pieces/triaje-mobile.webp, public/film/r/360/pieces/cebador-390-poster.webp, public/film/r/480/pieces/cebador-1280-poster.webp, public/film/r/480/pieces/triaje-mobile.webp, public/film/r/780/pieces/triaje-mobile.webp, public/film/r/800/pieces/cebador-1280-poster.webp, public/film/r/960/pieces/cebador-1280-poster.webp, scripts/capture-triaje-mobile.mjs, scripts/record-cebador.landmarks.json, scripts/record-cebador.mjs, e2e/cebador-capture-frames.spec.ts, e2e/cebador-playback.spec.ts, e2e/triaje-phone-first.spec.ts
 
 ## Changes to existing behavior
 
