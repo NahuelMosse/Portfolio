@@ -88,6 +88,20 @@ img[data-src][data-loaded] {
   }
 }
 
+/* on a phone a blur filter is a surface of its own for every image waiting to load: the proof shows unblurred and arrives without the
+   focus-in, so a tab that walks past many of them does not run out of memory */
+@media (max-width: 1099px) {
+  img[data-srcset]:not([data-loaded]),
+  img[data-src]:not([data-loaded]) {
+    filter: none;
+  }
+
+  img[data-srcset][data-loaded],
+  img[data-src][data-loaded] {
+    animation: none;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -1429,6 +1443,7 @@ html:not([data-sound="idle"]) .cover-cue {
     inset: auto 0 0 0;
     z-index: 45;
     display: flex;
+    height: var(--hire-bar-height);
     background: var(--ink);
     border-top: 1px solid var(--bone-30);
     transition:
@@ -1450,7 +1465,7 @@ html:not([data-sound="idle"]) .cover-cue {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: var(--hire-bar-height);
+    min-height: 0;
     background: var(--bone);
     color: var(--ink);
     font-family: var(--font-label);
@@ -1564,6 +1579,18 @@ html:not([data-sound="idle"]) .cover-cue {
     justify-content: center;
     min-height: 48px;
     min-width: 48px;
+  }
+}
+
+/* the narrowest phones: the bar's controls close up so the last one stays inside the screen */
+@media (max-width: 359px) {
+  .top-bar {
+    gap: var(--space-2);
+    padding: 0 var(--space-2);
+  }
+
+  .top-bar .film-control:not(.menu-button) {
+    padding-inline: var(--space-1);
   }
 }
 

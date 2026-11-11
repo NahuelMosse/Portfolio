@@ -534,6 +534,34 @@
     --device-bezel: 3px;
     --radius-phone: 1.125rem;
   }
+
+  /* a phone holds no layer of its own that it can do without: the devices stand flat, the glow (a blurred copy of the screen) and
+     the blurred cast are not drawn, the art holds still and nothing announces a transform */
+  .show-rig {
+    perspective: none;
+  }
+
+  .show-device,
+  .show[data-kind="browser"] .show-rig[data-role="second"] figure.show-device {
+    transform: none;
+    transform-style: flat;
+  }
+
+  .show-glow {
+    display: none;
+  }
+
+  .show-cast {
+    background: none;
+    filter: none;
+    box-shadow: 0 var(--space-3) var(--space-4) var(--ink);
+  }
+
+  .show .backdrop,
+  .show .plate,
+  .show-light::before {
+    will-change: auto;
+  }
 }
 
 .show-screen img,

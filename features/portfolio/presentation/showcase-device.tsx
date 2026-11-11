@@ -1,4 +1,4 @@
-import { useEffect, useRef, type CSSProperties } from "react"
+import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react"
 // kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
 import { DEFERRED_BLANK, SceneMedia } from "@/features/film/motion"
 import type { Piece, ScreenFrame } from "./content"
@@ -81,6 +81,12 @@ function Glow({ screens, active }: { screens: readonly Piece[]; active: number }
 // follows the main one's time, so each section shows on both screens at once whichever video loaded first.
 const DRIFT = 0.15
 
+// The browser refuses a play() with a DOMException (autoplay policy, an interrupted load): the follow loop tries again on its next tick.
+// Anything else is a bug and reaches the caller.
+function refuseUnlessAutoplay(error: unknown): void {
+  if (!(error instanceof DOMException)) throw error
+}
+
 function useFollowMain(role: Role) {
   const rig = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -89,7 +95,7 @@ function useFollowMain(role: Role) {
       const own = rig.current?.querySelector<HTMLVideoElement>(".show-screen[data-on] video")
       const lead = rig.current?.parentElement?.querySelector<HTMLVideoElement>('.show-rig[data-role="main"] .show-screen[data-on] video')
       if (!own || !lead || own.readyState < 2 || lead.readyState < 2) return
-      if (lead.paused !== own.paused) void (lead.paused ? own.pause() : own.play().catch(() => {}))
+      if (lead.paused !== own.paused) void (lead.paused ? own.pause() : own.play().catch(refuseUnlessAutoplay))
       if (Math.abs(own.currentTime - lead.currentTime) > DRIFT) own.currentTime = lead.currentTime
     }, 250)
     return () => window.clearInterval(timer)
@@ -97,13 +103,31 @@ function useFollowMain(role: Role) {
   return rig
 }
 
+// a screen is a desktop page until its image says otherwise
+const DESKTOP_SHAPE = 1.6
+
+// A browser's screen takes the shape of the capture on show: its width over its height, read from the image once it has loaded.
+function useShownShape(rig: RefObject<HTMLDivElement | null>, active: number): number {
+  const [shape, setShape] = useState(DESKTOP_SHAPE)
+  useEffect(() => {
+    const img = rig.current?.querySelectorAll(".show-screen")[active]?.querySelector("img")
+    if (!img) return
+    const read = () => img.naturalHeight && setShape(img.naturalWidth / img.naturalHeight)
+    read()
+    img.addEventListener("load", read)
+    return () => img.removeEventListener("load", read)
+  }, [rig, active])
+  return shape
+}
+
 // A device lit and shadowed by the scene it stands in: its screen light on the field, a cast shadow on the floor, a rim of lamp
 // light on its edge and a sheen that sweeps across the glass as the page scrolls. Its screens change with the story's beats.
 export function ShowcaseDevice({ kind, screens, active, role }: DeviceProps) {
   const shown = screens[active]
   const rig = useFollowMain(role)
+  const shape = { "--shape": useShownShape(rig, active) } as CSSProperties
   return (
-    <div ref={rig} className="show-rig" data-device={kind} data-role={role}>
+    <div ref={rig} className="show-rig" data-device={kind} data-role={role} style={shape}>
       <Glow screens={screens} active={active} />
       <span className="show-cast" aria-hidden="true" />
       <figure className="show-device" data-frame={kind}>

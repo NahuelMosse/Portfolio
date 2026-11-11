@@ -1,0 +1,24 @@
+{
+  "size": "large",
+  "review": "medium",
+  "lenses": [
+    "visual"
+  ],
+  "modules": [
+    "ui"
+  ],
+  "signals": [
+    "screen"
+  ],
+  "words": [],
+  "files": [
+    "features/portfolio/presentation/showcase.css",
+    "features/portfolio/presentation/group.css",
+    "features/portfolio/presentation/experience.css",
+    "app/globals.css",
+    "features/portfolio/presentation/use-group-track.ts",
+    "features/portfolio/presentation/project-group.tsx",
+    "features/portfolio/presentation/showcase-device.tsx"
+  ],
+  "tasks": 3
+}

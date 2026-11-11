@@ -54,8 +54,9 @@ export function momentAt(progress: number, count: number, beats = BEATS_PER_PROJ
 }
 
 // Where a narrow screen comes to rest: a scroll that stops in the middle of a turn goes on to the nearer project, so the screen
-// never holds two. Returns the progress to settle at, or null when the group is on a hold or out of view.
-export function settleAt(progress: number, count: number, beats = BEATS_PER_PROJECT): number | null {
+// never holds two: the nearer one, or the one ahead when the visitor is walking down, so a page being scrolled down never goes back.
+// Returns the progress to settle at, or null when the group is on a hold or out of view.
+export function settleAt(progress: number, count: number, beats = BEATS_PER_PROJECT, heading: "down" | "up" | "still" = "still"): number | null {
   if (progress <= 0 || progress >= 1) return null
   const stride = strideOf(beats)
   const total = totalRuns(count, beats)
@@ -63,8 +64,15 @@ export function settleAt(progress: number, count: number, beats = BEATS_PER_PROJ
   const project = Math.min(count - 1, Math.floor(at / stride))
   const within = at - project * stride
   if (project === count - 1 || within <= holdOf(beats)) return null
-  const edge = (within - holdOf(beats)) / TURN_RUN < 0.5 ? project * stride + holdOf(beats) : (project + 1) * stride
+  const nearerBehind = (within - holdOf(beats)) / TURN_RUN < 0.5
+  const edge = nearerBehind && heading !== "down" ? project * stride + holdOf(beats) : (project + 1) * stride
   return edge / total
+}
+
+// How far the section scrolls while its stage stays pinned: its height less the pinned stage's, which is the dynamic viewport tall
+// (the screen once a phone's browser bar has hidden) while the section's own height keeps the small viewport's units.
+export function pinnedRun(node: HTMLElement) {
+  return node.offsetHeight - (node.querySelector<HTMLElement>(".group-pin")?.offsetHeight ?? window.innerHeight)
 }
 
 const NARROW = "(max-width: 1099px)"
@@ -90,6 +98,7 @@ export function useGroupTrack(count: number, { beats = BEATS_PER_PROJECT, host }
     let track = ""
     let held = ""
     let y = window.scrollY
+    let heading: "down" | "up" | "still" = "still"
 
     const measure = () => {
       frame = 0
@@ -105,6 +114,7 @@ export function useGroupTrack(count: number, { beats = BEATS_PER_PROJECT, host }
       if (!frame) frame = requestAnimationFrame(measure)
     }
     const scrolled = () => {
+      heading = window.scrollY > y ? "down" : window.scrollY < y ? "up" : heading
       y = window.scrollY
       schedule()
     }
@@ -112,13 +122,18 @@ export function useGroupTrack(count: number, { beats = BEATS_PER_PROJECT, host }
       const rect = node.getBoundingClientRect()
       y = window.scrollY
       top = rect.top + y
-      run = rect.height - window.innerHeight
+      run = pinnedRun(node)
       schedule()
     }
     // the section moves when anything above it changes height, and its run when it or the window does
     const placer = new ResizeObserver(place)
     placer.observe(node)
     placer.observe(document.body)
+    // a group far from the view is not rendered (content-visibility): the moment it comes back, it is placed and tracked again
+    const unskipped = (event: Event) => {
+      if (!(event as Event & { skipped: boolean }).skipped) place()
+    }
+    node.addEventListener("contentvisibilityautostatechange", unskipped)
 
     // the device stands in what the caption leaves: each card gets the height of its own caption (the tallest of its beats)
     const sizer = new ResizeObserver((entries) => {
@@ -134,9 +149,9 @@ export function useGroupTrack(count: number, { beats = BEATS_PER_PROJECT, host }
     const settle = () => {
       if (touching || !window.matchMedia(NARROW).matches) return
       const rect = node.getBoundingClientRect()
-      const run = rect.height - window.innerHeight
+      const run = pinnedRun(node)
       if (run <= 0) return
-      const target = settleAt(-rect.top / run, count, beats)
+      const target = settleAt(-rect.top / run, count, beats, heading)
       if (target === null) return
       const y = Math.round(window.scrollY + rect.top + run * target)
       const engine = smoothScroll()
@@ -171,6 +186,7 @@ export function useGroupTrack(count: number, { beats = BEATS_PER_PROJECT, host }
       window.removeEventListener("touchend", release)
       window.removeEventListener("touchcancel", release)
       window.clearTimeout(idle)
+      node.removeEventListener("contentvisibilityautostatechange", unskipped)
       sizer.disconnect()
       placer.disconnect()
       if (frame) cancelAnimationFrame(frame)
