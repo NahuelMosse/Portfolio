@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react"
+import { useEffect, useRef, type CSSProperties } from "react"
 // kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
 import { DEFERRED_BLANK, SceneMedia } from "@/features/film/motion"
 import type { Piece, ScreenFrame } from "./content"
@@ -77,12 +77,33 @@ function Glow({ screens, active }: { screens: readonly Piece[]; active: number }
   )
 }
 
+// The phone beside the browser plays the same story on the same clock: both captures are cut to one timeline, and the phone's video
+// follows the main one's time, so each section shows on both screens at once whichever video loaded first.
+const DRIFT = 0.15
+
+function useFollowMain(role: Role) {
+  const rig = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (role !== "second") return
+    const timer = window.setInterval(() => {
+      const own = rig.current?.querySelector<HTMLVideoElement>(".show-screen[data-on] video")
+      const lead = rig.current?.parentElement?.querySelector<HTMLVideoElement>('.show-rig[data-role="main"] .show-screen[data-on] video')
+      if (!own || !lead || own.readyState < 2 || lead.readyState < 2) return
+      if (lead.paused !== own.paused) void (lead.paused ? own.pause() : own.play().catch(() => {}))
+      if (Math.abs(own.currentTime - lead.currentTime) > DRIFT) own.currentTime = lead.currentTime
+    }, 250)
+    return () => window.clearInterval(timer)
+  }, [role])
+  return rig
+}
+
 // A device lit and shadowed by the scene it stands in: its screen light on the field, a cast shadow on the floor, a rim of lamp
 // light on its edge and a sheen that sweeps across the glass as the page scrolls. Its screens change with the story's beats.
 export function ShowcaseDevice({ kind, screens, active, role }: DeviceProps) {
   const shown = screens[active]
+  const rig = useFollowMain(role)
   return (
-    <div className="show-rig" data-device={kind} data-role={role}>
+    <div ref={rig} className="show-rig" data-device={kind} data-role={role}>
       <Glow screens={screens} active={active} />
       <span className="show-cast" aria-hidden="true" />
       <figure className="show-device" data-frame={kind}>
