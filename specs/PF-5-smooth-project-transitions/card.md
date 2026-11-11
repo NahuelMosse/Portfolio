@@ -40,6 +40,9 @@ types: npx tsc --noEmit
 app: npx next build && npx next start
 public-allow: specs/PF-6-cebador-video-fps/sessions.md [path] · already in main; the merge of main into this branch carries it unchanged
 public-allow: specs/PF-7-triaje-phone-first-screen/sessions.md [path] · already in main; the merge of main into this branch carries it unchanged
+public-allow: specs/PF-4-mobile-bar-polish/card.md [path] · already in main; the merge of main into this branch carries it unchanged
+public-allow: specs/PF-4-mobile-bar-polish/closing.md [path] · already in main; the merge of main into this branch carries it unchanged
+public-allow: specs/PF-4-mobile-bar-polish/sessions.md [path] · already in main; the merge of main into this branch carries it unchanged
 ```
 
 ## Log

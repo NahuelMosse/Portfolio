@@ -733,7 +733,9 @@ html:not([data-sound="idle"]) .cover-cue {
   text-transform: uppercase;
 }
 
+/* its width makes the empty rule count in the line's fit-content width, so the note wraps only when it does not fit */
 .chapter-detail i {
+  width: var(--space-6);
   flex: 0 0 var(--space-6);
   border-top: var(--rule) solid var(--bone-70);
 }
@@ -1445,7 +1447,6 @@ html:not([data-sound="idle"]) .cover-cue {
     display: flex;
     height: var(--hire-bar-height);
     background: var(--ink);
-    border-top: 1px solid var(--bone-30);
     transition:
       translate var(--dur-panel) var(--ease-panel),
       right var(--dur-panel) var(--ease-panel);
@@ -1466,7 +1467,8 @@ html:not([data-sound="idle"]) .cover-cue {
     align-items: center;
     justify-content: center;
     min-height: 0;
-    background: var(--bone);
+    /* bone painted as an image over ink: Safari tints its toolbar strip with the element's background-color */
+    background: linear-gradient(var(--bone), var(--bone)) var(--ink);
     color: var(--ink);
     font-family: var(--font-label);
     font-size: 1.25rem;
