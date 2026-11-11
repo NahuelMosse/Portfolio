@@ -1582,6 +1582,18 @@ html:not([data-sound="idle"]) .cover-cue {
   }
 }
 
+/* the narrowest phones: the bar's controls close up so the last one stays inside the screen */
+@media (max-width: 359px) {
+  .top-bar {
+    gap: var(--space-2);
+    padding: 0 var(--space-2);
+  }
+
+  .top-bar .film-control:not(.menu-button) {
+    padding-inline: var(--space-1);
+  }
+}
+
 @media (max-width: 700px) {
   .scene[data-has-art] {
     min-height: 80svh;

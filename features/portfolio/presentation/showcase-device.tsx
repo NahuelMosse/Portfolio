@@ -81,6 +81,12 @@ function Glow({ screens, active }: { screens: readonly Piece[]; active: number }
 // follows the main one's time, so each section shows on both screens at once whichever video loaded first.
 const DRIFT = 0.15
 
+// The browser refuses a play() with a DOMException (autoplay policy, an interrupted load): the follow loop tries again on its next tick.
+// Anything else is a bug and reaches the caller.
+function refuseUnlessAutoplay(error: unknown): void {
+  if (!(error instanceof DOMException)) throw error
+}
+
 function useFollowMain(role: Role) {
   const rig = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -89,7 +95,7 @@ function useFollowMain(role: Role) {
       const own = rig.current?.querySelector<HTMLVideoElement>(".show-screen[data-on] video")
       const lead = rig.current?.parentElement?.querySelector<HTMLVideoElement>('.show-rig[data-role="main"] .show-screen[data-on] video')
       if (!own || !lead || own.readyState < 2 || lead.readyState < 2) return
-      if (lead.paused !== own.paused) void (lead.paused ? own.pause() : own.play().catch(() => {}))
+      if (lead.paused !== own.paused) void (lead.paused ? own.pause() : own.play().catch(refuseUnlessAutoplay))
       if (Math.abs(own.currentTime - lead.currentTime) > DRIFT) own.currentTime = lead.currentTime
     }, 250)
     return () => window.clearInterval(timer)
