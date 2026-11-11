@@ -25,12 +25,28 @@ async function open(page: Page) {
   await page.waitForTimeout(1500)
 }
 
-for (const viewport of VIEWPORTS) {
+// The phone cases also run in WebKit: its page comes from a browser launched here, as the bar test does.
+const webkitPhone = test.extend({
+  page: async ({ baseURL }, use) => {
+    const launched = await webkit.launch()
+    const context = await launched.newContext({ baseURL, viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
+    await use(await context.newPage())
+    await launched.close()
+  },
+})
+
+const CASES = [
+  ...VIEWPORTS.map((viewport) => ({ viewport, engine: "chromium" as const, run: test })),
+  { viewport: VIEWPORTS[0], engine: "webkit" as const, run: webkitPhone },
+]
+
+for (const { viewport, engine, run: test } of CASES) {
   const phone = viewport.width === 390
-  test.describe(`at ${viewport.width}x${viewport.height}`, () => {
+  const label = engine === "webkit" ? `at ${viewport.width}x${viewport.height} in webkit` : `at ${viewport.width}x${viewport.height}`
+  test.describe(label, () => {
     test.use({ viewport, hasTouch: phone, isMobile: phone })
 
-    test(`at ${viewport.width}x${viewport.height} the cover, the offer, every project scene and let's talk each fit in 100svh @PF-8-ASM-04`, async ({ page }) => {
+    test(`${label} the cover, the offer, every project scene and let's talk each fit in 100svh @PF-8-ASM-04`, async ({ page }) => {
       test.setTimeout(120_000)
       await open(page)
       const selectors = [".cold-open", ".offer-scene", "article.show.group-card", ".contact"]
@@ -56,7 +72,7 @@ for (const viewport of VIEWPORTS) {
       expect(sizes, "sections taller than 100svh").toEqual([])
     })
 
-    test(`at ${viewport.width}x${viewport.height} nothing overflows the page sideways @PF-8-ASM-04`, async ({ page }) => {
+    test(`${label} nothing overflows the page sideways @PF-8-ASM-04`, async ({ page }) => {
       test.setTimeout(120_000)
       await open(page)
       const worst: string[] = []
@@ -71,7 +87,7 @@ for (const viewport of VIEWPORTS) {
       expect(worst.slice(0, 5), "horizontal overflow").toEqual([])
     })
 
-    test(`at ${viewport.width}x${viewport.height} every visible image and video loads and no request answers 404 @PF-8-ASM-04`, async ({ page }) => {
+    test(`${label} every visible image and video loads and no request answers 404 @PF-8-ASM-04`, async ({ page }) => {
       test.setTimeout(180_000)
       const failures: string[] = []
       page.on("response", (response) => {
@@ -108,7 +124,7 @@ for (const viewport of VIEWPORTS) {
       expect(failures, "requests that failed").toEqual([])
     })
 
-    test(`at ${viewport.width}x${viewport.height} the page logs no console error @PF-8-ASM-04`, async ({ page }) => {
+    test(`${label} the page logs no console error @PF-8-ASM-04`, async ({ page }) => {
       test.setTimeout(120_000)
       const errors: string[] = []
       page.on("console", (message) => {
