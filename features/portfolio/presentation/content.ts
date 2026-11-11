@@ -134,7 +134,7 @@ export const projects: readonly Project[] = [
     role: "I did the art direction, the motion and the code.",
     line: "Built with Claude Code agents; every behavior is covered by a test.",
     stack: ["Landing site", "Motion", "GitHub Pages"],
-    links: [{ label: "Visit the site", href: "https://nahuelmosse.github.io/cebador-landing/" }],
+    links: [{ label: "Visit the site", href: "https://lab.nawi.dev/cebador/" }],
     pieces: [
       {
         kind: "capture",
@@ -167,7 +167,7 @@ export const projects: readonly Project[] = [
     line: "Built with Claude Code agents; every behavior is covered by a test.",
     stack: ["HTML, CSS, JS", "Playwright", "GitHub Pages"],
     links: [
-      { label: "Visit the site", href: "https://nahuelmosse.github.io/sonria/" },
+      { label: "Visit the site", href: "https://lab.nawi.dev/sonria/" },
       { label: "Repository", href: "https://github.com/NahuelMosse/sonria" },
     ],
     pieces: [
@@ -188,7 +188,7 @@ export const projects: readonly Project[] = [
     line: "Built with Claude Code agents; every behavior is covered by a test.",
     stack: ["HTML, CSS, JS", "Playwright", "GitHub Pages"],
     links: [
-      { label: "Visit the site", href: "https://nahuelmosse.github.io/miga/" },
+      { label: "Visit the site", href: "https://lab.nawi.dev/miga/" },
       { label: "Repository", href: "https://github.com/NahuelMosse/miga" },
     ],
     pieces: [
