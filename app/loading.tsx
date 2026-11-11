@@ -1,10 +1,11 @@
+import { PreloaderFace } from "@/features/film/presentation/preloader"
+
+// While the page streams: the opening title, still, over the ink. The page's only h1 is the cold open's.
 export default function Loading() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="space-y-4 text-center">
-        <div className="w-16 h-16 border-4 border-accent/30 border-t-accent rounded-full animate-spin mx-auto" />
-        <p className="text-muted-foreground animate-pulse">Loading...</p>
-      </div>
-    </div>
+    <main className="preloader" data-fallback="" aria-busy="true">
+      <p className="sr-only">Nahuel Mosse</p>
+      <PreloaderFace />
+    </main>
   )
 }

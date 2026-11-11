@@ -1,0 +1,225 @@
+/* The only place where a color, a duration, a radius or a space of the site is written. */
+:root {
+  /* One red as the only accent, over black and bone cream */
+  --red: #d2231b;
+  --bone: #ede4d0;
+  --ink: #0c0c0b;
+  --ink-warm: #1a0b09;
+
+  /* each project's own spot color, the product's */
+  --spot-kit: #b3261e;
+  --check-green: #3ddc84;
+  --spot-grit: #1f55d6;
+  --spot-triaje: #36d1a8;
+  --spot-cebador: #f0a8ac;
+  --spot-club: #cdeb3a;
+  --spot-sonria: #6a4bd8;
+  --spot-miga: #e8a33d;
+  --spot-fravega: #b8188a;
+  --spot-grupo-st: #004f87;
+  --spot-justo: #00a37c;
+  --spot-smart-warehousing: #f7901e;
+  --spot-visma: #7f56fa;
+
+  --red-16: color-mix(in srgb, var(--red) 16%, transparent);
+  --red-20: color-mix(in srgb, var(--red) 20%, transparent);
+  --red-28: color-mix(in srgb, var(--red) 28%, transparent);
+  --red-45: color-mix(in srgb, var(--red) 45%, transparent);
+  --red-50: color-mix(in srgb, var(--red) 50%, transparent);
+  --bone-08: color-mix(in srgb, var(--bone) 8%, transparent);
+  --bone-12: color-mix(in srgb, var(--bone) 12%, transparent);
+  --bone-30: color-mix(in srgb, var(--bone) 30%, transparent);
+  --bone-35: color-mix(in srgb, var(--bone) 35%, transparent);
+  --bone-70: color-mix(in srgb, var(--bone) 70%, transparent);
+  --ink-08: color-mix(in srgb, var(--ink) 8%, transparent);
+  --ink-35: color-mix(in srgb, var(--ink) 35%, transparent);
+  --ink-70: color-mix(in srgb, var(--ink) 70%, transparent);
+  --ink-85: color-mix(in srgb, var(--ink) 85%, transparent);
+
+  /* spacing scale: 4 8 16 24 40 64 112 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+  --space-7: 112px;
+
+  --radius-rectangle: 0;
+  --radius-round: 50%;
+
+  /* easing and durations by use */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-control: 200ms;
+  --motion-section: 900ms;
+  --motion-roll-slow: 60s;
+  --motion-roll-fast: 36s;
+  --motion-marquee: 40s;
+  --motion-shiny: 8s;
+  --motion-beam: 6s;
+  --press-scale: 0.96;
+
+  /* the descent of a poster word: its line height is under 0.9, so the glyphs hang below the box */
+  --poster-descent: 0.2em;
+  --seam-height: 320px;
+  --lamp-size: min(90vw, 760px);
+  --hire-bar-height: 56px;
+  --top-bar-height: 56px;
+  /* the spine of the thread runs at the left edge; chapters keep a gutter for it */
+  --gutter-left: 72px;
+  --gutter-left-phone: 48px;
+  --gutter-right: 40px;
+  --gutter-right-phone: 16px;
+  --spine-x: 28px;
+  --label-tracking: 0.16em;
+  --radius-frame: 12px;
+  --size-chapter-title: clamp(3rem, 7vw, 6rem);
+  --size-case-title: clamp(1.75rem, 2.4vw, 2.5rem);
+  --paper-texture: url("/film/pf-paper-torn-16x9.webp");
+  /* torn top and bottom edges of every paper sheet */
+  --torn: polygon(0 1.5%, 4% 0, 9% 1.2%, 15% 0.2%, 22% 1.4%, 30% 0, 38% 1.1%, 47% 0.1%, 55% 1.3%, 64% 0, 73% 1.2%, 82% 0.2%, 91% 1.3%, 100% 0.3%, 100% 98.5%, 94% 100%, 86% 98.8%, 77% 99.9%, 68% 98.7%, 59% 100%, 50% 98.9%, 41% 99.8%, 32% 98.6%, 23% 100%, 14% 98.8%, 6% 99.9%, 0 98.7%);
+  /* an image on the dark fades out at its edges instead of ending in a rectangle */
+  --fade-edges: radial-gradient(ellipse 72% 72% at 50% 50%, #000 45%, transparent 100%);
+  --fade-portrait: radial-gradient(ellipse 50% 50% at 50% 50%, #000 35%, transparent 100%);
+  --fade-bottom: linear-gradient(to bottom, #000 62%, transparent 100%);
+  --fade-sides: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  --text-small: 0.875rem;
+
+  /* the stage of a spread */
+  --lead-width: 560px;
+  --other-width: 240px;
+  --lead-share: 85%;
+  --other-share: 62%;
+  /* the project stage: the interface's size per viewport, the art's fade, the text column */
+  --stage-phone-height: 72svh;
+  --stage-phone-width-phone: 80vw;
+  --stage-wide-width: 56vw;
+  --stage-wide-width-phone: 92vw;
+  --stage-wide-cap: 900px;
+  --poster-word-size: 34vw;
+  --poster-word-size-phone: 19vw;
+  --poster-numeral-size: 30vw;
+  --poster-numeral-size-phone: 28vw;
+  --device-bezel: 10px;
+  --radius-phone: 2rem;
+  --poster-wide-ratio: 16 / 9;
+  --stage-text-width: 22rem;
+  --size-scene-title:clamp(1.75rem, 2.8vw, 2.75rem);
+  --size-scene-title-phone: 1.75rem;
+  --row-piece: 72%;
+  --row-piece-wide: 30%;
+  --art-band: 34svh;
+  --stagger: 60ms;
+  --logo-size: 40px;
+  --phone-lead-ratio: 7 / 6;
+  --phone-other-ratio: 4 / 5;
+  --glance-ratio: 3 / 2;
+  --phone-capture-width: 360;
+  --phone-capture-height: 779;
+  --phone-capture-ratio: var(--phone-capture-width) / var(--phone-capture-height);
+  --phone-capture-stage-height: 55svh;
+  --browser-ratio: 16 / 10;
+  --radius-device: 28px;
+  --cast: 0 var(--space-4) var(--space-6) var(--red-20), 0 var(--space-2) var(--space-4) var(--ink-85);
+
+  --font-label: "Courier Prime", "Courier Prime Fallback", monospace;
+  --font-display: "Boska", "Boska Fallback", serif;
+  --font-text: "General Sans", "General Sans Fallback", sans-serif;
+  --text-body: 1rem;
+  --label-tracking-fine: 0.08em;
+
+  /* poster type: NAWI and the chapter words, sized by the viewport; the long words are sized down to fit */
+  --size-nawi: 41vw;
+  --size-word: 17vw;
+  --size-word-long: 15.2vw;
+  --size-word-phone: 3.6rem;
+  --size-word-long-phone: 3rem;
+  --poster-drop: 0.32em;
+  --word-clearance: 5vw;
+  --sheet-photo-width: 4rem;
+  --poster-leading: 0.82;
+  --rule: 1px;
+
+  /* the pinned showcase: the scroll each beat of a story takes, the device and the card in it, the light spilling from a screen */
+  --beat-run: 42svh;
+  --device-phone-height: 54svh;
+  --device-browser-width: 92vw;
+  --device-browser-width-wide: 60vw;
+  --device-second-height: 26svh;
+  --glow-blur: 48px;
+  --card-width: 36vw;
+  --card-width-wide: 11.5rem;
+  --card-ratio: 5 / 7;
+  --show-strip: 44px;
+  --beat-fade: 420ms;
+  --token-travel: 900ms;
+  --text-lead: 1.125rem;
+  --text-title: 1.5rem;
+  /* the height of the dev kit's plate above its machines' tops, in the wide composition: 49% of a 16:9 drawing as wide as the viewport */
+  --track-rise: 27.5vw;
+
+  /* the black of a mask: it only gates alpha, never shows */
+  --ink-black: #000;
+  --ink-black-20: color-mix(in srgb, var(--ink-black) 20%, transparent);
+  --ink-88: color-mix(in srgb, var(--ink) 88%, transparent);
+
+  /* spaces by use */
+  --space-0: 0px;
+  --space-hair: 2px;
+  --space-rail: 6px;
+  --space-sheet-row: 3px;
+  --space-corner-cta: 13rem;
+  --space-corner-lift: 6.5rem;
+  --space-offer-lead: 4rem;
+  --space-offer-lead-phone: 2rem;
+  --space-contact-top-cap: 56px;
+  --space-hint-min: 10px;
+  --space-half-min: 12px;
+  --space-halves-cap: 28px;
+  --space-preloader: 1.5em;
+  --phone-short-height: 667px;
+
+  /* durations by use */
+  --dur-instant: 1ms;
+  --dur-zero: 0s;
+  --dur-toggle: 150ms;
+  --dur-fade: 0.3s;
+  --dur-plate-focus: 450ms;
+  --dur-sound-bar: 0.9s;
+  --dur-cover-rise: 0.9s;
+  --dur-stamp-in: 260ms;
+  --dur-preloader-drift: 5s;
+  --dur-preloader-reg: 420ms;
+  --dur-preloader-reg-delay: 80ms;
+  --dur-preloader-float: 2.4s;
+  --dur-preloader-out: 460ms;
+  --dur-caret-delay: 160ms;
+  --dur-caret-step: 24ms;
+  --dur-panel: 320ms;
+  --dur-panel-fade: 240ms;
+  --dur-panel-close: 200ms;
+  --dur-panel-lag: 60ms;
+  --dur-panel-lag-long: 80ms;
+  --ease-panel: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-panel-close: cubic-bezier(0.4, 0, 1, 1);
+
+  /* semantic */
+  --background: var(--ink);
+  --foreground: var(--bone);
+  --border: var(--bone-30);
+  --ring: var(--bone);
+  --muted: var(--bone-08);
+  --muted-foreground: var(--bone-70);
+  --primary: var(--bone);
+  --primary-foreground: var(--ink);
+  --secondary: var(--bone-12);
+  --secondary-foreground: var(--bone);
+  --accent: var(--bone-12);
+  --accent-foreground: var(--bone);
+  --card: var(--ink);
+  --card-foreground: var(--bone);
+  --popover: var(--ink);
+  --popover-foreground: var(--bone);
+  --input: var(--border);
+  --destructive: var(--red);
+}

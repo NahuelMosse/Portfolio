@@ -1,0 +1,986 @@
+/* ---------- the pinned showcase: each project is a scroll scene ---------- */
+
+/* A scene is a tall section with one sticky stage. The stage holds still while the page scrolls through it; --p (0 to 1) is how far
+   through it the visitor is, and every layer moves by its own share of it: the far art least, the device and its screen light most.
+   --on is the ink that reads on the product's field. */
+/* the field and its ink are colors, so a click on a tab slides one product's color into the next */
+@property --field {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --on {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+.show {
+  --field: var(--spot-kit);
+  --on: var(--bone);
+  --flip: 1;
+  --mirror: 1;
+  --p: 0;
+  --shade-deep: color-mix(in srgb, var(--field) 11%, var(--ink));
+  /* an uppercase Boska letter is about 0.72em wide on the phone: the word fills 88% of the viewport, never more than a fifth of it */
+  --word-size: min(calc(88vw / (var(--chars, 8) * 0.72)), 20vw);
+  /* the device rises by up to 3svh as the scene runs and its tab stands above it: both clear the word */
+  --hero-top: calc(
+    var(--top-bar-height) + var(--show-strip) + var(--word-size) * 0.8 +
+      var(--space-5) + 3svh
+  );
+  --hero-width: min(calc(100vw - 2 * var(--gutter-right-phone)), 36rem);
+  --hero-height: 46svh;
+  position: relative;
+  height: calc(100svh + (var(--beats) - 1) * var(--beat-run));
+  background: var(--field);
+  transition:
+    --field var(--motion-section) var(--ease-out),
+    --on var(--motion-section) var(--ease-out);
+}
+
+.show[data-project="grit"] {
+  --field: var(--spot-grit);
+}
+
+.show[data-project="guardia"] {
+  --field: var(--spot-triaje);
+  --on: var(--ink);
+}
+
+.show[data-project="cebador"] {
+  --field: var(--spot-cebador);
+  --on: var(--ink);
+}
+
+.show[data-project="club"] {
+  --field: var(--spot-club);
+  --on: var(--ink);
+}
+
+.show[data-project="sonria"] {
+  --field: var(--spot-sonria);
+}
+
+.show[data-project="miga"] {
+  --field: var(--spot-miga);
+  --on: var(--ink);
+}
+
+.show[data-composition="b"] {
+  --flip: -1;
+}
+
+.show-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  contain: paint;
+  isolation: isolate;
+  background: var(--field);
+  color: var(--on);
+}
+
+/* the art layers bleed past the scene by more than their travel (--bleed-x, --bleed-y), so no edge of the art ever shows inside the scene */
+/* ---- the art, in depth: the world far behind, his ink plate nearer, both drifting as the page scrolls ---- */
+
+/* the art of the project on show: a click remounts it, and it fades in over the color that slid in */
+.show-art {
+  display: contents;
+}
+
+@keyframes show-art-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.show .backdrop,
+.show .plate {
+  --bleed-x: 12vw;
+  --bleed-y: 12svh;
+  animation: show-art-in var(--motion-section) var(--ease-out) both;
+  position: absolute;
+  inset: calc(var(--bleed-y) * -1) calc(var(--bleed-x) * -1);
+  display: block;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.show .backdrop {
+  z-index: 0;
+  transform: translate3d(0, calc(var(--p) * -4svh), 0);
+}
+
+.show .backdrop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+/* his scene is drawn on open paper so the product's color fills it: no texture is printed under it */
+.show:has(.plate[data-portrait]) .backdrop {
+  display: none;
+}
+
+/* the plate is black ink on white paper, multiplied over the field so the drawing is printed on it. It is drawn in the shape of
+   the stage under the strip and fills it, bleeding past it only by the little it drifts, so almost all of it is on show */
+.show .plate {
+  z-index: 1;
+  inset: calc(var(--top-bar-height) + var(--show-strip) - 3svh) -3vw -3svh;
+  mix-blend-mode: multiply;
+  transform: translate3d(
+      calc((var(--p) - 0.5) * 4vw * var(--flip)),
+      calc((var(--p) - 0.5) * -5svh),
+      0
+    )
+    scale(var(--mirror), 1);
+}
+
+.show .plate img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* the lamp: a cone of light from the top corner that slides as the page scrolls, and the field sinking into shade at the foot */
+.show-light {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 55%,
+    color-mix(in srgb, var(--shade-deep) 55%, transparent)
+  );
+  mix-blend-mode: soft-light;
+}
+
+/* The cone is painted once on a sheet twice the stage's width, from half a stage to its left, and slides by transform: a gradient
+   whose position follows the scroll is repainted, and re-blended, over the whole stage on every frame. On the sheet the cone's
+   80% of the stage is 40%, its 8% start is 29%, and the 40% of the stage it slides is 20%. */
+.show-light::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -50%;
+  width: 200%;
+  background: radial-gradient(ellipse 40% 55% at 29% -8%, var(--bone-30), transparent 70%);
+  transform: translate3d(calc(var(--p) * 20%), 0, 0);
+  will-change: transform;
+}
+
+/* ---- the strip: the kind of chapter and a tab for each project in it ---- */
+
+.show-index {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: calc(var(--top-bar-height) + var(--show-strip));
+  margin: 0;
+  padding: var(--top-bar-height) var(--gutter-right-phone) 0
+    var(--gutter-left-phone);
+  list-style: none;
+  background: var(--field);
+  border-bottom: var(--rule) solid
+    color-mix(in srgb, var(--on) 35%, transparent);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+}
+
+.show-kind {
+  display: none;
+  margin-right: var(--space-3);
+  color: color-mix(in srgb, var(--on) 62%, var(--field));
+}
+
+.show-index button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: var(--show-strip);
+  min-height: var(--show-strip);
+  padding: 0 var(--space-2);
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--on) 62%, var(--field));
+  cursor: pointer;
+  transition: color var(--beat-fade) var(--ease-out);
+}
+
+.show-index button:hover,
+.show-index li[aria-current] button {
+  color: var(--on);
+}
+
+/* the tab on is underlined: on the phone by its name, wide by its numeral */
+.show-index li[aria-current] span {
+  padding-bottom: var(--space-1);
+  border-bottom: var(--space-1) solid var(--on);
+}
+
+.show-index b {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .show-index {
+    padding-left: var(--gutter-left);
+    padding-right: var(--gutter-right);
+    gap: var(--space-4);
+  }
+
+  .show-kind {
+    display: block;
+  }
+
+  .show-index b {
+    display: inline;
+  }
+
+  .show-index li[aria-current] span {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .show-index li[aria-current] b {
+    padding-bottom: var(--space-1);
+    border-bottom: var(--space-1) solid var(--on);
+  }
+}
+
+/* ---- the poster word, behind the device ---- */
+
+.show-word {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-2));
+  left: var(--gutter-right-phone);
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--word-size);
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--bone);
+  pointer-events: none;
+  user-select: none;
+  transform: translate3d(calc(var(--p) * -6vw * var(--flip)), 0, 0);
+}
+
+/* on the bright fields (teal, pink, lime) the plate's black masses would swallow an ink word: it is bone with a hard ink shadow */
+.show[data-project="guardia"] .show-word,
+.show[data-project="cebador"] .show-word,
+.show[data-project="club"] .show-word,
+.show[data-project="sonria"] .show-word,
+.show[data-project="miga"] .show-word {
+  text-shadow: var(--space-1) var(--space-1) 0 var(--ink);
+}
+
+/* ---- the device: lit and shadowed by the scene it stands in ---- */
+
+.show-rig {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: var(--hero-top);
+  width: var(--hero-width);
+  height: var(--hero-height);
+  translate: -50% 0;
+  perspective: 1600px;
+}
+
+/* a browser on its own is a wide band; a phone is cropped to the same region, its screens cut at the top */
+.show-rig[data-device="browser"] {
+  --hero-height: 40svh;
+}
+
+.show-device {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  margin: 0;
+  padding: var(--device-bezel);
+  background: var(--ink);
+  border-radius: var(--radius-phone);
+  box-shadow:
+    0 var(--space-5) var(--space-6) var(--ink-70),
+    0 var(--space-2) var(--space-3) var(--ink-35),
+    0 0 var(--space-6) color-mix(in srgb, var(--field) 40%, transparent);
+  transform: rotateY(calc(var(--flip) * (-12deg + var(--p) * 16deg)))
+    rotateX(calc(4deg - var(--p) * 3deg))
+    translate3d(0, calc(var(--p) * -3svh), 0);
+  transform-style: preserve-3d;
+}
+
+.show-rig[data-device="browser"] .show-device {
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: 0;
+  border-radius: var(--space-2);
+}
+
+/* the rim of the lamp's light on the edge that faces it */
+.show-device::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: var(--rule);
+  border-radius: inherit;
+  background: linear-gradient(
+    calc(135deg * var(--flip)),
+    var(--bone-70),
+    transparent 34%,
+    transparent 70%,
+    var(--bone-30)
+  );
+  -webkit-mask:
+    linear-gradient(var(--ink) 0 0) content-box exclude,
+    linear-gradient(var(--ink) 0 0);
+  mask:
+    linear-gradient(var(--ink-black) 0 0) content-box exclude,
+    linear-gradient(var(--ink-black) 0 0);
+  pointer-events: none;
+}
+
+/* the cast shadow falls away from the lamp, on the art behind, and slides as the lamp does */
+.show-cast {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius-phone);
+  background: var(--ink);
+  opacity: 0.5;
+  filter: blur(var(--space-3));
+  translate: calc(var(--flip) * var(--space-5) * -1) var(--space-4);
+}
+
+/* the screen's own light spilling onto the field behind it: a blurred copy of the face that is on */
+.show-glow {
+  position: absolute;
+  inset: -8%;
+  z-index: -2;
+  overflow: hidden;
+  filter: blur(var(--glow-blur)) saturate(1.6);
+  opacity: 0.6;
+}
+
+.show-glow img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  opacity: 0;
+  transition: opacity var(--motion-section) var(--ease-out);
+}
+
+.show-glow img[data-on] {
+  opacity: 1;
+}
+
+.show-tab {
+  position: absolute;
+  top: calc(var(--space-3) * -1);
+  left: var(--space-3);
+  z-index: 4;
+  padding: 0 var(--space-2);
+  background: var(--bone);
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+}
+
+.show-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--ink);
+  border-bottom: var(--rule) solid var(--bone-12);
+}
+
+.show-bar i {
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-round);
+  background: var(--bone-30);
+}
+
+.show-glass {
+  position: relative;
+  contain: paint;
+  border-radius: calc(var(--radius-phone) - var(--device-bezel));
+  background: var(--ink);
+}
+
+.show-rig[data-device="browser"] .show-glass {
+  border-radius: 0 0 var(--space-2) var(--space-2);
+}
+
+.show-screen {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    opacity var(--motion-section) var(--ease-out),
+    transform var(--motion-section) var(--ease-out);
+}
+
+.show-screen[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- the phone's status bar: every size is a share of the screen's width, so it is the same bar on every phone ---- */
+
+.show-rig[data-device="phone"] .show-glass {
+  container-type: inline-size;
+  --status-h: 8.2cqw;
+}
+
+/* the app starts under the bar; a capture that came with a bar of its own is cropped (--trim of its height) so it is drawn once */
+.show-rig[data-device="phone"] .show-screen {
+  box-sizing: border-box;
+  padding-top: var(--status-h);
+  contain: paint;
+  background: var(--bar);
+}
+
+.show-rig[data-device="phone"] .show-screen img {
+  height: calc(100% / (1 - var(--trim, 0)));
+  translate: 0 calc(var(--trim, 0) * -100%);
+}
+
+.show-screen[data-tone="light"] {
+  --bar-ink: var(--bone);
+}
+
+.show-screen[data-tone="dark"] {
+  --bar-ink: var(--ink);
+}
+
+.show-status {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1.3cqw;
+  height: var(--status-h);
+  padding-inline: 7cqw 6cqw;
+  background: var(--bar);
+  color: var(--bar-ink);
+}
+
+.show-clock {
+  margin-right: auto;
+  font-family: var(--font-text);
+  font-size: 3.7cqw;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.show-island {
+  position: absolute;
+  left: 50%;
+  top: 1.7cqw;
+  width: 20cqw;
+  height: 4.8cqw;
+  translate: -50% 0;
+  border-radius: 2.4cqw;
+  background: var(--ink);
+}
+
+.show-signal {
+  width: 3.9cqw;
+}
+
+.show-wifi {
+  width: 3.9cqw;
+}
+
+.show-battery {
+  width: 6cqw;
+}
+
+/* a phone's bezel is slim and keeps its proportion to the screen: the wide frames keep their own */
+@media (max-width: 1099px) {
+  .show-rig[data-device="phone"] {
+    --device-bezel: 3px;
+    --radius-phone: 1.125rem;
+  }
+}
+
+.show-screen img,
+.show-screen .scene-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* the glare that crosses the glass as the page scrolls */
+.show-sheen {
+  position: absolute;
+  inset: -30%;
+  background: linear-gradient(
+    115deg,
+    transparent 42%,
+    var(--bone-12) 50%,
+    transparent 58%
+  );
+  transform: translate3d(calc(var(--p) * 90% - 45%), 0, 0);
+  pointer-events: none;
+}
+
+/* the second device stands in the scene too: a phone leaning behind the first, or the phone that goes with a web page in front of it */
+.show[data-kind] .show-rig[data-role="second"] {
+  display: none;
+}
+
+/* on the phone a page with real phone screens puts the phone in front, and the page peeks above it as a strip */
+.show[data-layers="both"] .show-rig[data-role="second"] {
+  display: block;
+  z-index: 5;
+  top: calc(var(--hero-top) + 8svh);
+  width: auto;
+  height: 40svh;
+  aspect-ratio: 390 / 844;
+}
+
+.show[data-kind="browser"] .show-rig[data-role="second"] .show-device {
+  transform: rotateY(calc(var(--flip) * (-8deg + var(--p) * 10deg)))
+    rotateX(3deg);
+}
+
+.show-rig[data-role="second"] .show-device {
+  border-radius: var(--radius-phone);
+}
+
+/* ---- the captions: one beat at a time ---- */
+
+/* on the phone the caption is a solid band the devices sink behind: the text never sits on a screen */
+.show-copy {
+  position: absolute;
+  z-index: 6;
+  inset: auto 0 0;
+  padding: var(--space-6) var(--gutter-right-phone)
+    calc(var(--hire-bar-height) + var(--space-3)) var(--gutter-left-phone);
+  color: var(--bone);
+}
+
+.show-copy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, transparent, var(--shade-deep) var(--space-6));
+}
+
+.show-copy h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--size-scene-title-phone);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* the poster word is the project's name; its heading is for the page's outline and the readers that use it */
+.show .show-copy h3 {
+  position: absolute;
+  clip-path: inset(50%);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.show-lead {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-body);
+  line-height: 1.4;
+  color: var(--bone-70);
+}
+
+.show-beats {
+  display: grid;
+  margin-top: var(--space-2);
+}
+
+.show-beat {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  opacity: 0;
+  transform: translate3d(0, var(--space-3), 0);
+  transition:
+    opacity var(--beat-fade) var(--ease-out),
+    transform var(--beat-fade) var(--ease-out),
+    visibility var(--dur-zero) linear var(--beat-fade);
+}
+
+.show-beat[data-on] {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.show-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--bone-70);
+}
+
+.show-label::before {
+  content: "";
+  width: var(--space-4);
+  height: var(--space-1);
+  background: var(--field);
+  outline: var(--rule) solid var(--bone-30);
+}
+
+.show-text {
+  max-width: 34ch;
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-lead);
+  line-height: 1.32;
+  color: var(--bone);
+}
+
+.show-hook {
+  max-width: 34ch;
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-body);
+  line-height: 1.35;
+  color: var(--bone-70);
+}
+
+.show-hook b {
+  font-family: var(--font-label);
+  font-weight: 400;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.show-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.show-meta .stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.show-meta .stack li {
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  color: var(--bone-70);
+}
+
+.show-meta a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--show-strip);
+  color: var(--bone);
+  text-decoration: underline;
+  text-decoration-color: var(--field);
+  text-decoration-thickness: var(--space-1);
+  text-underline-offset: var(--space-1);
+}
+
+.show-meta a:hover {
+  text-decoration-color: var(--bone);
+}
+
+/* where the story stands: one tick per beat, filling as the page scrolls */
+.show-ticks {
+  display: flex;
+  gap: var(--space-1);
+  margin: var(--space-2) 0 0;
+}
+
+.show-ticks i {
+  flex: 1;
+  height: var(--space-1);
+  background: var(--bone-30);
+  transition: background var(--beat-fade) var(--ease-out);
+}
+
+.show-ticks i[data-on] {
+  background: var(--bone);
+}
+
+/* ---- wide: the copy beside the device, mirrored in the second composition ---- */
+
+@media (min-width: 1280px) {
+  .show-word {
+    left: var(--gutter-left);
+    top: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4));
+    font-size: var(--word-size);
+    transform: none;
+  }
+
+  /* wide the product is the subject: the screen splits in thirds, the word and the copy hold the first and the device stands
+     centered in the other two, in the middle of the height under the strip; his scene fills the third it leaves */
+  .show {
+    /* an uppercase Boska letter is at most 0.56em, so the word fits the measure; it never grows past a band of 15svh */
+    --word-size: min(
+      calc(
+        (100vw - var(--gutter-left) - var(--gutter-right)) /
+          (var(--chars, 8) * 0.56)
+      ),
+      15svh
+    );
+    --stage-top: calc(var(--top-bar-height) + var(--show-strip));
+    --stage-middle: calc(var(--stage-top) + (100svh - var(--stage-top)) / 2);
+    --device-height: calc(100svh - var(--stage-top) - var(--space-5) * 2);
+    --device-x: calc(50% + var(--flip) * 100% / 6);
+    --browser-width: min(
+      var(--device-height) * 1.6,
+      100vw * 2 / 3 - var(--gutter-right) - var(--space-5)
+    );
+  }
+
+  .show[data-composition="b"] .show-word {
+    left: auto;
+    right: var(--gutter-right);
+  }
+
+  .show-rig[data-device="phone"],
+  .show-rig[data-device="browser"] {
+    top: var(--stage-middle);
+    left: var(--device-x);
+    translate: -50% -50%;
+  }
+
+  .show-rig[data-device="phone"] {
+    width: auto;
+    height: var(--device-height);
+    aspect-ratio: 390 / 844;
+  }
+
+  .show-rig[data-device="browser"] {
+    width: var(--browser-width);
+    height: auto;
+    aspect-ratio: 16 / 10;
+  }
+
+  /* the phone's sibling leans behind it, toward the far edge */
+  .show[data-kind="phone"] .show-rig[data-role="second"] {
+    display: block;
+    z-index: 3;
+    translate: calc(-50% + var(--flip) * 62%) calc(-50% + 6svh);
+    scale: 0.82;
+    filter: brightness(0.72) saturate(0.85);
+  }
+
+  /* the phone that goes with the page stands inside its lower corner, toward the copy */
+  .show[data-kind="browser"] .show-rig[data-role="second"] {
+    display: block;
+    z-index: 5;
+    top: calc(var(--stage-middle) - var(--browser-width) / 3.2 + var(--browser-width) * 0.25);
+    left: auto;
+    right: calc(100% / 3 - var(--browser-width) / 2 + var(--space-4));
+    width: auto;
+    height: calc(var(--browser-width) / 1.6 * 0.55);
+    aspect-ratio: 390 / 844;
+    translate: none;
+  }
+
+  .show[data-kind="browser"][data-composition="b"]
+    .show-rig[data-role="second"] {
+    right: auto;
+    left: calc(100% / 3 - var(--browser-width) / 2 + var(--space-4));
+  }
+
+  .show[data-kind="browser"]
+    .show-rig[data-role="second"][data-device="browser"] {
+    display: none;
+  }
+
+  .show-copy {
+    inset: auto auto var(--space-6) var(--gutter-left);
+    width: min(28rem, 100vw / 3 - var(--gutter-left) - var(--space-5));
+    padding: 0;
+  }
+
+  /* the corner button holds the bottom right: copy set on that side stands clear above it */
+  .show[data-composition="b"] .show-copy {
+    inset: auto var(--gutter-right) calc(var(--space-6) + var(--space-5)) auto;
+  }
+
+  /* the copy sits on a soft shade of the field sunk into the ink, falling off toward the device */
+  .show-copy::before {
+    inset: -22svh -8vw -12svh calc(var(--gutter-left) * -1);
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--shade-deep) 88%, transparent) 55%,
+      transparent
+    );
+  }
+
+  .show-copy::before {
+    mask-image: linear-gradient(to bottom, transparent, var(--ink-black) 30%);
+  }
+
+  .show[data-composition="b"] .show-copy::before {
+    inset: -22svh calc(var(--gutter-right) * -1) -12svh -8vw;
+    background: linear-gradient(
+      to left,
+      color-mix(in srgb, var(--shade-deep) 88%, transparent) 55%,
+      transparent
+    );
+  }
+
+  .show-text {
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+}
+
+/* ---------- reduced motion: the scene is a still ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .show {
+    height: auto;
+  }
+
+  .show-stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    height: auto;
+    min-height: 100svh;
+    padding: calc(var(--top-bar-height) + var(--show-strip) + var(--space-4))
+      var(--gutter-right-phone) var(--space-5) var(--gutter-left-phone);
+  }
+
+  .show .backdrop,
+  .show .plate,
+  .show-word,
+  .show-device,
+  .show-sheen {
+    transform: none;
+  }
+
+  .show .plate {
+    scale: none;
+    inset: 0 -3vw;
+  }
+
+  .show-stage > * {
+    min-width: 0;
+  }
+
+  .show,
+  .show .backdrop,
+  .show .plate {
+    animation: none;
+    transition: none;
+  }
+
+  .show-word,
+  .show-rig,
+  .show-copy {
+    position: relative;
+    inset: auto;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    translate: none;
+  }
+
+  .show-rig[data-device="phone"] {
+    justify-self: center;
+  }
+
+  .show[data-kind] .show-rig[data-role="second"],
+  .show[data-kind][data-layers] .show-rig[data-role="second"] {
+    display: none;
+  }
+
+  .show-screen,
+  .show-glow img {
+    transition: none;
+  }
+
+  .show-screen:not(:first-child),
+  .show-glow img:not(:first-child) {
+    display: none;
+  }
+
+  .show-screen:first-child,
+  .show-glow img:first-child {
+    opacity: 1;
+    transform: none;
+  }
+
+  .show-copy {
+    width: auto;
+    padding: 0;
+  }
+
+  .show-copy::before {
+    display: none;
+  }
+
+  .show-beats {
+    gap: var(--space-4);
+  }
+
+  .show-beat {
+    grid-area: auto;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .show-ticks {
+    display: none;
+  }
+}

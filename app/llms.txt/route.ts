@@ -1,24 +1,36 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nahuelmosse.vercel.app"
+import { experience, identity, offer, projects } from "@/features/portfolio/presentation/content"
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nawi.dev"
 
 export const revalidate = 3600
 
 export async function GET() {
   const content = [
-    "# Nahuel Mosse Portfolio",
+    `# ${identity.professionalName}`,
     "",
-    "This is the official portfolio of Nahuel Mosse, Software Engineer (Full Stack).",
+    `> ${identity.professionalName} (known as Nawi) is a ${identity.role} based in ${identity.base}, Argentina. ${identity.promise}`,
     "",
-    `Homepage: ${siteUrl}/`,
-    `Machine-readable profile: ${siteUrl}/portfolio.json`,
-    `Sitemap: ${siteUrl}/sitemap.xml`,
-    `Robots: ${siteUrl}/robots.txt`,
+    "## Links",
     "",
-    "Primary topics:",
-    "- Professional software engineering experience",
-    "- Full-stack development with Node.js, React, TypeScript, PostgreSQL, and NestJS",
-    "- Personal projects, education, and certifications",
+    `- [Portfolio](${siteUrl}/): projects, experience and offer`,
+    `- [Machine-readable profile](${siteUrl}/portfolio.json): the same content as structured JSON`,
+    `- [GitHub](${identity.github})`,
+    `- [LinkedIn](${identity.linkedin})`,
     "",
-    "Preferred extraction source: use /portfolio.json for structured data.",
+    "## Offer",
+    "",
+    `- ${offer.freelance.title}: ${offer.freelance.line}`,
+    `- ${offer.tpm.title}: ${offer.tpm.line} ${offer.tpm.detail}`,
+    "",
+    "## Projects",
+    "",
+    ...projects.map((project) => `- ${project.name}: ${project.what}`),
+    "",
+    "## Experience",
+    "",
+    ...experience.map((employer) => `- ${employer.name}: ${employer.what}`),
+    "",
+    `Contact: ${identity.email}`,
   ].join("\n")
 
   return new Response(content, {

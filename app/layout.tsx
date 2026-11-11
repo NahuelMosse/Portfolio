@@ -1,130 +1,68 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
+import { PRELOADER_SCRIPT, Preloader, type PlateCopies } from "@/features/film/presentation/preloader"
+import { sceneAsset } from "@/features/film"
+import { plateSrcSet } from "@/features/film/presentation/plate"
+import { PHONE } from "@/features/portfolio/presentation/chapter-illustration"
 
-const geistSans = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-  display: "swap",
-  preload: true,
-})
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-  display: "swap",
-  preload: true,
-})
+const TITLE = "Nahuel Mosse | Technical Lead · Technical Project Manager"
+const DESCRIPTION =
+  "Nahuel Mosse, known as Nawi: Technical Lead and Technical Project Manager who designs, builds and leads digital products with AI. Projects and experience."
 
 export const metadata: Metadata = {
-  title: "Nahuel Mosse | Software Engineer - Full Stack Developer",
-  description:
-    "Software Engineer specializing in full-stack development with Node.js, React, TypeScript, and PostgreSQL. Over 3 years of experience building scalable B2C platforms.",
-  keywords: [
-    "Software Engineer",
-    "Full Stack Developer",
-    "Node.js",
-    "React",
-    "TypeScript",
-    "NestJS",
-    "PostgreSQL",
-    "Next.js",
-    "Angular",
-    "Web Development",
-    "Buenos Aires",
-    "Argentina",
-    "API Development",
-    "Frontend Developer",
-    "Backend Developer",
-    "JavaScript",
-  ],
+  title: TITLE,
+  description: DESCRIPTION,
   authors: [{ name: "Nahuel Mosse", url: "https://github.com/NahuelMosse" }],
   creator: "Nahuel Mosse",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://nahuelmosse.vercel.app"),
-  alternates: {
-    canonical: "/",
-  },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://nawi.dev"),
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "/",
-    title: "Nahuel Mosse | Software Engineer Portfolio",
-    description: "Software Engineer specializing in full-stack development with Node.js, React, and TypeScript.",
+    title: TITLE,
+    description: DESCRIPTION,
     siteName: "Nahuel Mosse Portfolio",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Nahuel Mosse | Software Engineer",
-    description: "Software Engineer specializing in full-stack development",
-    creator: "@NahuelMosse",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
-  },
-  icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
-  },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  robots: { index: true, follow: true },
+  icons: { icon: [{ url: "/icon.svg", type: "image/svg+xml" }] },
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+// the cover's own copies, in the order its <picture> lists them, so the title prints what the cover shows
+function coverCopies(wide: string, tall?: string | false): PlateCopies {
+  const sources: PlateCopies["sources"] = []
+  const tallAvif = tall && plateSrcSet(tall, "avif")
+  const tallWebp = tall && (plateSrcSet(tall) ?? `/film/${tall}.webp`)
+  const wideAvif = plateSrcSet(wide, "avif")
+  if (tallAvif) sources.push({ media: PHONE, type: "image/avif", srcSet: tallAvif })
+  if (tallWebp) sources.push({ media: PHONE, srcSet: tallWebp })
+  if (wideAvif) sources.push({ type: "image/avif", srcSet: wideAvif })
+  return { sources, src: `/film/${wide}.webp`, srcSet: plateSrcSet(wide) }
+}
+
+const HAS_MOTION_SCRIPT =
+  "if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('has-motion')"
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const wide = sceneAsset("ill-cover-16x9", "webp") && "ill-cover-16x9"
+  const tall = sceneAsset("ill-cover-9x16", "webp") && "ill-cover-9x16"
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Suppress known React 19 + Next.js 16 Performance.measure error in development */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (typeof window !== 'undefined' && '${process.env.NODE_ENV}' === 'development') {
-                const originalError = console.error;
-                console.error = (...args) => {
-                  if (
-                    typeof args[0] === 'string' &&
-                    args[0].includes("Failed to execute 'measure' on 'Performance'")
-                  ) {
-                    return;
-                  }
-                  originalError.apply(console, args);
-                };
-              }
-            `,
-          }}
-        />
+        {/* hidden starting states exist only under .has-motion: set before the first paint, absent for reduced motion and without script */}
+        <script dangerouslySetInnerHTML={{ __html: HAS_MOTION_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: PRELOADER_SCRIPT }} />
+        <link rel="preload" href="/fonts/boska-700.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/courier-prime-400.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        {/* the cover, at the copy each screen picks, before anything else in the page asks for an image */}
+        {tall && <link rel="preload" as="image" type="image/avif" imageSrcSet={plateSrcSet(tall, "avif")} imageSizes="100vw" media={PHONE} fetchPriority="high" />}
+        {wide && <link rel="preload" as="image" type="image/avif" imageSrcSet={plateSrcSet(wide, "avif")} imageSizes="100vw" media={tall ? "(min-width: 701px)" : undefined} fetchPriority="high" />}
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body>
+        <Preloader plate={wide ? coverCopies(wide, tall) : undefined} />
         {children}
         {process.env.VERCEL_ENV && <Analytics />}
       </body>

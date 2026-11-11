@@ -1,0 +1,78 @@
+{
+ "grit-hoy": {
+  "bg": "#f4f1e9",
+  "tone": "dark"
+ },
+ "grit-serie": {
+  "bg": "#f4f1e9",
+  "tone": "dark"
+ },
+ "grit-descanso": {
+  "bg": "#f4f1e9",
+  "tone": "dark"
+ },
+ "grit-completado": {
+  "bg": "#f4f1e9",
+  "tone": "dark"
+ },
+ "grit-ejercicio": {
+  "bg": "#f4f1e9",
+  "tone": "dark"
+ },
+ "club-login": {
+  "bg": "#0f0c0a",
+  "tone": "light",
+  "trim": 0.04
+ },
+ "club-sedes": {
+  "bg": "#070707",
+  "tone": "light",
+  "trim": 0.04
+ },
+ "club-horarios": {
+  "bg": "#2c410d",
+  "tone": "light",
+  "trim": 0.04
+ },
+ "club-listo": {
+  "bg": "#4a7010",
+  "tone": "light",
+  "trim": 0.04
+ },
+ "cebador-390-poster": {
+  "bg": "#1f080d",
+  "tone": "light"
+ },
+ "cebador-s2-390": {
+  "bg": "#f1e8da",
+  "tone": "dark"
+ },
+ "sonria-hero-390": {
+  "bg": "#ffffff",
+  "tone": "dark"
+ },
+ "sonria-tratamientos-390": {
+  "bg": "#ffffff",
+  "tone": "dark"
+ },
+ "sonria-turno-390": {
+  "bg": "#ffffff",
+  "tone": "dark"
+ },
+ "miga-hero-390": {
+  "bg": "#4a392b",
+  "tone": "light"
+ },
+ "miga-lista-390": {
+  "bg": "#3c0314",
+  "tone": "light"
+ },
+ "miga-pedir-390": {
+  "bg": "#7c5f63",
+  "tone": "light"
+ },
+ "triaje-mobile": {
+  "bg": "#0e141b",
+  "tone": "light"
+ }
+}

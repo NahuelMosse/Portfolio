@@ -1,0 +1,80 @@
+/* ---------- experience: a group of the Projects kind ----------
+   The scenes, their motion and their copy come from group.css and showcase.css. What is its own: each employer's field is its
+   brand colour, and the logo stands above the name in one optical box so the five marks read equally strong. The logos are
+   bone, like the copy they head. */
+
+.show[data-employer="fravega"] {
+  --field: var(--spot-fravega);
+}
+
+.show[data-employer="grupo-st"] {
+  --field: var(--spot-grupo-st);
+}
+
+.show[data-employer="justo"] {
+  --field: var(--spot-justo);
+  --on: var(--ink);
+}
+
+.show[data-employer="smart-warehousing"] {
+  --field: var(--spot-smart-warehousing);
+  --on: var(--ink);
+}
+
+.show[data-employer="visma"] {
+  --field: var(--spot-visma);
+}
+
+/* employer names carry accents above the capitals (Jüsto, Frávega): the word sits lower so they clear the strip */
+.show[data-employer] .show-word {
+  margin-top: 0.14em;
+  text-shadow: var(--space-1) var(--space-1) 0 var(--ink);
+}
+
+.xp-mark {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: clamp(8rem, 18vw, 16rem);
+  max-height: clamp(3.5rem, 11svh, 7.5rem);
+  margin-bottom: var(--space-3);
+  object-fit: contain;
+  object-position: left center;
+}
+
+/* the role, the period and the tag read as a file's header line: typed, bone, the tag stamped */
+.show[data-employer] .show-lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  margin-bottom: var(--space-3);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.show[data-employer] [data-employer-period] {
+  color: var(--bone-70);
+}
+
+.show[data-employer] [data-employer-tag] {
+  padding: 0 var(--space-2);
+  border: var(--rule) solid var(--bone-70);
+  color: var(--bone-70);
+}
+
+.show[data-employer][data-tag="current"] [data-employer-tag] {
+  border-color: var(--red);
+  background: var(--red);
+  color: var(--bone);
+}
+
+/* the index of employers carries each brand colour as its rule, as the project indexes do */
+.group-index [data-project="fravega"] { --swatch: var(--spot-fravega); }
+.group-index [data-project="grupo-st"] { --swatch: var(--spot-grupo-st); }
+.group-index [data-project="justo"] { --swatch: var(--spot-justo); }
+.group-index [data-project="smart-warehousing"] { --swatch: var(--spot-smart-warehousing); }
+.group-index [data-project="visma"] { --swatch: var(--spot-visma); }

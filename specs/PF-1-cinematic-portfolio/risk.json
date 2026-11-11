@@ -1,0 +1,51 @@
+{
+  "size": "large",
+  "review": "high",
+  "lenses": [
+    "visual",
+    "interpretation",
+    "security"
+  ],
+  "modules": [
+    "ui"
+  ],
+  "signals": [
+    "screen"
+  ],
+  "words": [
+    "session"
+  ],
+  "files": [
+    "features/portfolio/presentation/content.ts",
+    "e2e/content.spec.ts",
+    "features/film/presentation/scene-media.tsx",
+    "features/film/presentation/cold-open.tsx",
+    "public/ASSETS.md",
+    "e2e/film.spec.ts",
+    "features/film/presentation/film-shell.tsx",
+    "features/film/presentation/chapter.tsx",
+    "app/page.tsx",
+    "app/layout.tsx",
+    "app/globals.css",
+    "features/portfolio/presentation/offer.tsx",
+    "e2e/offer.spec.ts",
+    "features/portfolio/presentation/experience.tsx",
+    "features/portfolio/presentation/projects.tsx",
+    "features/film/presentation/end-credits.tsx",
+    "features/film/presentation/sound-toggle.tsx",
+    "e2e/credits.spec.ts",
+    "app/llms.txt/route.ts",
+    "lib/machine-readable.ts",
+    "lib/metadata.ts",
+    "components.json",
+    "components/ui/"
+  ],
+  "tasks": 8,
+  "lensesOff": [
+    {
+      "lens": "contract",
+      "profile": "backend",
+      "why": "not chosen at install"
+    }
+  ]
+}

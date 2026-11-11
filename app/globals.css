@@ -1,158 +1,2711 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "./animations.css";
+@import "../design/tokens.css";
+@import "../features/portfolio/presentation/showcase.css";
+@import "../features/portfolio/presentation/group.css";
+@import "../features/portfolio/presentation/contact.css";
+@import "../features/portfolio/presentation/tool.css";
 
-@custom-variant dark (&:is(.dark *));
+/* the cards, tools and the catalog hold prose and snippets, not classes of the site */
+@source not "../specs";
+@source not "../.claude";
+@source not "../catalog";
+@source not "../cv";
+@source not "../public";
 
-:root {
-  /* Interior design inspired: Dark forest green walls with cognac leather accents */
-  --background: oklch(0.18 0.04 165); /* Dark forest green base - like painted walls */
-  --foreground: oklch(0.95 0.01 80); /* Warm off-white cream */
-  --card: oklch(0.22 0.035 165); /* Slightly lighter forest green cards */
-  --card-foreground: oklch(0.93 0.01 75);
-  --popover: oklch(0.22 0.04 165);
-  --popover-foreground: oklch(0.93 0.01 75);
-  --primary: oklch(0.42 0.08 165); /* Subtle sage green - not vibrant */
-  --primary-foreground: oklch(0.95 0.01 80);
-  --secondary: oklch(0.55 0.10 55); /* Lighter cognac/warm brown leather */
-  --secondary-foreground: oklch(0.95 0.01 80);
-  --muted: oklch(0.28 0.03 165);
-  --muted-foreground: oklch(0.65 0.02 80);
-  --accent: oklch(0.72 0.06 75); /* Warm beige/gold - like pampas grass */
-  --accent-foreground: oklch(0.20 0.04 165);
-  --destructive: oklch(0.50 0.15 35);
-  --destructive-foreground: oklch(0.95 0.01 80);
-  --border: oklch(0.30 0.04 165); /* Subtle green borders */
-  --input: oklch(0.26 0.03 165);
-  --ring: oklch(0.42 0.08 165);
-  --chart-1: oklch(0.42 0.08 165);
-  --chart-2: oklch(0.45 0.08 55);
-  --chart-3: oklch(0.72 0.06 75);
-  --chart-4: oklch(0.40 0.06 180);
-  --chart-5: oklch(0.48 0.07 150);
-  --radius: 0.875rem;
-  --sidebar: oklch(0.22 0.035 165);
-  --sidebar-foreground: oklch(0.93 0.01 75);
-  --sidebar-primary: oklch(0.42 0.08 165);
-  --sidebar-primary-foreground: oklch(0.95 0.01 80);
-  --sidebar-accent: oklch(0.45 0.08 55);
-  --sidebar-accent-foreground: oklch(0.95 0.01 80);
-  --sidebar-border: oklch(0.30 0.04 165);
-  --sidebar-ring: oklch(0.42 0.08 165);
+@font-face {
+  font-family: "Boska";
+  src: url("/fonts/boska-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
 }
 
-.dark {
-  --background: oklch(0.18 0.04 165);
-  --foreground: oklch(0.95 0.01 80);
-  --card: oklch(0.22 0.035 165);
-  --card-foreground: oklch(0.93 0.01 75);
-  --popover: oklch(0.22 0.04 165);
-  --popover-foreground: oklch(0.93 0.01 75);
-  --primary: oklch(0.42 0.08 165);
-  --primary-foreground: oklch(0.95 0.01 80);
-  --secondary: oklch(0.55 0.10 55);
-  --secondary-foreground: oklch(0.95 0.01 80);
-  --muted: oklch(0.28 0.03 165);
-  --muted-foreground: oklch(0.65 0.02 80);
-  --accent: oklch(0.72 0.06 75);
-  --accent-foreground: oklch(0.20 0.04 165);
-  --destructive: oklch(0.50 0.15 35);
-  --destructive-foreground: oklch(0.95 0.01 80);
-  --border: oklch(0.30 0.04 165);
-  --input: oklch(0.26 0.03 165);
-  --ring: oklch(0.42 0.08 165);
-  --chart-1: oklch(0.42 0.08 165);
-  --chart-2: oklch(0.45 0.08 55);
-  --chart-3: oklch(0.72 0.06 75);
-  --chart-4: oklch(0.40 0.06 180);
-  --chart-5: oklch(0.48 0.07 150);
-  --sidebar: oklch(0.22 0.035 165);
-  --sidebar-foreground: oklch(0.93 0.01 75);
-  --sidebar-primary: oklch(0.42 0.08 165);
-  --sidebar-primary-foreground: oklch(0.95 0.01 80);
-  --sidebar-accent: oklch(0.45 0.08 55);
-  --sidebar-accent-foreground: oklch(0.95 0.01 80);
-  --sidebar-border: oklch(0.30 0.04 165);
-  --sidebar-ring: oklch(0.42 0.08 165);
+@font-face {
+  font-family: "Courier Prime";
+  src: url("/fonts/courier-prime-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/general-sans-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/general-sans-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+/* the faces shown while the type arrives, fitted to its metrics so nothing moves when it swaps in */
+@font-face {
+  font-family: "Boska Fallback";
+  src: local("Georgia Bold"), local("Georgia-Bold");
+  font-weight: 700;
+  size-adjust: 78.43%;
+  ascent-override: 122.41%;
+  descent-override: 31.88%;
+  line-gap-override: 11.48%;
+}
+
+@font-face {
+  font-family: "Courier Prime Fallback";
+  src: local("Courier New"), local("CourierNewPSMT");
+  font-weight: 400;
+  size-adjust: 99.92%;
+  ascent-override: 78.19%;
+  descent-override: 34.21%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "General Sans Fallback";
+  src: local("Arial"), local("ArialMT");
+  size-adjust: 97.26%;
+  ascent-override: 103.84%;
+  descent-override: 24.68%;
+  line-gap-override: 10.28%;
+}
+
+/* a deferred image shows its blurred proof (or the ink) until its copy arrives, then comes into focus */
+img[data-srcset]:not([data-loaded]),
+img[data-src]:not([data-loaded]) {
+  filter: blur(14px);
+}
+
+img[data-srcset][data-loaded],
+img[data-src][data-loaded] {
+  animation: plate-focus var(--dur-plate-focus) ease-out;
+}
+
+@keyframes plate-focus {
+  from {
+    filter: blur(14px);
+  }
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-destructive: var(--destructive);
+  --animate-shiny-text: shiny-text var(--motion-shiny) infinite;
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  @keyframes shiny-text {
+    0%, 90%, 100% {
+      background-position: calc(-100% - var(--shiny-width)) 0;
+    }
+    30%, 60% {
+      background-position: calc(100% + var(--shiny-width)) 0;
+    }
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
-  
-  body {
-    @apply bg-background text-foreground;
-    /* Subtle texture like a painted wall - minimal */
-    background-image: 
-      radial-gradient(circle at 20% 80%, oklch(0.20 0.04 165) 0px, transparent 50%),
-      radial-gradient(circle at 80% 20%, oklch(0.19 0.035 170) 0px, transparent 45%);
-    background-attachment: fixed;
-  }
-  
-  /* Optimizar animaciones para mejor rendimiento */
-  section {
-    will-change: opacity, transform;
-    contain: layout style paint;
-  }
-  
-  /* Optimizar scroll suave */
+
   html {
-    scroll-behavior: smooth;
+    background: var(--ink);
+    /* long translated words wrap inside their box; whatever still spills is cut at the page edge */
+    overflow-x: clip;
   }
-  
-  /* Ocultar scrollbar en todos los navegadores */
-  html,
+
   body {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    overflow-x: hidden; /* Prevent horizontal scroll */
-    max-width: 100vw; /* Ensure nothing exceeds viewport width */
+    background: var(--ink);
+    color: var(--bone);
+    font-family: var(--font-text);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
   }
-  
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
+
+  /* no paragraph ends on a lone word */
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
   }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--bone);
+    outline-offset: 4px;
+  }
+}
+
+/* the catalog Button clears the outline as a utility, above the base layer: the page's own jump buttons get it back here */
+[data-employer-jump]:focus-visible,
+.group-index button:focus-visible {
+  outline: 2px solid var(--bone);
+  outline-offset: 4px;
+}
+
+/* a heading that receives focus after a jump is not outlined: the page moved to it */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* ---------- the canvas: one near-black field ---------- */
+
+.film {
+  position: relative;
+  background: var(--ink);
+}
+
+/* ---------- the top bar and the controls ---------- */
+
+.top-bar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--top-bar-height);
+  padding: 0 var(--space-4);
+  background: var(--ink);
+  border-bottom: 1px solid var(--bone-12);
+}
+
+/* the n5 stamp takes the color of where it sits: bone on the ink bar, crimson in the opening title */
+.brand-mark {
+  display: inline-block;
+  height: 1em;
+  aspect-ratio: 1180 / 815;
+}
+
+.brand-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.wordmark {
+  font-size: 2.5rem;
+  color: var(--red);
+  display: inline-flex;
+  align-items: center;
+  min-width: var(--space-6);
+  min-height: 44px;
+}
+
+.top-nav {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.film-control,
+.corner-cta {
+  display: inline-block;
+  border: 1px solid var(--bone);
+  border-radius: var(--radius-rectangle);
+  padding: var(--space-2) var(--space-3);
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out),
+    opacity var(--dur-panel) var(--ease-panel),
+    translate var(--dur-panel) var(--ease-panel),
+    visibility var(--dur-zero) var(--dur-zero);
+}
+
+/* the index and the sound toggle are typed caps in the bar, not pills */
+.top-bar .film-control:not(.menu-button) {
+  border-color: transparent;
+  background: transparent;
+  padding: var(--space-2) var(--space-2);
+  min-height: 44px;
+}
+
+.top-bar .film-control:not(.menu-button):hover {
+  background: transparent;
+  border-color: transparent;
+  color: var(--red);
+}
+
+/* ---------- the sound cue: what invites the first click ---------- */
+
+.sound-bars {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-hair);
+  height: 14px;
+}
+
+.sound-bars b {
+  display: block;
+  width: 2px;
+  height: 14px;
+  background: var(--red);
+  transform-origin: center;
+}
+
+.sound-bars b:nth-child(1) {
+  transform: scaleY(0.72);
+}
+
+.sound-bars b:nth-child(2) {
+  transform: scaleY(1);
+}
+
+.sound-bars b:nth-child(3) {
+  transform: scaleY(0.78);
+}
+
+.sound-bars b:nth-child(4) {
+  transform: scaleY(0.9);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sound-cue .sound-bars b {
+    animation: sound-bar var(--dur-sound-bar) ease-in-out infinite alternate;
+  }
+
+  .sound-cue .sound-bars b:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+
+  .sound-cue .sound-bars b:nth-child(3) {
+    animation-delay: -0.6s;
+  }
+
+  .sound-cue .sound-bars b:nth-child(4) {
+    animation-delay: -0.15s;
+  }
+}
+
+@keyframes sound-bar {
+  from {
+    transform: scaleY(0.72);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* the toggle always carries its bars: they move while the sound plays and lie low and dim while it is off */
+.sound-toggle .sound-bars {
+  margin-right: var(--space-2);
+  vertical-align: middle;
+}
+
+.sound-toggle .sound-bars b {
+  transition:
+    transform var(--dur-panel-fade) var(--ease-panel),
+    opacity var(--dur-panel-fade) var(--ease-panel);
+}
+
+html[data-sound="off"] .sound-toggle .sound-bars b {
+  transform: scaleY(0.3);
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-sound="on"] .sound-toggle .sound-bars b {
+    animation: sound-bar var(--dur-sound-bar) ease-in-out infinite alternate;
+  }
+
+  html[data-sound="on"] .sound-toggle .sound-bars b:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+
+  html[data-sound="on"] .sound-toggle .sound-bars b:nth-child(3) {
+    animation-delay: -0.6s;
+  }
+
+  html[data-sound="on"] .sound-toggle .sound-bars b:nth-child(4) {
+    animation-delay: -0.15s;
+  }
+}
+
+.sound-cue {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--bone);
+  border-radius: var(--radius-rectangle);
+  box-shadow: var(--space-1) var(--space-1) 0 var(--red);
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-fade) var(--ease-out);
+}
+
+html[data-sound="idle"] .sound-cue[data-visible] {
+  opacity: 1;
+}
+
+/* with a mouse the invitation is a credit line on the cover, under the name line; it scrolls with the cover. It shares the name
+   line's class, declared later, so it is held by both classes: a touch screen never shows it (the chip invites there). */
+.professional-name.cover-cue {
+  display: none;
+  margin-top: var(--space-4);
+  align-items: center;
+  transition: opacity var(--dur-fade) var(--ease-out);
+}
+
+/* the bars are an <i>, like the name line's rule: they keep their own size and no rule */
+.cover-cue .sound-bars {
+  flex: none;
+  border-top: 0;
+  display: inline-flex;
+  align-items: flex-end;
+  height: 0.75em;
+}
+
+@media (pointer: fine) {
+  .professional-name.cover-cue {
+    display: flex;
+  }
+
+  html[data-sound="idle"] .cold-open {
+    cursor: pointer;
+  }
+}
+
+html:not([data-sound="idle"]) .cover-cue {
+  opacity: 0;
+}
+
+.cover-cue .sound-bars b {
+  animation: none;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cover-cue .sound-bars b {
+    animation: sound-bar var(--dur-sound-bar) ease-in-out infinite alternate;
+  }
+
+  .cover-cue .sound-bars b:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+
+  .cover-cue .sound-bars b:nth-child(3) {
+    animation-delay: -0.6s;
+  }
+
+  .cover-cue .sound-bars b:nth-child(4) {
+    animation-delay: -0.15s;
+  }
+}
+
+@media (pointer: coarse) {
+  .sound-cue-chip {
+    display: inline-flex;
+    top: auto;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom) + 1.25rem + var(--hire-bar-clearance, 3.5rem));
+    translate: -50% 0;
+  }
+}
+
+.chapter-index {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.door::after {
+  content: " →";
+}
+
+.menu-button,
+.top-bar .menu-button {
+  display: none;
+}
+
+.menu-bars {
+  display: block;
+  width: var(--space-4);
+  height: 2px;
+  background: var(--bone);
+  box-shadow: 0 var(--space-rail) var(--bone), 0 calc(var(--space-rail) * -1) var(--bone);
+}
+
+.proof-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--space-3);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition:
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out);
+}
+
+.proof-link:hover {
+  color: var(--red);
+}
+
+.proof-link:active {
+  transform: scale(var(--press-scale));
+}
+
+.film-control:hover,
+.corner-cta:hover {
+  background: var(--red);
+  border-color: var(--red);
+}
+
+/* unlayered: the catalog button's outline-none utility would win over the base layer rule */
+.film-control:focus-visible {
+  outline: 2px solid var(--bone);
+  outline-offset: 4px;
+}
+
+.film-control:disabled,
+.corner-cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.film-control:active,
+.corner-cta:active,
+.door:active {
+  transform: scale(var(--press-scale));
+}
+
+/* Back to top, then Let's talk, at the right edge: a hidden control stays in the row and collapses its width, so the other slides along */
+.corner-pair {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+}
+
+.corner-pair .corner-cta {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 16em;
+  margin-left: 0;
+  transition:
+    background var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out),
+    max-width var(--dur-panel) var(--ease-panel),
+    padding-left var(--dur-panel) var(--ease-panel),
+    padding-right var(--dur-panel) var(--ease-panel),
+    border-left-width var(--dur-panel) var(--ease-panel),
+    border-right-width var(--dur-panel) var(--ease-panel),
+    margin-left var(--dur-panel) var(--ease-panel),
+    opacity var(--dur-panel) var(--ease-panel),
+    visibility var(--dur-zero) var(--dur-zero);
+}
+
+.corner-pair .corner-cta[data-visible="false"] {
+  max-width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    background var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out),
+    max-width var(--dur-panel) var(--ease-panel),
+    padding-left var(--dur-panel) var(--ease-panel),
+    padding-right var(--dur-panel) var(--ease-panel),
+    border-left-width var(--dur-panel) var(--ease-panel),
+    border-right-width var(--dur-panel) var(--ease-panel),
+    margin-left var(--dur-panel) var(--ease-panel),
+    opacity var(--dur-panel-close) var(--ease-panel-close),
+    visibility var(--dur-zero) var(--dur-panel);
+}
+
+/* the gap between the two exists only while both are shown */
+.corner-pair .corner-top[data-visible="true"] + .corner-cta[data-visible="true"] {
+  margin-left: var(--space-2);
+}
+
+/* when both arrive together, Let's talk leads and Top follows */
+.corner-pair .corner-top[data-visible="true"] {
+  transition:
+    background var(--motion-control) var(--ease-out),
+    border-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out),
+    max-width var(--dur-panel) var(--ease-panel),
+    padding-left var(--dur-panel) var(--ease-panel),
+    padding-right var(--dur-panel) var(--ease-panel),
+    border-left-width var(--dur-panel) var(--ease-panel),
+    border-right-width var(--dur-panel) var(--ease-panel),
+    margin-left var(--dur-panel) var(--ease-panel),
+    opacity var(--dur-panel) var(--ease-panel) var(--dur-panel-lag),
+    visibility var(--dur-zero) var(--dur-zero);
+}
+
+/* ---------- scenes: one full-bleed illustration, its copy laid over the dark of it ---------- */
+
+.scene {
+  position: relative;
+  isolation: isolate;
+}
+
+.scene[data-has-art] {
+  min-height: 80svh;
+}
+
+/* the edges fade into the near-black page so each scene runs into the next */
+.scene-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow-x: clip;
+  mask-image: linear-gradient(to bottom, transparent, var(--ink-black) 16%, var(--ink-black) 84%, transparent), linear-gradient(to right, transparent, var(--ink-black) 7%, var(--ink-black) 93%, transparent);
+  mask-composite: intersect;
+}
+
+.scene-art picture,
+.scene-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* a floor of ink under the copy keeps it readable over the lit part of the drawing */
+.scene-copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  min-height: inherit;
+  padding: var(--space-6) var(--gutter-right) var(--space-6) var(--gutter-left);
+}
+
+.scene[data-has-art] .scene-copy {
+  background: linear-gradient(to top, var(--ink-70), transparent 55%);
+}
+
+.scene-copy > :not(.offer, .contact, .employers, .chapter-title, .cover-title, .credits-roll) {
+  max-width: 34rem;
+}
+
+/* ---------- chapter words: poster type, each with its own composition ---------- */
+
+.chapter-title {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: fit-content;
+  pointer-events: none;
+}
+
+.chapter-word {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--size-word-phone);
+  line-height: var(--poster-leading);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--bone);
+  mix-blend-mode: difference;
+}
+
+.chapter-word[data-long] {
+  font-size: var(--size-word-long-phone);
+}
+
+/* the letters rise out of a mask that cuts only below the word; its padding keeps descenders unclipped without moving the word */
+.chapter-letters {
+  display: inline-block;
+  clip-path: inset(-1em -0.5em 0);
+  vertical-align: top;
+  padding-bottom: 0.25em;
+  margin-bottom: -0.25em;
+}
+
+.chapter-letter {
+  display: inline-block;
+}
+
+/* Let's talk has no descenders and sits at the foot of the page: its mask must add nothing below the word */
+.contact-scene .chapter-letters {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+@media (min-width: 701px) {
+  .chapter-word {
+    font-size: var(--size-word);
+  }
+
+  .chapter-word[data-long] {
+    font-size: var(--size-word-long);
+  }
+}
+
+/* fine detail around the word: numeral, a thin rule, a catalog line, a four-point star */
+.chapter-detail {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+}
+
+.chapter-detail i {
+  flex: 0 0 var(--space-6);
+  border-top: var(--rule) solid var(--bone-70);
+}
+
+.chapter-detail b {
+  width: var(--space-3);
+  height: var(--space-3);
+  background: var(--bone);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+
+/* projects and experience: flush left, no illustration of its own; it hangs over the top of the first scene */
+.chapter-title:is([data-chapter-title="projects"], [data-chapter-title="experience"]) {
+  margin-top: calc(-12 * 1svh);
+  padding-left: var(--gutter-left);
+  margin-bottom: calc(var(--word-clearance) * -1);
+}
+
+/* experience hangs over the scene above by the same visible depth as projects over the cover: the scene above has no pin tail to take up the pull */
+.chapter-title[data-chapter-title="experience"] {
+  margin-top: calc(-6.5 * 1svh);
+}
+
+/* on a phone the cover ends in the sheet and its door, and the last project in its illustration, in flow: the word starts below them instead of hanging over them */
+@media (max-width: 767px) {
+  .chapter-title[data-chapter-title="projects"],
+  .chapter-title[data-chapter-title="experience"] {
+    margin-top: var(--space-6);
+  }
+}
+
+/* wide, the group header (top bar and strip) is opaque text above the first project: the word ends where it begins */
+@media (min-width: 768px) {
+  .chapter-title:is([data-chapter-title="projects"], [data-chapter-title="experience"]) {
+    margin-bottom: 0;
+  }
+}
+
+.chapter-title:is([data-chapter-title="projects"], [data-chapter-title="experience"]) .chapter-word {
+  margin-left: calc(var(--gutter-left) * -1);
+}
+
+/* offer: outlined, flush left, the whole title rising across the top edge of its illustration */
+.offer-scene .chapter-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: var(--gutter-left);
+  transform: translateY(-60%);
+}
+
+.offer-scene .scene-copy {
+  padding-top: calc(var(--size-word-phone) * 0.5);
+}
+
+@media (min-width: 701px) {
+  .offer-scene .scene-copy {
+    padding-top: calc(var(--size-word) * 0.5);
+  }
+}
+
+.offer-scene .chapter-word {
+  margin-left: calc(var(--gutter-left) * -1);
+  color: transparent;
+  -webkit-text-stroke: var(--rule) var(--bone);
+  mix-blend-mode: normal;
+}
+
+/* let's talk: crimson, along the bottom of its illustration, dropping into the credits */
+.contact-scene .chapter-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding-left: var(--gutter-left);
+}
+
+.contact-scene .chapter-word {
+  margin-left: calc(var(--gutter-left) * -1);
+  color: var(--red);
+  mix-blend-mode: normal;
+  transform: translateY(var(--poster-drop));
+}
+
+/* ---------- cold open ---------- */
+
+.cold-open {
+  position: relative;
+  color: var(--bone);
+}
+
+.cover-scene[data-has-art] {
+  min-height: 100svh;
+}
+
+.cover-scene .scene-copy {
+  background: none;
+}
+
+/* NAWI is poster type set flush to one edge and crossing his head: it inverts against the lit parts of the drawing */
+.cover-title {
+  position: absolute;
+  top: calc(var(--top-bar-height) + var(--space-3));
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  max-width: none;
+}
+
+.mark {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--size-nawi);
+  line-height: var(--poster-leading);
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+  color: var(--bone);
+  /* screen keeps the letters bone over shadow and lifts to white in the lamp light: no inverted hue */
+  mix-blend-mode: screen;
+}
+
+.professional-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  padding-inline: var(--space-3);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+}
+
+.professional-name i {
+  flex: 0 0 var(--space-6);
+  border-top: var(--rule) solid var(--bone-70);
+}
+
+.cover-scene .scene-art img {
+  object-position: center;
+}
+
+@media (min-width: 701px) {
+  .cover-title {
+    right: 0;
+    left: auto;
+    align-items: flex-end;
+  }
+
+  .professional-name {
+    padding-inline: 0 var(--gutter-right);
+  }
+}
+
+.cover-foot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--gutter-right) var(--space-5) var(--gutter-left);
+}
+
+/* the identification sheet is fine type ruled by hairlines, with no box around it */
+.id-sheet {
+  max-width: 24rem;
+  line-height: 1.4;
+}
+
+.sheet-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+}
+
+.id-sheet dl {
+  margin: 0;
+}
+
+.sheet-row {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-top: var(--rule) solid var(--bone-35);
+}
+
+.id-sheet dt {
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  opacity: 0.7;
+}
+
+.id-sheet dd {
+  margin: 0;
+  font-size: var(--text-body);
+}
+
+.sheet-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.sheet-head .sheet-title {
+  margin: 0;
+}
+
+@media (min-width: 701px) {
+  /* the cold open is one screen; NAWI is the poster's giant word, 41vw, crossing his head */
+  .cover-scene[data-has-art] {
+    min-height: 0;
+    height: 100svh;
+  }
+
+  /* the line box is tightened to the cap height: its bottom sits at the N's foot, so the sheet below can never overlap it;
+     the box starts 0.03em above the glyph tops, so the top offset adds it back to keep the letters under the bar */
+  .cover-title {
+    --size-nawi: 41vw;
+    top: calc(var(--top-bar-height) + var(--space-2) + 0.03 * var(--size-nawi));
+    gap: var(--space-3);
+  }
+
+  .mark {
+    line-height: 0.7;
+  }
+
+  .id-sheet {
+    line-height: 1.3;
+  }
+
+  .id-sheet .sheet-row {
+    padding: var(--space-1) 0;
+  }
+
+  .id-sheet dd {
+    font-size: var(--text-small);
+  }
+
+  /* a short wide screen has the least room under NAWI's foot: the ruled rows tighten further */
+  @media (max-height: 760px) {
+    .id-sheet .sheet-row {
+      padding: 1px 0;
+    }
+  }
+
+  /* the drawing starts under the top bar and keeps its top edge, so the top of his hair is never cut by the bar or faded out */
+  .cover-scene .scene-art {
+    top: var(--top-bar-height);
+    mask-image: linear-gradient(to bottom, var(--ink-black) 84%, transparent), linear-gradient(to right, transparent, var(--ink-black) 7%, var(--ink-black) 93%, transparent);
+  }
+
+  .cover-scene .scene-art img {
+    object-position: 50% 0%;
+  }
+
+  /* the sheet sits over the lit arm: a soft ink pool under it keeps its small type readable */
+  .layer-sheet {
+    margin: calc(var(--space-4) * -1) calc(var(--space-5) * -1) calc(var(--space-3) * -1) calc(var(--gutter-left) * -1);
+    padding: var(--space-4) var(--space-5) var(--space-3) var(--gutter-left);
+    background: radial-gradient(ellipse at left bottom, var(--ink-85) 30%, transparent 78%);
+  }
+
+  .cover-foot {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: grid;
+    grid-template-columns: 24rem 1fr auto;
+    align-items: end;
+    gap: var(--space-5);
+    padding-right: var(--space-corner-cta);
+    padding-bottom: var(--space-3);
+  }
+
+}
+
+/* a tablet held upright: the sheet and the door stack at the left, the door a single line well clear of the corner CTA */
+@media (min-width: 701px) and (max-width: 1099px) and (orientation: portrait) {
+  .cover-foot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding-right: var(--gutter-right);
+    padding-bottom: calc(var(--space-3) + var(--space-corner-lift));
+  }
+
+  /* the tall plate is wider than tall here: its dark top is trimmed, so his whole face stays in frame under NAWI's foot */
+  .cover-scene .scene-art img {
+    object-position: 50% 100%;
+  }
+}
+
+/* load-in wipes up with clip-path and fill-mode backwards: the boxes never leave the screen, and GSAP's scroll fade (transform, opacity inline) owns them once it ends */
+@media (prefers-reduced-motion: no-preference) {
+  .cover-foot .layer-sheet {
+    animation: cover-rise var(--dur-cover-rise) var(--ease-panel) var(--dur-fade) backwards;
+  }
+}
+@keyframes cover-rise {
+  from { opacity: 0; clip-path: inset(100% 0 0 0); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+/* scaled from the top edge: the dolly never lifts his hair under the bar */
+@media (prefers-reduced-motion: no-preference) {
+  /* the dolly's first frame (COVER_START in cold-open-motion.tsx), set before the scroll engine runs so the cover never jumps */
+  .cover-scene .scene-art img {
+    transform-origin: 50% 0%;
+    transform: scale(1.12);
+  }
+}
+
+/* the backdrop fills the whole section under everything, its illustration covering the box; a scrim of the ink darkens the
+   side the words sit on and the strip along the top, so bone type reads on any product color. The second composition
+   mirrors the picture, so its calm zone is on the left and its words on the right. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+}
+
+/* the world's illustration is a quiet texture under the plate: the product's color stays the loudest thing on the poster */
+.backdrop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+/* the ink plate: black on white paper, multiplied over the field so the drawing is printed on it */
+.plate {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* his portrait is printed under the poster word: the letters cross his head and stay readable */
+.plate[data-portrait] img {
+  object-position: center top;
+}
+
+.plate img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top;
+}
+
+.backdrop {
+  --shade: color-mix(in srgb, var(--field) 30%, var(--ink));
+  --shade-soft: color-mix(in srgb, var(--field) 16%, transparent);
+}
+
+/* the scrim is the product's own color sunk into the ink, not a neutral black: the hue stays in the shadow, so the section
+   keeps its identity where the words and the interface sit. On a phone it deepens toward the text and the diagram below;
+   on a wide screen it holds the band the words sit on and the strips top and bottom, and lets the art run free. */
+.backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--shade-soft), transparent 24%);
+}
+
+[data-field] {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+[data-field="what"] {
+  font-size: 1.125rem;
+}
+
+.project-line {
+  font-size: 1.125rem;
+}
+
+/* the stack: one mono line of chips, each in the project's spot color */
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+}
+
+/* a stack item is a word under one line in the project's spot color, not a box */
+.stack li {
+  padding: var(--space-1) var(--space-2);
+  border-bottom: var(--rule) solid var(--field);
+  /* a chip carries its own dark ground, so its bone type reads at AA over any backdrop and any product color */
+  background: var(--ink-88);
+  color: var(--bone);
+}
+
+/* the offer word rises across the top of its scene: its note needs room above the last employer */
+.experience {
+  margin-bottom: calc(var(--size-word-phone) * 1.5);
+}
+
+@media (min-width: 701px) {
+  .experience {
+    margin-bottom: calc(var(--size-word) * 0.4);
+  }
+}
+
+/* ---------- the offer and the closing ---------- */
+
+.offer {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+@media (min-width: 1100px) {
+  .offer {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.offer-scene .scene-copy,
+.contact-scene .scene-copy {
+  justify-content: center;
+}
+
+/* a door is fine type under one hairline, not a box */
+.folder {
+  padding: var(--space-3) 0 0;
+  border-top: var(--rule) solid var(--bone-70);
+  background: linear-gradient(to bottom, var(--ink-70), transparent);
+}
+
+.folder-tab {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+}
+
+.offer-scene {
+  margin-top: var(--word-clearance);
+}
+
+/* wide, the title rises 60 % of its height above the scene: the margin is that rise plus the detail line, so it clears the last card */
+@media (min-width: 701px) {
+  .offer-scene {
+    margin-top: calc(var(--size-word) * 0.5 + var(--space-offer-lead));
+  }
+}
+
+/* the footer is the last thing in the red block: nothing is left below it */
+.contact-scene {
+  margin-bottom: 0;
+}
+
+.folder h3 {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--size-case-title);
+  line-height: 1.2;
+}
+
+.folder p {
+  margin: 0 0 var(--space-2);
+}
+
+.door {
+  display: block;
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bone);
+  color: var(--ink);
+  border: 1px solid var(--bone);
+  border-radius: var(--radius-rectangle);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  text-align: center;
+  transition:
+    background var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out);
+}
+
+.door:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--bone);
+}
+
+.end-of-file {
+  margin-top: var(--space-5);
+  padding-bottom: var(--space-5);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking-fine);
+  text-transform: uppercase;
+  text-align: center;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+/* the roll runs edge to edge under the credits sheet */
+.credits-roll {
+  margin-top: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* fine film grain over the print, drawn by the browser */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+}
+
+
+
+.roll-band {
+  position: relative;
+  min-width: 0;
+  padding-block: var(--space-3);
+}
+
+/* the fade sits on the element that clips the loop, so the words dissolve at the very edge they are cut by */
+.roll-marquee {
+  mask-image: var(--fade-sides);
+}
+
+.roll-band:focus-visible {
+  outline: 2px solid var(--bone);
+  outline-offset: -2px;
+}
+
+.roll-band:hover .animate-marquee,
+.roll-band:focus-within .animate-marquee {
+  animation-play-state: paused;
+}
+
+.roll-list {
+  display: flex;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roll-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  white-space: nowrap;
+}
+
+/* a one-colour brand mark: the drawing is a mask over the roll's text colour */
+.roll-mark {
+  display: block;
+  height: 1em;
+  flex: none;
+  background: currentColor;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+}
+
+.roll-item img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* ---------- scene media ---------- */
+
+.scene-media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  /* the graded dark field a missing or failed image falls back to */
+  background: linear-gradient(160deg, var(--ink-warm), var(--ink));
+}
+
+.scene-media picture,
+.scene-media img,
+.scene-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scene-media video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--motion-section) var(--ease-out);
+}
+
+.scene-media[data-state="video"] video {
+  opacity: 1;
+}
+
+/* ---------- the hire bar ---------- */
+
+.hire-bar,
+.bar-top {
+  display: none;
+}
+
+/* ---------- the phone ---------- */
+
+@media (max-width: 1099px) {
+  :root {
+    /* phones and tablets: content sits centred, equal gutters each side */
+    --gutter-left-phone: 24px;
+    --gutter-right-phone: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --gutter-left: var(--gutter-left-phone);
+    --gutter-right: var(--gutter-right-phone);
+  }
+
+  /* held at the top while the page scrolls, so the menu is one tap away from any chapter */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    padding: 0 var(--space-3);
+  }
+
+  .top-nav {
+    display: none;
+  }
+
+  .top-bar[data-menu-open="true"] .top-nav {
+    position: absolute;
+    inset: 100% 0 auto 0;
+    z-index: 41;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-3);
+    background: var(--ink);
+  }
+
+  .top-bar[data-menu-open="true"] .chapter-index {
+    flex-direction: column;
+  }
+
+  .sound-toggle {
+    margin-left: auto;
+  }
+
+  .top-bar .menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  .corner-pair {
+    display: none;
+  }
+
+  .hire-bar {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 45;
+    display: flex;
+    background: var(--ink);
+    border-top: 1px solid var(--bone-30);
+    transition:
+      translate var(--dur-panel) var(--ease-panel),
+      right var(--dur-panel) var(--ease-panel);
+  }
+
+  /* Let's talk leaves to the left, the Top square enters from the right: one timing, so the moves read as pushes */
+  .hire-bar[data-yield="true"] {
+    translate: -100% 0;
+  }
+
+  body:has(.bar-top[data-visible="true"]) .hire-bar {
+    right: var(--hire-bar-height);
+  }
+
+  .hire-bar a:first-child {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--hire-bar-height);
+    background: var(--bone);
+    color: var(--ink);
+    font-family: var(--font-label);
+    font-size: 1.25rem;
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    transition: transform var(--motion-control) var(--ease-out);
+  }
+
+  .hire-bar a:active {
+    transform: scale(var(--press-scale));
+  }
+
+  /* the Top square sits at the bar's right end and stays put when the bar slides away */
+  .bar-top {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 46;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--hire-bar-height);
+    height: var(--hire-bar-height);
+    border: 1px solid var(--bone);
+    background: var(--ink);
+    color: var(--bone);
+    font-family: var(--font-label);
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    transition:
+      transform var(--motion-control) var(--ease-out),
+      translate var(--dur-panel) var(--ease-panel),
+      width var(--dur-panel) var(--ease-panel),
+      visibility var(--dur-zero) var(--dur-zero);
+  }
+
+  /* the label takes its space from the arrow only when it shows, so the square's arrow sits centred */
+  .bar-top-label {
+    max-width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    letter-spacing: var(--label-tracking);
+    opacity: 0;
+    white-space: nowrap;
+    transition:
+      max-width var(--dur-panel) var(--ease-panel),
+      margin-left var(--dur-panel) var(--ease-panel),
+      opacity var(--dur-panel-fade) var(--ease-panel) var(--dur-panel-lag-long);
+  }
+
+  /* Let's talk has slid out: the Top square takes the full width and names itself */
+  body:has(.hire-bar[data-yield="true"]) .bar-top {
+    width: 100%;
+  }
+
+  body:has(.hire-bar[data-yield="true"]) .bar-top-label {
+    max-width: 12em;
+    margin-left: 0.75rem;
+    opacity: 1;
+  }
+
+  .bar-top:active {
+    transform: scale(var(--press-scale));
+  }
+
+  .bar-top:focus-visible {
+    outline: 2px solid var(--bone);
+    outline-offset: -4px;
+  }
+
+  .bar-top[data-visible="false"] {
+    translate: 100% 0;
+    visibility: hidden;
+    transition:
+      transform var(--motion-control) var(--ease-out),
+      translate var(--dur-panel) var(--ease-panel),
+      width var(--dur-panel) var(--ease-panel),
+      visibility var(--dur-zero) var(--dur-panel);
+  }
+}
+
+/* tablet: the chapter index does not fit one line beside the hire button and the sound, so it folds into the menu */
+@media (min-width: 701px) and (max-width: 1099px) {
+  .top-nav {
+    display: none;
+  }
+
+  .top-bar[data-menu-open="true"] .top-nav {
+    position: absolute;
+    inset: 100% 0 auto 0;
+    z-index: 41;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-3);
+    background: var(--ink);
+  }
+
+  .top-bar[data-menu-open="true"] .chapter-index {
+    flex-direction: column;
+  }
+
+  .sound-toggle {
+    margin-left: auto;
+  }
+
+  .top-bar .menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
+@media (max-width: 700px) {
+  .scene[data-has-art] {
+    min-height: 80svh;
+  }
+
+  .cover-scene[data-has-art] {
+    min-height: calc(100svh - var(--top-bar-height));
+  }
+
+  /* the phone cover is portrait: the illustration fills the screen and the lettering lies over its dark top */
+  .cover-scene .scene-copy {
+    padding-inline: 0;
+  }
+
+  /* on the phone the name rides above NAWI so the letters cross his hair, not the line */
+  .cover-title {
+    top: var(--space-5);
+    --size-nawi: 43vw;
+    flex-direction: column-reverse;
+  }
+
+  /* the plate rides up so his face clears the sound cue and the ID sheet, which sit at the foot of the cover */
+  .cover-scene .scene-art img {
+    object-position: 50% 100%;
+    translate: 0 -104px;
+  }
+
+  .cover-foot {
+    position: relative;
+    z-index: 3;
+    padding-top: var(--space-4);
+  }
+
+  /* the ID sheet ends 8px above the fixed hire bar; the sound cue rides right above it */
+  .cover-foot .layer-sheet {
+    position: absolute;
+    inset: auto 0 calc(100% + var(--hire-bar-height) + 8px) 0;
+    padding: var(--space-4) var(--gutter-right) 0 var(--gutter-left);
+    background: linear-gradient(to top, var(--ink-85) 62%, transparent);
+  }
+
+  /* the sheet is 12.5rem tall (11.6rem when the role fits one line, 10.3rem on short phones): the cue sits 8px above it */
+  .sound-cue-chip {
+    --sheet-height: 12.5rem;
+    bottom: calc(var(--hire-bar-height) + 16px + var(--sheet-height));
+  }
+
+  .id-sheet {
+    max-width: none;
+    line-height: 1.2;
+  }
+
+  .id-sheet .sheet-head {
+    margin-bottom: var(--space-1);
+  }
+
+  .id-sheet .sheet-title {
+    font-size: 0.8125rem;
+  }
+
+  .id-sheet .sheet-row {
+    grid-template-columns: 5.5rem 1fr;
+    gap: var(--space-2);
+    padding: var(--space-sheet-row) 0;
+  }
+
+  .id-sheet dt {
+    font-size: 0.75rem;
+    opacity: 0.85;
+  }
+
+  .id-sheet dd {
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 400px) and (max-width: 700px) {
+  .sound-cue-chip {
+    --sheet-height: 11.6rem;
+  }
+}
+
+/* short phones: the plate rides higher and the sheet's rows tighten so it still clears his chin */
+@media (max-width: 700px) and (max-height: 760px) {
+  .sound-cue-chip {
+    --sheet-height: 10.3rem;
+  }
+
+  .cover-scene .scene-art img {
+    translate: 0 -128px;
+  }
+
+  .id-sheet .sheet-row {
+    padding: 1px 0;
+  }
+
+  .cover-foot .layer-sheet {
+    padding-top: var(--space-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-media video {
+    transition: none;
+  }
+
+  .film-control,
+  .corner-cta,
+  .door {
+    transition: none;
+  }
+
+  .film-control:active,
+  .corner-cta:active,
+  .door:active {
+    transform: none;
+  }
+
+  .corner-cta,
+  .corner-pair .corner-cta,
+  .corner-pair .corner-cta[data-visible="false"],
+  .corner-pair .corner-top[data-visible="true"],
+  .bar-top,
+  .bar-top[data-visible="false"] {
+    translate: none;
+    transition: opacity var(--dur-toggle) linear, visibility var(--dur-zero) var(--dur-zero);
+  }
+
+  .corner-pair .corner-cta[data-visible="false"],
+  .bar-top[data-visible="false"] {
+    transition: opacity var(--dur-toggle) linear, visibility var(--dur-zero) var(--dur-toggle);
+  }
+
+  .bar-top[data-visible="false"],
+  .hire-bar[data-yield="true"] {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .hire-bar,
+  .hire-bar[data-yield="true"] {
+    translate: none;
+    transition: opacity var(--dur-toggle) linear, visibility var(--dur-zero) var(--dur-toggle);
+  }
+
+  .hire-bar:not([data-yield="true"]) {
+    transition: opacity var(--dur-toggle) linear, visibility var(--dur-zero) var(--dur-zero);
+  }
+
+  .bar-top,
+  .bar-top-label {
+    transition: opacity var(--dur-toggle) linear, visibility var(--dur-zero) var(--dur-zero);
+  }
+
+  .hire-bar a:first-child {
+    transition: none;
+  }
+
+  /* the roll stands still and wraps: one copy, no loop */
+  .roll-marquee {
+    flex-wrap: wrap;
+  }
+
+  .roll-marquee .animate-marquee {
+    animation: none;
+    flex-wrap: wrap;
+  }
+
+  .roll-marquee > .animate-marquee:nth-child(n + 2) {
+    display: none;
+  }
+
+  .roll-list {
+    flex-wrap: wrap;
+  }
+}
+
+/* ---------- experience, offer and contact as posters ---------- */
+
+/* offer: two doors, two printed panels. The freelance door is bone with ink type, the company door is crimson sunk into the ink
+   with bone type; each title is a poster word and the button is the inverse of its panel. */
+.offer {
+  gap: 0;
+  margin: var(--space-5) calc(var(--gutter-right) * -1) 0 calc(var(--gutter-left) * -1);
+}
+
+.folder {
+  --panel: var(--bone);
+  --panel-ink: var(--ink);
+  padding: var(--space-5) var(--gutter-right-phone) var(--space-5) var(--gutter-left-phone);
+  border-top: 0;
+  background: var(--panel);
+  color: var(--panel-ink);
+}
+
+.folder[data-offer-card="tpm"] {
+  --panel: color-mix(in srgb, var(--red) 78%, var(--ink));
+  --panel-ink: var(--bone);
+}
+
+.folder-tab {
+  display: inline-block;
+  padding: 0 var(--space-2);
+  background: var(--panel-ink);
+  color: var(--panel);
+}
+
+.folder h3 {
+  font-size: clamp(2.5rem, 11vw, 5.5rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.folder .proof-link {
+  color: inherit;
+}
+
+.folder .proof-link:hover {
+  color: var(--red);
+}
+
+.folder .door {
+  border-color: var(--panel-ink);
+  background: var(--panel-ink);
+  color: var(--panel);
+  box-shadow: var(--space-2) var(--space-2) 0 var(--ink-35);
+}
+
+.folder .door:hover {
+  background: var(--panel);
+  color: var(--panel-ink);
+}
+
+@media (min-width: 1100px) {
+  .folder {
+    padding: var(--space-6) var(--space-6) var(--space-6) var(--gutter-left);
+  }
+
+  .offer {
+    align-items: stretch;
+  }
+
+  .folder[data-offer-card="tpm"] {
+    padding-left: var(--space-6);
+    padding-right: var(--gutter-right);
+  }
+}
+
+/* contact: a crimson field sunk into the ink, the drawing printed on it by multiply, the word at poster scale and the e-mail
+   set as a display line with a ruled ledger beneath it. */
+.contact-scene {
+  --field: color-mix(in srgb, var(--red) 70%, var(--ink));
+  background: var(--field);
+}
+
+.contact-scene .scene-art img {
+  filter: grayscale(1) contrast(1.1);
+}
+
+.contact-scene .scene-art {
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+
+.contact-scene[data-has-art] .scene-copy {
+  justify-content: flex-start;
+  min-height: 0;
+  padding-block: var(--space-6) 0;
+  background: none;
+}
+
+.contact-scene .chapter-title {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  padding-left: 0;
+}
+
+.contact-scene .chapter-word[data-chapter-word] {
+  margin-left: calc(var(--gutter-left-phone) * -1 + var(--space-1));
+  font-size: 26vw;
+  color: var(--bone);
+  white-space: normal;
+  transform: none;
+}
+
+.contact-scene .chapter-detail i {
+  border-color: var(--bone);
+}
+
+@media (min-width: 1100px) {
+  .contact-scene .chapter-word[data-chapter-word] {
+    margin-left: calc(var(--gutter-left) * -1 + var(--space-1));
+    font-size: 16.5vw;
+  }
+}
+
+/* ---------- wide screens: the offer, the contact, the roll and the footer each fit one screen ----------
+   Sizes follow the viewport height as well as its width, the drawings stay big behind translucent panels. */
+@media (min-width: 1100px) {
+  .offer-scene {
+    --size-word: 17vw;
+    margin-top: calc(var(--size-word) * 0.6 + var(--space-offer-lead-phone));
+  }
+
+  .offer-scene[data-has-art] {
+    min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.6 - 2rem);
+  }
+
+  /* the drawing rises behind the OFFER word up to the top bar and melts into the black beneath it */
+  .offer-scene .scene-art {
+    top: calc((var(--size-word) * 0.6 + 2rem) * -1);
+    mask-image: linear-gradient(to bottom, transparent, var(--ink-black) 14%);
+  }
+
+  .offer-scene .scene-art img {
+    object-position: 62% 35%;
+  }
+
+  .offer-scene .scene-copy {
+    justify-content: flex-end;
+    padding-top: 0;
+  }
+
+  .offer-scene .offer {
+    margin-top: 0;
+  }
+
+  .offer-scene .folder {
+    --panel: var(--ink);
+    --panel-ink: var(--bone);
+    --glass: color-mix(in srgb, var(--ink) 45%, transparent);
+    padding: var(--space-4) var(--space-5) var(--space-4) var(--gutter-left);
+    background: var(--glass);
+    color: var(--bone);
+  }
+
+  .offer-scene .folder[data-offer-card="tpm"] {
+    --panel: color-mix(in srgb, var(--red) 78%, var(--ink));
+    --glass: color-mix(in srgb, var(--red) 45%, transparent);
+    padding-left: var(--space-5);
+    padding-right: var(--gutter-right);
+  }
+
+  .offer-scene .folder h3 {
+    font-size: min(4vw, 7svh);
+  }
+
+  /* both cards share the row's height and their buttons sit on the same line, however long the copy above */
+  .offer-scene .folder {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .offer-scene .folder-tab {
+    align-self: flex-start;
+  }
+
+  .offer-scene .folder .door {
+    margin-top: auto;
+  }
+
+  .offer-scene .folder p:last-of-type {
+    margin-bottom: var(--space-3);
+  }
+
+  /* the word's line box reaches below its glyphs: the group header starts under all of it */
+  .chapter-title:is([data-chapter-title="projects"], [data-chapter-title="experience"]) .chapter-word {
+margin-bottom: 0.2em;
+  }
+
+  .contact-scene {
+    margin-bottom: 0;
+  }
+
+  /* the ending fills one screen and grows only when its text needs more: the top bar's strip on top, the content spread over the rest, the © line last */
+  .contact-scene[data-has-art] {
+    min-height: 100svh;
+  }
+
+  .contact-scene[data-has-art] .scene-copy {
+    box-sizing: border-box;
+    min-height: 100svh;
+    gap: var(--space-4);
+    /* the 1px keeps the © line inside the screen when the page height has a fraction */
+    padding-block: calc(var(--top-bar-height) + var(--space-3)) 1px;
+  }
+
+  /* the drawing fades in from the left: the text column sits on the plain red field, the hand and its seal hold the right */
+  .contact-scene .scene-art {
+    mask-image: linear-gradient(to right, var(--ink-black-20), var(--ink-black-20) 32%, var(--ink-black) 66%);
+  }
+
+  .contact-scene .contact {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  /* one voice at a time: the title is the only giant; the address, its hint and the two networks follow as quiet lines */
+  .contact-scene .contact-tiles {
+    flex: 1;
+    grid-template-rows: auto auto auto;
+    align-content: center;
+    gap: clamp(var(--space-2), 2svh, var(--space-4));
+  }
+
+  /* the two networks are compact links in the text column; the right side stays free for the drawing and its seal */
+  .contact-scene .band-halves {
+    align-self: start;
+    justify-self: start;
+    margin-inline: 0;
+    border-top: var(--rule) solid var(--bone-70);
+  }
+
+  /* the address is written once, level and still, as a line of type that copies itself when clicked */
+  .contact-scene .band-field {
+    margin-inline: 0;
+    padding-block: 0 var(--space-2);
+    overflow: visible;
+  }
+
+  .contact-scene .band {
+    width: fit-content;
+    contain: none;
+    margin-left: 0;
+    padding: 0 0 var(--space-1);
+    border-bottom: var(--rule) solid var(--bone-70);
+    background: transparent;
+    overflow: visible;
+    transform: none;
+  }
+
+  .contact-scene .band:hover,
+  .contact-scene .band:focus-visible {
+    border-bottom-color: var(--bone);
+  }
+
+  .contact-scene .band[data-copied] {
+    background: transparent;
+    color: var(--bone);
+  }
+
+  .contact-scene .band-track {
+    animation: none;
+  }
+
+  .contact-scene .band-set + .band-set,
+  .contact-scene .band-item:not(:first-child),
+  .contact-scene .band-star {
+    display: none;
+  }
+
+  .contact-scene .band-item {
+    font-size: min(4.2vw, 7svh);
+  }
+
+  .contact-scene .band[data-copied] .band-at {
+    color: var(--bone);
+  }
+
+  .contact-scene .band-stamp {
+    inset: 50% auto auto 100%;
+    transform: translate(var(--space-4), -50%) rotate(3deg);
+    animation-name: band-stamp-side;
+  }
+
+  .contact-scene .band-half {
+    min-height: 7.5rem;
+    grid-template-columns: auto auto auto;
+    grid-template-areas:
+      "glyph word arrow"
+      "glyph handle arrow";
+    align-items: center;
+    align-content: center;
+    justify-content: start;
+    column-gap: var(--space-4);
+    row-gap: var(--space-1);
+    padding-block: var(--space-4);
+    padding-inline: 0 var(--space-7);
+    background: transparent;
+  }
+
+  .contact-scene .band-half:hover,
+  .contact-scene .band-half:focus-visible {
+    background: var(--bone);
+  }
+
+  /* the word, its glyph and its arrow scale with the button's height */
+  .contact-scene .band-half {
+    --half-word: min(3.6vw, 7.5svh);
+  }
+
+  .contact-scene .band-halves {
+    grid-template-columns: auto auto;
+  }
+
+  .contact-scene .band-slot .band-half {
+    padding-left: var(--space-6);
+  }
+
+  /* the first half keeps its type on the address's left edge while its hover fill reaches past the glyph */
+  .contact-scene .band-halves > .band-half {
+    margin-left: calc(var(--space-5) * -1);
+    padding-left: var(--space-5);
+  }
+
+  .contact-scene .half-word {
+    grid-area: word;
+    font-size: var(--half-word);
+  }
+
+  .contact-scene .half-handle {
+    grid-area: handle;
+    font-size: var(--text-small);
+  }
+
+  .contact-scene .band-half .contact-glyph {
+    grid-area: glyph;
+    width: calc(var(--half-word) * 0.8);
+    height: calc(var(--half-word) * 0.8);
+  }
+
+  .contact-scene .band-half .contact-arrow {
+    grid-area: arrow;
+    font-size: calc(var(--half-word) * 0.3);
+  }
+
+  .credits-roll {
+    margin-top: var(--space-3);
+  }
+
+  .contact-scene .credits-roll {
+    display: grid;
+    gap: var(--space-1);
+    margin-block: 0 calc(var(--space-2) * -1);
+    margin-inline: calc(var(--gutter-left) * -1) calc(var(--gutter-right) * -1);
+    opacity: 0.6;
+  }
+
+  .roll-band {
+    padding-block: 0;
+    line-height: 1;
+  }
+
+  .roll-marquee {
+    padding-block: 0;
+  }
+
+  .roll-item img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .roll-item {
+    font-size: min(clamp(1rem, 1.1vw, 1.25rem), 2.2svh);
+  }
+
+  .end-of-file {
+    margin-top: 0;
+    padding-bottom: 0;
+    text-align: left;
+  }
+}
+
+@keyframes band-stamp-side {
+  from {
+    opacity: 0;
+    transform: translate(var(--space-4), -50%) rotate(3deg) scale(1.35);
+  }
+}
+
+/* short wide screens: the ending's gaps and button height tighten so the © line stays inside the screen */
+@media (min-width: 1100px) and (max-height: 760px) {
+  .contact-scene[data-has-art] .scene-copy {
+    gap: var(--space-2);
+  }
+
+  .contact-scene .contact {
+    gap: var(--space-2);
+  }
+
+  .contact-scene .contact-tiles {
+    gap: var(--space-1);
+  }
+
+  .contact-scene .band-half {
+    --half-word: min(3.6vw, 7svh);
+    min-height: 7rem;
+    padding-block: var(--space-3);
+  }
+}
+
+/* ---------- scrollbar: an ink gutter with a bone hairline, a bone square bar that turns red under the pointer ---------- */
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink);
+  border-left: 1px solid var(--bone-12);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bone);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background: var(--red);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--ink);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: var(--bone) var(--ink);
+    scrollbar-width: thin;
+  }
+}
+
+/* ---------- narrow (below 1100): the offer, the contact and the roll ----------
+   The offer is the wide one made small: the word rises across the top of its drawing and the two doors are glass panels over it,
+   the whole scene one screen high so it pins like the wide one. The contact fits its address and its networks inside the page; the
+   roll is full-bleed with a long fade. */
+@media (max-width: 1099px) {
+  /* the offer's drawing is covered by the doors here: it is not drawn, so it is not fetched; the ink stays behind */
+  .scene-art-wide {
+    display: none;
+  }
+
+  .offer-scene {
+    background: var(--ink);
+    --size-word: clamp(4.5rem, 24vw, 11rem);
+    margin-top: calc(var(--size-word) * 0.6 + var(--space-offer-lead-phone));
+    margin-bottom: 0;
+  }
+
+  .offer-scene[data-has-art] {
+    min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.6 - 2rem);
+  }
+
+  .offer-scene .scene-art img {
+    object-position: 72% 30%;
+  }
+
+  .offer-scene .scene-copy {
+    justify-content: flex-end;
+    min-height: 0;
+    padding: calc(var(--size-word) * 0.4 + var(--space-2)) var(--gutter-right) var(--space-3) var(--gutter-left);
+    background: none;
+  }
+
+  .offer-scene .folder-tab {
+    align-self: flex-start;
+  }
+
+  .offer-scene .chapter-word {
+    font-size: var(--size-word);
+  }
+
+  .offer-scene .offer {
+    gap: var(--space-2);
+    margin-top: 0;
+  }
+
+  /* the doors read as on the wide screen: freelance bone button with ink type on dark glass, company crimson button sunk into the ink */
+  .offer-scene .folder {
+    --panel: var(--ink);
+    --panel-ink: var(--bone);
+    --glass: color-mix(in srgb, var(--ink) 45%, transparent);
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-3) var(--gutter-right) var(--space-3) var(--gutter-left);
+    background: var(--glass);
+    color: var(--bone);
+  }
+
+  .offer-scene .folder[data-offer-card="tpm"] {
+    --panel: color-mix(in srgb, var(--red) 78%, var(--ink));
+    --glass: color-mix(in srgb, var(--red) 45%, transparent);
+  }
+
+  .offer-scene .folder h3 {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+    line-height: 1;
+  }
+
+  .offer-scene .folder p {
+    font-size: 0.875rem;
+    line-height: 1.3;
+    margin-block: 0 var(--space-2);
+  }
+
+  .offer-scene .folder .door {
+    margin-top: auto;
+  }
+
+  .contact-scene .credits-roll {
+    margin-inline: calc(var(--gutter-left) * -1) calc(var(--gutter-right) * -1);
+    margin-top: var(--space-5);
+  }
+
+  .end-of-file {
+    padding-bottom: calc(var(--space-5) + var(--hire-bar-height));
+  }
+
+  /* the ending fills one screen from its top and grows only when its text needs more: the word, the address, the networks, the roll and the © line share it */
+  .contact-scene[data-has-art] {
+    min-height: 100svh;
+  }
+
+  .contact-scene[data-has-art] .scene-copy {
+    box-sizing: border-box;
+    min-height: 100svh;
+    justify-content: flex-start;
+    gap: var(--space-2);
+    padding-block: calc(var(--top-bar-height) + var(--space-1)) 1px;
+  }
+
+  .contact-scene .contact {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    gap: var(--space-1);
+  }
+
+  /* the poster word, the address as a display line (it breaks at the @), the networks as big serif names, everything on the
+     address's left gutter; sizes follow the height as well as the width so the whole ending still fits the screen */
+  .contact-scene .chapter-word[data-chapter-word] {
+    font-size: min(36vw, 15svh);
+  }
+
+  .contact-scene .contact-tiles {
+    flex: 1;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    align-content: space-evenly;
+    gap: var(--space-1);
+  }
+
+  .contact-scene .band-field {
+    padding-block: 0 var(--space-1);
+  }
+
+  .contact-scene .band {
+    width: fit-content;
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .contact-scene .band-track,
+  .contact-scene .band-set {
+    display: block;
+    width: 100%;
+  }
+
+  .contact-scene .band-item {
+    display: block;
+    white-space: normal;
+    font-size: min(11.5vw, 5.4svh);
+    line-height: 1.02;
+  }
+
+  .contact-scene .band-hint {
+    gap: 0 var(--space-3);
+    font-size: min(var(--text-small), 1.9svh);
+  }
+
+  .contact-scene .band-half {
+    --half-word: min(10.5vw, 5.2svh);
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "glyph word arrow"
+      "glyph handle arrow";
+    align-items: center;
+    column-gap: var(--space-3);
+    row-gap: 0;
+    margin-inline: 0;
+    padding-block: var(--space-2);
+    padding-inline: 0;
+  }
+
+  .contact-scene .band-halves > .band-half {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .contact-scene .band-half .half-word {
+    grid-area: word;
+    font-size: var(--half-word);
+  }
+
+  .contact-scene .band-half .half-handle {
+    grid-area: handle;
+    font-size: min(var(--text-small), 2.2svh, 3.2vw);
+    letter-spacing: 0.04em;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-scene .band-half .contact-glyph {
+    grid-area: glyph;
+    width: calc(var(--half-word) * 0.9);
+    height: calc(var(--half-word) * 0.9);
+  }
+
+  .contact-scene .band-half .contact-arrow {
+    grid-area: arrow;
+    grid-row: auto;
+    font-size: calc(var(--half-word) * 0.5);
+  }
+
+  .contact-scene .credits-roll {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    opacity: 1;
+  }
+
+  .contact-scene .roll-band,
+  .contact-scene .roll-marquee {
+    padding-block: 0;
+    line-height: 1.15;
+  }
+
+  /* narrow screens: the roll runs from the left edge in full ink, only its exit on the right fades */
+  .contact-scene .roll-marquee {
+    mask-image: linear-gradient(to right, var(--ink-black) 94%, transparent);
+    -webkit-mask-image: linear-gradient(to right, var(--ink-black) 94%, transparent);
+  }
+
+  .contact-scene .roll-list {
+    gap: var(--space-3);
+  }
+
+  .contact-scene .roll-item {
+    font-size: min(1.2rem, 2.6svh);
+    color: var(--bone);
+  }
+
+  .contact-scene .contact-tiles {
+    align-content: stretch;
+  }
+
+  .contact-scene .roll-item img {
+    width: 1.2em;
+    height: 1.2em;
+  }
+
+  .end-of-file {
+    padding-bottom: 0;
+    text-align: left;
+    font-size: min(var(--text-small), 3vw);
+  }
+}
+
+/* a phone held sideways: the two networks sit side by side to spare the height */
+@media (max-width: 1099px) and (max-height: 500px) {
+  .contact-scene .band-halves {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contact-scene .band-slot .band-half {
+    border-top: 0;
+  }
+
+  .contact-scene .chapter-word[data-chapter-word] {
+    font-size: 15svh;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1099px) {
+  .offer-scene {
+    --size-word: 17vw;
+  }
+
+  .offer-scene .offer {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .offer-scene .folder {
+    padding-block: var(--space-4);
+    padding-inline: var(--space-4);
+  }
+
+  .offer-scene .folder[data-offer-card="freelance"] {
+    padding-left: var(--gutter-left);
+  }
+
+  .offer-scene .folder[data-offer-card="tpm"] {
+    padding-right: var(--gutter-right);
+  }
+
+  .offer-scene .folder h3 {
+    font-size: clamp(2rem, 4.2vw, 3rem);
+  }
+
+  .offer-scene .folder p {
+    font-size: var(--text-body);
+  }
+}
+
+/* a tablet held sideways: the word shrinks with the height so Let's talk, the address and the networks stay on one screen */
+@media (min-width: 701px) and (max-width: 1099px) and (max-height: 800px) {
+  .contact-scene .chapter-word[data-chapter-word] {
+    font-size: 17svh;
+  }
+}
+
+@media (max-width: 700px) {
+  /* let's talk: the address on one line sized by the width, its hint right under it, the roll close to the © line; the height this
+     releases opens above the address, under the word */
+  .contact-scene .band-item {
+    white-space: nowrap;
+    font-size: min(7.7vw, 5.4svh);
+    letter-spacing: -0.03em;
+  }
+
+  .contact-scene .band-hint {
+    font-size: min(var(--text-small), 1.9svh, 3.2vw);
+  }
+
+  /* the free height is shared in two auto margins, the one under the word wider by the top padding, so the address and the networks
+     sit a little closer to the roll, which stays pinned above the © line. The padding grows with the height left over past the
+     shortest phone (--phone-short-height), where the block already fills the screen */
+  .contact-scene .contact-tiles {
+    flex: none;
+    margin-block: auto;
+    padding-top: clamp(var(--space-0), (100svh - var(--phone-short-height)) * 0.3, var(--space-contact-top-cap));
+    align-content: start;
+  }
+
+  .contact-scene .credits-roll {
+    margin-top: 0;
+  }
+
+  /* inside the block: the hint sits clear of the address, the first rule clear of the hint, the rows are tall like desktop. */
+  .contact-scene .band-hint {
+    margin-top: clamp(var(--space-hint-min), 1.6svh, var(--space-3));
+  }
+
+  .contact-scene .band-halves {
+    margin-top: clamp(var(--space-3), 3svh, var(--space-halves-cap));
+  }
+
+  .contact-scene .band-half {
+    padding-block: clamp(var(--space-half-min), 3.2svh, var(--space-halves-cap));
+  }
+
+  .contact-scene .band-hint {
+    flex-direction: column;
+    gap: var(--space-1);
+    line-height: 1.2;
+  }
+
+  .contact-scene .band-hint .band-mail {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .contact-scene .end-of-file {
+    margin-top: 0;
+    font-size: min(12px, 3.5vw);
+  }
+
+  .contact-scene .band-hint,
+  .contact-scene .band-hint .band-mail,
+  .contact-scene .band-half .half-handle {
+    font-size: 13px;
+  }
+
+  .xp .show[data-employer] p.show-lead {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .offer-scene .scene-copy {
+    padding-bottom: 0;
+  }
+
+  /* one composed screen: the word spans the content width like Let's talk, then the two doors share the rest of the height equally,
+     each a column (kicker, title, body) with its button pinned to its foot so both buttons read on the same rhythm */
+  .offer-scene {
+    --size-word: min(35vw, 17svh);
+    --size-word-phone: var(--size-word);
+  }
+
+  .offer-scene .scene-copy {
+    box-sizing: border-box;
+    min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.5 - 1.1rem);
+    justify-content: flex-end;
+    padding-bottom: var(--hire-bar-height);
+  }
+
+  /* the bottom bar takes the last 56px: the ending is one screen above it */
+  .contact-scene[data-has-art] {
+    min-height: calc(100svh - var(--hire-bar-height));
+    margin-bottom: var(--hire-bar-height);
+  }
+
+  .contact-scene[data-has-art] .scene-copy {
+    min-height: calc(100svh - var(--hire-bar-height));
+  }
+
+  .offer-scene .offer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0;
+  }
+
+  .offer-scene .offer::before {
+    content: none;
+  }
+
+  .offer-scene .folder + .folder {
+    margin-top: 0;
+  }
+
+  .offer-scene .folder {
+    flex: 1 1 0;
+    padding-block: var(--space-3);
+    min-height: auto;
+  }
+
+  .offer-scene .folder > p.folder-tab:first-child {
+    margin-block: 0 var(--space-1);
+  }
+
+  .offer-scene .folder .door {
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: var(--space-half-min) var(--space-2);
+    margin-top: auto;
+  }
+
+  .offer-scene .folder .proof-link {
+    margin-block: 0 var(--space-2);
+  }
+
+  .offer-scene .folder h3 {
+    font-size: clamp(1.5rem, 6.4vw, 1.625rem);
+    line-height: 1.1;
+    margin-bottom: var(--space-1);
+  }
+
+  .offer-scene .folder p {
+    font-size: 1rem;
+    line-height: 1.45;
+    margin-block: 0 var(--space-rail);
+  }
+
+  .offer-scene .folder p.folder-tab {
+    font-size: 0.8125rem;
+    margin-block: 0 var(--space-1);
+  }
+
+  .offer-scene .folder .door {
+    font-size: 0.875rem;
+  }
+
+  .offer-scene .folder .proof-link {
+    font-size: 1rem;
+  }
+}
+
+/* short phones: the copy keeps every word at 14.5px so the two doors share the screen above the bottom bar */
+@media (max-width: 700px) and (max-height: 760px) {
+  .offer-scene {
+    --size-word: min(35vw, 8svh);
+  }
+
+  .offer-scene .folder .proof-link {
+    margin-block: 0 var(--space-1);
+  }
+
+  .offer-scene .folder p {
+    font-size: 0.90625rem;
+    line-height: 1.3;
+    margin-block: 0 var(--space-1);
+  }
+
+  .offer-scene .folder h3 {
+    font-size: 1.375rem;
+  }
+
+  .offer-scene .folder {
+    padding-block: var(--space-2);
+  }
+
+  .offer-scene .folder .door {
+    padding-block: var(--space-2);
+    margin-top: var(--space-1);
+  }
+
+  .offer-scene .offer {
+    gap: var(--space-1);
+  }
+}
+
+/* with reduced motion nothing pins the offer, so it is as tall as its two doors and leaves no empty ink under them */
+@media (prefers-reduced-motion: reduce) and (max-width: 1099px) {
+  .offer-scene[data-has-art] {
+    min-height: 0;
+  }
+}
+
+/* a phone held sideways: the invitation moves under the top bar at the right so it never covers the sheet, and the cover's door rises
+   above the corner CTA instead of sliding behind it */
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 500px) and (max-width: 1099px) {
+  .sound-cue-chip {
+    top: calc(var(--top-bar-height) + var(--space-2));
+    right: var(--space-3);
+    bottom: auto;
+    left: auto;
+    translate: none;
+  }
+
+}
+
+/* visually hidden yet read by screen readers: clipped to nothing at its own size, so no box holds text it cuts off */
+.sr-only {
+  width: auto;
+  height: auto;
+  inset: auto 0 0 0;
+  white-space: normal;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  clip-path: inset(50%);
+  pointer-events: none;
+}
+
+.sr-only * {
+  white-space: inherit;
 }

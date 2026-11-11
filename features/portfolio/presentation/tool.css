@@ -1,0 +1,48 @@
+/* A project's stack and links are always on show, outside its beats, the links as printed buttons. Tools set them, and their labels, in plain type. */
+
+.show[data-kind="tool"] .show-label,
+.show[data-kind="tool"] .stack,
+.show[data-kind="tool"] .stack li,
+.show[data-kind="tool"] .show-meta a {
+  font-family: var(--font-text);
+}
+
+.show .show-meta {
+  gap: var(--space-2);
+}
+
+.show .show-meta .stack {
+  flex-basis: 100%;
+}
+
+.show .show-meta a {
+  min-height: var(--space-5);
+  padding: 0 var(--space-4);
+  background: var(--bone);
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--text-small);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background-color var(--motion-control) var(--ease-out),
+    color var(--motion-control) var(--ease-out),
+    transform var(--motion-control) var(--ease-out);
+}
+
+.show .show-meta a:active {
+  transform: scale(var(--press-scale));
+}
+
+.show .show-meta a::after {
+  content: "→";
+  margin-left: var(--space-2);
+}
+
+.show .show-meta a:hover,
+.show .show-meta a:focus-visible {
+  background: var(--ink);
+  color: var(--bone);
+  outline: var(--rule) solid var(--bone);
+}

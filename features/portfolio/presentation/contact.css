@@ -1,0 +1,59 @@
+/* ---------- the contact block: the drawing and the parts the marquee band shares ---------- */
+
+/* the drawing covers the whole contact section edge to edge; the hand and seal sit in the right, where least type lands */
+.contact-scene[data-has-art] .scene-art {
+  inset: 0;
+}
+
+.contact-scene[data-has-art] .scene-art img {
+  object-position: 88% 55%;
+}
+
+@media (min-width: 1024px) {
+  .contact-scene[data-has-art] .scene-art img {
+    object-position: 100% 50%;
+  }
+}
+
+.contact-tiles {
+  display: grid;
+  gap: var(--space-4);
+  width: 100%;
+  min-width: 0;
+}
+
+.contact-tiles :focus-visible {
+  outline: var(--space-1) solid var(--bone);
+  outline-offset: var(--space-2);
+}
+
+.contact-glyph {
+  width: var(--space-5);
+  height: var(--space-5);
+}
+
+.contact-arrow {
+  display: inline-block;
+  transition: transform var(--motion-control) var(--ease-out);
+}
+
+a:focus-visible .contact-arrow {
+  transform: translateX(var(--space-2));
+}
+
+@media (hover: hover) {
+  a:hover .contact-arrow {
+    transform: translateX(var(--space-2));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-arrow {
+    transition: none;
+  }
+
+  a:hover .contact-arrow,
+  a:focus-visible .contact-arrow {
+    transform: none;
+  }
+}

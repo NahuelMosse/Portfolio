@@ -26,5 +26,22 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# latex build artifacts
+/cv/**/*.aux
+/cv/**/*.log
+/cv/**/*.out
+.claude/.kit-incoming/
+
+# originals of real photos; only treated, metadata-free copies go to public/
+/.media-source/
+
+# per-application CVs stay local, out of the public repo
+/cv/postulaciones/
+
+# third-party reference images sent by the requester; local only
+/specs/*/ref/requester-*
+/test-results/
+/playwright-report/
+
 # claude code scratch
 tmpclaude-*

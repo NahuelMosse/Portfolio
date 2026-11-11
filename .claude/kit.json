@@ -1,0 +1,168 @@
+{
+  "kit": "6.45.4",
+  "stack": "react-shadcn",
+  "e2e": "e2e",
+  "rulePaths": {
+    "architecture": [
+      "apps/**",
+      "src/**",
+      "packages/**",
+      "lib/**"
+    ],
+    "design": [
+      "**/*.css",
+      "**/*.tsx",
+      "**/*.jsx",
+      "**/*.vue",
+      "**/*.svelte",
+      "**/*.html"
+    ],
+    "interface": [
+      "**/*.css",
+      "**/*.tsx",
+      "**/*.jsx",
+      "**/*.vue",
+      "**/*.svelte",
+      "**/*.html"
+    ],
+    "speed": [
+      "apps/**",
+      "src/**",
+      "packages/**",
+      "lib/**"
+    ]
+  },
+  "source": {
+    "path": "D:\\projects\\SDD-implementation",
+    "commit": "ad9740ca8bd7664bfdc52031e385c5d75233c83c"
+  },
+  "modules": {
+    "ui": {
+      "state": "on",
+      "version": "1.0.0",
+      "since": "install 2026-11-01"
+    },
+    "api": {
+      "state": "off",
+      "reason": "profile backend not chosen at install",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": [
+        "route in e2e/film.spec.ts",
+        "route in e2e/scene-media.spec.ts"
+      ],
+      "confirmed": [
+        {
+          "at": "2026-11-01",
+          "card": "PF-1-cinematic-portfolio",
+          "reason": "the e2e route calls are Playwright page.route mocks of media failures; the site has no API of its own",
+          "signals": [
+            "route in e2e/film.spec.ts",
+            "route in e2e/scene-media.spec.ts"
+          ]
+        }
+      ]
+    },
+    "data": {
+      "state": "off",
+      "reason": "profile backend not chosen at install",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "infra": {
+      "state": "off",
+      "reason": "profile backend not chosen at install",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "ci": {
+      "state": "off",
+      "reason": "not chosen at install: no signal found in the repo",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "observability": {
+      "state": "off",
+      "reason": "profile backend not chosen at install",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": [
+        "route in e2e/film.spec.ts",
+        "route in e2e/scene-media.spec.ts"
+      ],
+      "confirmed": [
+        {
+          "at": "2026-11-01",
+          "card": "PF-1-cinematic-portfolio",
+          "reason": "a static portfolio with no server routes; the only route calls are Playwright mocks in e2e",
+          "signals": [
+            "route in e2e/film.spec.ts",
+            "route in e2e/scene-media.spec.ts"
+          ]
+        }
+      ]
+    },
+    "docs": {
+      "state": "off",
+      "reason": "not chosen at install: no signal found in the repo",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "i18n": {
+      "state": "off",
+      "reason": "no signal found in the repo",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    },
+    "security-l2": {
+      "state": "off",
+      "reason": "opt-in module, not chosen at install",
+      "by": "person",
+      "at": "2026-11-01",
+      "signalsAtDecision": []
+    }
+  },
+  "grade": {
+    "level": "mvp",
+    "reason": "full design control for the portfolio revamp: design line, component set and screen audit",
+    "by": "person",
+    "at": "2026-11-01",
+    "history": [
+      {
+        "level": "poc",
+        "reason": "portfolio revamp exploration: presentation-only facade, judged by capture rounds",
+        "at": "2026-11-01"
+      }
+    ]
+  },
+  "profiles": {
+    "web": {
+      "state": "on",
+      "since": "install 2026-11-01",
+      "reason": "chosen at install",
+      "mcp": {
+        "motion": {
+          "type": "http",
+          "url": "https://mcp.motion.dev"
+        }
+      }
+    },
+    "backend": {
+      "state": "off",
+      "reason": "not chosen at install",
+      "by": "person",
+      "at": "2026-11-01"
+    },
+    "flutter": {
+      "state": "off",
+      "reason": "not chosen at install",
+      "by": "person",
+      "at": "2026-11-01"
+    }
+  }
+}

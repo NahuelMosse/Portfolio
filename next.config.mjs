@@ -27,6 +27,8 @@ const nextConfig = {
   // Experimental features para mejorar rendimiento
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-slot'],
+    // the stylesheet travels inside the HTML: the opening title paints with the first bytes, not after another round trip
+    inlineCss: true,
   },
   // Security headers
   async headers() {
@@ -63,7 +65,16 @@ const nextConfig = {
             value: 'camera=(), microphone=(), geolocation=()'
           }
         ]
-      }
+      },
+      {
+        // public files have no content hash in their names: a month in the browser, revalidated after
+        source: '/fonts/:file*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }],
+      },
+      {
+        source: '/film/:file*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }],
+      },
     ]
   }
 }

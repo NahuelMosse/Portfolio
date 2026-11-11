@@ -1,0 +1,11 @@
+[
+  { "goto": "/" },
+  { "wait": "section[data-chapter=\"cold-open\"] h1.mark" },
+  { "wait": 1200 },
+  { "scroll": "section[data-chapter=\"projects\"]" },
+  { "wait": 600 },
+  { "scroll": "section[data-chapter=\"experience\"]" },
+  { "wait": 600 },
+  { "scroll": "section[data-chapter=\"end-credits\"]" },
+  { "wait": 600 }
+]
