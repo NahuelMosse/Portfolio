@@ -22,3 +22,7 @@ updates:
     ignore:
       - dependency-name: "@types/node"
         update-types: [version-update:semver-major]
+      # TypeScript 7 is the compiler rewritten in Go, and Next.js does not build with it yet (the build failed on the
+      # Dependabot PR). It moves to 7 by hand once Next.js supports it.
+      - dependency-name: "typescript"
+        update-types: [version-update:semver-major]
