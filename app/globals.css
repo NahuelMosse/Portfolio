@@ -1369,6 +1369,13 @@ html:not([data-sound="idle"]) .cover-cue {
   }
 }
 
+/* at 320 px the wordmark, the sound toggle and the menu button fill the top row: a narrower gap keeps the button inside */
+@media (max-width: 359px) {
+  .top-bar {
+    gap: var(--space-3);
+  }
+}
+
 @media (max-width: 700px) {
   :root {
     --gutter-left: var(--gutter-left-phone);

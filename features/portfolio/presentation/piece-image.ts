@@ -9,7 +9,7 @@ type Bar = { bg: string; tone: "light" | "dark"; trim?: number }
 // a JSON import widens "light" | "dark" to string; scripts/derive-bars.mjs writes only those two tones
 const BARS = bars as Record<string, Bar>
 
-// "/film/pieces/club-login.webp" → "club-login"
+// "/film/pieces/club-sedes.webp" → "club-sedes"
 const idOf = (src: string) => src.replace(/^\/film\/pieces\//, "").replace(/\.webp$/, "")
 
 // The copies of a piece at the widths a screen asks for (scripts/derive-plates.mjs).

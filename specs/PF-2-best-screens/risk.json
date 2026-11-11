@@ -1,0 +1,35 @@
+{
+  "size": "large",
+  "review": "high",
+  "lenses": [
+    "interpretation",
+    "security"
+  ],
+  "modules": [],
+  "signals": [],
+  "words": [
+    "session"
+  ],
+  "files": [
+    "e2e/best-screens.spec.ts",
+    "features/portfolio/presentation/content.ts",
+    "public/ASSETS.md",
+    "scripts/derive-bars.mjs",
+    "(presentation",
+    "the",
+    "phone",
+    "pieces",
+    "it",
+    "reads)",
+    "features/portfolio/presentation/piece-bars.json",
+    "features/portfolio/presentation/piece-widths.json"
+  ],
+  "tasks": 3,
+  "lensesOff": [
+    {
+      "lens": "contract",
+      "profile": "backend",
+      "why": "not chosen at install"
+    }
+  ]
+}

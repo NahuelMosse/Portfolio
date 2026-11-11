@@ -1,5 +1,5 @@
 // The status bar of every phone screen. A screenshot of a phone app either starts with its own status bar baked in (the Android
-// capture of ClubNahuelMosse: TRIM_BAKED of its height) or starts with the app. The device draws one bar for all of them, so a baked
+// README captures of ClubNahuelMosse, club-sedes and club-listo: TRIM_BAKED of their height) or starts with the app. The device draws one bar for all of them, so a baked
 // one is cropped by CSS (its `trim`) and each bar takes the color of the app's own top edge, with light or dark icons by its luminance.
 // Written to features/portfolio/presentation/piece-bars.json. Run: node scripts/derive-bars.mjs
 import { writeFileSync } from "node:fs"
@@ -9,14 +9,14 @@ import sharp from "sharp"
 const PIECES = join(process.cwd(), "public", "film", "pieces")
 const OUT = join(process.cwd(), "features", "portfolio", "presentation", "piece-bars.json")
 const TRIM_BAKED = 0.04
-const BAKED = new Set(["club-login", "club-sedes", "club-horarios", "club-listo"])
+const BAKED = new Set(["club-sedes", "club-listo"])
 const PHONE_PIECES = [
-  "grit-hoy", "grit-serie", "grit-descanso", "grit-completado", "grit-ejercicio",
-  "club-login", "club-sedes", "club-horarios", "club-listo",
-  "cebador-390-poster", "cebador-s2-390", "cebador-s3-390",
-  "sonria-hero-390", "sonria-tratamientos-390", "sonria-turno-390",
-  "miga-hero-390", "miga-lista-390", "miga-pedir-390",
-  "triaje-mobile",
+  "grit-hoy", "grit-ejercicio", "grit-progreso", "grit-completado",
+  "club-inicio", "club-sedes", "club-cancha", "club-listo",
+  "cebador-390-poster", "cebador-sabor-390", "cebador-tienda-390",
+  "sonria-hero-390", "sonria-tratamientos-390", "sonria-equipo-390",
+  "miga-hero-390", "miga-lista-390", "miga-local-390",
+  "triaje-mobile", "triaje-chart-390", "triaje-room-390",
 ]
 
 const hex = (n) => Math.round(n).toString(16).padStart(2, "0")

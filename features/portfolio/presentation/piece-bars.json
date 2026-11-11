@@ -3,11 +3,11 @@
   "bg": "#f4f1e9",
   "tone": "dark"
  },
- "grit-serie": {
+ "grit-ejercicio": {
   "bg": "#f4f1e9",
   "tone": "dark"
  },
- "grit-descanso": {
+ "grit-progreso": {
   "bg": "#f4f1e9",
   "tone": "dark"
  },
@@ -15,24 +15,18 @@
   "bg": "#f4f1e9",
   "tone": "dark"
  },
- "grit-ejercicio": {
-  "bg": "#f4f1e9",
-  "tone": "dark"
- },
- "club-login": {
-  "bg": "#0f0c0a",
-  "tone": "light",
-  "trim": 0.04
+ "club-inicio": {
+  "bg": "#26360e",
+  "tone": "light"
  },
  "club-sedes": {
   "bg": "#070707",
   "tone": "light",
   "trim": 0.04
  },
- "club-horarios": {
-  "bg": "#2c410d",
-  "tone": "light",
-  "trim": 0.04
+ "club-cancha": {
+  "bg": "#082a40",
+  "tone": "light"
  },
  "club-listo": {
   "bg": "#4a7010",
@@ -43,13 +37,13 @@
   "bg": "#320f16",
   "tone": "light"
  },
- "cebador-s2-390": {
-  "bg": "#f1e8da",
-  "tone": "dark"
- },
- "cebador-s3-390": {
-  "bg": "#1e080d",
+ "cebador-sabor-390": {
+  "bg": "#401a21",
   "tone": "light"
+ },
+ "cebador-tienda-390": {
+  "bg": "#fca6a4",
+  "tone": "dark"
  },
  "sonria-hero-390": {
   "bg": "#ffffff",
@@ -59,7 +53,7 @@
   "bg": "#ffffff",
   "tone": "dark"
  },
- "sonria-turno-390": {
+ "sonria-equipo-390": {
   "bg": "#ffffff",
   "tone": "dark"
  },
@@ -71,12 +65,20 @@
   "bg": "#3c0314",
   "tone": "light"
  },
- "miga-pedir-390": {
-  "bg": "#7c5f63",
-  "tone": "light"
+ "miga-local-390": {
+  "bg": "#d1b69d",
+  "tone": "dark"
  },
  "triaje-mobile": {
   "bg": "#0e141b",
+  "tone": "light"
+ },
+ "triaje-chart-390": {
+  "bg": "#05080a",
+  "tone": "light"
+ },
+ "triaje-room-390": {
+  "bg": "#06090b",
   "tone": "light"
  }
 }
