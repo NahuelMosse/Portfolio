@@ -1,0 +1,18 @@
+{
+  "size": "small",
+  "review": "low",
+  "lenses": [],
+  "modules": [],
+  "signals": [],
+  "words": [],
+  "files": [
+    "scripts/capture-triaje-mobile.mjs",
+    "public/film/pieces/triaje-mobile.webp",
+    "public/film/r/480/pieces/triaje-mobile.webp",
+    "public/film/r/780/pieces/triaje-mobile.webp",
+    "features/portfolio/presentation/piece-bars.json",
+    "public/ASSETS.md",
+    "features/portfolio/presentation/content.ts"
+  ],
+  "tasks": 2
+}
