@@ -24,5 +24,12 @@
     "features/portfolio/presentation/piece-bars.json",
     "features/portfolio/presentation/piece-widths.json"
   ],
-  "tasks": 3
+  "tasks": 3,
+  "lensesOff": [
+    {
+      "lens": "contract",
+      "profile": "backend",
+      "why": "not chosen at install"
+    }
+  ]
 }
