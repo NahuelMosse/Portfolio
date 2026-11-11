@@ -342,12 +342,7 @@ html.is-revisit .preloader-stamp-ink use,
   }
 
   .preloader-case {
-    right: var(--space-3);
     font-size: 0.6875rem;
-  }
-
-  .preloader-line {
-    white-space: pre-wrap;
   }
 
   .preloader-mark {
