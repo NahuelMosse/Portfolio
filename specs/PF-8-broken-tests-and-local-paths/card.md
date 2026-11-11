@@ -13,6 +13,7 @@ not_read: none
 - PF-8-ASM-02 · a frozen test whose behavior still holds but whose test fails is replaced the kit's way, in a new file with the same tags and a `replaces:` line; the old test, and the old tests earlier cards already replaced (PF-1, PF-2, PF-5), go in the same list under a `#` line naming their replacement, so the gate runs the replacement and not the test it supersedes · S1
 - PF-8-ASM-03 · a session record is written relative to the home folder (`~/.claude/projects/...`): the existing sessions.md lines are rewritten that way and the kit's writer (required.mjs sessionLine) writes them that way, so this card's own close publishes no local user path either · S2
 - PF-8-ASM-04 · the requester decided after the card was frozen (L-line of 2026-11-11): every @PF-1- test, passing or not, PF-8's own replacements that carry PF-1 tags included, is retired in bulk in retired.txt under the one reason `# retired: PF-1 frozen suite retired by the user; covered by e2e/smoke.spec.ts` and one `retires:` Log line; a smoke suite e2e/smoke.spec.ts at 390x844, 1440x900 and 1910x912 covers the page; a PF-2 to PF-7 test that fails on main is retired with a one-line reason each, the ones that pass stay · S1
+- PF-8-ASM-05 · the smoke suite found two site defects at 390x844 (the cover measures 852 px in an 844 px screen; two credits-roll logos, logo-UM and logo-emaus, stay unloaded while in view); the requester asked for a green gate and for each section to fit one screen, so the site is fixed with the smallest presentation change instead of loosening or retiring the smoke tests · S1
 
 ## Tasks
 
@@ -20,6 +21,7 @@ not_read: none
   reuses: .claude/tools/required.mjs sessionLine writeSessionLines (the writer of sessions.md)
 - T2 · S1,ASM-01,ASM-02 · e2e/pf1-projects-today.spec.ts · old: project-groups, project-presentation, project-presentation-terminal-height, project-title-fit, project-showcase, project-scroll-groups, project-poster, project-poster-art, project-glance-ai-line, project-backdrop, pieces, tools-plain, cebador-playback · tests: e2e/pf1-projects-today.spec.ts "<old title> @<its old tags> @PF-8-S1"
 - T3 · S1,ASM-04 · e2e/smoke.spec.ts · tests: e2e/smoke.spec.ts "at <viewport> the cover, the offer, every project scene and let's talk each fit in 100svh @PF-8-ASM-04"; e2e/smoke.spec.ts "at <viewport> nothing overflows the page sideways @PF-8-ASM-04"; e2e/smoke.spec.ts "at <viewport> every visible image and video loads and no request answers 404 @PF-8-ASM-04"; e2e/smoke.spec.ts "the contact and project links carry a valid href @PF-8-ASM-04"; e2e/smoke.spec.ts "at <viewport> the page logs no console error @PF-8-ASM-04"; e2e/smoke.spec.ts "on a 390x844 phone in <engine> the bottom bar is 56 px tall @PF-8-ASM-04" (Chromium at the three viewports, WebKit too at 390x844)
+- T5 · S1,ASM-05 · app/globals.css, features/film/presentation/credits-roll.tsx (presentation) · tests: the e2e/smoke.spec.ts tests of T3 at 390x844 (they fail on the cover's height and the two roll logos)
 - T4 · S1,ASM-01,ASM-02,ASM-04 · specs/PF-8-broken-tests-and-local-paths/retired.txt, e2e/retired-bulk.spec.ts · tests: e2e/retired-bulk.spec.ts "every test kept out of the gate names its reason and its Log line, the PF-1 suite by the requester's one decision @PF-8-S1 @PF-8-ASM-01 @PF-8-ASM-02 @PF-8-ASM-04"
 
 T2 replaced or retired PF-1 tests one by one before the requester's decision of ASM-04; its replacements carry PF-1 tags and are retired with the rest. How T2 handled each failing test (the list with the first error is .validation/open.txt and .validation/rerun.log; each failed twice against a production build of main, the second time with 2 workers):
@@ -31,7 +33,7 @@ T2 replaced or retired PF-1 tests one by one before the requester's decision of 
 
 - the e2e gate of every later card: the tests listed in retired.txt no longer run, the whole PF-1 suite among them; e2e/smoke.spec.ts and the PF-2 to PF-7 tests that pass on main do · every test it lists
 - sessions.md lines name the transcript as `~/.claude/projects/...` instead of an absolute path · specs/*/sessions.md, .claude/tools/required.mjs
-- the site does not change
+- at 390x844 the cover fits the screen and the credits-roll logos load when they come into view · app/globals.css, features/film/presentation/credits-roll.tsx
 
 ## Gate
 
