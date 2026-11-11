@@ -129,6 +129,11 @@ export function useGroupTrack(count: number, { beats = BEATS_PER_PROJECT, host }
     const placer = new ResizeObserver(place)
     placer.observe(node)
     placer.observe(document.body)
+    // a group far from the view is not rendered (content-visibility): the moment it comes back, it is placed and tracked again
+    const unskipped = (event: Event) => {
+      if (!(event as Event & { skipped: boolean }).skipped) place()
+    }
+    node.addEventListener("contentvisibilityautostatechange", unskipped)
 
     // the device stands in what the caption leaves: each card gets the height of its own caption (the tallest of its beats)
     const sizer = new ResizeObserver((entries) => {
@@ -181,6 +186,7 @@ export function useGroupTrack(count: number, { beats = BEATS_PER_PROJECT, host }
       window.removeEventListener("touchend", release)
       window.removeEventListener("touchcancel", release)
       window.clearTimeout(idle)
+      node.removeEventListener("contentvisibilityautostatechange", unskipped)
       sizer.disconnect()
       placer.disconnect()
       if (frame) cancelAnimationFrame(frame)
