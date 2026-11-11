@@ -1,0 +1,23 @@
+{
+  "size": "large",
+  "review": "medium",
+  "lenses": [
+    "visual"
+  ],
+  "modules": [
+    "ui"
+  ],
+  "signals": [
+    "screen"
+  ],
+  "words": [],
+  "files": [
+    "features/portfolio/presentation/project-group.tsx",
+    "features/portfolio/presentation/use-group-track.ts",
+    "features/portfolio/presentation/showcase-device.tsx",
+    "features/portfolio/presentation/group.css",
+    "features/film/presentation/scene-media.tsx",
+    "features/film/presentation/plate-loader.tsx"
+  ],
+  "tasks": 1
+}
