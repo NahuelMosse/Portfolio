@@ -139,7 +139,7 @@ try {
       reject(
         `${root ? relativeTo(root, path) : path} has tagged tests${own ? (mine ? ' by this card' : ' by another card') : ''} and a commit already holds them: frozen. ` +
         'Whoever implements does not edit them. If one is wrong, replace it: a new file with the same tag, and ' +
-        '`node .claude/tools/log.mjs specs/<card> "replaces: <test file> \\"<test>\\" · <why wrong> · by: <new file> \\"<test>\\""`. A mechanical change that has to touch many of them ' +
+        '`node .claude/tools/log.mjs specs/<card> "replaces: <test file> \\"<test>\\" · <why wrong> · by: <new file> \\"<test>\\""`. A behavior the card removes: `by: none` for each tagged test of the file, then `git rm` it. A mechanical change that has to touch many of them ' +
         'declares `refactor-tests: <why>` in ## Gate: they are edited in place and the close lists each one for review.'
       );
     }

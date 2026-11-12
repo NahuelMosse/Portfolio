@@ -35,7 +35,9 @@
 // otherwise the line is `passed with flaky k/3 <test>`, listed in `.validation/verify/flaky.md` for the closing, never a
 // plain `passed`. A `suite:` line whose failing tests are all declared replaced in the Log of card.md
 // (`replaces: <file> "<name>" · <why> · by: <file> "<name>"`) with a passing test of the same tag in the new file is
-// `passed with replaced k: <tests>`, listed in `.validation/verify/replaced.md`; any other case stays red.
+// `passed with replaced k: <tests>`, listed in `.validation/verify/replaced.md`. A line whose remaining failing tests
+// carry none of the card's tags and fail the same in main's checkout at the card's base (`mainsFailures`) is
+// `passed with red at base k`, listed in `.validation/verify/red-at-base.md`: main's debt, for a person; any other case stays red.
 // A line that resolves —through package.json scripts, as far as they go— to a chain `a && b && c` with a part
 // that drives a browser and a part that does not is split (`splitLine`): the parts without a browser run beside
 // the other lines without one, the parts with a browser in the browser chain, and the line passes only if all its
@@ -68,13 +70,14 @@ import { endsWithLine } from './final-line.mjs';
 import { logPath, readRecord, withTestTimeout, writeRecord } from './once.mjs';
 import { QUALITY, missing, mutationRequired, splitPending, writeSessionLines } from './required.mjs';
 import { CARD_FILE, cardIdOf, fencedBlocks, readCard, requirementOf, riskOf, sectionOf } from './card-doc.mjs';
-import { cardChecks, noLookOf, noVisualCheck, probeRecords, screenChecks, specsCheck, visualInstruments } from './gate-checks.mjs';
+import { DECLARED_AXE, cardChecks, inMainOf, noLookOf, noVisualCheck, probeRecords, screenChecks, specsCheck, visualInstruments } from './gate-checks.mjs';
 import { detectIn } from './signals.mjs';
 import { affected } from './affected.mjs';
 import { catalogFindings, classesAt, classesDefined, classesIn, MARKUP_FILE, setFindings, setSheets, usesCatalog } from './component-set.mjs';
 import { escalate } from './risk.mjs';
 import { changedBetween, snapshot } from './tree-snapshot.mjs';
 import { IS_TEST_FILE, committedTagged } from './guard-paths.mjs';
+import { baseTree } from './base-tree.mjs';
 
 const TOOLS = relative(process.cwd(), join(import.meta.dirname)).split('\\').join('/') || '.';
 const ONE_AT_A_TIME = /playwright|cypress|attack|server|start|axe|schemathesis|lhci|lighthouse|k6|autocannon|gatling|locust/i;
@@ -294,13 +297,36 @@ export const mutationWorkers = (n = cores()) => Math.max(1, Math.floor(n / 2));
 
 // The tests the card's files can break, plus every test file that carries the card's own tags, quoted for the shell; empty
 // only when neither exists. A command that starts with `cd <dir> &&` gets them from that folder, and only those inside it.
+// A test file already red in main that the card does not fix: `declared · red-at-base · <test file> · <why>` in the Log leaves it
+// out of `{affected}` unless it carries the card's tags, and the close lists the declaration for a person. A card is not made to
+// repair the suite it found broken.
+export const DECLARED_RED = /declared\s*·\s*red-at-base\s*·\s*([^\s·]+)\s*·\s*(.+?)\s*$/;
+export const declaredRed = (cardDir) => {
+  const doc = cardDir && existsSync(join(cardDir, CARD_FILE)) ? readCard(cardDir) : '';
+  return new Map((doc.split(/^## Log\b.*$/m)[1] ?? '').split('\n').map((l) => l.match(DECLARED_RED)).filter(Boolean).map((m) => [m[1].replaceAll('\\', '/'), m[2]]));
+};
+
 export const affectedOf = (base, root = process.cwd(), dir = '', cardDir = null) => {
   const touched = cardFiles(root, base).filter((f) => !f.startsWith('specs/') && existsSync(join(root, f)));
   const id = cardDir ? cardIdOf(cardDir) : null;
   const grep = id ? spawnSync('git', ['grep', '-l', '-I', '-F', '--untracked', '-e', `@${id}-`, '--', ':(exclude)specs', ':(exclude).claude'], { cwd: root, encoding: 'utf8' }) : null;
   const tagged = (grep?.stdout ?? '').split('\n').filter((f) => f && IS_TEST.test(f));
-  const tests = [...new Set([...(touched.length ? affected(root, touched) : []), ...tagged])].sort();
+  const red = declaredRed(cardDir);
+  // A test carrying the card's own tags is never left out: the declaration speaks of main's tests, not the card's.
+  const tests = [...new Set([...(touched.length ? affected(root, touched) : []), ...tagged])].filter((f) => !red.has(f) || tagged.includes(f)).sort();
   const local = dir ? tests.filter((f) => f.startsWith(`${dir}/`)).map((f) => f.slice(dir.length + 1)) : tests;
+  return local.map((f) => `"${f}"`).join(' ');
+};
+
+// `{changed}`: the files the card added or changed that still exist, outside specs/ and .claude/, relative to the folder the
+// command runs in; `{changed:ts,tsx}` keeps those extensions. A linter or analyzer given these judges the card's code, not the
+// debt main already carried.
+export const CHANGED = /\{changed(?::([\w,]+))?\}/g;
+export const changedOf = (base, root = process.cwd(), dir = '', exts = null) => {
+  const keep = exts ? new Set(exts.split(',').map((e) => e.toLowerCase())) : null;
+  const files = cardFiles(root, base).filter((f) => !/^(specs|\.claude)\//.test(f) && existsSync(join(root, f))
+    && (!keep || keep.has(f.split('.').pop().toLowerCase())));
+  const local = dir ? files.filter((f) => f.startsWith(`${dir}/`)).map((f) => f.slice(dir.length + 1)) : files;
   return local.map((f) => `"${f}"`).join(' ');
 };
 
@@ -324,6 +350,16 @@ export const planCommands = (plan, { base, cardDir }, heading = 'Verification') 
       // No test to hand it is a line that cannot run, never one that passes by printing why.
       if (!tests) return { name, command, cannotRun: 'no test reaches the files of the card and no test file carries its tags' };
       command = command.replaceAll('{affected}', tests);
+    }
+    if (command.includes('{changed')) {
+      let none = null;
+      const dir = commandDir(command);
+      command = command.replace(CHANGED, (m, exts) => {
+        const files = changedOf(base, process.cwd(), dir, exts);
+        if (!files) none = m;
+        return files;
+      });
+      if (none) return { name, command, cannotRun: `the card changed no file ${none} names: there is nothing of its own to check` };
     }
     // An `attacks` line asks for a refused foreign Host only in production or when the card speaks of the host.
     if (/^attacks$/i.test(name) && /attack\.mjs\s+\S+/.test(command) && !/--strict-host/.test(command) && wantsStrictHost(plan)) command = command.replace(/(attack\.mjs\s+\S+)/, '$1 --strict-host');
@@ -514,10 +550,11 @@ export const failingTests = (output, limit = 3) => {
   return total > limit ? [] : tests;
 };
 
-// The tests a card's Log declares replaced: `- L<n> · <date> · replaces: <file> "<name>" · <why> · by: <file> "<name>"`.
-export const REPLACES = /replaces:\s*(\S+)\s+"([^"]+)"\s*·\s*(.*?)\s*·\s*by:\s*(\S+)\s+"([^"]+)"/;
+// The tests a card's Log declares replaced: `- L<n> · <date> · replaces: <file> "<name>" · <why> · by: <file> "<name>"`;
+// `by: none` retires a test whose behavior the card removes (its file goes with `git rm`).
+export const REPLACES = /replaces:\s*(\S+)\s+"([^"]+)"\s*·\s*(.*?)\s*·\s*by:\s*(?:none\b|(\S+)\s+"([^"]+)")/;
 export const replacementsOf = (doc) => (String(doc).split(/^## Log\b.*$/m)[1] ?? '').split('\n')
-  .map((l) => l.match(REPLACES)).filter(Boolean).map((m) => ({ file: m[1], name: m[2], why: m[3], by: m[4], byName: m[5] }));
+  .map((l) => l.match(REPLACES)).filter(Boolean).map((m) => ({ file: m[1], name: m[2], why: m[3], by: m[4] ?? null, byName: m[5] ?? null }));
 // A frozen test of a card from kit 3 carries `@<ID>-H<n>[-<n>]` and `@supuesto:<ID>-SUP-<n>`: its replacement repeats them too.
 const SPEC_TAG = /@(?:assumption:|supuesto:)?[A-Z][A-Z0-9]*-\d+-(?:S\d+|ASM-\d+|SUP-\d+|H\d+(?:-\d+)?)(?!\d)/g;
 
@@ -576,6 +613,7 @@ export const replacedFailures = (root, output) => {
   const failsIn = (by, name) => failing.some((t) => is(t, by, name));
   const found = [];
   const holds = (r) => {
+    if (!r.by) return false;
     const tags = r.name.match(SPEC_TAG) ?? [];
     let text = '';
     try { text = readFileSync(join(root, r.by), 'utf8'); } catch { return false; }
@@ -821,8 +859,8 @@ const cardCode = (root, cardDir) => cardFiles(root, cardStart(root, cardDir))
   .filter((f) => IS_CODE.test(f) && !/^(specs|\.claude)\//.test(f) && existsSync(join(root, f)));
 
 // K4 — measured: duplication was never measured in 3 inspections, and apps built with the kit repeated the same logic in several
-// places. Blocking for what the card writes: a clone where at least one side is lines this card added or changed. A clone that was
-// already there (the card touched the file, not those lines) is a `note:`, never a failure. jscpd matches token by token, so an exact
+// places. Blocking for what the card writes: a clone where the card added or changed at least half the lines of one side. A clone
+// that was already there (the card touched the file, or a line inside the block) is a `note:`, never a failure. jscpd matches token by token, so an exact
 // copy is found and a copy with renamed identifiers is not (measured): the plan's `reuses:`/`new:` line is what stops that one.
 // A clone with a frozen test on either side is a `note:`: the frozen copy cannot import a shared part. Any other clone that
 // cannot be extracted is declared in the Log: `declared · K4 · <file>[:<lines>] · <why>`.
@@ -852,7 +890,14 @@ const addedLines = (root, base, files) => {
   }
   return out;
 };
-const isNew = (ranges, start, end) => ranges === null || (ranges ?? []).some(([a, b]) => start <= b && end >= a);
+// A side of a clone is the card's when the card wrote at least half of its lines: a line edited inside a block main already
+// repeated leaves that clone main's, so a card is never made to extract duplication it only passed through.
+const ownedShare = (ranges, start, end) => {
+  if (ranges === null) return 1;
+  const written = (ranges ?? []).reduce((n, [a, b]) => n + Math.max(0, Math.min(b, end) - Math.max(a, start) + 1), 0);
+  return written / Math.max(1, end - start + 1);
+};
+export const isNew = (ranges, start, end) => ownedShare(ranges, start, end) >= 0.5;
 
 export const duplication = (root, cardDir, run = defaultRun, notes = []) => {
   const files = cardCode(root, cardDir);
@@ -971,6 +1016,41 @@ const triage = (command, output, minutes) => {
   return tests.map((t) => ({ test: t.name, failed: counts.get(t.name), same: same.has(t.name) }));
 };
 
+// The failing tests that fail the same in main's checkout at the card's base: main's debt, not the card's. A test that carries
+// the card's tags is the card's; one the base run does not name as failing (a file the card added, a test that passes there,
+// a run that could not start) stays the card's. Null when there is no base or the runner cannot re-run by name. A browser
+// run at the base sets CI=1 so Playwright starts main's server instead of reusing the card's; a config with no `webServer`,
+// or one that always reuses a server, would test the card's app and is left out.
+const mainsFailures = (command, output, minutes) => {
+  const root = process.cwd();
+  const cardDir = currentCard(root);
+  const own = cardDir ? new RegExp(`@${cardIdOf(cardDir)}-(?:S\\d+|ASM-\\d+)(?!\\d)`) : null;
+  const all = failingTests(output, Infinity);
+  const tests = all.filter((t) => !own?.test(t.name));
+  if (!tests.length) return null;
+  const browser = launchesPlaywright(command, root);
+  if (browser) {
+    const config = readdirSync(root).filter((f) => /^playwright\.config\.[cm]?[jt]s$/.test(f)).map((f) => readFileSync(join(root, f), 'utf8')).join('\n');
+    if (!/webServer\s*:/.test(config) || /reuseExistingServer\s*:\s*true\b/.test(config)) return null;
+  }
+  const tree = baseTree(root);
+  if (tree.why) { say(`red at base: ${tree.why}`); return null; }
+  // node:test names files by their absolute path: the same file in main's checkout.
+  const here = (p) => (p && isAbsolute(p) && !relative(root, p).startsWith('..') ? join(tree.dir, relative(root, p)) : p);
+  const isFile = (n) => /\.[cm]?[jt]sx?$/.test(n);
+  const moved = tests.map((t) => ({ ...t, name: isFile(t.name) ? here(t.name) : t.name, ...(t.nodeFile ? { nodeFile: here(t.nodeFile) } : {}) }));
+  const rerun = rerunSpec(withTestTimeout(command), moved, tree.dir);
+  if (!rerun) return null;
+  say(`red at base: re-running ${tests.length} failing test${tests.length === 1 ? '' : 's'} at the card's base ${tree.sha.slice(0, 9)}`);
+  const release = browser ? takeLock(root, `${rerun.cmd} ${rerun.args.join(' ')}`) : () => {};
+  const r = spawnSync(rerun.cmd, rerun.args, { cwd: tree.dir, shell: false, env: { ...process.env, ...rerun.env, ...(browser ? { CI: '1' } : {}) }, encoding: 'utf8', maxBuffer: 1 << 28, timeout: minutes * 60000 });
+  release();
+  const there = new Set(r.status === 0 ? [] : failingTests(`${r.stdout ?? ''}${r.stderr ?? ''}`, Infinity).map((t) => t.name));
+  const mains = moved.filter((t) => there.has(t.name)).map((t) => (isFile(t.name) ? relative(tree.dir, t.name).replaceAll('\\', '/') : t.name));
+  const counted = Number(output.match(/^(?:ℹ|#) fail (\d+)/m)?.[1] ?? all.length);
+  return { mains: mains.map((test) => ({ test })), failing: Math.max(counted, all.length), sha: tree.sha };
+};
+
 const run = (line, logsDir) => new Promise((done) => {
   const { name, command } = line;
   const log = join(logsDir, `${name.replace(/[^\w.-]+/g, '_')}.log`);
@@ -992,6 +1072,7 @@ const run = (line, logsDir) => new Promise((done) => {
     let exit = timedOut ? 124 : code ?? 1;
     let flaky = [];
     let replaced = [];
+    let redAtBase = [];
     let cached = null;
     const skippedRun = code === 0 && /: already passed on this same code .* not repeated\./.test(output);
     if (skippedRun) {
@@ -1003,6 +1084,7 @@ const run = (line, logsDir) => new Promise((done) => {
       else writeFileSync(log, `${existsSync(logPath(process.cwd(), name, command)) ? `${readFileSync(logPath(process.cwd(), name, command), 'utf8')}\n` : ''}${output}`);
       flaky = readRecord(process.cwd(), name, command)?.flaky ?? [];
       replaced = readRecord(process.cwd(), name, command)?.replaced ?? [];
+      redAtBase = readRecord(process.cwd(), name, command)?.redAtBase ?? [];
       cached = readRecord(process.cwd(), name, command)?.when ?? null;
       if (!MUTATOR.test(command) && ZERO_RUN.test(readFileSync(log, 'utf8'))) {
         exit = 1;
@@ -1034,6 +1116,19 @@ const run = (line, logsDir) => new Promise((done) => {
           }
         }
       }
+      // What still fails and failed the same at the card's base is main's debt: the line passes with it named for a person.
+      if (exit !== 0 && !timedOut && !/^mutate\b/i.test(name) && !MUTATOR.test(command) && !isCompound(command)) {
+        const base = mainsFailures(command, output, minutes);
+        if (base?.mains.length && base.mains.length >= base.failing) {
+          exit = 0;
+          redAtBase = base.mains;
+          output += `\n[verify] passed with red at base ${redAtBase.length}: every failing test fails the same at the card's base ${base.sha.slice(0, 9)}, so it is main's\n${redAtBase.map((r) => `- ${r.test}`).join('\n')}\n`;
+          writeRecord(process.cwd(), { name, command, exit: 0, minutes: (Date.now() - started) / 60000, flaky, replaced, redAtBase });
+          writeFileSync(logPath(process.cwd(), name, command), output);
+        } else if (base) {
+          output += `\n[verify] ${base.failing} failing: ${base.failing - base.mains.length} the card's, ${base.mains.length} also red at the card's base (main's)${base.mains.map((r) => `\n- main's: ${r.test}`).join('')}\n`;
+        }
+      }
       if (exit === 0 && !timedOut && !MUTATOR.test(command) && ZERO_RUN.test(output)) {
         exit = 1;
         output += '\n[verify] failed: the runner executed 0 tests, so the line proves nothing (a filter, a glob or a tag that matches no test)\n';
@@ -1044,8 +1139,8 @@ const run = (line, logsDir) => new Promise((done) => {
     // A skip lasts seconds: what the line measures is its real run, the one once.mjs recorded.
     const measured = skippedRun ? readRecord(process.cwd(), name, command)?.minutes : timedOut ? minutes : (Date.now() - started) / 60000;
     if (measured > 0 && !(skippedRun && readDurations(logsDir)[command] > 0)) recordDuration(logsDir, command, measured);
-    say(`${timedOut ? `could not run: timeout after ${minutes} min` : exit === 0 ? (replaced.length ? 'passed with replaced' : flaky.length ? 'passed with flaky' : cached ? `passed (cached ${cached.slice(0, 16)})` : 'passed') : `exit ${exit}`} ${name} (${seconds(Date.now() - started)})`);
-    done({ name, command, exit, timedOut, minutes, log, flaky, replaced, cached, tail: output.trim().split('\n').slice(-4).join(' ⏎ ') });
+    say(`${timedOut ? `could not run: timeout after ${minutes} min` : exit === 0 ? (redAtBase.length ? 'passed with red at base' : replaced.length ? 'passed with replaced' : flaky.length ? 'passed with flaky' : cached ? `passed (cached ${cached.slice(0, 16)})` : 'passed') : `exit ${exit}`} ${name} (${seconds(Date.now() - started)})`);
+    done({ name, command, exit, timedOut, minutes, log, flaky, replaced, redAtBase, cached, tail: output.trim().split('\n').slice(-4).join(' ⏎ ') });
   });
 });
 
@@ -1062,7 +1157,7 @@ const runChain = async (line, logsDir) => {
   const last = done.find((r) => r.exit !== 0) ?? done.at(-1);
   return {
     name: line.name, command: line.command, exit: last.exit, timedOut: last.timedOut, minutes: last.minutes, log: last.log,
-    flaky: done.flatMap((r) => r.flaky ?? []), replaced: done.flatMap((r) => r.replaced ?? []), cached: done.every((r) => r.cached) ? done.at(-1).cached : null, tail: last.tail, elapsedMin: (Date.now() - started) / 60000, partLogs: done.map((r) => r.log),
+    flaky: done.flatMap((r) => r.flaky ?? []), replaced: done.flatMap((r) => r.replaced ?? []), redAtBase: done.flatMap((r) => r.redAtBase ?? []), cached: done.every((r) => r.cached) ? done.at(-1).cached : null, tail: last.tail, elapsedMin: (Date.now() - started) / 60000, partLogs: done.map((r) => r.log),
   };
 };
 
@@ -1077,14 +1172,14 @@ const mergeChunks = (root, line, parts, mine, logsDir) => {
   const bad = mine.find((r) => r.exit !== 0 && !r.notRun);
   const blocked = mine.find((r) => r.notRun);
   const final = bad ?? blocked ?? {
-    name: line.name, command: line.command, exit: 0, timedOut: false, minutes: 0, log: lineLog, flaky: mine.flatMap((r) => r.flaky ?? []), replaced: mine.flatMap((r) => r.replaced ?? []), cached: mine.length && mine.every((r) => r.cached) ? mine[0].cached : null,
+    name: line.name, command: line.command, exit: 0, timedOut: false, minutes: 0, log: lineLog, flaky: mine.flatMap((r) => r.flaky ?? []), replaced: mine.flatMap((r) => r.replaced ?? []), redAtBase: mine.flatMap((r) => r.redAtBase ?? []), cached: mine.length && mine.every((r) => r.cached) ? mine[0].cached : null,
     tail: joined.trim().split('\n').slice(-4).join(' ⏎ '),
   };
   if (joined) writeFileSync(lineLog, joined);
   writeFileSync(`${lineLog}.json`, JSON.stringify({ key: keyOf(root, line.command), exit: final.exit }));
   if (final.exit === 0) {
     const minutes = mine.reduce((sum, r) => sum + (r.elapsedMin ?? 0), 0);
-    writeRecord(root, { name: line.name, command: line.command, exit: 0, minutes, ...(final.flaky.length ? { flaky: final.flaky } : {}), ...(final.replaced?.length ? { replaced: final.replaced } : {}) });
+    writeRecord(root, { name: line.name, command: line.command, exit: 0, minutes, ...(final.flaky.length ? { flaky: final.flaky } : {}), ...(final.replaced?.length ? { replaced: final.replaced } : {}), ...(final.redAtBase?.length ? { redAtBase: final.redAtBase } : {}) });
   }
   return final;
 };
@@ -1123,13 +1218,25 @@ export const verify = async (root) => {
     Object.assign(process.env, { APP_URL: state.url, PORT: String(state.port), DATA_DIR: state.dataDir });
     say(`app up at ${state.url}`);
   }
+  // Main's version runs beside it when a line looks at the screen: the probe and overflow take what main's version
+  // already shows as main's. If it cannot start, every finding counts for the card and the checks say so.
+  const baseLine = appLine && planned.some((p) => SCREEN_LINE.test(p.command ?? ''));
+  saved.APP_BASE_URL = process.env.APP_BASE_URL;
+  if (baseLine) {
+    const up = spawnSync('node', [join(import.meta.dirname, 'app.mjs'), 'up', '--base'], { cwd: root, encoding: 'utf8', timeout: appUpCutMs(Number(process.env.KIT_APP_START_TIMEOUT_S) > 0 ? Number(process.env.KIT_APP_START_TIMEOUT_S) : 180), maxBuffer: 1 << 26 });
+    const url = up.stdout?.match(/APP_BASE_URL=(\S+)/)?.[1];
+    if (url) { process.env.APP_BASE_URL = url; say(`main's version up at ${url}`); }
+    else { delete process.env.APP_BASE_URL; say(`main's version did not start, every screen finding counts for the card: ${(up.stderr || '').trim().split('\n')[0]}`); }
+  }
   try {
     return await verifyLines(root, { cardDir, single, planned, logsDir });
   } finally {
-    if (appLine) for (const k of ['APP_URL', 'PORT', 'DATA_DIR']) if (saved[k] === undefined) delete process.env[k]; else process.env[k] = saved[k];
+    if (appLine) for (const k of ['APP_URL', 'PORT', 'DATA_DIR', 'APP_BASE_URL']) if (saved[k] === undefined) delete process.env[k]; else process.env[k] = saved[k];
+    if (baseLine) spawnSync('node', [join(import.meta.dirname, 'app.mjs'), 'down', '--base'], { cwd: root, stdio: 'ignore', timeout: 120000 });
     if (startedApp) spawnSync('node', [join(import.meta.dirname, 'app.mjs'), 'down'], { cwd: root, stdio: 'ignore', timeout: 60000 });
   }
 };
+const SCREEN_LINE = /\bapp\.mjs\s+probe\b|\boverflow\.mjs\b/;
 
 // The seed's own limit in app.mjs (startApp); app.mjs runs its CLI on import, so the number is repeated here.
 const APP_SEED_S = 120;
@@ -1287,7 +1394,7 @@ const verifyLines = async (root, { cardDir, single, planned, logsDir }) => {
 
   const actions = results.filter(failed)
     .map((r) => (r.notRun && r.reason
-      ? `${r.name} · could not run: ${r.reason} · close: tag the card's tests with its spec tags, or name the tests in the line instead of \`{affected}\``
+      ? `${r.name} · could not run: ${r.reason} · close: ${/\{changed/.test(r.reason) ? 'drop the line when the card has no file it checks, or name the files in it' : 'tag the card\'s tests with its spec tags, or name the tests in the line instead of `{affected}`'}`
       : r.notRun
       ? `${r.name} · could not run: not started because ${r.blockedBy.join(', ')} failed first, and the lines that drive a browser start only after the fast ones pass · close: fix those, then \`node ${TOOLS}/verify.mjs\` again`
       : r.timedOut
@@ -1325,9 +1432,12 @@ const verifyLines = async (root, { cardDir, single, planned, logsDir }) => {
   if (flaky.length) writeFileSync(join(logsDir, 'flaky.md'), `# Passed with flaky\n\n${flaky.map((f) => `- ${f.line}: ${f.test} — failed ${f.failed}/${FLAKY_RUNS} in the re-run`).join('\n')}\n`);
   else rmSync(join(logsDir, 'flaky.md'), { force: true });
   const replaced = results.flatMap((r) => (r.replaced ?? []).map((f) => ({ line: r.name, ...f })));
-  if (replaced.length) writeFileSync(join(logsDir, 'replaced.md'), `# Passed with replaced\n\n${replaced.map((f) => `- ${f.line}: ${f.file} "${f.test}" — replaced by ${f.by} "${f.byName}" · ${f.why}`).join('\n')}\n`);
+  if (replaced.length) writeFileSync(join(logsDir, 'replaced.md'), `# Passed with replaced\n\n${replaced.map((f) => `- ${f.line}: ${f.file} "${f.test}" — ${f.by ? `replaced by ${f.by} "${f.byName}"` : 'retired (by: none)'} · ${f.why}`).join('\n')}\n`);
   else rmSync(join(logsDir, 'replaced.md'), { force: true });
-  return { results, actions, pending, failed, skipped, covered: covered.map((v) => ({ name: v.inner.name, by: v.outer })), flaky, replaced, checks, single };
+  const redAtBase = results.flatMap((r) => (r.redAtBase ?? []).map((f) => ({ line: r.name, ...f })));
+  if (redAtBase.length) writeFileSync(join(logsDir, 'red-at-base.md'), `# Passed with red at base\n\n${redAtBase.map((f) => `- ${f.line}: ${f.test}`).join('\n')}\n`);
+  else rmSync(join(logsDir, 'red-at-base.md'), { force: true });
+  return { results, actions, pending, failed, skipped, covered: covered.map((v) => ({ name: v.inner.name, by: v.outer })), flaky, replaced, redAtBase, checks, single };
 };
 
 // A card is a screen card when its risk.json has the `visual` lens or the files it touched are a screen.
@@ -1339,7 +1449,13 @@ const isScreenCard = (root, cardDir) => {
 };
 
 // The gate's own checks: every spec has a tagged test, and a screen passes axe, contrast and focus.
-export const gateChecks = (root, cardDir) => oneRound(() => [specsCheck(root, cardDir), ...cardChecks(cardDir, root), ...(isScreenCard(root, cardDir) && visualInstruments(root, readCard(cardDir)).probe ? screenChecks(probeRecords(root)) : [])]);
+export const gateChecks = (root, cardDir) => oneRound(() => [specsCheck(root, cardDir), ...cardChecks(cardDir, root), ...(isScreenCard(root, cardDir) && visualInstruments(root, readCard(cardDir)).probe ? screenChecks(probeRecords(root), screenScope(root, cardDir)) : [])]);
+// What a screen check leaves to main beyond what main's version showed at the same step: the font families its tree already
+// named and the axe rules the Log declares broken there.
+const screenScope = (root, cardDir) => {
+  const log = (readCard(cardDir).split(/^## Log\b.*$/m)[1] ?? '').split('\n');
+  return { inMain: inMainOf(root, cardDir), axeAtBase: new Set(log.map((l) => l.match(DECLARED_AXE)?.[1]).filter(Boolean)) };
+};
 
 // One line per check: `<name>: passed`, `<name>: failed: <why>` or `<name>: could not run: <why>`.
 const lineOf = (name, state, detail) => `${name}: ${state === 'passed' || state === PENDING_DESIGNER ? state : `${state}: ${detail}`}`;
@@ -1374,9 +1490,10 @@ Exit: 0 nothing to fix, 1 actions, 2 no commands in the gate, 3 not run from the
   if (r.single) {
     // card.md: one line per check, and the fixed final line (endsWithLine) at the end.
     for (const x of r.results.sort((a, b) => a.name.localeCompare(b.name))) {
-      const state = x.exit === 0 ? (x.replaced?.length ? 'passed with replaced' : x.flaky?.length ? 'passed with flaky' : 'passed') : x.notRun ? 'could not run' : x.timedOut ? 'could not run' : r.failed(x) ? 'failed' : 'passed';
+      const state = x.exit === 0 ? (x.redAtBase?.length ? 'passed with red at base' : x.replaced?.length ? 'passed with replaced' : x.flaky?.length ? 'passed with flaky' : 'passed') : x.notRun ? 'could not run' : x.timedOut ? 'could not run' : r.failed(x) ? 'failed' : 'passed';
       const why = x.notRun && x.reason ? x.reason : x.notRun ? `not started, ${x.blockedBy.join(', ')} failed first` : x.timedOut ? `timeout after ${x.minutes} min` : x.tail;
-      console.log(state === 'passed with replaced' ? `${x.name}: passed with replaced ${x.replaced.length}: ${x.replaced.map((f) => f.test).join(' | ')}`
+      console.log(state === 'passed with red at base' ? `${x.name}: passed with red at base ${x.redAtBase.length}: ${x.redAtBase.map((f) => f.test).join(' | ')}`
+        : state === 'passed with replaced' ? `${x.name}: passed with replaced ${x.replaced.length}: ${x.replaced.map((f) => f.test).join(' | ')}`
         : state === 'passed with flaky' ? `${x.name}: passed with flaky` : state === 'passed' && x.cached ? `${x.name}: passed (cached ${x.cached.slice(0, 16)})` : lineOf(x.name, state, why));
     }
     for (const s of r.skipped) console.log(`${s.name}: skipped: ${s.reason}`);
@@ -1387,12 +1504,13 @@ Exit: 0 nothing to fix, 1 actions, 2 no commands in the gate, 3 not run from the
     if (!rest.length) console.log('required: passed');
     process.exit(r.actions.length === 0 && r.pending.length === 0 ? 0 : 1);
   }
-  for (const x of r.results.sort((a, b) => a.name.localeCompare(b.name))) console.log(`${x.exit === 0 ? (x.replaced?.length ? 'passed with replaced' : x.flaky?.length ? 'passed with flaky' : x.cached ? `passed (cached ${x.cached.slice(0, 16)})` : 'passed') : x.notRun ? 'COULD NOT RUN: not started' : x.timedOut ? 'COULD NOT RUN: timeout' : r.failed(x) ? 'FAILED' : 'nothing to mutate'}  ${x.name}`);
+  for (const x of r.results.sort((a, b) => a.name.localeCompare(b.name))) console.log(`${x.exit === 0 ? (x.redAtBase?.length ? 'passed with red at base' : x.replaced?.length ? 'passed with replaced' : x.flaky?.length ? 'passed with flaky' : x.cached ? `passed (cached ${x.cached.slice(0, 16)})` : 'passed') : x.notRun ? 'COULD NOT RUN: not started' : x.timedOut ? 'COULD NOT RUN: timeout' : r.failed(x) ? 'FAILED' : 'nothing to mutate'}  ${x.name}`);
   for (const x of r.results.filter((y) => y.rerunAlone)) console.log(`re-run alone  ${x.name}  (first exit ${x.rerunAlone.first} with other lines running, alone exit ${x.rerunAlone.alone}: the result is the one alone)`);
   for (const s of r.skipped) console.log(`skipped: ${s.reason}  ${s.name}`);
   for (const c of r.covered) console.log(`covered by ${c.by}  ${c.name}`);
   for (const f of r.flaky) console.log(`flaky ${f.failed}/${FLAKY_RUNS}  ${f.line}: ${f.test}  (list it in closing.md under ## Passed as «passed with flaky»; \`.validation/verify/flaky.md\`)`);
-  for (const f of r.replaced) console.log(`replaced  ${f.line}: ${f.file} "${f.test}" by ${f.by} "${f.byName}"  (a person reviews it: closing.md ## Needs a person; \`.validation/verify/replaced.md\`)`);
+  for (const f of r.redAtBase) console.log(`red at base  ${f.line}: ${f.test}  (main's, not the card's: closing.md ## Needs a person; \`.validation/verify/red-at-base.md\`)`);
+  for (const f of r.replaced) console.log(`replaced  ${f.line}: ${f.file} "${f.test}" ${f.by ? `by ${f.by} "${f.byName}"` : 'retired (by: none)'}  (a person reviews it: closing.md ## Needs a person; \`.validation/verify/replaced.md\`)`);
   if (r.actions.length === 0 && r.pending.length === 0) {
     console.log('Nothing to fix: everything mechanical passed on the code as it is now.');
     process.exit(0);

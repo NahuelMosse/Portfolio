@@ -506,6 +506,20 @@ const parseArgs = (argv) => {
   return { url, out: resolve(out), steps, viewports, gpu, cta, brandFile, grain: grainFlag ?? false, intentArg, kindArg, scrub };
 };
 
+// Chromium answers «Unable to capture screenshot» when the compositor yields no frame, seen on documents tens of pages tall:
+// the capture is tried again, then read straight from the surface. The caller records one that still fails and goes on.
+export const UNCAPTURED = /Unable to capture screenshot/i;
+export const viewportShot = async (page, ctx, file, timeout) => {
+  try { return await page.screenshot({ path: file, timeout }); } catch (e) { if (!UNCAPTURED.test(e.message)) throw e; }
+  await page.waitForTimeout(500);
+  try { return await page.screenshot({ path: file, timeout, animations: 'disabled' }); } catch (e) { if (!UNCAPTURED.test(e.message)) throw e; }
+  const cdp = await ctx.newCDPSession(page);
+  try {
+    const { data } = await cdp.send('Page.captureScreenshot', { format: 'png', fromSurface: true });
+    writeFileSync(file, Buffer.from(data, 'base64'));
+  } finally { await cdp.detach().catch(() => {}); }
+};
+
 export const round = async (argv) => {
   if (argv.includes('--sheet')) return sheet(argv);
   if (argv.includes('--ref')) return capture(argv);
@@ -555,7 +569,15 @@ export const round = async (argv) => {
         page.on('pageerror', (e) => result.console.push({ width: key, type: 'error', text: String(e.message).slice(0, 300) }));
         // With --gpu a timed-out capture is tried once more with a longer timeout; a second timeout moves the round to the non-GPU path.
         const patient = async (fn) => { try { return await fn(30000); } catch (e) { if (!(a.gpu && result.path === 'gpu' && /timeout/i.test(`${e.name} ${e.message}`))) throw e; return fn(90000); } };
-        const shot = async (name) => { const file = join(dir, `${name}.png`); await patient((timeout) => page.screenshot({ path: file, timeout })); result.captures.push(file); };
+        const shot = async (name) => {
+          const file = join(dir, `${name}.png`);
+          try { await patient((timeout) => viewportShot(page, ctx, file, timeout)); } catch (e) {
+            if (!UNCAPTURED.test(e.message)) throw e;
+            result.console.push({ width: key, type: 'step-error', text: `capture ${name}: ${String(e.message).split('\n')[0]}` });
+            return;
+          }
+          result.captures.push(file);
+        };
         const t0 = Date.now();
         let response;
         try { response = await page.goto(a.url, { waitUntil: 'commit', timeout: 20000 }); } catch (e) { await ctx.close(); return { code: 2, message: `could not run: ${a.url} does not answer (${String(e.message).split('\n')[0]})` }; }
@@ -604,7 +626,7 @@ export const round = async (argv) => {
           await page.waitForTimeout(f ? 350 : 500);
           const fm = await page.evaluate(measureFrame).catch(() => null);
           if (fm) frames.push({ frame: f + 1, y, ...fm, flags: frameFlags(fm, width, f, look ? 'product' : intent), reported: frameReports(fm, width, f, look ? 'product' : intent) });
-          painted.push(await paintedTexts(page).catch(() => []));
+          painted.push(await paintedTexts(page).catch((e) => { result.console.push({ width: key, type: 'step-error', text: `painted text at y=${y}: ${String(e.message).split('\n')[0]}` }); return []; }));
           canvas.push(...await sampleCanvases(page, `after scroll to y=${y}`).catch(() => []));
         }
         let scrub = null;

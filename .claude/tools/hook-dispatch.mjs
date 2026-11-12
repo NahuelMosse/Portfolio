@@ -41,7 +41,7 @@ export const ROUTES = {
   close: [['Skill|Edit|Write|Bash|PowerShell', ['require-at-close']]],
   Stop: [[null, ['no-pending-close']]],
   SubagentStop: [[null, ['no-pending-close']]],
-  SessionStart: [[null, ['session-record']]],
+  SessionStart: [[null, ['session-record', 'worktree-sweep']]],
   // What the person types: a correction or a note for the kit goes to its notes (tools/kit-notes.mjs). Never blocks.
   UserPromptSubmit: [[null, ['kit-feedback']]],
 };

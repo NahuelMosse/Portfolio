@@ -46,4 +46,10 @@ the card does not answer is an `ASM` with its test.
 - `const` widgets; `ListView.builder`/`GridView.builder` for lists; no costly work in `build()`; `setState` on the smallest
   subtree; no `Opacity`, `saveLayer` or clips inside animations. The frame budget is in `.claude/profiles/flutter.md`.
 
+The gate's `slow-code` check (`tools/hygiene.mjs`) reads the lines a card added and fails a query or a request per iteration
+(a `for`, `.map`, `.forEach`), an `await` per iteration that is not a `Promise.all`, `forEach` with an async callback, a `*Sync`
+call inside a server function, a `fetch` in a mount effect, and a `findMany`, `.objects.all()` or `SELECT` with neither a
+limit nor a filter. A line kept on purpose carries `kit-keep: <why>`; a whole file, `declared · slow-code · <file> · <why>` in
+the Log.
+
 The numbers and their sources: `.claude/reference/performance.md`.

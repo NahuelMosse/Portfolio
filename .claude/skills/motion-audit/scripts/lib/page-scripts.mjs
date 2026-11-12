@@ -92,7 +92,7 @@ export const cssPath = (n) => {
 // finite CSS or WAAPI animation and an unchanged signature of position, size, opacity, transform and
 // colours for `quietMs`, but not before `minMs` and not later than `capMs`. Infinite animations
 // (spinners, tickers) are ambient: they neither count as running nor enter the signature.
-export const waitSettled = (n, { minMs, quietMs, capMs }) => new Promise((resolve) => {
+export const waitSettled = (n, { minMs, quietMs, capMs }) => new Promise(/** @param {(value?: any) => void} resolve */ (resolve) => {
   const controlled = document.getElementById(n.getAttribute?.('aria-controls') || '');
   const roots = [n, controlled].filter(Boolean);
   const isInfinite = (a) => a.effect?.getComputedTiming().iterations === Infinity;
@@ -202,7 +202,7 @@ export const scrollPass = async ({ step, stepMs, tail, maxScrollers }) => {
   document.addEventListener('transitionstart', mark, true);
   const mo = new MutationObserver((l) => {
     for (const m of l) {
-      const t = m.target;
+      const t = /** @type {HTMLElement} */ (m.target);
       if (m.attributeName === 'style' && (t.style.opacity !== '' || t.style.transform !== '' || t.style.translate !== '')) { const s = owner(t); if (s) moved.add(s); }
     }
   });

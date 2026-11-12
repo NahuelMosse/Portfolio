@@ -110,7 +110,7 @@ research could not read in the source is marked “unverified”.
 | K2 | No new problems from Sonar's quality rules in the diff, tests included | T | production | command (stack profile) | ISO 5055 · study of 302,600 agent commits |
 | K3 | Cognitive complexity of every new function under the rule's threshold | T | production | command (stack profile) | ISO 5055 maintainability |
 | K4 | Duplication in the new code under threshold, measured | T | poc | command (stack profile) | GitClear: copy-paste from 8.3% to 12.3% |
-| K5 | No dead code: new symbols with no use, unreachable branches | T | mvp | command (stack profile) | agent symbols removed within 3 days |
+| K5 | No dead code: new symbols with no use, what a replacement left without use, files nothing imports, commented-out code | T | mvp | gate check `dead-code` (`tools/hygiene.mjs`) · command (stack profile) | agent symbols removed within 3 days |
 | K6 | Names that say what the thing is in the domain | J | mvp | prose | Google review: naming |
 | K7 | Comments explain why, do not repeat the code or narrate the change | J | mvp | prose | Google review · Ousterhout |
 | K8 | Every input from outside is validated on entry, on the server | A | mvp | prose (stack profile) | ASVS · OWASP A05 |

@@ -275,7 +275,8 @@
    "step-body": "clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2rem, 1.3rem + 3.2vw, 4rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "switzer-roman",
@@ -555,7 +556,8 @@
    "step-body": "clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2.5rem, 1.2rem + 5vw, 5.5rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "archivo-compressed",
@@ -645,7 +647,8 @@
    "step-body": "clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2.5rem, 1.2rem + 5vw, 5.5rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "barlow-condensed",
@@ -1611,7 +1614,8 @@
    "step-body": "clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2rem, 1.3rem + 3.2vw, 4rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "zodiak-hairline",
@@ -1709,7 +1713,8 @@
    "step-body": "clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2rem, 1.3rem + 3.2vw, 4rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "eb-garamond-quiet",
@@ -1753,7 +1758,8 @@
    "step-body": "clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2rem, 1.3rem + 3.2vw, 4rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "literata-book",
@@ -1799,7 +1805,8 @@
    "step-body": "clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2rem, 1.3rem + 3.2vw, 4rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "stix-plain-roman",
@@ -1845,7 +1852,8 @@
    "step-body": "clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2rem, 1.3rem + 3.2vw, 4rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "young-source",
@@ -1891,7 +1899,8 @@
    "step-body": "clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2rem, 1.3rem + 3.2vw, 4rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "zilla-slab-even",
@@ -1977,7 +1986,8 @@
    "step-body": "clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2rem, 1.3rem + 3.2vw, 4rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "rokkitt-literata",
@@ -2019,7 +2029,8 @@
    "step-body": "clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem)",
    "step-lead": "clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem)",
    "step-head": "clamp(2rem, 1.3rem + 3.2vw, 4rem)"
-  }
+  },
+  "longRead": true
  },
  {
   "id": "geist-single",

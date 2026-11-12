@@ -11,16 +11,34 @@ const GESTURES = Object.keys(BANDS);
 
 export class ConfigError extends Error {}
 
-// Fingerprint of a finding: stable across runs because it uses the element's label and the
-// moment/property that identifies the finding, never DOM indices or measured numbers.
-// An `inconclusive` row carries the `check` it could not decide and the hash of that check's own finding.
+/**
+ * @typedef {object} Config a validated config file
+ * @property {Record<string, number[]>} bands accepted duration range `[min, max]` (ms) per gesture
+ * @property {{ durations: number[] }} tokens
+ * @property {Record<string, string>} severity level per finding kind
+ * @property {{ id?: string, kind?: string, element?: string, reason: string }[]} ignore
+ */
+
+/**
+ * Fingerprint of a finding: stable across runs because it uses the element's label and the
+ * moment/property that identifies the finding, never DOM indices or measured numbers.
+ * An `inconclusive` row carries the `check` it could not decide and the hash of that check's own finding.
+ * @param {{ kind: string, check?: string, element: string, key?: string }} f
+ * @returns {string} `kind:hash`
+ */
 export const fingerprint = (f) => `${f.kind}:${createHash('sha1').update(`${f.check ?? f.kind}\n${f.element}\n${f.key ?? ''}`).digest('hex').slice(0, 10)}`;
 
 const ID_PATTERN = /^([a-z-]+):[0-9a-f]{10}$/;
 const hasReason = (x) => typeof x?.reason === 'string' && x.reason.trim().length > 0;
 const rank = (level) => LEVELS.indexOf(level);
 
-// Everything that loosens the audit (bands, tokens, a lowered severity, an ignore) needs a reason.
+/**
+ * Everything that loosens the audit (bands, tokens, a lowered severity, an ignore) needs a reason.
+ * @param {any} raw the parsed config
+ * @param {string} [source] named in the error messages
+ * @returns {Config}
+ * @throws {ConfigError}
+ */
 export const validateConfig = (raw, source = CONFIG_FILE) => {
   const fail = (m) => { throw new ConfigError(`${source}: ${m}`); };
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) fail('must be a JSON object');
@@ -60,7 +78,14 @@ export const validateConfig = (raw, source = CONFIG_FILE) => {
   return { bands, tokens: { durations }, severity, ignore };
 };
 
-export const loadConfig = (path, cwd = process.cwd()) => {
+/**
+ * Reads and validates a config file; without `path`, `motion-audit.config.json` in `cwd` when it exists.
+ * @param {string} [path]
+ * @param {string} [cwd]
+ * @returns {Config}
+ * @throws {ConfigError}
+ */
+export const loadConfig =(path, cwd = process.cwd()) => {
   const file = path ? resolve(cwd, path) : join(cwd, CONFIG_FILE);
   if (!existsSync(file)) {
     if (path) throw new ConfigError(`config file not found: ${file}`);

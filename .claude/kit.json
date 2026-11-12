@@ -1,5 +1,5 @@
 {
-  "kit": "6.45.4",
+  "kit": "6.49.0",
   "stack": "react-shadcn",
   "e2e": "e2e",
   "rulePaths": {
@@ -34,7 +34,7 @@
   },
   "source": {
     "path": "D:\\projects\\SDD-implementation",
-    "commit": "ad9740ca8bd7664bfdc52031e385c5d75233c83c"
+    "commit": "a19558d9ab187c9c0490f96c2e702547a08db791"
   },
   "modules": {
     "ui": {

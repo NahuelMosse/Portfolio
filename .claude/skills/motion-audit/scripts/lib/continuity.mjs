@@ -16,13 +16,18 @@ const ancestorsOf = (el, byId) => {
 // keyframe, or a keyframe animation cancelled before it finished.
 const isRestart = (e) => e.type === 'cancel' || ((e.type === 'animation' || e.type === 'waapi') && e.explicitFrom);
 
-// Position steps in the window after `markT`. `durationMs` is the measured duration of the motion
-// (estimated from the series when absent). `small` is for micro-interactions (hover, a second click
-// on a trigger): steps are judged against the property's epsilon and 20 % of its range instead of
-// the absolute 24 px / 0.4 opacity of a toggle's panel.
-// `longFrames`: [[startMs, durationMs]] of the long frames of the recording. A step in a frame that
-// overlaps one is the long frame (the page's animation clock kept running while its thread was
-// blocked), reported as `long-frame`; only an Animation object that restarted is still a jump there.
+/**
+ * Position steps in the window after `markT`. `durationMs` is the measured duration of the motion
+ * (estimated from the series when absent). `small` is for micro-interactions (hover, a second click
+ * on a trigger): steps are judged against the property's epsilon and 20 % of its range instead of
+ * the absolute 24 px / 0.4 opacity of a toggle's panel.
+ * `longFrames`: [[startMs, durationMs]] of the long frames of the recording. A step in a frame that
+ * overlaps one is the long frame (the page's animation clock kept running while its thread was
+ * blocked), reported as `long-frame`; only an Animation object that restarted is still a jump there.
+ * @param {any} rec a recording from the page tracer
+ * @param {number} markT time of the interruption (ms)
+ * @param {{ durationMs?: number, small?: boolean, longFrames?: number[][] }} [options]
+ */
 export const interruptionJumps = (rec, markT, { durationMs, small = false, longFrames = [] } = {}) => {
   const found = [];
   const anims = rec.anims ?? [];

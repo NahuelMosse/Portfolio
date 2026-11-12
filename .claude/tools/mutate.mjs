@@ -231,7 +231,9 @@ lines.forEach((line, n) => {
 // Without mutants there is no measurement: a 100 % over zero breaks would say the suite is perfect
 // without having tested it.
 if (mutants.length === 0) {
-  console.error(`${file}: no operator applies to this file — could not measure.`);
+  console.error(changed
+    ? `${file}: the lines changed since ${fromRef} carry no operator (names, comments or text only) — nothing to mutate. Run through once.mjs, this exit 3 counts as the file's mutation: nothing to declare.`
+    : `${file}: no operator applies to this file — could not measure.`);
   process.exit(3);
 }
 
@@ -359,7 +361,7 @@ if (!alive) process.exit();
 // does not pass.
 const LINE = /^\s*-?\s*(\S+):(\d+)\s*·\s*[«“](.*?)[»”]\s*→\s*[«“](.*?)[»”]\s*·\s*(?:[«“](.*?)@@(.*?)[»”]\s*·\s*)?(.+)$/;
 const declared = equivalentsFile && existsSync(equivalentsFile)
-  ? readFileSync(equivalentsFile, 'utf8').split('\n').map((l) => l.match(LINE)).filter(Boolean)
+  ? readFileSync(equivalentsFile, 'utf8').split(/\r?\n/).map((l) => l.match(LINE)).filter(Boolean)
     .map(([, path, n, from, to, before, after, reason]) => ({
       path: path.replaceAll('\\', '/'), n: +n, from, to, reason: reason.trim(),
       context: before === undefined ? null : { before: squeeze(before), after: squeeze(after) },

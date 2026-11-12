@@ -36,7 +36,7 @@ path of `specs/<card>/card.md`, your task IDs with their `S#`, and the gate comm
    returned>`, with `node .claude/tools/log.mjs specs/<card> "T<n> · <evidence>"` (it numbers and dates the line, without reading
    card.md). `## Log` only grows; no other heading, and never `L1`, is touched.
 
-**A committed test that is wrong is replaced, not edited:** write the fixed one in a new file with the same `@<ID>-S<n>` tag and append to the Log `- L<n> · <date> · replaces: <file> "<test>" · <why wrong> · by: <file> "<test>"`; the app is never bent to a bad test. The new test may keep the old title.
+**A committed test that is wrong is replaced, not edited:** write the fixed one in a new file with the same `@<ID>-S<n>` tag and append to the Log `- L<n> · <date> · replaces: <file> "<test>" · <why wrong> · by: <file> "<test>"`; the app is never bent to a bad test. The new test may keep the old title. A behavior the card removes: `by: none` for each tagged test of the file, then `git rm` it.
 
 **Write each file whole, in one go.** Think the file through, then `Write` it: `Edit` is for one or two lines of a large file. Never
 `sed -i` or an inline `node -e` to change a file (the hook refuses them); read with `Read` or `Grep`, never `cat`, `ls`,
@@ -55,7 +55,9 @@ only calls them. The gate's `layers` line fails otherwise.
 
 **Structure and libraries.** Files go where the plan puts them: one folder per feature (`src/modules/<feature>/`, `lib/features/<feature>/` in Flutter), and inside it each file in the folder of its layer: `(presentation)` in `presentation/`, `(rule)` in `domain/` (`application/` for a use case that orchestrates), `(data)` in `data/`; `domain/` imports neither of the others. Never a top-level folder by layer or by kind (`domain/`, `screens/`, `services/`); another module is imported only through its public index. **Names in English** (identifiers, file names, comments, test names) unless CLAUDE.md declares `Code language:`; the UI text speaks the team's language. **The simplest structure that works** (`rules/architecture.md`): no interface, factory, strategy, adapter, bus or container the card's `why-layer:` does not justify; no method that only forwards to another with the same arguments. The `overdesign` check of the gate fails them. Persistence, dependency injection, validation, auth, dates, the HTTP client and queues use the library the plan names for each (the repo's own first, else `.claude/stacks/<stack>.md`, «Default libraries by category»): no hand-written SQL mapper, registry or validator. If the plan names none, or you would hand-roll one, stop and report it: it needs an `ASM`.
 
-**Fast by construction:** `rules/speed.md`, applied from the first line.
+**Fast by construction:** `rules/speed.md`, applied from the first line. The `slow-code` check of the gate fails, on the lines you added, a query or a request per iteration, an `await` per iteration of independent steps, `forEach` with an async callback, a `*Sync` call on the server, a `fetch` in a mount effect and a list without a limit.
+
+**Replace, do not pile up.** When a change replaces a function, a component, a file or a branch, delete the old one in the same commit, with the tests and the imports that only it had; never leave it commented out or "just in case": git keeps it. The `dead-code` check of the gate fails what the card added that nothing uses (or only its tests), what lost its last use in the card, a file nothing imports and commented-out code. Something kept on purpose carries `kit-keep: <why>` on its line.
 
 **Test traps:** `.claude/stacks/node-ts.md`, «Test traps».
 

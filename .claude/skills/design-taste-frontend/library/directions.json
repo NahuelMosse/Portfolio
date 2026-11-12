@@ -77,7 +77,8 @@
    "finance",
    "health",
    "event",
-   "other"
+   "other",
+   "report"
   ],
   "tones": [
    "bold",
@@ -186,7 +187,8 @@
    "physical-product",
    "health",
    "finance",
-   "ai-product"
+   "ai-product",
+   "report"
   ],
   "tones": [
    "bold",
@@ -449,7 +451,8 @@
    "personal-portfolio",
    "consumer-app",
    "finance",
-   "other"
+   "other",
+   "report"
   ],
   "tones": [
    "quiet",
@@ -719,7 +722,8 @@
    "ai-product",
    "health",
    "agency",
-   "other"
+   "other",
+   "report"
   ],
   "tones": [
    "editorial",
@@ -1033,7 +1037,8 @@
    "education",
    "personal-portfolio",
    "event",
-   "other"
+   "other",
+   "report"
   ],
   "tones": [
    "bold",

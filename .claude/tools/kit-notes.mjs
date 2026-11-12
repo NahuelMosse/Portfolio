@@ -5,6 +5,10 @@
 //   list [--repo <name>]                the notes as they were recorded
 //   report [--out <file>] [--min <n>]   the notes grouped by key across every repo, the candidates first
 //   resolve <key> --by "<release or commit>"   a change addressed this key; a later note with it reads «returned»
+//   issue "<title>" --body "<context, how to reproduce>" --label bug|enhancement [--card specs/<card>]
+//                                       a friction or finding about the kit, as an issue of the kit's repo: an open
+//                                       issue with the same title gets a comment instead; the Log of the card in progress
+//                                       gets `kit: #<n> <title>`. Without gh or access, the line goes in without a number.
 //
 // What feeds it, with no one asking: a hook that blocked or failed (hook-dispatch), a check the close left failed or not
 // run, a `declared ·` waiver, a `rule … is wrong` and a `kit:` line of the Log (close.mjs), an inspector rule waived
@@ -21,6 +25,7 @@ import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, write
 import { homedir } from 'node:os';
 import { basename, dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { spawnSync } from 'node:child_process';
 
 export const notesDir = (env = process.env) => env.KIT_NOTES_DIR || join(homedir(), '.claude', 'kit-notes');
 const enabled = (env = process.env) => env.KIT_NOTES !== 'off' && (!env.NODE_TEST_CONTEXT || Boolean(env.KIT_NOTES_DIR));
@@ -160,6 +165,37 @@ export const reportOf = (groups) => {
     `## Resolved and quiet (${resolved.length})`, '', ...(resolved.length ? resolved.map((g) => `- ${g.key} · by ${g.resolution.by}`) : ['none']), ''].join('\n');
 };
 
+// The repo where the kit's issues live; `KIT_ISSUES_REPO` points elsewhere.
+export const ISSUES_REPO = 'NahuelMosse/dev-kit';
+const words = (t) => new Set(String(t).toLowerCase().match(/[\p{L}\p{N}]{3,}/gu) ?? []);
+// The same issue: most of the words of the shorter title are in the other one.
+export const sameIssue = (a, b) => {
+  const [x, y] = [words(a), words(b)].sort((p, q) => p.size - q.size);
+  return x.size > 0 && [...x].filter((w) => y.has(w)).length / x.size >= 0.7;
+};
+const ghRun = (args, cwd) => {
+  const r = spawnSync('gh', args, { cwd, encoding: 'utf8' });
+  return { ok: r.status === 0, out: (r.stdout ?? '').trim(), err: (r.stderr || r.error?.message || '').trim() };
+};
+// Opens the issue, or comments on an open one with the same title. `gh` is injectable for the tests.
+// Returns `{ number, url, comment }` or `{ error }`.
+export const fileIssue = ({ title, body, label, repo = process.env.KIT_ISSUES_REPO || ISSUES_REPO, context = '' }, gh = ghRun, cwd = process.cwd()) => {
+  if (!title?.trim() || !body?.trim()) return { error: 'an issue needs a title and a body (context and how to reproduce)' };
+  if (!['bug', 'enhancement'].includes(label)) return { error: '--label is bug or enhancement' };
+  let text = `${body.trim()}${context ? `\n\n${context}` : ''}`;
+  for (const re of SECRETS) text = text.replace(re, '[redacted]');
+  const found = gh(['issue', 'list', '-R', repo, '--state', 'open', '--search', `${title} in:title`, '--json', 'number,title,url', '--limit', '20'], cwd);
+  if (!found.ok) return { error: `gh issue list: ${found.err || 'failed'}` };
+  const twin = (JSON.parse(found.out || '[]')).find((i) => sameIssue(i.title, title));
+  if (twin) {
+    const c = gh(['issue', 'comment', String(twin.number), '-R', repo, '--body', text], cwd);
+    return c.ok ? { number: twin.number, url: twin.url, comment: true } : { error: `gh issue comment: ${c.err || 'failed'}` };
+  }
+  const made = gh(['issue', 'create', '-R', repo, '--title', title.trim(), '--body', text, '--label', label], cwd);
+  const number = Number(made.out.match(/\/issues\/(\d+)/)?.[1]);
+  return made.ok && number ? { number, url: made.out.split('\n').pop(), comment: false } : { error: `gh issue create: ${made.err || made.out || 'failed'}` };
+};
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = process.argv.slice(2);
   const option = (name) => { const at = args.indexOf(name); return at >= 0 ? args.splice(at, 2)[1] : undefined; };
@@ -172,6 +208,22 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       const ctx = await contextOf(process.cwd());
       const note = record({ kind: 'agent', key: key ?? 'agent', text, ...ctx, session: process.env.CLAUDE_SESSION_ID ?? null });
       console.log(note ? `Noted for the kit (${note.id}) in ${notesDir()}.` : 'Not recorded: KIT_NOTES=off.');
+    } else if (command === 'issue') {
+      const [body, label, cardArg] = [option('--body'), option('--label'), option('--card')];
+      const title = args.slice(1).join(' ').trim();
+      const card = await import('./card.mjs');
+      const root = card.kitRootOf(process.cwd()) ?? process.cwd();
+      const cardDir = cardArg ? join(root, cardArg) : card.currentCard(root, { named: true });
+      const version = (() => { try { return JSON.parse(readFileSync(join(root, '.claude', 'modules.json'), 'utf8')).kit; } catch { return '?'; } })();
+      const context = `Repo: ${basename(root)}${cardDir ? ` · card: ${basename(cardDir)}` : ''} · kit ${version}`;
+      const r = fileIssue({ title, body, label, context });
+      record({ kind: 'agent', key: 'agent', text: title, repo: basename(root), card: cardDir ? basename(cardDir) : null, session: process.env.CLAUDE_SESSION_ID ?? null });
+      if (cardDir) {
+        const { appendLog } = await import('./log.mjs');
+        appendLog(cardDir, [`kit: ${r.number ? `#${r.number} ` : ''}${title.replace(/\s+/g, ' ')}${r.error ? ' (no issue: could not run gh)' : ''}`]);
+      }
+      if (r.error) { console.error(`could not run: ${r.error}. The note stays in the kit's notes${cardDir ? ' and the Log' : ''}.`); process.exit(2); }
+      console.log(`${r.comment ? 'Commented on' : 'Opened'} #${r.number}: ${r.url}${cardDir ? ` · Log: kit: #${r.number}` : ''}`);
     } else if (command === 'list') {
       const repo = option('--repo');
       for (const n of readNotes().filter((n) => !repo || n.repo === slug(repo))) console.log(`${n.at.slice(0, 16)} · ${n.repo}${n.card ? `/${n.card}` : ''} · ${n.kind} · ${n.key} · ${n.text}`);
@@ -185,7 +237,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       const r = resolve(args[1], by);
       console.log(`${r.key} resolved by ${r.by}: the report marks it RETURNED if it shows up again.`);
     } else {
-      console.error('kit-notes.mjs add "<text>" [--key k] | list [--repo r] | report [--out f] [--min n] | resolve <key> --by "<release>"');
+      console.error('kit-notes.mjs add "<text>" [--key k] | issue "<title>" --body "<context, repro>" --label bug|enhancement [--card specs/<card>] | list [--repo r] | report [--out f] [--min n] | resolve <key> --by "<release>"');
       process.exit(2);
     }
   } catch (e) { console.error(`kit-notes.mjs: ${e.message}`); process.exit(1); }

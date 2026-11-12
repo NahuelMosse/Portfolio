@@ -12,6 +12,7 @@ export const COLS = ['left', 'top', 'width', 'height', 'opacity', 'tx', 'ty', 's
 export const PROP_OF = { left: 'left', top: 'top', width: 'width', height: 'height', opacity: 'opacity', tx: 'translateX', ty: 'translateY', sx: 'scaleX', sy: 'scaleY', rot: 'rotate', ow: 'layoutWidth', oh: 'layoutHeight' };
 export const EPS = { left: 1, top: 1, width: 1, height: 1, translateX: 1, translateY: 1, scaleX: 0.01, scaleY: 0.01, rotate: 1, opacity: 0.02, layoutWidth: 1, layoutHeight: 1 };
 
+/** @type {[string, (u: number) => number][]} */
 const SHAPES = [
   ['linear', (u) => u],
   ['ease-out', (u) => 1 - (1 - u) ** 2], ['ease-out', (u) => 1 - (1 - u) ** 3], ['ease-out', (u) => 1 - (1 - u) ** 5],
@@ -160,6 +161,15 @@ const cadenceOf = (t) => {
   return { median: round(median(dts), 0), max: round(Math.max(0, ...dts), 0) };
 };
 
+/**
+ * Duration, curve shape, overshoot and jumps of one property sampled over time; null when it did not move.
+ * @param {number[]} t sample times (ms)
+ * @param {number[]} v sampled values
+ * @param {number} eps smallest change that counts as movement
+ * @param {number[]} [cuts] indices where the series joins two nodes
+ * @param {number[][]} [longFrames] `[startMs, durationMs]` of the recording's long frames
+ * @param {number[]} [reads] times the values were read at, when they differ from `t`
+ */
 export const analyzeSeries = (t, v, eps, cuts = [], longFrames = [], reads = t) => {
   const n = v.length;
   if (n < 4) return null;
@@ -261,10 +271,19 @@ export const joinRemounts = (elems) => {
   });
 };
 
-// `longFrames`: [[startMs, durationMs]] of the recording's long frames: jumps they explain are not reported.
+/**
+ * The moves of every element a tracer recording followed.
+ * `longFrames`: [[startMs, durationMs]] of the recording's long frames: jumps they explain are not reported.
+ * @param {{ elems?: any[] } | null | undefined} rec a recording from the page tracer
+ * @param {{ longFrames?: number[][] }} [options]
+ */
 export const analyzeRecording = (rec, { longFrames = [] } = {}) => joinRemounts(rec?.elems ?? []).map((e) => analyzeElement(e, longFrames)).filter(Boolean);
 
-// 'ease-in' when the curve starts slower than it ends; 'linear'; otherwise 'ok'.
+/**
+ * 'ease-in' when the curve starts slower than it ends; 'linear'; otherwise 'ok'.
+ * @param {string} e a CSS easing function
+ * @returns {'linear' | 'ease-in' | 'ok'}
+ */
 export const easingKind = (e) => {
   if (e === 'linear' || /^linear\(\s*0(?:\s+0%)?\s*,\s*1(?:\s+100%)?\s*\)$/.test(e)) return 'linear';
   if (e === 'ease-in') return 'ease-in';
