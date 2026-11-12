@@ -43,6 +43,7 @@ no judge: risk large · low; the gate is the whole review
 - L50 · 2026-11-12 · Needs a person: the suite fails on e2e/mobile-viewport.spec.ts "walking down a phone… the scroll never goes back" in both engines (it passed on main; T5, commit f655c2c, most likely caused it, not isolated: time cap); revert f655c2c or fix before merging. cebador-playback phone clock and project-turn-measured 1440 fail only under 3 workers (L48)
 - L51 · 2026-11-12 · the whole PF-1 suite (388 tests) is out of the gate by the requester's decision (ASM-04, L36-L37); six PF-3 to PF-6 tests failing on main are retired with their reason (L39-L44); the WebKit media check at 390 is retired because Playwright's WebKit on Windows decodes no WebM, real Safari not measured (L47)
 - L52 · 2026-11-12 · git history keeps the old absolute paths in earlier commits of the seven sessions.md files; removing them needs a history rewrite and a force push (L46)
+- L53 · 2026-11-12 · after 2bc341c (the cover foot keeps its bottom padding, cover 828 px at 390) the gate still fails only on e2e/mobile-viewport.spec.ts "walking down a phone… the scroll never goes back" (chromium): 227 px against 211; it passes alone (4 of 4) and with 3 workers against its own server. Cause measured: the page height follows the viewport height (svh scenes), so when the phone bar shows at step 30 the scroll is clamped to the new end; a cover 24 px shorter than on main adds 24 px to that step back. Under load ScrollTrigger pin spacers can also lag and clamp mid-page (1249 px). Not fixed: a page height that does not collapse with the bar, or a decision on the limit of that frozen PF-3 test. cebador-playback and project-turn-measured did not fail again (load-sensitive, passed under 3 workers)
 
 ## Kit notes
 - .claude/tools/required.mjs changed, and the kit tests .claude/tests/*.test.mjs do not exist in this repo, so that check could not run; next build with Turbopack refuses a node_modules junction (npm ci hangs here), so the gate builds with --webpack
@@ -55,8 +56,8 @@ no judge: risk large · low; the gate is the whole review
 - tests renamed by the refactor (e2e/smoke.spec.ts names the WebKit fixture's callback `provide` instead of `use`, which eslint's react-hooks/rules-of-hooks reads as a hook call; no assertion changes): 8 replaced keeping their tags — e2e/retired-tests.spec.ts, e2e/pieces.spec.ts, e2e/project-groups.spec.ts, e2e/project-presentation.spec.ts, e2e/project-scroll-groups.spec.ts, e2e/tools-plain.spec.ts, e2e/retired-list.spec.ts
 - grade: mvp — full design control for the portfolio revamp: design line, component set and screen audit
 
-Cost: USD 11.22 (builder 5.24, card-runner 4.02, main 1.95) · the messages of this card
-close.mjs seal: PF-8 sha256:cbd90f6f21446bd4fff4d7a739b1d2c90d7866fec6493ac84ff140b24aedbeaa
+Cost: USD 13.75 (builder 6.39, card-runner 5.28, main 2.08) · the messages of this card
+close.mjs seal: PF-8 sha256:91dce112e75cf496169653fa74016452742ad5c129e5ef0c978a00a35354d3ae
 <!-- close.mjs:end -->
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
