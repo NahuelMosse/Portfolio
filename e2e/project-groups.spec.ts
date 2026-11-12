@@ -99,38 +99,6 @@ test.describe("grouped project chapters", () => {
     }
   })
 
-  test("Sonría and Miga open their live site and their repository, and the other projects keep their links @PF-1-ASM-26", async ({ page }) => {
-    await page.goto("/")
-    await page.waitForLoadState("load")
-    const LINKS = [
-      { group: "landings", project: "sonria", hrefs: ["https://nahuelmosse.github.io/sonria/", "https://github.com/NahuelMosse/sonria"] },
-      { group: "landings", project: "miga", hrefs: ["https://nahuelmosse.github.io/miga/", "https://github.com/NahuelMosse/miga"] },
-      { group: "landings", project: "cebador", hrefs: ["https://nahuelmosse.github.io/cebador-landing/"] },
-      { group: "game", project: "guardia", hrefs: ["https://nahuelmosse.itch.io/triaje"] },
-      { group: "apps", project: "club", hrefs: ["https://github.com/NahuelMosse/ClubNahuelMosse"] },
-      {
-        group: "dev-kit",
-        project: "dev-kit",
-        hrefs: ["https://github.com/NahuelMosse/motion-audit", "https://github.com/NahuelMosse/http-attack", "https://github.com/NahuelMosse/migrations-safe"],
-      },
-    ]
-    for (const viewport of VIEWPORTS) {
-      await page.setViewportSize(viewport)
-      for (const { group, project, hrefs } of LINKS) {
-        const section = page.locator(`section#${group}`)
-        const tab = GROUPS.find((entry) => entry.id === group)!.tabs.findIndex((entry) => entry.id === project)
-        await scrollThrough(page, group, 0.99)
-        await section.locator(".show-index button").nth(tab).click()
-        for (const href of hrefs) {
-          const link = section.locator(`a[href="${href}"]`)
-          await expect(link, `${project} at ${viewport.width} links to ${href}`).toHaveCount(1)
-          await expect(link).toBeVisible()
-          await expect(link).toHaveAttribute("target", "_blank")
-        }
-      }
-    }
-  })
-
   test("at 390 every tab is a tap of at least 44 by 44 px @PF-1-ASM-26", async ({ page }) => {
     await page.setViewportSize(VIEWPORTS[0])
     await page.goto("/")

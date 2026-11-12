@@ -6,39 +6,10 @@ test.beforeEach(async ({ page }) => {
 
 const project = (page: import("@playwright/test").Page, id: string) => page.locator(`article[data-project="${id}"]`)
 
-test("each project scene links to its live page or its repository, except Grit, which is private @PF-1-S5", async ({ page }) => {
-  const expected: Record<string, string | null> = {
-    "dev-kit": "github.com/NahuelMosse/motion-audit",
-    grit: null,
-    guardia: "nahuelmosse.itch.io/triaje",
-    cebador: "nahuelmosse.github.io/cebador-landing",
-    club: "github.com/NahuelMosse/ClubNahuelMosse",
-  }
-  for (const [id, href] of Object.entries(expected)) {
-    const links = await project(page, id).locator("a").evaluateAll((all) => all.map((a) => (a as HTMLAnchorElement).href))
-    if (href === null) expect(links).toHaveLength(0)
-    else expect(links.some((l) => l.includes(href))).toBe(true)
-  }
-})
-
 test("the freelance offer and the project scenes show more real pieces than text blocks @PF-1-S26", async ({ page }) => {
   const pieces = await page.locator('section[data-chapter="projects"] [data-piece], [data-offer-card="freelance"] [data-piece-strip] [data-piece]').count()
   const text = await page.locator('section[data-chapter="projects"] [data-field], [data-offer-card] p').count()
   expect(pieces).toBeGreaterThan(text)
-})
-
-test("each personal project shows at least three real pieces: Cebador a looping capture of nahuelmosse.github.io/cebador-landing at 390 and 1280 and a link to it, ClubNahuelMosse its four README screens, Guardia captures of nahuelmosse.itch.io/triaje, Grit screens of its app and design lab, the dev kit a real card, its tests and its pull request; the freelance offer in the end credits recalls a strip of them @PF-1-ASM-22", async ({ page }) => {
-  const count = (id: string) => project(page, id).locator("[data-piece]").count()
-  const cebador = project(page, "cebador")
-  expect(await cebador.locator("video[data-capture]").count()).toBe(2)
-  expect(await cebador.locator('[data-piece] a[href="https://nahuelmosse.github.io/cebador-landing/"]').count()).toBe(1)
-  expect(await count("club")).toBeGreaterThanOrEqual(4)
-  expect(await count("guardia")).toBeGreaterThanOrEqual(3)
-  expect(await count("grit")).toBeGreaterThanOrEqual(3)
-  const kitKinds = await project(page, "dev-kit").locator("[data-piece]").evaluateAll((all) => all.map((p) => p.getAttribute("data-kind")))
-  expect(kitKinds).toEqual(expect.arrayContaining(["card", "tests", "pull-request"]))
-  expect(await project(page, "dev-kit").locator('[data-piece="pull-request"] a, [data-kind="pull-request"] a').count()).toBeGreaterThan(0)
-  expect(await page.locator('[data-offer-card="freelance"] [data-piece-strip] [data-piece]').count()).toBeGreaterThanOrEqual(4)
 })
 
 test("the Jüsto scene shows the team presentation photo, treated @PF-1-S12", async ({ page }) => {

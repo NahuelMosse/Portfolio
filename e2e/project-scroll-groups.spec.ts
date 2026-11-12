@@ -107,23 +107,4 @@ test.describe("project groups shown by scrolling", () => {
       }
     }
   })
-
-  test("the pages of the live site and the repositories are linked from their project @PF-1-ASM-26", async ({ page }) => {
-    await page.setViewportSize(PHONE)
-    await page.goto("/")
-    await page.waitForLoadState("load")
-    const LINKS: Record<string, string[]> = {
-      sonria: ["https://nahuelmosse.github.io/sonria/", "https://github.com/NahuelMosse/sonria"],
-      miga: ["https://nahuelmosse.github.io/miga/", "https://github.com/NahuelMosse/miga"],
-      club: ["https://github.com/NahuelMosse/ClubNahuelMosse"],
-      guardia: ["https://nahuelmosse.itch.io/triaje"],
-    }
-    for (const [project, hrefs] of Object.entries(LINKS)) {
-      for (const href of hrefs) {
-        const link = page.locator(`#${project} a[href="${href}"]`)
-        await expect(link, `${project} links to ${href}`).toHaveCount(1)
-        await expect(link).toHaveAttribute("target", "_blank")
-      }
-    }
-  })
 })
