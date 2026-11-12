@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react"
 // kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
-import { DEFERRED_BLANK, SceneMedia } from "@/features/film/motion"
+import { DEFERRED_BLANK, SceneMedia, mediaUrl } from "@/features/film/motion"
 import type { Piece, ScreenFrame } from "./content"
 import { deferredPiece, pieceBar, pieceThumb } from "./piece-image"
 
@@ -49,7 +49,7 @@ function Face({ piece, on, role, frame }: { piece: Piece; on: boolean; role: Rol
       {bar && <StatusBar />}
       {piece.kind === "capture" ? (
         // the same poster image stays mounted whether the capture plays or not, so turning it on never swaps a picture
-        <SceneMedia capture poster={piece.poster} video={on ? piece.video : undefined} alt={piece.alt} />
+        <SceneMedia capture poster={mediaUrl(piece.poster)} video={on ? mediaUrl(piece.video) : undefined} alt={piece.alt} />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img {...deferredPiece(source, SCREEN_SIZES[role])} alt={role === "main" ? piece.alt : ""} decoding="async" />

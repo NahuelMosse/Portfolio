@@ -1,0 +1,45 @@
+{
+  "size": "large",
+  "review": "medium",
+  "lenses": [
+    "visual"
+  ],
+  "modules": [
+    "ui"
+  ],
+  "signals": [
+    "screen"
+  ],
+  "words": [],
+  "files": [
+    "scripts/media-versions.mjs",
+    "features/film/presentation/media-versions.json",
+    "package.json",
+    "features/film/presentation/media-url.ts",
+    "features/film/presentation/plate.ts",
+    "features/film/presentation/plate-sources.tsx",
+    "features/film/presentation/scene-asset.ts",
+    "features/portfolio/presentation/content.ts",
+    "features/portfolio/presentation/piece-image.ts",
+    "features/portfolio/presentation/chapter-illustration.tsx",
+    "app/layout.tsx",
+    "next.config.mjs"
+  ],
+  "tasks": 3,
+  "lensesOff": [
+    {
+      "lens": "contract",
+      "profile": "backend",
+      "why": "not chosen at install"
+    }
+  ],
+  "escalated": {
+    "review": "high",
+    "lenses": [
+      "visual"
+    ],
+    "why": [
+      "features/film/motion.ts is shared code (imported by features/portfolio/presentation/chapter-motion.tsx, features/portfolio/presentation/cold-open-motion.tsx, features/portfolio/presentation/content.ts, …) and `## Tasks` does not name it"
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 // kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
-import { DEFERRED_BLANK } from "@/features/film/motion"
+import { DEFERRED_BLANK, mediaUrl } from "@/features/film/motion"
 import bars from "./piece-bars.json"
 import widths from "./piece-widths.json"
 
@@ -9,14 +9,15 @@ type Bar = { bg: string; tone: "light" | "dark"; trim?: number }
 // a JSON import widens "light" | "dark" to string; scripts/derive-bars.mjs writes only those two tones
 const BARS = bars as Record<string, Bar>
 
-// "/film/pieces/club-sedes.webp" → "club-sedes"
-const idOf = (src: string) => src.replace(/^\/film\/pieces\//, "").replace(/\.webp$/, "")
+// "/film/pieces/club-sedes.webp?v=1a2b3c4d" → "club-sedes"
+const plain = (src: string) => src.replace(/\?.*$/, "")
+const idOf = (src: string) => plain(src).replace(/^\/film\/pieces\//, "").replace(/\.webp$/, "")
 
 // The copies of a piece at the widths a screen asks for (scripts/derive-plates.mjs).
 export function pieceSrcSet(src: string): string {
   const id = idOf(src)
   const sizes = WIDTHS[id]
-  return sizes ? sizes.map((w) => `/film/r/${w}/pieces/${id}.webp ${w}w`).join(", ") : src
+  return sizes ? sizes.map((w) => `${mediaUrl(`/film/r/${w}/pieces/${id}.webp`)} ${w}w`).join(", ") : mediaUrl(plain(src))
 }
 
 // The status bar of a phone screen: the color of the app's own top edge, light or dark icons, and the share of the image
@@ -29,7 +30,7 @@ export function pieceBar(src: string): Bar {
 export function pieceThumb(src: string): string {
   const id = idOf(src)
   const sizes = WIDTHS[id]
-  return sizes ? `/film/r/${sizes[0]}/pieces/${id}.webp` : src
+  return sizes ? mediaUrl(`/film/r/${sizes[0]}/pieces/${id}.webp`) : mediaUrl(plain(src))
 }
 
 // A piece fetched as the visitor nears it (see PlateLoader): the ink until then, named after its file.

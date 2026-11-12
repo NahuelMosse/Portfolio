@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { PRELOADER_SCRIPT, Preloader, type PlateCopies } from "@/features/film/presentation/preloader"
-import { sceneAsset } from "@/features/film"
+import { mediaUrl, sceneAsset } from "@/features/film"
 import { plateSrcSet } from "@/features/film/presentation/plate"
 import { PHONE } from "@/features/portfolio/presentation/chapter-illustration"
 
@@ -35,12 +35,12 @@ export const metadata: Metadata = {
 function coverCopies(wide: string, tall?: string | false): PlateCopies {
   const sources: PlateCopies["sources"] = []
   const tallAvif = tall && plateSrcSet(tall, "avif")
-  const tallWebp = tall && (plateSrcSet(tall) ?? `/film/${tall}.webp`)
+  const tallWebp = tall && (plateSrcSet(tall) ?? mediaUrl(`/film/${tall}.webp`))
   const wideAvif = plateSrcSet(wide, "avif")
   if (tallAvif) sources.push({ media: PHONE, type: "image/avif", srcSet: tallAvif })
   if (tallWebp) sources.push({ media: PHONE, srcSet: tallWebp })
   if (wideAvif) sources.push({ type: "image/avif", srcSet: wideAvif })
-  return { sources, src: `/film/${wide}.webp`, srcSet: plateSrcSet(wide) }
+  return { sources, src: mediaUrl(`/film/${wide}.webp`), srcSet: plateSrcSet(wide) }
 }
 
 const HAS_MOTION_SCRIPT =

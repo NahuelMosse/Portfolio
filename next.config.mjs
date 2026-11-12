@@ -72,8 +72,15 @@ const nextConfig = {
         headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }],
       },
       {
+        // a media URL carries the version of its files: unchanged files stay a year, one that lost its version is revalidated
         source: '/film/:file*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }],
+        has: [{ type: 'query', key: 'v' }],
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      {
+        source: '/film/:file*',
+        missing: [{ type: 'query', key: 'v' }],
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }],
       },
     ]
   }
