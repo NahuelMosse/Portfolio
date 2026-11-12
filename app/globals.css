@@ -800,7 +800,7 @@ html:not([data-sound="idle"]) .cover-cue {
 .offer-scene .chapter-word {
   margin-left: calc(var(--gutter-left) * -1);
   color: transparent;
-  -webkit-text-stroke: var(--rule) var(--bone);
+  -webkit-text-stroke: max(1.5px, 0.012em) var(--bone);
   mix-blend-mode: normal;
 }
 
