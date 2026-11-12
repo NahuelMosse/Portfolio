@@ -5,6 +5,13 @@
 best-screens.spec.ts › the best, most visual screens of each project › walking each project chapter with the wheel at 1440x900 and 390x844, every beat shows the planned visual screens of that project, loaded @PF-2-S1 @PF-2-S2 @PF-2-ASM-01
 best-screens.spec.ts › the best, most visual screens of each project › desktop and phone screens of a project come in equal numbers and show the same section on the same beat @PF-2-ASM-02
 
+# replaced by e2e/best-screens-walk-live.spec.ts (PF-11-cebador-video-all-beats)
+best-screens-walk.spec.ts › walking each project chapter with the wheel at 1440x900 and 390x844, every beat shows the planned visual screens of that project, loaded @PF-2-S1 @PF-2-S2 @PF-2-ASM-01
+best-screens-walk.spec.ts › desktop and phone screens of a project come in equal numbers and show the same section on the same beat @PF-2-ASM-02
+
+# replaced by e2e/cebador-all-beats-steady.spec.ts (PF-11-cebador-video-all-beats)
+cebador-all-beats.spec.ts › on Cebador's three beats at 1440x900 and 390x844 the page and the phone play their live captures, the same video elements without a reload or a restart @PF-11-S1 @PF-11-S2 @PF-11-ASM-01
+
 # replaced by e2e/project-turn-measured.spec.ts (PF-5-smooth-project-transitions)
 project-turn-smooth.spec.ts › at 1440x900 › frame by frame through a turn, no layer of the two projects steps back or jumps, the handoff included @PF-5-S3 @PF-5-ASM-02
 project-turn-smooth.spec.ts › at 390x844 › frame by frame through a turn, no layer of the two projects steps back or jumps, the handoff included @PF-5-S3 @PF-5-ASM-02

@@ -1,0 +1,35 @@
+{
+  "size": "large",
+  "review": "medium",
+  "lenses": [
+    "visual"
+  ],
+  "modules": [
+    "ui"
+  ],
+  "signals": [
+    "screen"
+  ],
+  "words": [],
+  "files": [
+    "features/portfolio/presentation/content.ts",
+    "features/portfolio/presentation/project-group.tsx",
+    "e2e/best-screens-walk-live.spec.ts",
+    "specs/PF-8-broken-tests-and-local-paths/retired.txt",
+    "scripts/record-cebador.mjs",
+    "scripts/record-cebador.origin.json",
+    "public/film/pieces/cebador-1280.webm",
+    "public/film/pieces/cebador-390.webm",
+    "public/film/pieces/cebador-1280-poster.webp",
+    "public/film/pieces/cebador-390-poster.webp",
+    "public/film/r/480/pieces/cebador-1280-poster.webp",
+    "public/film/r/800/pieces/cebador-1280-poster.webp",
+    "public/film/r/960/pieces/cebador-1280-poster.webp",
+    "public/film/r/360/pieces/cebador-390-poster.webp",
+    "features/portfolio/presentation/piece-bars.json",
+    "features/portfolio/presentation/piece-widths.json",
+    "features/film/presentation/plates.json",
+    "features/film/presentation/media-versions.json"
+  ],
+  "tasks": 2
+}

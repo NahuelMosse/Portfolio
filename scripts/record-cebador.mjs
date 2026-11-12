@@ -6,7 +6,8 @@
 // Writes scripts/record-cebador.landmarks.json (section -> second, per width). Run: node scripts/record-cebador.mjs
 // then node scripts/derive-plates.mjs and node scripts/derive-bars.mjs
 import { spawnSync } from "node:child_process"
-import { mkdirSync, mkdtempSync, rmSync, statSync, writeFileSync } from "node:fs"
+import { createHash } from "node:crypto"
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { chromium } from "playwright"
@@ -35,6 +36,12 @@ const SECTIONS = [
   { section: "where-to-buy", second: 9, selector: "#comprar", offset: 0 },
 ]
 const DRIFT_PX = 300
+const SCROLL_STEP_PX = 240
+const SCROLL_STEP_MS = 220
+const REVEALS_TIMEOUT_MS = 15000
+// the longest reveal (map labels, 2 s delay + 0.9 s) plus margin once everything reports complete
+const REVEALS_SETTLE_MS = 600
+const originReport = {}
 
 // Runs before the page's scripts: a clock that follows real time until frozen, then moves only by tick().
 const installClock = () => {
@@ -71,6 +78,54 @@ const installClock = () => {
       for (const cb of callbacks) cb(clock.base + clock.offset)
     },
   }
+}
+
+// Reports whether #origen is on screen and, if so, whether each part sits at its final state (see the live main.js reveals).
+const installOriginCheck = () => {
+  const finalProp = (el, prop, value) => window.gsap.getProperty(el, prop) === value
+  window.__origin = () => {
+    const root = document.querySelector("#origen")
+    if (!root) throw new Error("section #origen not found")
+    const rect = root.getBoundingClientRect()
+    const fonts = document.fonts.status
+    const onScreen = rect.top < innerHeight && rect.bottom > 0
+    const shown = (el) => el.classList.contains("in") && Number(getComputedStyle(el).opacity) === 1
+    const parts = (sel) => [...root.querySelectorAll(sel)]
+    const heading = parts("[data-reveal=mask]").every((h) => h.classList.contains("in") && [...h.querySelectorAll("*")].every((w) => finalProp(w, "yPercent", 0)))
+    const paragraph = parts("[data-reveal=rise]").every((el) => shown(el) && finalProp(el, "y", 0))
+    const draw = parts("[data-reveal=draw]")
+    const map = draw.length > 0 && draw.every((el) => el.classList.contains("in")
+      && [...el.querySelectorAll(".ct")].every((p) => parseFloat(getComputedStyle(p).strokeDashoffset) === 0)
+      && [...el.querySelectorAll(".pin")].every((p) => finalProp(p, "scale", 1))
+      && [...el.querySelectorAll("text")].every((t) => Number(getComputedStyle(t).opacity) === 1 && finalProp(t, "x", 0)))
+    const stats = parts("[data-reveal=stat]")
+    const counted = stats.length === 4 && stats.every((el) => shown(el) && finalProp(el, "x", 0)
+      && el.querySelector("[data-count]").textContent.trim() === el.querySelector("[data-count]").dataset.count)
+    return { onScreen, fonts, heading, paragraph, map, stats: counted }
+  }
+}
+
+const isComplete = (c) => c.fonts === "loaded" && c.heading && c.paragraph && c.map && c.stats
+
+// Plays Origen's reveals on the real clock: scroll through it part by part, wait until all report done, go back to the top.
+const playOriginReveals = async (page) => {
+  const bottom = await page.evaluate(() => {
+    const root = document.querySelector("#origen")
+    return Math.round(root.getBoundingClientRect().top + scrollY + root.offsetHeight - innerHeight / 2)
+  })
+  for (let y = 0; y < bottom; y += SCROLL_STEP_PX) {
+    await page.evaluate((to) => window.scrollTo(0, to), y)
+    await page.waitForTimeout(SCROLL_STEP_MS)
+  }
+  await page.evaluate((to) => window.scrollTo(0, to), bottom)
+  const deadline = Date.now() + REVEALS_TIMEOUT_MS
+  while (!isComplete(await page.evaluate(() => window.__origin()))) {
+    if (Date.now() > deadline) throw new Error("Origen reveals did not finish")
+    await page.waitForTimeout(250)
+  }
+  await page.waitForTimeout(REVEALS_SETTLE_MS)
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await page.waitForTimeout(REVEALS_SETTLE_MS)
 }
 
 const readStops = (page) =>
@@ -117,13 +172,21 @@ const record = async (browser, target) => {
   const context = await browser.newContext({ viewport: target.viewport, deviceScaleFactor: 1 })
   const page = await context.newPage()
   await page.addInitScript(installClock)
+  await page.addInitScript(installOriginCheck)
   await page.goto(URL, { waitUntil: "load" })
   await page.waitForTimeout(LOADER_WAIT_MS)
+  await playOriginReveals(page)
   const path = await readStops(page)
   await page.evaluate(() => window.__clock.freeze())
   const frames = mkdtempSync(join(tmpdir(), `cebador-${target.key}-`))
+  const originFrames = []
   for (let n = 0; n < FRAMES; n++) {
-    await page.evaluate(({ y, ms }) => { window.scrollTo(0, y); window.__clock.tick(ms) }, { y: scrollAt(n / FPS, path), ms: n === 0 ? 0 : 1000 / FPS })
+    const seen = await page.evaluate(({ y, ms }) => { window.scrollTo(0, y); window.__clock.tick(ms); return window.__origin() }, { y: scrollAt(n / FPS, path), ms: n === 0 ? 0 : 1000 / FPS })
+    if (seen.onScreen) {
+      const { onScreen, ...measured } = seen
+      if (!isComplete(measured)) throw new Error(`${target.name} frame ${n + 1}: Origen is not at its final state: ${JSON.stringify(measured)}`)
+      originFrames.push({ n: n + 1, ...measured })
+    }
     await page.screenshot({ path: join(frames, `${String(n + 1).padStart(4, "0")}.png`) })
   }
   await context.close()
@@ -133,6 +196,7 @@ const record = async (browser, target) => {
   run("ffmpeg", ["-v", "error", "-y", "-i", file, "-frames:v", "1", first])
   await sharp(first).webp({ quality: 82 }).toFile(join(OUT, `${target.name}-poster.webp`))
   rmSync(frames, { recursive: true, force: true })
+  originReport[target.key] = { webm: `${target.name}.webm`, sha256: createHash("sha256").update(readFileSync(file)).digest("hex"), frames: originFrames }
   console.log(`${target.name}: crf ${crf}, ${statSync(file).size} bytes`)
 }
 
@@ -145,3 +209,5 @@ try {
 }
 const landmarks = SECTIONS.map(({ section, second }) => ({ section, second }))
 writeFileSync(join(process.cwd(), "scripts", "record-cebador.landmarks.json"), `${JSON.stringify({ 1280: landmarks, 390: landmarks }, null, 2)}\n`)
+writeFileSync(join(process.cwd(), "scripts", "record-cebador.origin.json"), `${JSON.stringify(originReport, null, 2)}
+`)
