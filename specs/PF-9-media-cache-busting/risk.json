@@ -25,5 +25,21 @@
     "app/layout.tsx",
     "next.config.mjs"
   ],
-  "tasks": 3
+  "tasks": 3,
+  "lensesOff": [
+    {
+      "lens": "contract",
+      "profile": "backend",
+      "why": "not chosen at install"
+    }
+  ],
+  "escalated": {
+    "review": "high",
+    "lenses": [
+      "visual"
+    ],
+    "why": [
+      "features/film/motion.ts is shared code (imported by features/portfolio/presentation/chapter-motion.tsx, features/portfolio/presentation/cold-open-motion.tsx, features/portfolio/presentation/content.ts, …) and `## Tasks` does not name it"
+    ]
+  }
 }

@@ -3,8 +3,7 @@
 // responsive copies share one version. Run as a script it writes features/film/presentation/media-versions.json.
 import { createHash } from "node:crypto"
 import { readdirSync, readFileSync, writeFileSync } from "node:fs"
-import { join, relative, sep } from "node:path"
-import { fileURLToPath } from "node:url"
+import { basename, join, relative, sep } from "node:path"
 
 const VERSION_LENGTH = 8
 
@@ -36,7 +35,8 @@ export function mediaVersions(root) {
   return versions
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+// import.meta is avoided: Playwright loads this file as CommonJS when the media tests import it
+if (basename(process.argv[1] ?? "") === "media-versions.mjs") {
   const root = join(process.cwd(), "public", "film")
   const out = join(process.cwd(), "features", "film", "presentation", "media-versions.json")
   writeFileSync(out, JSON.stringify(mediaVersions(root), null, 2) + "\n")
