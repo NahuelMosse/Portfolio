@@ -5,7 +5,10 @@ import { round } from './series.mjs';
 
 const numbers = (s) => String(s ?? '').match(/-?\d*\.?\d+(?:e-?\d+)?/gi)?.map(Number) ?? [];
 
-// { tx, ty, sx, sy, rot } from the computed `transform`, `translate`, `scale` and `rotate` values.
+/**
+ * { tx, ty, sx, sy, rot } from the computed `transform`, `translate`, `scale` and `rotate` values.
+ * @param {{ transform?: string, translate?: string, scale?: string, rotate?: string }} snap
+ */
 export const transformState = (snap) => {
   const state = { tx: 0, ty: 0, sx: 1, sy: 1, rot: 0 };
   const t = String(snap.transform ?? 'none');
@@ -32,8 +35,18 @@ const describeDelta = (a, b, { translate, scale, rotate }) => {
   return parts.join(', ');
 };
 
-// What a press still does under reduced motion beyond a small scale change.
+/**
+ * What a press still does under reduced motion beyond a small scale change.
+ * @param {{ transform?: string, translate?: string, scale?: string, rotate?: string }} rest computed styles at rest
+ * @param {{ transform?: string, translate?: string, scale?: string, rotate?: string }} pressed computed styles while pressed
+ * @returns {string} empty when nothing moves more than that
+ */
 export const reducedMoves = (rest, pressed) => describeDelta(transformState(rest), transformState(pressed), { translate: REDUCED_TRANSLATE_PX, scale: REDUCED_SCALE_DELTA, rotate: 1 });
 
-// Any transform left after release.
+/**
+ * Any transform left after release.
+ * @param {{ transform?: string, translate?: string, scale?: string, rotate?: string }} rest computed styles at rest
+ * @param {{ transform?: string, translate?: string, scale?: string, rotate?: string }} released computed styles after the release
+ * @returns {string} empty when nothing is left
+ */
 export const reducedResidue = (rest, released) => describeDelta(transformState(rest), transformState(released), { translate: 0.5, scale: 0.01, rotate: 0.5 });

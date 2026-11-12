@@ -17,7 +17,7 @@ const posix = (f) => f.split('\\').join('/').replace(/^\.\//, '');
 const HASH_COMMENTS = /\.(?:py|sh|rb)$/;
 // Comments turned into spaces, same offsets. Text inside a string literal is kept (`'./pages/*.tsx'` is not a comment);
 // `#` starts a comment only on Python and shell files (in JS it is a private field).
-const blank = (code, file = '') => {
+export const blank = (code, file = '') => {
   const hash = HASH_COMMENTS.test(file);
   let out = '';
   let i = 0;

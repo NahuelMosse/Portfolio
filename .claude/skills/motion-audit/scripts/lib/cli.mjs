@@ -7,6 +7,7 @@ import { audit, exitCode } from './audit.mjs';
 import { compareReports, readReport } from './compare.mjs';
 import { ConfigError } from './config.mjs';
 import { AuditError } from './browser.mjs';
+import { httpWall, wallMessage } from './bot-wall.mjs';
 import { DEFAULT_MAX_ELEMENTS } from './constants.mjs';
 
 const toUrl = (target) => (/^[a-z][a-z0-9+.-]*:\/\//i.test(target) ? target : existsSync(target) ? pathToFileURL(resolve(target)).href : target);
@@ -50,14 +51,18 @@ const runCompare = (argv) => {
   return 0;
 };
 
-// Returns the exit code.
-export const main = async (argv) => {
+// Returns the exit code. `deps.fetch` replaces the HTTP client of the bot-wall check.
+export const main = async (argv, deps = {}) => {
   try {
     if (argv[0] === 'compare') return runCompare(argv.slice(1));
     const { opts, positional } = parseArgs(argv);
     if (opts.help) { console.log(USAGE); return 0; }
+    if (!positional.length && process.env.APP_URL) positional.push(process.env.APP_URL);
     if (positional.length !== 1) throw new UsageError(positional.length ? `expected one url or file, got ${positional.length}` : 'missing <url|file> (see --help)');
-    const report = await audit(toUrl(positional[0]), { ...opts, max: opts.max ?? DEFAULT_MAX_ELEMENTS });
+    const target = toUrl(positional[0]);
+    const wall = await httpWall(target, deps);
+    if (wall) { console.error(`could not run: ${wallMessage(target, wall)}`); return 2; }
+    const report = await audit(target, { ...opts, max: opts.max ?? DEFAULT_MAX_ELEMENTS });
     const code = exitCode(report, { strict: opts.strict, minCoverage: opts.minCoverage });
     if (opts.json) console.log(JSON.stringify(report, null, 1));
     else printText(report, code, opts);

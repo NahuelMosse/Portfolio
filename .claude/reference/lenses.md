@@ -48,7 +48,7 @@ The questions every HTTP card leaves open (content type, byte limit, ids, query 
 
 ## visual
 
-A card that edits a code file with markup in it and does not change the screen declares `no-visual: <why>` in `## Gate`; a view file in `## Tasks` (`.css`, `.html`, `.jsx`, `.tsx`, `.vue`, `.svelte`) voids it.
+A card that edits a code file with markup in it and does not change the screen declares `no-visual: <why>` in `## Gate`; a view file in `## Tasks` (`.css`, `.html`, `.jsx`, `.tsx`, `.vue`, `.svelte`) voids it. A module that draws images no screen shows (an SVG served as a file) changes markup on purpose: `no-visual: <why> · golden: <test file>`, the golden-file test the card adds or changes, pins the drawing instead of probes and capture rounds.
 
 - Does Enter submit from each control of the form, not only from the last one, and from each type (text, `select`, checkbox) in a real browser?
 - Where does focus go after an error and after a submit, and is it never left on `body` in any step?

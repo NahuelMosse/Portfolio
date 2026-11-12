@@ -7,6 +7,7 @@ import { cardIdOf, gateBlock, readCard, requirementOf, riskOf, rolesOf, specTags
 import { IS_CODE, IS_TEST, NOT_PRODUCTION, cardFiles, cardStart, existedAt, originOf, ownBase } from './card.mjs';
 import { IS_MIGRATION, migrationsOutlook } from './migrations.mjs';
 import { overdesignFindings } from './overdesign.mjs';
+import { hygieneFindings } from './hygiene.mjs';
 import { codeLanguageOf, spanishNames } from './code-language.mjs';
 import { active, isPoc, profileStates } from './kit.mjs';
 import { IS_SCREEN, SCREEN_MARKUP } from './signals.mjs';
@@ -174,13 +175,48 @@ export const taggedTestsIn =(id, file, text) => {
 };
 
 // What `app.mjs probe` wrote (`.validation/probe/w<width>-step<NN>.json`), and in each `--out .validation/probe/<state>/` folder.
+// A record carries `base`, what main's version showed at that width (`<name>.base.json` per step and `w<width>-home.base.json`),
+// when the probe ran on it: each element the most times one page of main shows it. A page the card adds has no step of its own
+// on main, and what the pages share (a header, a footer) stays main's there too; only what main shows nowhere is the card's.
+const readJson = (file) => { try { return JSON.parse(readFileSync(file, 'utf8')); } catch { return null; } };
+const most = (lists) => {
+  const n = new Map();
+  for (const list of lists) {
+    const here = new Map();
+    for (const x of list ?? []) here.set(x, (here.get(x) ?? 0) + 1);
+    for (const [x, k] of here) n.set(x, Math.max(n.get(x) ?? 0, k));
+  }
+  return [...n].flatMap(([x, k]) => Array(k).fill(x));
+};
+export const anywhereBase = (bases) => {
+  const seen = bases.filter((b) => b && !b.error);
+  if (!seen.length) return null;
+  const ids = [...new Set(seen.flatMap((b) => (b.axe?.violations ?? []).map((v) => v.id)))];
+  const of = (id) => seen.map((b) => b.axe?.violations?.find((v) => v.id === id)).filter(Boolean);
+  const axe = seen.some((b) => b.axe) ? { violations: ids.map((id) => ({ id, nodes: most(of(id).map((v) => v.nodes)), count: Math.max(...of(id).map((v) => v.count ?? v.nodes?.length ?? 0)) })) } : null;
+  const designs = seen.map((b) => b.design).filter((d) => d?.controlLabels);
+  const design = designs.length ? { controlLabels: most(designs.map((d) => d.controlLabels)), unanimatedLabels: most(designs.map((d) => d.unanimatedLabels)) } : null;
+  return { axe, design };
+};
 export const probeRecords = (root) => {
   const dir = join(root, '.validation', 'probe');
   if (!existsSync(dir)) return [];
   const folders = ['', ...readdirSync(dir, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).sort()];
-  return folders.flatMap((sub) => readdirSync(join(dir, sub)).filter((f) => /^w\d+(?:x\d+)?-step\d+\.json$/.test(f)).sort().flatMap((f) => {
-    try { return [{ file: (sub ? `${sub}/` : '') + f.replace(/\.json$/, ''), ...JSON.parse(readFileSync(join(dir, sub, f), 'utf8')) }]; } catch { return []; }
-  }));
+  return folders.flatMap((sub) => {
+    const names = readdirSync(join(dir, sub));
+    const widthOf = (f) => f.match(/^(w\d+(?:x\d+)?)-/)?.[1];
+    const anywhere = new Map();
+    const fallback = (w) => {
+      if (!anywhere.has(w)) anywhere.set(w, anywhereBase(names.filter((f) => widthOf(f) === w && f.endsWith('.base.json')).map((f) => readJson(join(dir, sub, f)))));
+      return anywhere.get(w);
+    };
+    return names.filter((f) => /^w\d+(?:x\d+)?-step\d+\.json$/.test(f)).sort().flatMap((f) => {
+      const record = readJson(join(dir, sub, f));
+      if (!record) return [];
+      const base = fallback(widthOf(f));
+      return [{ file: (sub ? `${sub}/` : '') + f.replace(/\.json$/, ''), ...record, ...(base ? { base } : {}) }];
+    });
+  });
 };
 
 const lensesOf = (cardDir) => riskOf(cardDir)?.lenses ?? [];
@@ -421,6 +457,25 @@ const blockOf = (text, name) => (String(text).split(/^## /m).find((x) => new Reg
 const showAt = (root, ref, rel) => { const r = spawnSync('git', ['show', `${ref}:${rel}`], { cwd: root, encoding: 'utf8' }); return r.status === 0 ? r.stdout : null; };
 const HEX_COLOUR = /#(?:[0-9a-f]{6}|[0-9a-f]{3})\b/gi;
 const sameText = (a, b) => a !== null && b !== null && a.replace(/\r\n/g, '\n').trim() === b.replace(/\r\n/g, '\n').trim();
+const normHex = (h) => (h.length === 4 ? `#${[...h.slice(1)].map((c) => c + c).join('')}` : h).toLowerCase();
+// A brand fixed outside the repo: `brand-from: <file>`, `brand-from: <repo dir>@<sha>:<path>` or `brand-from: <https URL>` in
+// `## Look`. The text it gives, or null when it cannot be read.
+const BRAND_FROM = /^\s*-?\s*brand-from\s*:\s*(\S+)/m;
+const brandSource = (root, cardDir) => {
+  const at = (sectionOf(readCard(cardDir) ?? '', 'Look') ?? '').match(BRAND_FROM)?.[1];
+  if (!at) return null;
+  if (/^https:\/\//i.test(at)) { const r = spawnSync('curl', ['-fsSL', '--max-time', '20', at], { encoding: 'utf8' }); return r.status === 0 ? r.stdout : null; }
+  const pinned = at.match(/^(.+)@([0-9a-f]{7,40}):(.+)$/i);
+  if (pinned) { const r = spawnSync('git', ['show', `${pinned[2]}:${pinned[3]}`], { cwd: resolve(root, pinned[1]), encoding: 'utf8' }); return r.status === 0 ? r.stdout : null; }
+  try { return readFileSync(resolve(root, at), 'utf8'); } catch { return null; }
+};
+// Every colour of the sheet is one the requirement names or the cited brand source holds: the card copied the brand, it chose none.
+const coloursGiven = (root, cardDir, sheet) => {
+  const mine = String(sheet).match(HEX_COLOUR) ?? [];
+  if (!mine.length) return false;
+  const given = new Set([...(requirementOf(readCard(cardDir) ?? '').match(HEX_COLOUR) ?? []), ...(brandSource(root, cardDir)?.match(HEX_COLOUR) ?? [])].map(normHex));
+  return mine.every((h) => given.has(normHex(h)));
+};
 export const sheetOriginProblem = (root, cardDir, file) => {
   const abs = resolve(root, file);
   const rel = relative(root, abs).replaceAll('\\', '/');
@@ -433,11 +488,8 @@ export const sheetOriginProblem = (root, cardDir, file) => {
     const now = blockOf(text, 'Brand');
     if (sameText(committed, now)) return null;
     // The brand of an existing site is written into `## Brand` after the first commit: its colours are the ones L1 names.
-    const norm = (h) => (h.length === 4 ? `#${[...h.slice(1)].map((c) => c + c).join('')}` : h).toLowerCase();
-    const mine = (now ?? '').match(HEX_COLOUR) ?? [];
-    const required = new Set((requirementOf(text).match(HEX_COLOUR) ?? []).map(norm));
-    if (mine.length && mine.every((h) => required.has(norm(h)))) return null;
-    return `the ## Brand block of ${rel} is not the one the card was committed with, and holds a colour its requirement does not name`;
+    if (coloursGiven(root, cardDir, now ?? '')) return null;
+    return `the ## Brand block of ${rel} is not the one the card was committed with, and holds a colour neither its requirement nor a \`brand-from:\` source of ## Look names`;
   }
   const templates = join(root, '.claude', 'templates', 'design-md');
   if (existsSync(templates) && readdirSync(templates).some((f) => { try { return sameText(readFileSync(join(templates, f), 'utf8'), text); } catch { return false; } })) return null;
@@ -445,8 +497,9 @@ export const sheetOriginProblem = (root, cardDir, file) => {
   if (sameText(showAt(root, base, rel), text)) return null;
   const unseen = coloursUnseenBefore(root, base, text);
   if (unseen && !unseen.length) return null;
+  if (coloursGiven(root, cardDir, text)) return null;
   const detail = unseen?.length ? ` (${unseen.slice(0, 4).join(', ')} not in the repo before the card)` : '';
-  return `${rel} was written or edited during the card${detail}: the sheet is the dealt direction.json, a DESIGN.md of .claude/templates/design-md/ as is, the card's ## Brand, a sheet the repo held before the card, or one whose every colour the repo's code already used`;
+  return `${rel} was written or edited during the card${detail}: the sheet is the dealt direction.json, a DESIGN.md of .claude/templates/design-md/ as is, the card's ## Brand, a sheet the repo held before the card, or one whose every colour the repo's code already used, the requirement names or a \`brand-from:\` source in ## Look holds`;
 };
 // A sheet written during the card that transcribes the palette the product already has (its theme tokens, its CSS) chooses no
 // colour of its own. The colours of the sheet missing from the tree at `base`, outside `.claude/` and `specs/` (the kit's
@@ -465,6 +518,23 @@ const coloursUnseenBefore = (root, base, text) => {
     else if (r.status !== 0) return null;
   }
   return unseen;
+};
+// Whether the product's tree at the card's base (outside .claude/ and specs/) names a text, case aside: a font family or a colour
+// main already used is not the card's choice. Memoised per text; false when git cannot answer, so the card is held to it.
+export const inMainOf = (root, cardDir) => {
+  const base = root && cardDir ? ownBase(root, cardStart(root, cardDir)) : null;
+  const seen = new Map();
+  return (text) => {
+    if (!base || !text) return false;
+    if (!seen.has(text)) seen.set(text, spawnSync('git', ['grep', '-q', '-i', '-F', '-e', String(text), base, '--', '.', ':!.claude', ':!specs'], { cwd: root, encoding: 'utf8' }).status === 0);
+    return seen.get(text);
+  };
+};
+// A brand row off the sheet whose every font or colour main's code already used: the card inherited it, it did not choose it.
+export const inheritedRow = (r, inMain) => {
+  if (/fonts in the brand sheet/.test(r.rule)) return (r.detail ?? []).length > 0 && r.detail.every((d) => inMain(String(d).replace(/\s+x\d+\s*\(.*$/, '').trim()));
+  const h = String(r.detail?.[0] ?? '').match(/(#[0-9a-f]{6}), nearest/i)?.[1];
+  return !!h && inMain(h);
 };
 const brandCheck = (last, root, cardDir) => {
   const sheet = last.round.brand;
@@ -493,11 +563,16 @@ const brandCheck = (last, root, cardDir) => {
     const problem = sheetOriginProblem(root, cardDir, sheet.file);
     if (problem) return failed('brand', problem);
   }
-  const off = Object.entries(last.round.widths ?? {}).flatMap(([key, w]) => (w.rules ?? []).filter((r) => String(r.rule).startsWith('brand:') && !r.pass && !r.report).map((r) => `${r.rule} (${key}): ${r.value}, ${r.range}${r.detail?.length ? ` · ${r.detail.slice(0, 2).join(', ')}` : ''}`));
-  if (off.length) return failed('brand', `${off.length} brand rows off ${sheet.file}: ${off.slice(0, 4).join('; ')}`);
+  const inMain = inMainOf(root, cardDir);
+  const describe = ([key, r]) => `${r.rule} (${key}): ${r.value}, ${r.range}${r.detail?.length ? ` · ${r.detail.slice(0, 2).join(', ')}` : ''}`;
+  const offRows = Object.entries(last.round.widths ?? {}).flatMap(([key, w]) => (w.rules ?? []).filter((r) => String(r.rule).startsWith('brand:') && !r.pass && !r.report).map((r) => [key, r]));
+  const inherited = offRows.filter(([, r]) => inheritedRow(r, inMain));
+  const off = offRows.filter((e) => !inherited.includes(e)).map(describe);
+  const info = inherited.length ? ` · info: ${inherited.length} rows off the sheet with fonts or colours main already used: ${inherited.slice(0, 2).map(describe).join('; ')}` : '';
+  if (off.length) return failed('brand', `${off.length} brand rows off ${sheet.file}: ${off.slice(0, 4).join('; ')}${info}`);
   const rows = Object.values(last.round.widths ?? {}).flatMap((w) => (w.rules ?? []).filter((r) => String(r.rule).startsWith('brand:') && !r.report));
   if (!rows.length) return couldNot('brand', `${last.name}/round.json has no brand rows: no text was measured`);
-  return ok('brand', `${rows.length} brand rows within ${sheet.file}`);
+  return ok('brand', `${rows.length - inherited.length} brand rows within ${sheet.file}${info}`);
 };
 
 // The layers: a `rule` file (domain) does no I/O, SQL lives only in `data` files, a `presentation` file has no db access.
@@ -836,6 +911,26 @@ export const overdesignCheck = (root, cardDir) => {
   ] };
 };
 
+// Dead and slow code (hygiene.mjs) over what the card added or removed: fails from mvp; a poc carries neither, and a grade
+// that leaves K5 off skips the dead code. What the Log declares stays a note.
+export const hygieneChecks = (root, cardDir) => {
+  if (isPoc(root)) return [];
+  const deadOff = (() => { try { return active(root).exempt.criteria.has('K5'); } catch { return false; } })();
+  let found;
+  try { found = hygieneFindings(root, cardDir); } catch (e) { return [...(deadOff ? [] : [couldNot('dead-code', e.message)]), couldNot('slow-code', e.message)]; }
+  const one = (name, f, clean, how) => {
+    const r = f.blocking.length
+      ? failed(name, `${f.blocking.slice(0, 8).join('; ')}${f.blocking.length > 8 ? `; and ${f.blocking.length - 8} more` : ''} · ${how}`)
+      : ok(name, clean);
+    return { ...r, notes: f.declared.map((n) => `note: ${name} · declared in the Log: ${n}`) };
+  };
+  const keep = (name) => `to keep one on purpose: \`kit-keep: <why>\` on its line, or \`declared · ${name} · <file> · <why>\` in the Log`;
+  return [
+    ...(deadOff ? [] : [one('dead-code', found.dead, 'nothing the card added or left behind is unused', keep('dead-code'))]),
+    one('slow-code', found.slow, 'no query per iteration, blocking call, fetch on mount or list without a limit in the lines the card added', keep('slow-code')),
+  ];
+};
+
 // A fresh migration with more than one statement runs inside a transaction: `BEGIN`/`COMMIT` in the file, or a runner in
 // the card's production code that wraps each migration in one.
 const statementsIn = (sql) => sql.replace(/--[^\n]*|\/\*[\s\S]*?\*\//g, '').split(';').filter((s) => s.trim()).length;
@@ -851,18 +946,27 @@ export const migrationsCheck = (root, cardDir) => {
 
 // `no-visual: <why>` in `## Gate` says the card touches code files that build markup without changing what a screen shows. It is a
 // declaration, not a command: risk.mjs keeps the visual lens off for it and this check holds it against the card's diff.
+// A module that draws images (an SVG served as a file, a chart rendered to bytes) changes markup no screen shows: `no-visual:
+// <why> · golden: <test file>` holds when that golden-file test, which pins the drawing, is part of the card's diff.
 export const noVisualOf = (doc) => gateLinesOf(doc).map((l) => l.match(/^no-visual\s*:\s*(\S.*)$/i)?.[1]?.trim()).find(Boolean) ?? null;
+const GOLDEN = /·\s*golden:\s*(\S+)/i;
 const declaredVisual = (cardDir) => riskOf(cardDir)?.declared?.find((d) => d.lens === 'visual') ?? null;
 export const noVisualCheck = (root, cardDir) => {
   const declared = declaredVisual(cardDir);
   if (!declared) return [];
-  const diff = spawnSync('git', ['diff', '-U0', '--no-color', `${ownBase(root, cardStart(root, cardDir))}..HEAD`, '--', ...declared.files], { cwd: root, encoding: 'utf8', maxBuffer: 1 << 28 });
+  const base = ownBase(root, cardStart(root, cardDir));
+  const diff = spawnSync('git', ['diff', '-U0', '--no-color', `${base}..HEAD`, '--', ...declared.files], { cwd: root, encoding: 'utf8', maxBuffer: 1 << 28 });
   if (diff.status !== 0) return [couldNot('no-visual', `git diff failed: ${(diff.stderr ?? '').trim().split('\n')[0]}`)];
+  const golden = String(declared.why).match(GOLDEN)?.[1]?.replaceAll('\\', '/');
   let file = '';
   for (const l of diff.stdout.split('\n')) {
     if (l.startsWith('+++ ')) { file = l.slice(4).replace(/^b\//, ''); continue; }
     if (l.startsWith('--- ') || !/^[+-]/.test(l)) continue;
-    if (SCREEN_MARKUP.test(l.slice(1))) return [failed('no-visual', `${file} changes markup: ${l.slice(1).trim()}`)];
+    if (!SCREEN_MARKUP.test(l.slice(1))) continue;
+    if (!golden) return [failed('no-visual', `${file} changes markup: ${l.slice(1).trim()}; a drawing no screen shows declares \`· golden: <test file>\``)];
+    const pinned = IS_TEST.test(golden) && existsSync(join(root, golden)) && cardFiles(root, base).includes(golden);
+    return pinned ? [ok('no-visual', `${file} draws markup pinned by the golden test ${golden}`)]
+      : [failed('no-visual', `${file} changes markup and the golden test ${golden} is not a test file the card added or changed`)];
   }
   return [ok('no-visual')];
 };
@@ -894,7 +998,7 @@ export const visibilityCheck = (root, cardDir) => {
 };
 
 // The checks that read the card: verify.mjs adds them to the gate's. `layers` and `migrations` read the repo too, so they need `root`.
-export const cardChecks = (cardDir, root) => [...statesCheck(cardDir, root), ...attacksCheck(cardDir), ...roundsCheck(cardDir), ...refGenreCheck(cardDir), ...designRoundChecks(cardDir, root), ...(root ? [layersCheck(root, cardDir), shapeCheck(root, cardDir), overdesignCheck(root, cardDir), migrationsCheck(root, cardDir), boundariesCheck(root, cardDir), ...codeLanguageCheck(root, cardDir), ...noVisualCheck(root, cardDir), ...removeOnlyCheck(root, cardDir), ...docsCheck(root, cardDir), ...tableShapeCheck(root, cardDir), ...publicCheck(root, cardDir), ...visibilityCheck(root, cardDir)] : [])];
+export const cardChecks = (cardDir, root) => [...statesCheck(cardDir, root), ...attacksCheck(cardDir), ...roundsCheck(cardDir), ...refGenreCheck(cardDir), ...designRoundChecks(cardDir, root), ...(root ? [layersCheck(root, cardDir), shapeCheck(root, cardDir), overdesignCheck(root, cardDir), ...hygieneChecks(root, cardDir), migrationsCheck(root, cardDir), boundariesCheck(root, cardDir), ...codeLanguageCheck(root, cardDir), ...noVisualCheck(root, cardDir), ...removeOnlyCheck(root, cardDir), ...docsCheck(root, cardDir), ...tableShapeCheck(root, cardDir), ...publicCheck(root, cardDir), ...visibilityCheck(root, cardDir)] : [])];
 
 const NO_PROBE = 'no record in .validation/probe: run `node .claude/tools/app.mjs probe <steps.json> --axe --contrast "<status selectors>"` (a `probe:` line in ## Gate does it)';
 
@@ -904,21 +1008,45 @@ const NO_PROBE = 'no record in .validation/probe: run `node .claude/tools/app.mj
 // or animation, otherwise it lists them as info. `reduced-motion`: fails on large or continuous movement (infinite or over
 // 1 s, on transform or position) under prefers-reduced-motion. Cheap and deterministic; none for a probe from before it
 // recorded `design`.
+// A family main's code already names is not the card's: over the limit, the check fails only when the card brought a family of
+// its own. `inMain(text)` says whether the tree at the card's base names it; without it every family is the card's.
+// `controls` counts only the card's controls, those main's version did not show at the same step (`r.base`): more than half
+// of them with no response fails; one main's version also had is info. Without main's version every control counts.
 export const MAX_FAMILIES = 2;
 export const MAX_SIZES = 8;
-export const designChecks = (records) => {
+// The card's list with each element main's list holds taken away once per time it holds it (main had two unlabeled icons, the
+// card shows three: one is the card's).
+export const minus = (xs, ys) => {
+  const left = new Map();
+  for (const y of ys ?? []) left.set(y, (left.get(y) ?? 0) + 1);
+  return (xs ?? []).filter((x) => { const n = left.get(x) ?? 0; if (n) left.set(x, n - 1); return !n; });
+};
+const ownControls = (r) => {
+  const base = r.base?.design;
+  if (!r.design.controlLabels || !base?.controlLabels) return { controls: r.design.controls, count: r.design.unanimatedCount, names: r.design.unanimated, inherited: [] };
+  const still = r.design.unanimatedLabels ?? [];
+  const mine = minus(still, base.unanimatedLabels);
+  return { controls: minus(r.design.controlLabels, base.controlLabels).length, count: mine.length, names: [...new Set(mine)].slice(0, 8), inherited: [...new Set(minus(still, mine))] };
+};
+export const designChecks = (records, inMain = () => false) => {
   const seen = records.filter((r) => r.design);
   if (!seen.length) return [];
   const out = [];
   const families = [...new Set(seen.flatMap((r) => r.design.families))];
-  out.push(families.length > MAX_FAMILIES ? failed('fonts', `${families.length} type families (max ${MAX_FAMILIES}): ${families.slice(0, 5).join(', ')}`) : ok('fonts', `${families.length} type families`));
+  const brought = families.length > MAX_FAMILIES ? families.filter((f) => !inMain(f)) : families;
+  out.push(families.length <= MAX_FAMILIES ? ok('fonts', `${families.length} type families`)
+    : brought.length ? failed('fonts', `${families.length} type families (max ${MAX_FAMILIES}), ${brought.length} brought by the card: ${brought.slice(0, 5).join(', ')}`)
+    : ok('fonts', `info: ${families.length} type families (max ${MAX_FAMILIES}), all already in main: ${families.slice(0, 5).join(', ')}`));
   const worst = seen.reduce((a, r) => (r.design.sizes.length > a.design.sizes.length ? r : a));
   out.push(ok('sizes', `info: ${worst.design.sizes.length} font sizes at most per step (${worst.file}, soft max ${MAX_SIZES}): ${worst.design.sizes.join(', ')}`));
-  const still = seen.filter((r) => r.design.unanimatedCount > 0);
-  const lack = (r) => `${r.file}: ${r.design.unanimatedCount} of ${r.design.controls} action controls with no transition or animation (${r.design.unanimated.slice(0, 8).join(', ')})`;
-  const mostly = still.filter((r) => r.design.unanimatedCount * 2 > r.design.controls);
-  if (mostly.length) out.push(failed('controls', mostly.slice(0, 3).map(lack).join('; ')));
-  else out.push(ok('controls', still.length ? `info: ${still.slice(0, 3).map(lack).join('; ')}` : `${seen.reduce((n, r) => Math.max(n, r.design.controls), 0)} action controls at most, each with its response`));
+  const own = seen.map((r) => ({ file: r.file, ...ownControls(r) }));
+  const still = own.filter((r) => r.count > 0);
+  const lack = (r) => `${r.file}: ${r.count} of the card's ${r.controls} action controls with no transition or animation (${r.names.join(', ')})`;
+  const mostly = still.filter((r) => r.count * 2 > r.controls);
+  const kept = [...new Set(own.flatMap((r) => r.inherited))];
+  const main = kept.length ? ` · info: ${kept.length} of main's with none, not the card's: ${kept.slice(0, 5).join(', ')}` : '';
+  if (mostly.length) out.push(failed('controls', mostly.slice(0, 3).map(lack).join('; ') + main));
+  else out.push(ok('controls', still.length ? `info: ${still.slice(0, 3).map(lack).join('; ')}${main}` : `${own.reduce((n, r) => Math.max(n, r.controls), 0)} action controls of the card's at most, each with its response${main}`));
   const hinted = seen.filter((r) => r.design.selectHints?.length);
   out.push(hinted.length ? failed('select-placeholder', hinted.slice(0, 3).map((r) => `${r.file}: ${r.design.selectHints.join(', ')} on its empty option in the color of typed text, while the inputs' placeholder is lighter`).join('; ')) : ok('select-placeholder', 'no select on its empty option reads as chosen'));
   const reduced = seen.filter((r) => r.reduced);
@@ -932,13 +1060,27 @@ export const designChecks = (records) => {
 
 // The three checks of a screen, over the probe's records: axe violations, the contrast of the status texts, and the
 // focus after a failed submit (a step that leaves an alert on the page must leave the focus on an element).
-export const screenChecks = (records) => {
+// A violation main's version shows at the same step on the same elements (`r.base`, the probe's run on main's version) is
+// main's: info. Without main's version, a rule main breaks can be declared in the Log, `declared · axe-at-base · <rule id> ·
+// <why>`: its violations become info and the close lists the declaration for a person.
+export const DECLARED_AXE = /declared\s*·\s*axe-at-base\s*·\s*([\w-]+)\s*·\s*(.+?)\s*$/;
+const mainsViolation = (v, r) => {
+  const b = r.base?.axe?.violations?.find((x) => x.id === v.id);
+  return !!b && minus(v.nodes, b.nodes).length === 0 && (v.count ?? v.nodes?.length ?? 0) <= (b.count ?? b.nodes?.length ?? 0);
+};
+export const screenChecks = (records, { inMain = () => false, axeAtBase = new Set() } = {}) => {
   if (!records.length) return ['axe', 'contrast', 'focus'].map((n) => couldNot(n, NO_PROBE));
   const out = [];
   if (records.every((r) => r.axe === null || r.axe === undefined)) out.push(couldNot('axe', 'the probe ran without --axe'));
   else {
-    const bad = records.flatMap((r) => (r.axe?.violations ?? []).map((v) => `${r.file} ${v.id} (${v.impact ?? 'n/a'})`));
-    out.push(bad.length ? failed('axe', bad.slice(0, 5).join('; ')) : ok('axe', `${records.length} steps, no violation`));
+    const all = records.flatMap((r) => (r.axe?.violations ?? []).map((v) => ({ id: v.id, main: mainsViolation(v, r), text: `${r.file} ${v.id} (${v.impact ?? 'n/a'})` })));
+    const bad = all.filter((v) => !axeAtBase.has(v.id) && !v.main).map((v) => v.text);
+    const declared = [...new Set(all.filter((v) => axeAtBase.has(v.id)).map((v) => v.id))];
+    const traced = [...new Set(all.filter((v) => !axeAtBase.has(v.id) && v.main).map((v) => v.id))];
+    const known = [...declared, ...traced];
+    const unmeasured = records.some((r) => r.axe) && !records.some((r) => r.base?.axe) ? ' · main\'s version not measured: every violation counts for the card' : '';
+    const info = (declared.length ? ` · info: ${declared.join(', ')} declared in main before the card` : '') + (traced.length ? ` · info: ${traced.join(', ')} main's version shows too` : '') + unmeasured;
+    out.push(bad.length ? failed('axe', bad.slice(0, 5).join('; ') + info) : ok('axe', `${records.length} steps, no violation${known.length ? ' of the card\'s' : ''}${info}`));
   }
   const measured = records.flatMap((r) => [...(r.contrast ?? []), ...(r.statusContrast ?? [])].map((c) => ({ ...c, file: r.file })));
   if (!measured.length) out.push(couldNot('contrast', 'the probe ran without --contrast over the status texts'));
@@ -970,7 +1112,7 @@ export const screenChecks = (records) => {
     const lost = [...alerts.filter((r) => !r.activeElement).map((r) => `${r.file} shows an alert and the focus is on nothing`), ...dropped, ...noRing];
     out.push(lost.length ? failed('focus', [...new Set(lost)].slice(0, 5).join('; ')) : ok('focus', `${alerts.length} steps with an alert keep the focus on an element, and no step drops it`));
   }
-  return [...out, ...busyChecks(records), ...langChecks(records), ...designChecks(records)];
+  return [...out, ...busyChecks(records), ...langChecks(records), ...designChecks(records, inMain)];
 };
 
 // A busy state a screen reader hears and a person sees: `aria-busy` is "true" (an empty value reads as not busy), and the

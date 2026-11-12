@@ -6,7 +6,7 @@ It is declared as an `ASM` all the same, with the reference of that level. The d
 A screen that marketing or a campaign asks for (a landing, a newsletter or launch sign-up, a promo) takes its reference from
 «Landing or marketing» and from the section of its genre, not from the product forms: it has to sell, not only work.
 
-**A landing declares its genre.** `## Look` carries `ref-genre: <genre>` (free text; the sections below are `drink-food`, `cosmetics`, `local-service`, `saas`, `app`) and a
+**A landing declares its genre.** `## Look` carries `ref-genre: <genre>` (free text; the sections below are `drink-food`, `cosmetics`, `local-service`, `saas`, `app`; a document takes «Report or long document») and a
 `ref:` from the nearest genre's section: the same-genre reference is mandatory, it gives the structure and the conventions people expect. The level
 is set by the **first** `ref:`, the one of award level, of the genre or lateral; a store of the genre is not the ceiling. One or two
 `### Lateral` references of other genres give the trait of excellence. Every URL below answered with a real page when it was fetched; a
@@ -103,6 +103,22 @@ Captures (public pages that answered as product UI at 1440 px):
 ### Lateral
 
 - https://github.com/microsoft/vscode/actions · the state of each item as one icon per row, so a long list reads at a glance.
+
+## Report or long document
+
+A document read top to bottom, on screen and printed to PDF (a report, a study, a case). Its look is reading: a text face for pages
+(`draw.mjs --sector report` deals only faces with `longRead` in its type library), a column of 60–75 characters, numbered figures with
+a caption and a source, a contents list, and `@page` rules for the print. No stock photographs: its pictures are its charts, tables and diagrams.
+
+- https://www.gov.uk/government/publications/the-uk-government-resilience-framework/the-uk-government-resilience-framework-html · a long HTML publication: a numbered contents list, numbered sections, one plain reading column.
+- https://www.bankofengland.co.uk/monetary-policy-report/2024/november-2024 · a periodic report: key messages first, then sections each carried by a chart and an explanatory box.
+- https://ourworldindata.org/life-expectancy · a data report: an introduction, then key insights that each pair one chart with its notes, endnotes and how to cite it.
+- https://distill.pub/2020/circuits/zoom-in/ · a research article: one column, figures that break wider than it, footnotes and citations kept to the margin.
+
+### Lateral
+
+- https://edwardtufte.github.io/tufte-css/ · sidenotes and margin figures beside the text, the print book's layout on the web.
+- https://practicaltypography.com · the rules of a page of reading: line length, leading, point size, headings.
 
 ## Settings
 

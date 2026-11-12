@@ -154,6 +154,11 @@ const loadedUrls = new WeakMap();
 // Loads `url` fresh (never reload: a probe may have navigated) and checks where it landed: after
 // the load, after --wait-for and after the hydration wait, because a session check or a router
 // redirects from script, after the response.
+/**
+ * @param {any} page
+ * @param {string} url
+ * @param {{ waitFor?: string, allowRedirect?: boolean }} [options]
+ */
 export const load = async (page, url, { waitFor, allowRedirect = false } = {}) => {
   const response = await page.goto(url, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS });
   if (response && response.status() >= 400) throw new AuditError(`${url} answered HTTP ${response.status()}`);
@@ -178,7 +183,7 @@ export const load = async (page, url, { waitFor, allowRedirect = false } = {}) =
   // then until its own entrance animations have finished.
   const reload = loadedUrls.get(page)?.has(url);
   await page.waitForTimeout(reload ? RELOAD_WAIT_MS : HYDRATION_WAIT_MS);
-  await page.evaluate((cap) => new Promise((resolve) => {
+  await page.evaluate((cap) => new Promise(/** @param {(value?: any) => void} resolve */ (resolve) => {
     const end = performance.now() + cap;
     const check = () => (document.getAnimations().some((a) => a.playState === 'running' && Number.isFinite(a.effect?.getComputedTiming().endTime)) && performance.now() < end ? setTimeout(check, 50) : resolve());
     check();

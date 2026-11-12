@@ -268,9 +268,31 @@ It is extracted as a plain function, with the names of the domain, no new layers
 - **Same shape, different rule** (two validators that look alike but change for different reasons)
   is not duplication: leave both, and say it in the Log as `declared · K4 · <file> · <why the two must differ>`.
 
-`verify.mjs` runs K4 (`jscpd`, 5 lines or 50 tokens) in every grade: a clone with a side in lines the
-card wrote fails the gate; one already in the repo is only reported. It finds exact copies; a copy
+`verify.mjs` runs K4 (`jscpd`, 10 lines and 50 tokens) in every grade: a clone where the card wrote at
+least half the lines of one side fails the gate; one already in the repo, even with a line the card
+edited inside it, is only reported. It finds exact copies; a copy
 with renamed variables passes it, which is why the search before writing matters more than the check.
+
+## The card answers for what it changes
+
+The gate holds the standard for the card's code, not for the debt main already had; the card never
+reworks code outside its scope to turn the gate green.
+- `{affected}` in a gate line is the tests the card's files can break; `{changed}` (or `{changed:ts,tsx}`)
+  is the files it changed, for a linter or analyzer: `lint: npx eslint --no-warn-ignored {changed:js,mjs,ts,tsx}`,
+  `flutter: node .claude/tools/flutter-gate.mjs --analyze {changed:dart} --test {affected}` (profile flutter). The PR's CI runs everything.
+- A clone (K4), a font family over the limit or a brand font or colour off the sheet that main's code already
+  had is reported, never failed.
+- On a screen (profile web), verify starts main's version, the card's base in a worktree, beside the card's
+  app, and the probe and overflow run the same steps on both. An axe violation, a control with no response or
+  an overflowing text main's version shows at the same step is reported, never failed; everything else is the
+  card's, and an element the card touches answers in full. A page main does not have yet (the card adds it) is
+  compared with what main shows on its other pages at the same width: the shared header and footer stay main's.
+  If main's version cannot start, every finding counts for the card and the check says so.
+- A failing test with none of the card's tags is re-run in main's version at the card's base; if every one
+  fails there too, the line is `passed with red at base` and the close lists them for a person. A test file
+  red in main that the card does not fix: `declared · red-at-base · <test file> · <why>` in the Log leaves it
+  out of `{affected}` (never a test with the card's tags). An axe rule main breaks when main's version
+  cannot run: `declared · axe-at-base · <rule id> · <why>`. The close lists both for a person.
 
 ## How it is reviewed
 

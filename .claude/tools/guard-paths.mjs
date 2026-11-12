@@ -62,6 +62,19 @@ export const frozenNames = (cwd) => {
 // The exemptions of a frozen test, read from the card in progress: `refactor-tests: <why>` in its `## Gate`, or a level
 // with `testsFrozen: false` (poc). Without a named card there is no exemption. A repo with no `specs/` folder (`root` is
 // null) has no cards, so no test in it is frozen.
+// A frozen file is retired when every line of it that carries a tag names a test the current card's Log declares
+// replaced in that file (`replaces: <file> "<title>"`): deleting it is the replacement the Log already records.
+export const retiredByLog = (file, text, root, currentCard) => {
+  if (!root) return false;
+  const card = currentCard(root, { named: true });
+  let log = '';
+  try { log = readFileSync(`${card}/card.md`, 'utf8').split(/^## Log\b.*$/m)[1] ?? ''; } catch { return false; }
+  const name = basename(String(file).replaceAll('\\', '/'));
+  const titles = [...log.matchAll(/replaces:\s*(\S+)\s+"([^"]+)"/g)].filter((m) => basename(m[1].replaceAll('\\', '/')) === name).map((m) => m[2]);
+  const tagged = String(text).split('\n').filter((l) => FROZEN_TAG.test(l));
+  return tagged.length > 0 && tagged.every((l) => titles.some((t) => l.includes(t)));
+};
+
 export const frozenExempt = async (root, currentCard) => {
   if (!root) return true;
   const card = currentCard(root, { named: true });

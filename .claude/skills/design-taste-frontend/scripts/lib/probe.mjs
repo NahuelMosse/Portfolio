@@ -770,7 +770,11 @@ export function probe() {
     page: { height: pageH, screens: round(pageH / H, 1), words: bodyText.split(/\s+/).filter(Boolean).length,
       img: document.images.length, video: document.querySelectorAll('video').length, canvas: document.querySelectorAll('canvas').length, svg: document.querySelectorAll('svg').length, sections: document.querySelectorAll('section').length,
       horizontalOverflow: doc.scrollWidth > W + 2 ? doc.scrollWidth - W : 0, overflowCulprits, uiFragments, uiAbuse, realPictures, videoCount, widestPicture: round(widestPicture), uiPictures, pictureSamples, blendText, sideScrollers, clippedContent, fakeChrome, checkLists, brokenImages, emoji: [...new Set(emoji)].slice(0, 10),
-      videosNoPoster: [...document.querySelectorAll('video')].filter((v) => !v.getAttribute('poster') && v.getBoundingClientRect().width >= 160).length },
+      videosNoPoster: [...document.querySelectorAll('video')].filter((v) => !v.getAttribute('poster') && v.getBoundingClientRect().width >= 160).length,
+      // A clip that failed to load, found no source, or autoplays and still has no frame shows a grey box. A lazy clip
+      // (no autoplay) with no data yet is waiting, not broken.
+      videosBroken: [...document.querySelectorAll('video')].filter((v) => v.getBoundingClientRect().width >= 160
+        && (v.error || v.networkState === 3 || (v.autoplay && v.readyState < 2))).map((v) => (v.currentSrc || v.querySelector('source')?.src || v.src || '(no source)').slice(0, 120)).slice(0, 8) },
     hero: heroOut, h1,
     headings: headingStats.slice(0, 40),
     headingSummary: { count: headingStats.length, maxLines: Math.max(0, ...headingStats.map((h) => h.lines)), over2Lines: headingStats.filter((h) => h.lines > 2 && h.kind !== 'statement').length, statements: headingStats.filter((h) => h.kind === 'statement').length, centered: headingStats.filter((h) => h.align === 'center').length, medianWords: below.length ? below.map((h) => h.words).sort((a, b) => a - b)[Math.floor(below.length / 2)] : null, mixedFontHeadings: headingStats.filter((h) => h.mixedFonts).length },

@@ -241,10 +241,21 @@ const measureDesign = () => {
   const isAction = (e) => (e.tagName === 'A' ? e.hasAttribute('href') && !e.closest('p') && buttonLike(e) : true);
   const controls = [...document.querySelectorAll('a[href],a[role=button],button,input:not([type=hidden]),select,textarea,summary,[role=button]')].filter((e) => shown(e) && isAction(e));
   const label = (e) => `${e.tagName.toLowerCase()}${e.id ? `#${e.id}` : ''}${typeof e.className === 'string' && e.className.trim() ? `.${e.className.trim().split(/\s+/)[0]}` : ''}`;
+  // With its classes and text, so the gate can tell a control the card added from one main already had.
+  // A control without text (an icon) takes the first text of its nearest ancestors: the form or bar it sits in.
+  const named = (e) => {
+    const firstText = (el) => document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.textContent.trim() ? 1 : 3) }).nextNode()?.textContent;
+    let t = e.getAttribute('aria-label') || firstText(e) || e.value || '';
+    for (let up = e.parentElement, i = 0; !t.trim() && up && i < 4; up = up.parentElement, i++) t = up.getAttribute('aria-label') || firstText(up) || '';
+    const cls = typeof e.className === 'string' ? e.className.trim().split(/\s+/).filter((c) => c && !/[:[\]/!]/.test(c)).slice(0, 6) : [];
+    const head = `${e.tagName.toLowerCase()}${e.id ? `#${e.id}` : ''}${cls.map((c) => `.${c}`).join('')}`;
+    t = t.replace(/\s+/g, ' ').trim().slice(0, 24);
+    return t ? `${head} “${t}”` : head;
+  };
   const unanimated = controls.filter((e) => {
     const s = getComputedStyle(e);
     return !((secs(s.transitionDuration) > 0 && s.transitionProperty !== 'none') || (s.animationName !== 'none' && secs(s.animationDuration) > 0));
-  }).map(label);
+  }).map(named);
   // A select still on its placeholder option («Elegí un plan», value "") painted in the color of typed text reads as chosen,
   // when the page's inputs draw their own placeholder in another color.
   const inputs = [...document.querySelectorAll('input[placeholder]')].filter(shown);
@@ -253,7 +264,7 @@ const measureDesign = () => {
   const selectHints = typedColor && hintColor !== typedColor
     ? [...document.querySelectorAll('select')].filter((s) => shown(s) && s.value === '' && getComputedStyle(s).color === typedColor).map(label)
     : [];
-  return { families: [...families].sort(), sizes: [...sizes].sort((a, b) => a - b), controls: controls.length, unanimated: [...new Set(unanimated)].slice(0, 8), unanimatedCount: unanimated.length, selectHints };
+  return { families: [...families].sort(), sizes: [...sizes].sort((a, b) => a - b), controls: controls.length, controlLabels: controls.map(named), unanimated: [...new Set(unanimated)].slice(0, 8), unanimatedCount: unanimated.length, unanimatedLabels: unanimated, selectHints };
 };
 
 // Runs in the page with prefers-reduced-motion emulated: the large or continuous movement still running: CSS or WAAPI
@@ -339,6 +350,65 @@ export const shownAt = async (appUrl, route, selector) => {
   } catch { return false; } finally { await browser.close(); }
 };
 
+// Each node named as the controls are (its classes, its text or its ancestors'), so the gate can find the same element in main's
+// version; a node axe reaches through a frame or a shadow root keeps axe's selector.
+const axeOf = async (page, axePath) => {
+  if (await page.evaluate(() => typeof window.axe) === 'undefined') await page.addScriptTag({ path: axePath });
+  return page.evaluate(async () => {
+    const result = await window.axe.run();
+    const firstText = (el) => document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.textContent.trim() ? 1 : 3) }).nextNode()?.textContent;
+    const named = (target) => {
+      const e = target.length === 1 && typeof target[0] === 'string' ? document.querySelector(target[0]) : null;
+      if (!e) return target.join(' ');
+      let t = e.getAttribute('aria-label') || firstText(e) || e.value || e.getAttribute('alt') || '';
+      for (let up = e.parentElement, i = 0; !t.trim() && up && i < 4; up = up.parentElement, i++) t = up.getAttribute('aria-label') || firstText(up) || '';
+      const cls = typeof e.className === 'string' ? e.className.trim().split(/\s+/).filter((c) => c && !/[:[\]/!]/.test(c)).slice(0, 6) : [];
+      const head = `${e.tagName.toLowerCase()}${e.id ? `#${e.id}` : ''}${cls.map((c) => `.${c}`).join('')}`;
+      t = String(t).replace(/\s+/g, ' ').trim().slice(0, 24);
+      return t ? `${head} “${t}”` : head;
+    };
+    return result.violations.map((v) => ({ id: v.id, impact: v.impact, help: v.help, nodes: v.nodes.slice(0, 20).map((n) => named(n.target)), count: v.nodes.length }));
+  });
+};
+
+// The same steps on main's version (`APP_BASE_URL`, app.mjs up --base), at one viewport: only what the gate compares (axe and
+// the controls), in `<name>.base.json`, and main's home in `w<width>-home.base.json`. A step that fails there ends main's run
+// at that width: the later steps are compared with everything main showed at that width (gate-checks.mjs `probeRecords`).
+const probeBase = async (browser, { width, height }, { list, baseUrl, routes, axePath, enterSkip, out }) => {
+  const parsed = parseSteps(list, baseUrl);
+  if (parsed.error) return;
+  const context = await browser.newContext({ viewport: { width, height } });
+  try {
+    const page = await context.newPage();
+    for (const r of routes) {
+      await page.route(`**${r.path}`, (route) => {
+        if (route.request().method() !== r.method) return route.continue();
+        if (r.answer === 'hold') return undefined;
+        return route.fulfill({ status: r.answer, contentType: 'application/json', body: '{}' });
+      });
+    }
+    for (const [i, step] of parsed.steps.entries()) {
+      const name = `w${width}${height === 900 ? '' : `x${height}`}-step${String(i + 1).padStart(2, '0')}`;
+      const record = { error: null };
+      try {
+        await run(page, step, baseUrl, { steps: parsed.steps, i, skip: enterSkip, found: {} });
+        record.axe = axePath ? { violations: await axeOf(page, axePath) } : null;
+        record.design = await page.evaluate(measureDesign);
+      } catch (e) { record.error = String(e.message).split('\n')[0]; }
+      writeFileSync(join(out, `${name}.base.json`), JSON.stringify(record, null, 1));
+      if (record.error) break;
+    }
+    // Main's home: what every page shares (header, footer) is measured even when the card's steps reach a page main lacks.
+    const home = { error: null };
+    try {
+      await page.goto(new URL('/', baseUrl).href, { waitUntil: 'load', timeout: 45000 });
+      home.axe = axePath ? { violations: await axeOf(page, axePath) } : null;
+      home.design = await page.evaluate(measureDesign);
+    } catch (e) { home.error = String(e.message).split('\n')[0]; }
+    writeFileSync(join(out, `w${width}${height === 900 ? '' : `x${height}`}-home.base.json`), JSON.stringify(home, null, 1));
+  } finally { await context.close(); }
+};
+
 export const probe = async (argv, root = process.cwd()) => {
   const args = [...argv];
   const take = (name) => { const found = []; for (let i = args.indexOf(name); i >= 0; i = args.indexOf(name)) found.push(args.splice(i, 2)[1]); return found; };
@@ -368,6 +438,8 @@ export const probe = async (argv, root = process.cwd()) => {
   let appUrl = urlFlag ?? process.env.APP_URL;
   if (!appUrl) try { appUrl = JSON.parse(readFileSync(join(root, '.validation', 'app.json'), 'utf8')).url; } catch { /* no state */ }
   if (!appUrl) { console.error('No app: `node .claude/tools/app.mjs up` writes .validation/app.json first.'); return 1; }
+  // Main's version runs beside the card's when verify started it; a probe of another app (`--url`) has none.
+  const baseUrl = urlFlag ? null : process.env.APP_BASE_URL || null;
   let list;
   try { list = JSON.parse(readFileSync(join(root, stepsPath), 'utf8')); } catch (e) { console.error(`${stepsPath}: ${e.message}`); return 2; }
   const parsed = parseSteps(list, appUrl);
@@ -432,9 +504,8 @@ export const probe = async (argv, root = process.cwd()) => {
           if (contrasts.length) record.contrast = measures.filter((c) => !c.auto);
           record.statusContrast = measures.filter((c) => c.auto);
           if (axePath) {
-            if (await page.evaluate(() => typeof window.axe) === 'undefined') await page.addScriptTag({ path: axePath });
-            const result = await page.evaluate(() => window.axe.run());
-            record.axe = { violations: result.violations.map((v) => ({ id: v.id, impact: v.impact, help: v.help, nodes: v.nodes.slice(0, 5).map((n) => n.target.join(' ')) })) };
+            record.axe = { violations: await axeOf(page, axePath) };
+
           } else record.axe = null;
           record.design = await page.evaluate(measureDesign);
           await page.screenshot({ path: join(out, `${name}.png`) });
@@ -453,6 +524,7 @@ export const probe = async (argv, root = process.cwd()) => {
       }
       if (markupHit) { failed = true; log(`w${width} type-markup · un texto del usuario se interpretó como HTML (${markupHit} [data-kit-markup])`); }
       await context.close();
+      if (baseUrl) await probeBase(browser, { width, height }, { list, baseUrl, routes, axePath, enterSkip, out }).catch((e) => log(`w${width} main's version: ${String(e.message).split('\n')[0]}`));
     }
   } finally {
     await browser.close();

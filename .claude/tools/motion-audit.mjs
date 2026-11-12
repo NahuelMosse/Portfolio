@@ -34,7 +34,7 @@ import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { readFileSync } from 'node:fs';
-import { wallOf, wallMessage, isExternal, reasonOf, withoutScripts } from './bot-wall.mjs';
+import { wallOf, wallMessage } from './bot-wall.mjs';
 import { tracer, analyzeRecording, stagger, continuity, scrollStory, buildRoles, grammar, compare, primaryMove } from './motion-curves.mjs';
 
 const USAGE_LINE = 'motion-audit.mjs [<url>] [--only <selector>]… [--cpu 4] [--frames [<selector>]]… [--click <selector>] [--interrupt] [--out <dir>] [--strict] [--json]   (without <url>: APP_URL of the environment)\nmotion-audit.mjs <url> --measure [--kind product] [--scroll-story] [--frames [<selector>]]… [--click <selector>] [--interrupt]';
@@ -57,29 +57,6 @@ const out = resolve(opt('--out')[0] ?? DEFAULT_OUT);
 const max = Number(opt('--max')[0] ?? 40);
 const MEASURE_MODE = args[0] === 'compare' || ['--measure', '--kind', '--scroll-story'].some((f) => args.includes(f));
 const ENGINE = '../skills/motion-audit/scripts/lib';
-const BOT_WALL_TIMEOUT_MS = 15000;
-
-// A bot wall read from the HTTP answer alone: status, title and visible text. The rendered page is the engine's
-// own browser, so the rules that need its DOM (challenge markers, thin text beside media) are not applied here.
-const httpWall = async (target) => {
-  if (!isExternal(target)) return null;
-  const response = await fetch(target, { redirect: 'follow', signal: AbortSignal.timeout(BOT_WALL_TIMEOUT_MS) }).catch(() => null);
-  if (!response) return null;
-  const html = await response.text().catch(() => '');
-  const title = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] ?? '';
-  const text = withoutScripts(html).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-  return reasonOf({ status: response.status, title, text, html, media: { share: 1, nodes: 0 } });
-};
-
-// `--frames` with no selector takes the --click target; without one it is dropped.
-const withFramesTarget = (argv) => {
-  const at = argv.findIndex((a, i) => a === '--click' && argv[i + 1]);
-  const target = at >= 0 ? argv[at + 1] : argv.find((a) => a.startsWith('--click='))?.slice('--click='.length);
-  return argv.flatMap((a, i) => {
-    if (a !== '--frames' || (argv[i + 1] && !argv[i + 1].startsWith('--'))) return [a];
-    return target ? ['--frames', target] : [];
-  });
-};
 
 // The gate mode: the vendored engine's `main`, with the kit's defaults. Returns the exit code.
 const gate = async (argv) => {
@@ -93,18 +70,11 @@ const gate = async (argv) => {
     console.error(`could not run: the motion-audit engine is not installed at .claude/skills/motion-audit (${e.message}); the web profile brings it`);
     return 2;
   }
-  const a = withFramesTarget(argv);
+  const a = [...argv];
   if (!a.some((x) => x === '--out' || x.startsWith('--out='))) a.push('--out', resolve(DEFAULT_OUT));
-  let positional = [];
-  try { positional = engine.parseArgs(a).positional; } catch { return engine.main(a); }
-  if (!positional.length && process.env.APP_URL) { a.push(process.env.APP_URL); positional = [process.env.APP_URL]; }
   if (a.includes('--help')) {
     console.log(`${USAGE_LINE}\n\n${engine.USAGE}`);
-    return positional.length ? 0 : 2;
-  }
-  if (positional.length === 1) {
-    const wall = await httpWall(positional[0]);
-    if (wall) { console.error(wallMessage(positional[0], wall)); return 2; }
+    return url ? 0 : 2;
   }
   return engine.main(a);
 };

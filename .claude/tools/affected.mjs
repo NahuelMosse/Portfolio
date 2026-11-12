@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // affected.mjs [--tests <regex>] <touched file…> — the tests a change can break, one path per line.
 // A test is affected when it imports a touched file, through any chain of relative imports (`from`, `import()`,
-// `require`, a folder's index, a `.js` specifier that is a `.ts` file), or when its text names a touched file by its
+// `require`, a folder's index, a `.js` specifier that is a `.ts` file; Python's `from`/`import`; Dart's `package:` and
+// relative `import`/`export`/`part`), or when its text names a touched file by its
 // path or its file name: a spec that reads `openapi.yaml` is not an importer of it. A touched test is listed.
 // What counts as a test file is `IS_TEST` of card.mjs (`*.test.*`, `*.spec.*`, `test_*.py`, `*_test.go`, …); `--tests`
 // gives a stack its own pattern. The list is what a bounded run of a group takes as its tests:
@@ -18,7 +19,8 @@ const EXTENSIONS = ['.mjs', '.js', '.cjs', '.ts', '.tsx', '.jsx', '.mts', '.cts'
 const SPECIFIER = /(?:\bfrom\s*|\bimport\s*\(\s*|\brequire\s*\(\s*|\bimport\s+)(["'])(\.{1,2}\/[^"'\n]*|\.{1,2})\1/g;
 const ANY_SPECIFIER = /(?:\bfrom\s*|\bimport\s*\(\s*|\brequire\s*\(\s*|\bimport\s+)(["'])([^"'\n]+)\1/g;
 const PY_IMPORT = /^[ \t]*(?:from[ \t]+([\w.]+)[ \t]+import[ \t]+([\w, \t]+)|import[ \t]+([\w.]+))/gm;
-const MAX_BYTES =2_000_000;
+const DART_IMPORT = /^[ \t]*(?:import|export|part)[ \t]+(["'])([^"'\n]+)\1/gm;
+const MAX_BYTES = 2_000_000;
 
 const norm = (p) => p.replace(/\\/g, '/').replace(/^\.\//, '');
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -74,13 +76,26 @@ export const affected = (root, touched, isTest = IS_TEST) => {
     const p = dotted.replace(/\./g, '/');
     return ['', 'src/'].flatMap((b) => [`${b}${p}.py`, `${b}${p}/__init__.py`]).find((c) => inRepo.has(c)) ?? null;
   };
+  // Dart: `package:<name>/<path>` is `lib/<path>` beside the pubspec.yaml that names the package; any other specifier is
+  // relative to the importing file. `part` and `export` link like an import.
+  const packages = new Map(repo.filter((x) => /(^|\/)pubspec\.yaml$/.test(x)).map((f) => [text(f).match(/^name:\s*([\w]+)/m)?.[1], posix.dirname(f)]).filter(([n]) => n));
+  const resolveDart = (from, spec) => {
+    const pkg = spec.match(/^package:(\w+)\/(.+)$/);
+    const target = pkg ? (packages.has(pkg[1]) ? posix.normalize(posix.join(packages.get(pkg[1]), 'lib', pkg[2])) : null)
+      : /^[a-z]+:/.test(spec) ? null : posix.normalize(posix.join(posix.dirname(from), spec));
+    return target && inRepo.has(target.replace(/^\.\//, '')) ? target.replace(/^\.\//, '') : null;
+  };
   // Who imports whom: importedBy[file] = the files that import it.
   const importedBy = new Map();
   const sources = new Map();
-  for (const f of repo.filter((x) => MODULE.test(x) || /\.py$/.test(x) || isTest.test(x))) {
+  for (const f of repo.filter((x) => MODULE.test(x) || /\.(py|dart)$/.test(x) || isTest.test(x))) {
     const body = text(f);
     sources.set(f, body);
     const link = (target) => { if (target && target !== f) importedBy.set(target, [...(importedBy.get(target) ?? []), f]); };
+    if (/\.dart$/.test(f)) {
+      for (const m of body.matchAll(DART_IMPORT)) link(resolveDart(f, m[2]));
+      continue;
+    }
     if (/\.py$/.test(f)) {
       for (const m of body.matchAll(PY_IMPORT)) {
         const mod = m[1] ?? m[3];
