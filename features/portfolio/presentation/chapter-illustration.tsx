@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { PlateSources, deferredPlate, plateSrcSet, sceneAsset } from "@/features/film"
+import { PlateSources, deferredPlate, mediaUrl, plateSrcSet, sceneAsset } from "@/features/film"
 
 type ChapterIllustrationProps = {
   asset: string
@@ -26,7 +26,7 @@ export function CoverPicture({ wide, tall, sizes = "100vw" }: { wide: string; ta
   return (
     <>
       {tall && <source media={PHONE} type="image/avif" srcSet={plateSrcSet(tall, "avif")} sizes={sizes} />}
-      {tall && <source media={PHONE} srcSet={plateSrcSet(tall) ?? `/film/${tall}.webp`} sizes={sizes} />}
+      {tall && <source media={PHONE} srcSet={plateSrcSet(tall) ?? mediaUrl(`/film/${tall}.webp`)} sizes={sizes} />}
       <source type="image/avif" srcSet={plateSrcSet(wide, "avif")} sizes={sizes} />
     </>
   )
@@ -45,7 +45,7 @@ export function ChapterIllustration({ asset, tallAsset, fittedAsset, eager, wide
           {eager ? (
             <picture>
               <CoverPicture wide={wideId} tall={tallId} sizes={sizes} />
-              <img src={`/film/${wideId}.webp`} srcSet={plateSrcSet(wideId)} sizes={sizes} alt="" fetchPriority="high" decoding="async" />
+              <img src={mediaUrl(`/film/${wideId}.webp`)} srcSet={plateSrcSet(wideId)} sizes={sizes} alt="" fetchPriority="high" decoding="async" />
             </picture>
           ) : (
             <picture>

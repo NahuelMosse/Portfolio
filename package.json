@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/media-versions.mjs",
     "build": "next build",
+    "predev": "node scripts/media-versions.mjs",
     "dev": "next dev",
     "lint": "eslint .",
     "start": "next start"

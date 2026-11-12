@@ -1,4 +1,6 @@
 // The words of the page. Professional name stays Nahuel Mosse; the hero speaks as Nawi.
+// kit-boundary: features/film/motion.ts is the film slice's client entry; its index reaches the server-only scene assets
+import { mediaUrl } from "@/features/film/motion"
 
 export const identity = {
   mark: "NAWI",
@@ -44,7 +46,7 @@ export type Employer = Story & { title: string; period: string; current?: boolea
 const screen = (frame: ScreenFrame, src: string, alt: string, caption: string): Piece => ({
   kind: "screen",
   frame,
-  src: `/film/pieces/${src}.webp`,
+  src: mediaUrl(`/film/pieces/${src}.webp`),
   alt,
   caption,
 })
@@ -139,16 +141,16 @@ export const projects: readonly Project[] = [
       {
         kind: "capture",
         frame: "browser",
-        video: "/film/pieces/cebador-1280.webm",
-        poster: "/film/pieces/cebador-1280-poster.webp",
+        video: mediaUrl("/film/pieces/cebador-1280.webm"),
+        poster: mediaUrl("/film/pieces/cebador-1280-poster.webp"),
         alt: "The Cebador site scrolling at desktop width",
         caption: "Live",
       },
       {
         kind: "capture",
         frame: "phone",
-        video: "/film/pieces/cebador-390.webm",
-        poster: "/film/pieces/cebador-390-poster.webp",
+        video: mediaUrl("/film/pieces/cebador-390.webm"),
+        poster: mediaUrl("/film/pieces/cebador-390-poster.webp"),
         alt: "The Cebador site scrolling on a phone",
         caption: "Live, on a phone",
       },

@@ -1,3 +1,4 @@
+import { mediaUrl } from "./media-url"
 import { plateSrcSet } from "./plate"
 
 type PlateSourcesProps = { id: string; media?: string; sizes: string }
@@ -9,7 +10,7 @@ export function PlateSources({ id, media, sizes }: PlateSourcesProps) {
   return (
     <>
       {avif && <source media={media} type="image/avif" data-srcset={avif} sizes={sizes} />}
-      {media && <source media={media} data-srcset={plateSrcSet(id) ?? `/film/${id}.webp`} sizes={sizes} />}
+      {media && <source media={media} data-srcset={plateSrcSet(id) ?? mediaUrl(`/film/${id}.webp`)} sizes={sizes} />}
     </>
   )
 }
