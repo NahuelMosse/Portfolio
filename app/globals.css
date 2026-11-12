@@ -1626,14 +1626,14 @@ html:not([data-sound="idle"]) .cover-cue {
   .cover-foot {
     position: relative;
     z-index: 3;
-    /* it holds only the absolutely placed sheet, so it takes no height: the cover is then exactly one screen tall */
-    padding: 0;
+    /* the foot keeps only its bottom padding, so the cover (one screen plus the foot) is not taller than the phone */
+    padding-top: 0;
   }
 
   /* the ID sheet ends 8px above the fixed hire bar; the sound cue rides right above it */
   .cover-foot .layer-sheet {
     position: absolute;
-    inset: auto 0 calc(100% + var(--hire-bar-height) + 8px) 0;
+    inset: auto 0 calc(100% + var(--space-4) + var(--hire-bar-height) + 8px) 0;
     padding: var(--space-4) var(--gutter-right) 0 var(--gutter-left);
     background: linear-gradient(to top, var(--ink-85) 62%, transparent);
   }
