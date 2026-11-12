@@ -23,6 +23,8 @@ not_read: none
   reuses: features/film/motion.ts and features/film/index.ts, the slice's client and server entries, export mediaUrl beside DEFERRED_BLANK; features/film/presentation/plate.ts plateSrcSet (its `?v=` query becomes the per-file version); features/portfolio/presentation/piece-image.ts pieceSrcSet, pieceThumb
 - T3 · S2,ASM-02 · next.config.mjs (presentation) · tests: e2e/media-cache-busting.spec.ts "a versioned /film response is cached 31536000 s as immutable and an unversioned one revalidates instead of being kept 30 days @PF-9-S2 @PF-9-ASM-02"
   reuses: next.config.mjs headers() and its /film rule
+- T4 · S4 · specs/PF-8-broken-tests-and-local-paths/retired.txt (data) · tests: e2e/published-paths-session.spec.ts "a session record is written relative to the home folder @PF-8-ASM-03"; e2e/retired-bulk.spec.ts "every test kept out of the gate names its reason and its Log line, the PF-1 suite by the requester's one decision @PF-8-S1 @PF-8-ASM-01 @PF-8-ASM-02 @PF-8-ASM-04"
+  reuses: the gate's retired list and PF-8's retired-bulk check; the two tests main left red after #25 and kit 6.49.0
 
 ## Changes to existing behavior
 
