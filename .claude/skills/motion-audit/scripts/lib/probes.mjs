@@ -394,7 +394,7 @@ export const clickMeasurer = (ctx, selector, interrupt, makeAttempt = pageAttemp
       moved,
       long: longFramesBetween(quiet.loaf, quiet.from, Infinity, unattributedLimit(page)),
       // A step the frames were too sparse to judge, with no jump found in any recording: the check is undecided.
-      unsure: clickUnsure(moved, rec),
+      unsure: clickUnsure(moved),
       cadence: recordingCadence(rec),
       // What this recording could see of each motion, and the jumps of script-driven motions (a CSS transition that cannot
       // teleport is never left undecided) with how clear each was.

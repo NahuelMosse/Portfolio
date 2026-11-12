@@ -3,6 +3,9 @@ import { DEFAULT_MAX_ELEMENTS } from './constants.mjs';
 
 export class UsageError extends Error {}
 
+// A `--frames` with no selector, until `--click` is known.
+const CLICK_TARGET = Symbol('click target');
+
 // type: 'string' | 'int' | 'number' | 'ratio' | 'bool'; repeat: collected into an array.
 const SPEC = {
   only: { type: 'string', repeat: true },
@@ -34,7 +37,7 @@ motion-audit compare <ref.json> <mine.json>
   --interact              also press and toggle controls for real (denylist applies); default is observe-only
   --click <selector>      record 1.5 s after a real click on it
   --interrupt             with --click: click again half-way
-  --frames <selector>     write a contact sheet of its hover and press (repeatable)
+  --frames [<selector>]   write a contact sheet of its hover and press (repeatable); without a selector, of the --click target
   --entrances             report sections that appear without an entrance (info)
   --config <file>         config file (default ./motion-audit.config.json)
   --baseline <report>     ignore findings already present in an earlier report.json
@@ -46,6 +49,9 @@ motion-audit compare <ref.json> <mine.json>
   --strict                warnings fail too
   --json                  print the report as JSON (schemaVersion 1)
   --help                  this text
+
+Without <url|file> the APP_URL environment variable is used. A page on the internet that answers a bot wall or an
+error page (status 400 or more, a challenge title or text) is not audited.
 
 Exit: 0 clean, 1 findings, 2 could not run or audited nothing.`;
 
@@ -78,10 +84,15 @@ export const parseArgs = (argv) => {
       opts[flag.replace(/-(\w)/g, (_, c) => c.toUpperCase())] = true;
       continue;
     }
+    if (flag === 'frames' && eq < 0 && (argv[i + 1] === undefined || argv[i + 1].startsWith('--'))) { opts.frames.push(CLICK_TARGET); continue; }
     const raw = eq >= 0 ? a.slice(eq + 1) : argv[++i];
     const value = parseValue(flag, spec, raw);
     const key = flag.replace(/-(\w)/g, (_, c) => c.toUpperCase());
     if (spec.repeat) opts[key].push(value); else opts[key] = value;
+  }
+  if (opts.frames.includes(CLICK_TARGET)) {
+    if (!opts.click) throw new UsageError('--frames without a selector needs --click <selector>');
+    opts.frames = opts.frames.map((f) => (f === CLICK_TARGET ? opts.click : f));
   }
   if (opts.interrupt && !opts.click) throw new UsageError('--interrupt needs --click <selector>');
   return { opts, positional };

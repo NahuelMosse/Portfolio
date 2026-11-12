@@ -3,6 +3,7 @@
 // comparison, 'css' = read from declared CSS, 'events' = Animation objects and DOM events.
 export const LEVELS = ['off', 'info', 'warning', 'error'];
 
+/** @type {Record<string, { level: 'error' | 'warning' | 'info', source: 'frames' | 'pixels' | 'css' | 'events', user: string }>} */
 export const KINDS = {
   'no-feedback': { level: 'error', source: 'pixels', user: 'Hover changes nothing on a button: the UI feels dead (links: warning; inputs: not reported)' },
   'no-press-feedback': { level: 'warning', source: 'pixels', user: 'Press changes nothing on a button (links and inputs: not reported)' },
@@ -30,4 +31,5 @@ export const KINDS = {
   'click-target': { level: 'error', source: 'pixels', user: 'The --click selector matches nothing visible' },
 };
 
+/** @returns {string[]} every finding kind a report can carry */
 export const kindNames = () => Object.keys(KINDS);

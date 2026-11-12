@@ -15,8 +15,7 @@
 // A report whose owner still runs (the judge) is listed with PENDING: it is not an action, and the close still waits for it.
 // Exits 0 if nothing is missing, 1 if something is missing, 2 if there is no card in progress.
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
-import { homedir } from 'node:os';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import {
   IS_CODE, IS_TEST, NOT_PRODUCTION, asOneArg, cardFiles, commandDir, oneRound, cardStart, copiedFromKit, currentCard, fileMapLines, keyOf, namedIn,
@@ -59,19 +58,15 @@ export const sessionRecords = (root, cardDir) => {
       .flatMap((l) => [...l.matchAll(/record: (.+?\.jsonl)\s*$/gm)].map((m) => m[1]))
     : [];
 };
-// A record is published relative to the home folder: an absolute path would carry the user's name into the repo.
-const homeRelative = (record) => {
-  const path = record.replaceAll('\\', '/');
-  const home = homedir().replaceAll('\\', '/');
-  return path.toLowerCase().startsWith(`${home.toLowerCase()}/`) ? `~${path.slice(home.length)}` : path;
-};
-export const sessionLine = (record) => `${today()} · ${modelsOf(record).join(', ') || '<model>'} · cost not available · ${homeRelative(record)}`;
+// The record is named by its file name: its folder is a path of the person's machine, and the name alone identifies the session.
+const recordName = (record) => basename(String(record).replaceAll('\\', '/'));
+export const sessionLine = (record) => `${today()} · ${modelsOf(record).join(', ') || '<model>'} · cost not available · ${recordName(record)}`;
 // Writes the line each of the card's records lacks in sessions.md; close.mjs and verify.mjs both call it. Returns one entry per line written.
 export const writeSessionLines = (root, cardDir) => {
   const sessions = join(cardDir, 'sessions.md');
   const wrote = [];
   for (const record of sessionRecords(root, cardDir)) {
-    if ((existsSync(sessions) ? readFileSync(sessions, 'utf8') : '').includes(homeRelative(record))) continue;
+    if ((existsSync(sessions) ? readFileSync(sessions, 'utf8') : '').includes(recordName(record))) continue;
     appendFileSync(sessions, `${sessionLine(record)}\n`);
     wrote.push(sessions);
   }
@@ -194,7 +189,9 @@ const missingOnce = (root, { closing = true } = {}) => {
   const lints = passed(LINTER, [0]);
   // The card's own `lint:` line, run through once.mjs as `lint`, is its linter whatever it calls (`sh lint.sh`): it covers every test.
   const lintLine = gateLine(cardDir, 'lint');
-  const declaredLint = !!lintLine && recorded.some((r) => r.name === 'lint' && r.exit === 0 && r.command.trim() === lintLine.trim() && runOnThisCode(r));
+  // A placeholder of the line (`{changed}`, `{affected}`) was expanded when it ran: it matches whatever it became.
+  const asRun = lintLine && new RegExp(`^${lintLine.trim().split(/\{(?:changed|affected)[^}]*\}/).map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('.*')}$`);
+  const declaredLint = !!lintLine && recorded.some((r) => r.name === 'lint' && r.exit === 0 && asRun.test(r.command.trim()) && runOnThisCode(r));
 
   const out = [
     ...production.filter((f) => mutationRequired(exempt, map, f, root) && !unmutated.has(f))

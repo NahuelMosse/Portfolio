@@ -5,6 +5,11 @@ const SIGNIFICANT_MS = 50;
 const SIGNIFICANT_RATIO = 1.25;
 const SIGNIFICANT_OVERSHOOT = 5;
 
+/**
+ * Reads a report.json and checks its schema version.
+ * @param {string} file
+ * @returns {import('./audit.mjs').Report}
+ */
 export const readReport = (file) => {
   let report;
   try { report = JSON.parse(readFileSync(file, 'utf8')); } catch (e) { throw new Error(`cannot read report ${file}: ${e instanceof SyntaxError ? 'not valid JSON (content not shown)' : e.code ?? 'unreadable'}`); }
@@ -43,7 +48,11 @@ const differences = (am, ad, bm, bd) => {
   return out;
 };
 
-// One line per control present in both reports and gesture; controls are paired by label.
+/**
+ * One line per control present in both reports and gesture; controls are paired by label.
+ * @param {import('./audit.mjs').Report} ref
+ * @param {import('./audit.mjs').Report} mine
+ */
 export const compareReports = (ref, mine) => {
   const lines = [];
   let differ = 0;

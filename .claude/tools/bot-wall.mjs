@@ -7,6 +7,7 @@
 // positive evidence (a status, a challenge title or marker); the thin-text rule applies only to a bare page with no media.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { currentCard } from './card.mjs';
 
 const TITLES = /just a moment|attention required|verify you are human|access denied|are you a robot|security check|ddos protection/i;
 const BODIES = /enable javascript and cookies|verify you are human|captcha|checking your browser|cf-chl|cf-browser-verification|access denied|unusual traffic/i;
@@ -111,12 +112,11 @@ export const readProduct = () => {
   };
 };
 
-// `ref-kind: product` in the `## Look` of the card in progress (`specs/.current`), or KIT_REF_KIND=product.
+// `ref-kind: product` in the `## Look` of the card in progress, or KIT_REF_KIND=product.
 export const refKindOf = (root = process.cwd()) => {
   if (process.env.KIT_REF_KIND) return process.env.KIT_REF_KIND;
   try {
-    const cur = readFileSync(join(root, 'specs', '.current'), 'utf8').trim();
-    const look = readFileSync(join(root, 'specs', cur, 'card.md'), 'utf8').split(/^## /m).find((x) => /^Look\b/.test(x));
+    const look = readFileSync(join(currentCard(root, { named: true }), 'card.md'), 'utf8').split(/^## /m).find((x) => /^Look\b/.test(x));
     return look?.match(/^\s*[-*]?\s*ref-kind:\s*([\w-]+)/im)?.[1].toLowerCase() ?? null;
   } catch { return null; }
 };

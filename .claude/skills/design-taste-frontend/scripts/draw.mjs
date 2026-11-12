@@ -40,7 +40,7 @@ const list = (v) => (typeof v === 'string' ? v.split(',').map((s) => s.trim()).f
 const outDir = resolve(String(opt('out', '.taste-skill')));
 const sheetPath = join(outDir, 'direction.json');
 
-const SECTORS = ['saas', 'dev-tool', 'ai-product', 'consumer-app', 'finance', 'agency', 'studio-portfolio', 'personal-portfolio', 'ecommerce', 'physical-product', 'fashion', 'hospitality', 'restaurant', 'real-estate', 'architecture', 'event', 'health', 'education', 'nonprofit', 'culture', 'music', 'other'];
+const SECTORS = ['saas', 'dev-tool', 'ai-product', 'consumer-app', 'finance', 'agency', 'studio-portfolio', 'personal-portfolio', 'ecommerce', 'physical-product', 'fashion', 'hospitality', 'restaurant', 'real-estate', 'architecture', 'event', 'health', 'education', 'nonprofit', 'culture', 'music', 'report', 'other'];
 const TONES = ['quiet', 'bold', 'warm', 'technical', 'playful', 'luxury', 'editorial'];
 const DEFAULT_SECTIONS = {
   saas: ['hero', 'showcase', 'features', 'how-it-works', 'testimonial', 'pricing', 'faq', 'cta', 'footer'],
@@ -64,6 +64,8 @@ const DEFAULT_SECTIONS = {
   nonprofit: ['hero', 'intro', 'stats', 'features', 'about', 'cta', 'footer'],
   culture: ['hero', 'intro', 'gallery', 'list', 'about', 'cta', 'footer'],
   music: ['hero', 'list', 'gallery', 'about', 'cta', 'footer'],
+  // a document read top to bottom (a report, a study, a case), on screen and printed to PDF
+  report: ['hero', 'intro', 'stats', 'features', 'list', 'footer'],
   other: ['hero', 'intro', 'features', 'showcase', 'cta', 'footer'],
 };
 // requested role names → the role vocabulary used by library/sections.json
@@ -159,7 +161,7 @@ async function main() {
     const dir = L.directions.find((d) => d.id === sheet.direction.id);
     if (what === 'direction') sheet = deal({ ...sheet.input, direction: null, avoid: [...(sheet.input.avoid || []), sheet.direction.id] }, sheet.redraws);
     else if (what === 'hero') sheet.hero = dealHero(dir, sheet.input, [sheet.hero?.id]);
-    else if (what === 'type') sheet.type = dealType(dir, [sheet.type?.id]);
+    else if (what === 'type') sheet.type = dealType(dir, [sheet.type?.id], sheet.input);
     else if (what === 'palette') {
       const exclude = [sheet.palette?.id];
       sheet.palette = dealPalette(dir, sheet.input, exclude);
@@ -225,6 +227,7 @@ async function main() {
 // What kind of pictures this build can honestly have. It decides which blueprints are dealt and how the
 // sheet tells the agent to fill picture slots.
 function imageryMode(input) {
+  if (input.sector === 'report') return 'document';
   if (input.have.includes('product-photo') || input.have.includes('photography')) return 'own';
   if (['saas', 'dev-tool', 'ai-product', 'consumer-app', 'finance'].includes(input.sector)) return 'interface';
   if (['physical-product', 'ecommerce'].includes(input.sector)) return 'no-product-photo';
@@ -281,9 +284,9 @@ function deal(input, redraws) {
   const pool = directionPool(input);
   const forced = input.direction ? L.directions.find((d) => d.id === input.direction) : null;
   const dir = forced || pick(fresh(pool, recent('direction', Math.min(5, pool.length - 1))));
-  const s = { version: 1, at: new Date().toISOString(), seed: startSeed, redraws, input, imagery: imageryMode(input), allow: dir.allow || [], direction: dir, deal: { seed: startSeed, input, history: hist } };
+  const s = { version: 1, at: new Date().toISOString(), seed: startSeed, redraws, input, imagery: imageryMode(input), allow: imageryMode(input) === 'document' ? [...new Set([...(dir.allow || []), 'still-page'])] : dir.allow || [], direction: dir, deal: { seed: startSeed, input, history: hist } };
   s.hero = dealHero(dir, input, []);
-  s.type = input.keep.includes('type') ? null : dealType(dir, []);
+  s.type = input.keep.includes('type') ? null : dealType(dir, [], input);
   s.palette = input.keep.includes('palette') ? null : dealPalette(dir, input, []);
   s.photos = dealPhotos(dir, input);
   s.motion = L.motions.find((m) => m.id === (s.hero?.motion || dir.motion)) || L.motions.find((m) => m.id === dir.motion) || null;
@@ -345,9 +348,11 @@ function dealHero(dir, input, exclude) {
   const ok = pool.filter((h) => !exclude.includes(h.id) && (h.needs || []).every((n) => n === 'photography' || input.have.includes(n)));
   return pick(fresh(ok.length ? ok : pool.filter((h) => !exclude.includes(h.id)).length ? pool.filter((h) => !exclude.includes(h.id)) : pool, recent('hero', 3)));
 }
-function dealType(dir, exclude) {
-  let pool = L.type.filter((t) => (dir.type || []).includes(t.id) || (dir.typeClasses || []).includes(t.class));
-  if (!pool.length) pool = L.type;
+// A report is read for pages: only faces whose text face holds long reading (`longRead` in library/type.json).
+function dealType(dir, exclude, input = {}) {
+  const base = input.sector === 'report' ? L.type.filter((t) => t.longRead) : L.type;
+  let pool = base.filter((t) => (dir.type || []).includes(t.id) || (dir.typeClasses || []).includes(t.class));
+  if (!pool.length) pool = base;
   const p = pool.filter((t) => !exclude.includes(t.id));
   return pick(fresh(p.length ? p : pool, recent('type', Math.min(6, pool.length - 1))));
 }
@@ -442,7 +447,7 @@ function dealPalette(dir, input, exclude) {
   return { ...made, fit: [...chosen.why.filter((w) => !/the brief asks for/.test(w)), `no palette of the library carries ${missing.join(' and ')} as the brief asks: recoloured from ${chosen.x.id}, its structure kept and its contrast checked`] };
 }
 function dealPhotos(dir, input) {
-  if (dir.photos === false) return null; // image-free directions
+  if (dir.photos === false || imageryMode(input) === 'document') return null; // image-free directions and documents
   const words = briefWords(input.brief);
   const mode = imageryMode(input);
   const SOFT_SETS = ['architecture', 'fog-and-quiet', 'sky-and-space', 'texture', 'water'];
@@ -653,9 +658,10 @@ function render(s) {
     'no-product-photo': '**There are no photographs of the product and none can be faked.** Wherever this sheet calls for a picture of the object, draw the object: its pieces as flat shapes in inline SVG, large, in one graphic language and in the colours that make it worth buying (a glaze, a finish, a material), never grey placeholders (references/imagery.md §8). **Around the object, use real pictures of its world** from the open collections: its material up close, its town in old postcards, its craft in engravings, a museum piece of the same kind, never one a visitor could take for the product itself (references/imagery.md §3). Start with ' + find + '. Download what you use with `--get` and credit every one on the page (`--credits` prints the footer line). Type at scale and full colour fields carry the rest; the dealt photographs only where they plainly do not pretend to be the product. In your report, say that product photography is needed and which drawings it will replace, and list every found picture with its source and licence.',
     atmosphere: '**The project has no photographs of its own yet.** First choice: **real pictures of the subject\'s world from the open collections**: its city and street in old postcards and photographs, an old map of the neighbourhood, its materials up close, its trade in engravings, museum objects of its kind (references/imagery.md §3). Start with ' + find + '. Download what you use into the project with `--get` and credit every one on the page (`--credits` prints the footer line). They show the world around the client, never the client\'s own room, dish, product, person or team. Second, for what no honest picture exists of: draw the subject\'s own things in code, large, in one flat graphic language and the palette\'s real colours (its tiles, its windows, its objects; references/imagery.md §8). Third: the dealt photographs, only where an honestly generic picture fits (the sea, the weather, a material), never one a visitor could take for the thing itself and never an unrelated scene. One treatment for all of them. If this direction is built on photographs, plan the set before building (four to six pictures of one family) and reuse them at different crops and scales instead of finding or drawing a new picture for every slot; keep drawings as `<symbol>` + `<use>` or generate them with a small script so the page stays light. List every found picture (with its source and licence), every dealt photograph and every drawing that stands in for photography in your report.',
     own: '**Use the images that belong to the project in every picture slot.** For slots they cannot fill, real pictures of the subject\'s world from the open collections come next (start with ' + find + '; credit them on the page), then the dealt photographs.',
+    document: '**This is a document, read top to bottom and printed to PDF.** Its pictures are its own evidence: charts and tables built from its data (assets/charts.js), diagrams of what it explains, and the figures it quotes, each numbered with a caption and its source. No stock photographs and no atmosphere. Where this sheet says photograph or image, set a figure, a pulled number at display size or a flat colour field with type on it. The text face is set for pages of reading: a column of 60–75 characters, body 17–20px on screen and 10–12pt in print, leading 1.45–1.6. Print is part of the design: `@page` with its size and margins, running headers or page numbers, `break-inside: avoid` on figures and tables, `break-after: avoid` on headings, and no element that only works on screen (sticky bars, scroll scenes) left in the printed page.',
   };
   p(MODE[s.imagery || 'atmosphere']); p(); p(d.imagery);
-  p(); p('**Floor (the inspector checks it):** at least four real pictures on the page, usually six to twelve; SVG drawings do not count. One moving picture where an honest clip exists: `node <skill>/scripts/assets.mjs --video "<query>"`, used as a muted loop with a poster frame. Whatever this direction says about pictures, it is carried out with real ones.');
+  if (s.imagery !== 'document') p(), p('**Floor (the inspector checks it):** at least four real pictures on the page, usually six to twelve; SVG drawings do not count. One moving picture where an honest clip exists: `node <skill>/scripts/assets.mjs --video "<query>"`, used as a muted loop with a poster frame. Whatever this direction says about pictures, it is carried out with real ones.');
   if (s.photos) {
     p();
     p(s.imagery === 'interface' ? `Optional atmosphere, two at most, from the "${s.photos.title || s.photos.set}" set (${s.photos.note}). The page does not need them.` : `Photographs dealt for this build, from the "${s.photos.title || s.photos.set}" set (${s.photos.note})`);

@@ -14,6 +14,10 @@
 //         writes its pid and port to app.json at once (`starting: true`), waits up to 180 s for the port, seeds,
 //         rewrites app.json without `starting` and prints `APP_URL=<url>`.
 // down:   brings the app down by PID and removes app.json (the data folder stays).
+// up --base / down --base: main's version of the same app, beside the card's: the card's base checked out in a detached
+//         worktree under .validation/base (node_modules, .venv and venv linked from the repo), started with the same
+//         `app:` and `seed:` lines; prints `APP_BASE_URL=<url>`. The screen checks run their steps on both and what main's
+//         version already shows is main's, not the card's.
 // status: app.json, and whether the app lives and is up to date. Exit 0 only if both.
 // probe <steps.json> [--widths 320,390,1280] [--route "POST /x=201|500|hold"] [--axe] [--watch <locator>] [--contrast "<sel>,<sel>"]
 //         drives the app of app.json (Playwright from the repo or KIT_PLAYWRIGHT_ROOT) through the steps —a JSON list of
@@ -41,6 +45,7 @@ import { existsSync, mkdirSync, openSync, closeSync, readFileSync, writeFileSync
 import { createServer, connect } from 'node:net';
 import { join } from 'node:path';
 import { currentCard, keyOf } from './card.mjs';
+import { baseDir, baseSha, baseTree, dropBaseTree } from './base-tree.mjs';
 import { endsWithLine } from './final-line.mjs';
 import { fencedBlocks } from './card-doc.mjs';
 
@@ -51,7 +56,7 @@ const root = process.cwd();
 const stateFile = join(root, '.validation', 'app.json');
 const pause = (ms) => new Promise((done) => setTimeout(done, ms));
 
-const readState = () => { try { return JSON.parse(readFileSync(stateFile, 'utf8')); } catch { return null; } };
+const readState = (file = stateFile) => { try { return JSON.parse(readFileSync(file, 'utf8')); } catch { return null; } };
 const alive = (pid) => { try { process.kill(pid, 0); return true; } catch (e) { return e.code === 'EPERM'; } };
 const answers = (port) => new Promise((done) => {
   const s = connect({ host: '127.0.0.1', port, timeout: 1000 });
@@ -116,10 +121,10 @@ const needAppLine = (env) => {
   process.exit(3);
 };
 
-const stop = () => {
-  const s = readState();
+const stop = (file = stateFile) => {
+  const s = readState(file);
   if (s) { killTree(s.pid); killStray(s); }
-  rmSync(stateFile, { force: true });
+  rmSync(file, { force: true });
   return s;
 };
 
@@ -151,11 +156,11 @@ const launch = (command, vars, logPath, cwd = root) => {
 
 // Starts the plan's app from `cwd` on a free port with a new data folder, waits for the port and seeds it. Returns
 // `{ ok: true, url, port, pid, dataDir, stamp }`, or `{ ok: false, why, tail, logPath }` with the app already brought down.
-const writeState = (state) => {
+const writeState = (state, file = stateFile) => {
   mkdirSync(join(root, '.validation'), { recursive: true });
-  writeFileSync(stateFile, JSON.stringify(state, null, 1));
+  writeFileSync(file, JSON.stringify(state, null, 1));
 };
-const startApp = async ({ app, seed }, key, cwd = root) => {
+const startApp = async ({ app, seed }, key, cwd = root, file = stateFile) => {
   const port = await freePort();
   const stamp = Date.now();
   const dataDir = join(root, '.validation', 'app', String(stamp));
@@ -164,11 +169,11 @@ const startApp = async ({ app, seed }, key, cwd = root) => {
   const url = `http://127.0.0.1:${port}`;
   const child = launch(app, { PORT: String(port), DATA_DIR: dataDir }, logPath, cwd);
   // The app lives detached from here on: whoever cuts `up` before it ends still finds the pid and port for `down`.
-  writeState({ url, port, pid: child.pid, dataDir, key, startedAt: new Date(stamp).toISOString(), starting: true });
+  writeState({ url, port, pid: child.pid, dataDir, key, startedAt: new Date(stamp).toISOString(), starting: true }, file);
   const failed = (why) => {
     killTree(child.pid);
     killStray({ port, startedAt: new Date(stamp).toISOString() });
-    rmSync(stateFile, { force: true });
+    rmSync(file, { force: true });
     const tail = existsSync(logPath) ? readFileSync(logPath, 'utf8').trim().split('\n').slice(-8).join('\n') : '';
     return { ok: false, why, tail, logPath };
   };
@@ -206,6 +211,38 @@ const up = async () => {
   console.log(`APP_URL=${url}`);
 };
 
+const baseState = join(root, '.validation', 'app-base.json');
+const dropBase = () => {
+  const s = stop(baseState);
+  const left = dropBaseTree(root);
+  if (left) console.error(`main's worktree stays at ${baseDir(root)}: ${left}`);
+  return s;
+};
+const upBase = async () => {
+  const env = environmentOf();
+  needAppLine(env);
+  const sha = baseSha(root);
+  if (!sha) { console.error("No card base before HEAD: main's version cannot be told apart from the card's."); process.exit(1); }
+  const key = `${sha} ${keyFor(env)}`;
+  const current = readState(baseState);
+  if (current && !current.starting && alive(current.pid) && await answers(current.port) && current.key === key) {
+    console.log(`APP_BASE_URL=${current.url}`);
+    return;
+  }
+  stop(baseState);
+  const tree = baseTree(root, { fresh: true });
+  if (tree.why) { console.error(`Could not check out main's version: ${tree.why}`); process.exit(1); }
+  const started = await startApp(env, key, tree.dir, baseState);
+  if (!started.ok) {
+    dropBase();
+    console.error(`main's version did not start: ${started.why}\n${started.tail}\nlog: ${started.logPath}`);
+    process.exit(1);
+  }
+  const { url, port, pid, dataDir, stamp } = started;
+  writeState({ url, port, pid, dataDir, key, startedAt: new Date(stamp).toISOString() }, baseState);
+  console.log(`APP_BASE_URL=${url}`);
+};
+
 const status = async () => {
   const s = readState();
   if (!s) { console.log('No app running: `node .claude/tools/app.mjs up` starts it.'); process.exit(1); }
@@ -218,11 +255,14 @@ const status = async () => {
 };
 
 const command = process.argv[2];
-if (command === 'up') await up();
+const base = process.argv[3] === '--base';
+if (command === 'up' && base) await upBase();
+else if (command === 'down' && base) { const s = dropBase(); console.log(s ? `Brought down main's version ${s.url} (pid ${s.pid}).` : 'Main\'s version was not running.'); }
+else if (command === 'up') await up();
 else if (command === 'down') { const s = stop(); console.log(s ? `Brought down ${s.url} (pid ${s.pid}).` : 'No app was running.'); }
 else if (command === 'status') await status();
 else if (command === 'probe' && !existsSync(new URL('./probe.mjs', import.meta.url))) { console.error('probe: not installed (profile web off)'); process.exit(2); }
 else if (command === 'probe') { endsWithLine('probe'); process.exit(await (await import('./probe.mjs')).probe(process.argv.slice(3), root)); }
-else { console.error('usage: node app.mjs up|down|status|probe'); process.exit(2); }
+else { console.error('usage: node app.mjs up|down [--base]|status|probe'); process.exit(2); }
 // The app lives on its own: the CLI must not wait for its pipes or timers.
 process.exit(0);

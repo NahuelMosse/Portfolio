@@ -29,6 +29,7 @@
 // Unattended (`SDD_UNATTENDED=1`) nobody decides to turn a check off: `off` exits 2, and so does
 // `confirm-off` above poc; `on` passes and leaves an assumption event in the card, and so does `confirm-off`
 // at poc, which only keeps off what a person turned off. Nobody lowers the grade or chooses poc either.
+// A person lowers it only while no card has closed under it.
 // Importing this file never writes anything.
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync, appendFileSync } from 'node:fs';
@@ -360,24 +361,65 @@ export const openCard = (root, { named = false } = {}) => {
 };
 
 const BINARY = /\.(png|jpe?g|gif|webp|avif|ico|woff2?|ttf|pdf|zip|gz)$/i;
+const wholeFile = (root, f) => {
+  const path = join(root, f);
+  if (!existsSync(path)) return [];
+  try { return readFileSync(path, 'utf8').split('\n').map((text, i) => ({ n: i + 1, text })); } catch { return []; }
+};
+
+// The added lines of a `git diff -U0`, by the file they land in. A header (`+++`, `rename to`) is read only between
+// `diff --git` and the first hunk, so a removed `-- comment` or an added `++x` is never taken for one.
+const addedIn = (diff, keep = () => true) => {
+  const out = new Map();
+  let file = null;
+  let header = false;
+  let n = 0;
+  for (const l of diff.split('\n')) {
+    if (l.startsWith('diff --git ')) { file = null; header = true; continue; }
+    if (header) {
+      const to = l.match(/^(?:\+\+\+ b\/|rename to )(.+?)\t?$/)?.[1];
+      if (to) { file = keep(to) ? to : null; if (file && !out.has(file)) out.set(file, []); continue; }
+      if (l === '+++ /dev/null') { file = null; continue; }
+      if (!l.startsWith('@@')) continue;
+      header = false;
+    }
+    const h = l.match(/^@@ -\S+ \+(\d+)/);
+    if (h) { n = Number(h[1]); continue; }
+    if (file && l.startsWith('+')) out.get(file).push({ n: n++, text: l.slice(1) });
+  }
+  return out;
+};
+
 // The lines the card added to a file, with their numbers; a file new to git counts as all added.
 export const addedOf = (root, base, f) => {
   if (BINARY.test(f)) return [];
   // A moved file diffs against where it came from (originOf): a move adds only what it changed.
   const origin = originOf(root, base, f);
-  const d = git(root, ['diff', '-U0', RENAME, ownBase(root, base), '--', f, ...(origin ? [origin] : [])]).stdout ?? '';
-  if (!d) {
-    const path = join(root, f);
-    return existsSync(path) ? (() => { try { return readFileSync(path, 'utf8').split('\n').map((text, i) => ({ n: i + 1, text })); } catch { return []; } })() : [];
+  const d = git(root, ['-c', 'core.quotePath=false', 'diff', '-U0', RENAME, ownBase(root, base), '--', f, ...(origin ? [origin] : [])]).stdout ?? '';
+  return d ? (addedIn(d).get(f) ?? []) : wholeFile(root, f);
+};
+
+// The same for many files with a few `git diff` calls limited to them and to where they were renamed from: one process per
+// file took over a minute on a card of 426 files under load, and one diff of the whole tree, over 20 s on a card that also
+// carried 60 000 lines of kit and references. Paths go in batches that fit a Windows command line. A file the diff does not
+// show is new to git (all added) or is asked alone.
+export const addedOfAll = (root, base, files) => {
+  const want = new Set(files.filter((f) => !BINARY.test(f)));
+  if (!want.size) return new Map();
+  // A file and its origin stay in the same batch: apart, the rename would read as a whole new file.
+  const batches = [[]];
+  let size = 0;
+  for (const f of want) {
+    const unit = [f, originOf(root, base, f)].filter(Boolean);
+    const len = unit.join('   ').length + 3;
+    if (size + len > 20_000 && batches.at(-1).length) { batches.push([]); size = 0; }
+    batches.at(-1).push(...unit); size += len;
   }
-  const out = [];
-  let n = 0;
-  for (const l of d.split('\n')) {
-    const h = l.match(/^@@ -\S+ \+(\d+)/);
-    if (h) { n = Number(h[1]); continue; }
-    if (l.startsWith('+') && !l.startsWith('+++')) out.push({ n: n++, text: l.slice(1) });
-  }
-  return out;
+  const d = batches.map((b) => git(root, ['-c', 'core.quotePath=false', 'diff', '-U0', RENAME, ownBase(root, base), '--', ...b]).stdout ?? '').join('\n');
+  const found = addedIn(d, (f) => want.has(f));
+  const untracked = new Set((git(root, ['-c', 'core.quotePath=false', 'ls-files', '--others', '--exclude-standard', '-z']).stdout ?? '').split('\0'));
+  for (const f of want) if (!found.has(f)) found.set(f, untracked.has(f) ? wholeFile(root, f) : addedOf(root, base, f));
+  return found;
 };
 
 const merge = (a, b) => {
@@ -402,7 +444,7 @@ export const cardSignals = (root, cardDir, { diff = false } = {}) => {
   if (diff) {
     const base = cardStart(root, cardDir);
     const files2 = cardFiles(root, base);
-    const added = files2.flatMap((f) => addedOf(root, base, f).map((l) => ({ ...l, f })));
+    const added = [...addedOfAll(root, base, files2)].flatMap(([f, lines]) => lines.map((l) => ({ ...l, f })));
     merge(found, detectIn({ files: files2, added }));
   }
   return found;
@@ -575,9 +617,10 @@ const turnGrade = (root, target, reason) => {
   const unattended = process.env.SDD_UNATTENDED === '1';
   if (unattended && target === 'poc') fail('Unattended nobody chooses poc: the lightest bar is a person\'s decision. The card goes to review (`.claude/AUTONOMY.md`).');
   if (unattended && rank(target) < rank(current)) fail(`Unattended nobody lowers the grade (${current} → ${target}): that decision is a person's.`);
-  // The first choice is free; after it the grade only goes up, because a bar once lowered and raised again
-  // would hide the debt of the cards written in between.
-  if (recorded && rank(target) < rank(recorded)) fail(`Grades only go up: ${recorded} → ${target} would lower the bar. ${GRADES.slice(rank(recorded) + 1).length ? `From ${recorded} the next ones are ${GRADES.slice(rank(recorded) + 1).join(', ')}.` : `${recorded} is the highest.`}`);
+  // The grade is free until a card closes under it; after that it only goes up, because a bar once lowered
+  // and raised again would hide the debt of the cards written in between.
+  const closed = (() => { try { return readdirSync(join(root, 'specs')).find((d) => existsSync(join(root, 'specs', d, 'closing.md'))); } catch { return null; } })();
+  if (recorded && closed && rank(target) < rank(recorded)) fail(`Grades only go up once a card closed (${closed}): ${recorded} → ${target} would lower the bar. ${GRADES.slice(rank(recorded) + 1).length ? `From ${recorded} the next ones are ${GRADES.slice(rank(recorded) + 1).join(', ')}.` : `${recorded} is the highest.`}`);
   if (!reason) fail('Choosing a grade needs its reason: `kit.mjs grade <poc|mvp|production> --reason "<why>"`. It is written in the manifest and repeated in every closing.');
   if (openCard(root)) fail('There is a card open: the grade changes between cards, so the bar the card was planned with does not change under it. Close the card first.');
   if (recorded === target) { console.log(`The grade is already ${target}.`); return; }

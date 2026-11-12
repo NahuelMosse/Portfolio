@@ -130,7 +130,7 @@ export const tracer = (cfg) => {
         for (const rec of recsActive) {
           if (rec.root && !rec.root.contains(added)) continue;
           if (rec.mounted >= mountCap) continue;
-          for (const n of [added, ...added.querySelectorAll('*')]) if (rec.mounted < mountCap && track(rec, n)) rec.mounted++;
+          for (const n of [added, ...(/** @type {Element} */ (added)).querySelectorAll('*')]) if (rec.mounted < mountCap && track(rec, n)) rec.mounted++;
         }
       }
     }
@@ -150,7 +150,7 @@ export const tracer = (cfg) => {
       const r = n.getBoundingClientRect();
       return r.width >= minSize && r.height >= minSize;
     });
-    return nodes.map((n) => [rank(n), n]).sort((x, y) => x[0] - y[0]).slice(0, pageCap).map((x) => x[1]);
+    return nodes.map((n) => /** @type {[number, Element]} */ ([rank(n), n])).sort((x, y) => x[0] - y[0]).slice(0, pageCap).map((x) => x[1]);
   };
 
   window.__mt = {

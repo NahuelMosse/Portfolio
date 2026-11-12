@@ -17,9 +17,12 @@ const isInput = (kind) => kind === 'input';
 
 const closeToToken = (ms, tokens) => (tokens ?? []).some((x) => Math.abs(x - ms) <= 1);
 
-// Findings for one audited element: [{ kind, element, detail, key, level? }]. `key` identifies the
-// finding inside its element and kind (moment, property) so fingerprints survive changed numbers.
-// `policy`: { bands, tokens }.
+/**
+ * Findings for one audited element: [{ kind, element, detail, key, level? }]. `key` identifies the
+ * finding inside its element and kind (moment, property) so fingerprints survive changed numbers.
+ * @param {any} el one element of a report's `elements`
+ * @param {{ bands?: Record<string, number[]>, tokens?: { durations?: number[] } }} [policy] duration bands per gesture and duration tokens, as `loadConfig` returns them
+ */
 export const judgeElement = (el, policy = {}) => {
   const bands = { ...BANDS, ...policy.bands };
   const out = [];
@@ -104,7 +107,11 @@ export const judgeElement = (el, policy = {}) => {
   return out;
 };
 
-// Same kind of control, same moment, different declared durations: no single motion grammar.
+/**
+ * Same kind of control, same moment, different declared durations: no single motion grammar.
+ * @param {any[]} elements the `elements` of a report
+ * @param {{ tokens?: { durations?: number[] } }} [policy]
+ */
 export const inconsistencies = (elements, policy = {}) => {
   const groups = new Map();
   for (const el of elements) for (const [moment, d] of Object.entries(el.moments)) {

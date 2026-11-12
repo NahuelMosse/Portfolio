@@ -52,7 +52,8 @@ const ADVICE = {
   secret: 'Secrets are not read or written by the agent. The variable names are in .env.example ' +
     '(`cat .env.example`); the value is set by a person.',
   frozen: 'has tagged tests and a commit already holds them: frozen, and the shell does not edit them either. If one is wrong, replace it: a new file with the same tag, and ' +
-    '`node .claude/tools/log.mjs specs/<card> "replaces: <test file> \\"<test>\\" · <why wrong> · by: <new file> \\"<test>\\""`.',
+    '`node .claude/tools/log.mjs specs/<card> "replaces: <test file> \\"<test>\\" · <why wrong> · by: <new file> \\"<test>\\""`. ' +
+    'A behavior the card removes: `by: none` for each tagged test of the file, then `git rm` it.',
 };
 let shell;
 let paths;
@@ -115,7 +116,8 @@ const inWorkTree = (key) => {
 };
 // What a written path is, matched on its normalized spelling; resolved against the folder the segment runs in and,
 // in case the `cd` tracking was wrong, against the folder of the call.
-const kindOf = async ({ path, cwd, append }) => {
+const DELETES = /^`(?:git rm|rm|unlink|del|erase|remove-item|ri)`$/i;
+const kindOf = async ({ path, cwd, append, via }) => {
   for (const key of new Set([paths.normalizePath(path, cwd), paths.normalizePath(path, base)])) {
     if (/(^|\/)specs\/[^/]+\/(card\.md|risk\.json)$/.test(key)) return 'card';
     if (/(^|\/)specs\/[^/]+\/closing\.md$/.test(key)) return 'closing';
@@ -128,7 +130,7 @@ const kindOf = async ({ path, cwd, append }) => {
     const file = paths.onDisk(path, cwd);
     const head = paths.committedTagged(file);
     if (head.error) reject(`Could not query git for ${file} (${head.error}). Without being able to verify whether the test is frozen, the guard blocks.`);
-    if (head.frozen && !(await exempt(file))) return 'frozen';
+    if (head.frozen && !(await exempt(file)) && !(DELETES.test(via ?? '') && paths.retiredByLog(file, head.text, card.rootOf(file), card.currentCard))) return 'frozen';
   }
   return null;
 };

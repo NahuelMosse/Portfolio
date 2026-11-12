@@ -45,7 +45,7 @@ gallery route (`src/gallery.tsx`, `/gallery`) in every state.
 ```
 types: npx tsc --noEmit
 unit: npx vitest run
-lint: npx eslint src
+lint: npx eslint --no-warn-ignored {changed:js,mjs,ts,tsx,jsx}
 build: npx vite build
 scenarios: npx playwright test --project=gate
 mutate src/lib/<logic>.ts: npx vitest run src/lib/<logic>.test.ts

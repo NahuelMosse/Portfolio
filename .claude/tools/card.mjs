@@ -105,7 +105,9 @@ const listing = (root) => {
 // A line names a file by its full path, or by its file name when that name is unique among the repo's
 // files (the kit's own excluded); an ambiguous name names nothing. `root` is the repo of the card,
 // never the cwd of the session. A file that does not exist yet counts as unique when no other file
-// has its name: the plan names what the card is about to create.
+// has its name: the plan names what the card is about to create. A folder (`assets/frames/`) or a glob (`assets/frames/*.webp`,
+// read as its folder) names every file under it: a card that generates a folder of files lists the folder once. A folder
+// `copied from the kit` names only its unchanged copies (`copiedFromKit`).
 export const namedIn = (lines, file, root = process.cwd()) => {
   const name = file.split('/').pop();
   const byName = () => {
@@ -116,6 +118,7 @@ export const namedIn = (lines, file, root = process.cwd()) => {
   return lines.filter((l) => {
     const tokens = taskTokens(l);
     if (tokens.includes(file)) return true;
+    if (!/copied from the kit/i.test(l) && tokens.some((t) => t.length > 1 && t.endsWith('/') && !t.startsWith('/') && file.startsWith(t))) return true;
     if (!tokens.includes(name)) return false;
     unique ??= byName();
     return unique;
@@ -162,13 +165,14 @@ export const rootOf = (path) => {
 // project's configuration. The leading `cd` always counts. Git Bash writes `/d/x` for `D:\x`.
 const native = (p) => (process.platform === 'win32' ? p.replace(/^\/([A-Za-z])(?=\/|$)/, '$1:') : p);
 const ABSOLUTE = /(?:^|[\s"'(])((?:[A-Za-z]:[\\/]|\/)[^\s"'`|;&<>()]+)/g;
-const LEADING_CD = /^\s*cd\s+(?:"([^"]+)"|'([^']+)'|([^\s;&|]+))\s*(?:&&|;)/;
+const LEADING_CD = /^\s*(?:cd\s+(?:"([^"]+)"|'([^']+)'|([^\s;&|]+))\s*(?:&&|;)|git(?:\.exe)?\s+-C\s+(?:"([^"]+)"|'([^']+)'|([^\s;&|]+))\s)/;
+const cdOf = (m) => m && (m[1] ?? m[2] ?? m[3] ?? m[4] ?? m[5] ?? m[6]);
 const CONFIG_OPTION = /--config(?:=|\s+)(?:"([^"]+)"|'([^']+)'|([^\s"'`|;&<>()]+))/g;
 const NOT_THE_WORK = /(?:^|[\\/])(?:node_modules|\.git|ms-playwright|\.cache)(?:[\\/]|$)/;
-// The directory a shell command moves to before anything else (`cd <dir> &&` or `;`), or null.
+// The directory a shell command moves to before anything else (`cd <dir> &&` or `;`, or a leading `git -C <dir>`), or null.
 export const leadingCd = (cwd, command) => {
-  const cd = String(command ?? '').match(LEADING_CD);
-  return cd ? resolve(cwd, native(cd[1] ?? cd[2] ?? cd[3])) : null;
+  const cd = cdOf(String(command ?? '').match(LEADING_CD));
+  return cd ? resolve(cwd, native(cd)) : null;
 };
 const touchedBy = (cwd, { tool_name: tool, tool_input: data = {} } = {}) => {
   const direct = [data.file_path, data.notebook_path].filter((p) => typeof p === 'string' && p);
@@ -176,13 +180,13 @@ const touchedBy = (cwd, { tool_name: tool, tool_input: data = {} } = {}) => {
   if (!['Bash', 'PowerShell'].includes(tool) || typeof data.command !== 'string') return [];
   // The body of a heredoc is text written somewhere, not a path the command works on; its first line stays.
   const command = data.command.replace(/(<<-?\s*['"]?(\w+)['"]?[^\n]*)\n[\s\S]*?(?:\n\s*\2\b|$)/g, '$1');
-  const cd = command.match(LEADING_CD);
+  const cd = cdOf(command.match(LEADING_CD));
   const foreignConfigs = new Set([...command.matchAll(CONFIG_OPTION)]
     .map((m) => (m[1] ?? m[2] ?? m[3]).replace(/[.,:]+$/, ''))
     .filter((p) => !rootOf(join(resolve(cwd, native(p)), '_'))));
   const named = [...command.matchAll(ABSOLUTE)].map((m) => m[1].replace(/[.,:]+$/, ''))
     .filter((p) => !NOT_THE_WORK.test(p) && !foreignConfigs.has(p));
-  return [...(cd ? [cd[1] ?? cd[2] ?? cd[3]] : []), ...named].map((p) => resolve(cwd, native(p)));
+  return [...(cd ? [cd] : []), ...named].map((p) => resolve(cwd, native(p)));
 };
 
 // An Agent launch has no file and no command: the repo it is about is the one its prompt names by absolute
@@ -214,7 +218,7 @@ export const kitRootOf = (path) => {
     dir = up;
   }
 };
-export const SOFT = new Set(['trim-output', 'session-record', 'light-images', 'edit-count', 'no-pending-close', 'context-cap', 'turn-budget', 'shell-writes', 'kit-feedback']);
+export const SOFT = new Set(['trim-output', 'session-record', 'light-images', 'edit-count', 'no-pending-close', 'context-cap', 'turn-budget', 'shell-writes', 'kit-feedback', 'worktree-sweep']);
 const real = (p) => { try { return realpathSync.native(p); } catch { return resolve(p); } };
 
 // A hook reads its call from fd 0. Once the call was read here, an imported hook of another kit
@@ -323,6 +327,8 @@ export const hookCard = (cwd, env = process.env, call = {}) => {
     const root = rootOf(join(start, '_'));
     const card = root && currentCard(root, { named });
     if (card) return { root, card };
+    // A worktree the call names answers for itself: with no card yet, the main checkout's card is not this call's.
+    if (named && inWorktree(start)) return null;
   }
   return null;
 };
@@ -332,13 +338,48 @@ export const relativeTo =(root, path) => relative(root, path).split(sep).join('/
 // The document that marks a folder as a card: its snapshot, or `card.md` (the single document) when it has none.
 export const frozenOf = (dir) => ['card.md', 'card.snapshot.md'].map((f) => join(dir, f)).find((p) => existsSync(p)) ?? null;
 
-// The card in progress is the one `specs/.current` names —one line, the card's folder name, written
-// by /card—. Without that file, or if it names no folder with a snapshot, it is the specs/ folder
-// with the most recent snapshot: touching another card's snapshot then changes the answer, which
-// is why the file exists.
-// `{ named: true }` asks for the `.current` card alone, with no fallback.
+// Inside a linked worktree: the nearest `.git` above the path is a file that names its git folder.
+const inWorktree = (path) => {
+  for (let dir = resolve(path); ; dir = dirname(dir)) {
+    try { return statSync(join(dir, '.git')).isFile(); } catch {}
+    if (dirname(dir) === dir) return false;
+  }
+};
+
+// The branch checked out at root, read from git's HEAD file (a worktree's `.git` is a file naming its git folder).
+export const branchOf = (root) => {
+  try {
+    let git = join(root, '.git');
+    if (statSync(git).isFile()) git = resolve(root, readFileSync(git, 'utf8').match(/^gitdir:\s*(.+)$/m)[1].trim());
+    return readFileSync(join(git, 'HEAD'), 'utf8').match(/^ref: refs\/heads\/(.+)$/m)?.[1].trim() ?? '';
+  } catch { return ''; }
+};
+
+// The card folder the branch belongs to: the branch is `<ID>-<slug>` (a `feat/` prefix allowed) and the
+// folder starts with the same ID; when several do, the one sharing the longest start with the branch.
+const ID_OF = /^[A-Za-z][A-Za-z0-9]*-\d+(?![\d])/;
+export const branchCard = (root) => {
+  const last = branchOf(root).split('/').pop();
+  const id = last.match(ID_OF)?.[0];
+  if (!id) return null;
+  let names = [];
+  try { names = readdirSync(join(root, 'specs')); } catch { return null; }
+  const shared = (n) => { let i = 0; while (i < n.length && n[i] === last[i]) i++; return i; };
+  const hit = names
+    .filter((n) => n.match(ID_OF)?.[0] === id && frozenOf(join(root, 'specs', n)))
+    .sort((a, b) => shared(b) - shared(a))[0];
+  return hit ? join(root, 'specs', hit) : null;
+};
+
+// The card in progress is the one the branch names; on a branch that names none (the default branch, a
+// kit branch), the one `specs/.current` names —one line, the card's folder name, written by /card—, which
+// a branch merged from another card can leave stale. Without either, it is the specs/ folder with the
+// most recent snapshot: touching another card's snapshot then changes the answer, which is why the file exists.
+// `{ named: true }` asks for the branch's or the `.current` card alone, with no fallback.
 export const currentCard = (root, { named: onlyNamed = false } = {}) => {
   if (!existsSync(join(root, 'specs'))) return null;
+  const ofBranch = branchCard(root);
+  if (ofBranch) return ofBranch;
   try {
     const named = readFileSync(join(root, 'specs', '.current'), 'utf8').trim();
     if (/^[\w][\w.-]*$/.test(named) && frozenOf(join(root, 'specs', named))) return join(root, 'specs', named);
@@ -412,19 +453,18 @@ export const commandDir = (command) => String(command).match(/^\s*cd\s+(?:"([^"]
 
 // Where the card's own changes start: its first commit's parent, or, when main was merged into the card after that, the
 // merge-base with main. Otherwise a merge of main makes every file of other cards look like this card's, and a file main moved
-// looks new. What a file was before the card is read here, not at the card's start.
+// looks new. What a file was before the card is read here, not at the card's start. The newest merge-base of the local and
+// the remote default branch: a worktree starts from origin/main while the local main can be behind it.
 const owns = new Map();
 export const ownBase = (root, base) => remembered(owns, `${root}\0${base}`, () => {
-  for (const ref of ['main', 'origin/main', 'master']) {
-    const mb = git(root, ['merge-base', 'HEAD', ref]).stdout?.trim();
-    if (!mb) continue;
-    const baseSha = git(root, ['rev-parse', '--verify', '-q', base]).stdout?.trim();
-    const head = git(root, ['rev-parse', 'HEAD']).stdout?.trim();
-    // A card on main itself (one branch) has HEAD as its merge-base: its start stays the base.
-    if (mb !== head && mb !== baseSha && git(root, ['merge-base', '--is-ancestor', base, mb]).status === 0) return mb;
-    return base;
-  }
-  return base;
+  const bases = ['main', 'origin/main', 'master', 'origin/master']
+    .map((ref) => git(root, ['merge-base', 'HEAD', ref]).stdout?.trim()).filter(Boolean);
+  const mb = bases.find((m) => bases.every((o) => o === m || git(root, ['merge-base', '--is-ancestor', o, m]).status === 0));
+  if (!mb) return base;
+  const baseSha = git(root, ['rev-parse', '--verify', '-q', base]).stdout?.trim();
+  const head = git(root, ['rev-parse', 'HEAD']).stdout?.trim();
+  // A card on main itself (one branch) has HEAD as its merge-base: its start stays the base.
+  return mb !== head && mb !== baseSha && git(root, ['merge-base', '--is-ancestor', base, mb]).status === 0 ? mb : base;
 });
 
 // A file the card moved (git sees a rename at 50 % similarity or more) is judged against where it came from: its old

@@ -186,19 +186,23 @@ const mergeSettings = (current, kit) => {
   return `${JSON.stringify(out, null, 2)}\n`;
 };
 
-// `.kit-incoming/` is excluded locally (`info/exclude`, which git resolves in a worktree too), never through the repo's
-// .gitignore: a repo that checks its product commits carry no kit file flagged the .gitignore line an update added.
+// `.kit-incoming/` and `specs/.current` are excluded locally (`info/exclude`, which git resolves in a worktree too), never
+// through the repo's .gitignore: a repo that checks its product commits carry no kit file flagged the .gitignore line an
+// update added. `specs/.current` is the session's pointer, not the card's: committed, every pair of parallel card PRs
+// collided on it, and the branch already names the card. One the repo still tracks gets the command that untracks it.
 const ensureIgnored = (target) => {
-  const line = '.claude/.kit-incoming/';
-  const has = (path) => existsSync(path) && readFileSync(path, 'utf8').split(/\r?\n/).includes(line);
-  if (has(join(target, '.gitignore'))) return;
   const where = gitOut(target, 'rev-parse', '--git-path', 'info/exclude');
   if (where.status !== 0 || !where.stdout?.trim()) return;
   const exclude = resolve(target, where.stdout.trim());
-  if (has(exclude)) return;
-  mkdirSync(dirname(exclude), { recursive: true });
-  const text = existsSync(exclude) ? readFileSync(exclude, 'utf8') : '';
-  appendFileSync(exclude, `${text && !text.endsWith('\n') ? '\n' : ''}${line}\n`);
+  for (const line of ['.claude/.kit-incoming/', 'specs/.current']) {
+    const has = (path) => existsSync(path) && readFileSync(path, 'utf8').split(/\r?\n/).includes(line);
+    if (has(join(target, '.gitignore')) || has(exclude)) continue;
+    mkdirSync(dirname(exclude), { recursive: true });
+    const text = existsSync(exclude) ? readFileSync(exclude, 'utf8') : '';
+    appendFileSync(exclude, `${text && !text.endsWith('\n') ? '\n' : ''}${line}\n`);
+  }
+  if (gitOut(target, 'ls-files', '--error-unmatch', 'specs/.current').status === 0)
+    console.log('specs/.current is committed: the branch names the card, so untrack it with `git rm --cached specs/.current` in the next commit.');
 };
 
 const commitOf = (source) => gitOut(source, 'rev-parse', 'HEAD').stdout?.trim() || 'unknown';

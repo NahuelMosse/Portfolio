@@ -89,7 +89,9 @@ pass. The summary says `audited N of M controls` and lists every skip with its r
 raise it too (`--max 200 --min-coverage 0.8`). Controls that appear after the audit counted them (a late
 fetch) make the run exit 2 with `INCOMPLETE`: re-run with `--wait-for`. A URL that redirects, from the
 server or from script (a session check, a router), exits 2 instead of auditing another page; a login
-page is never audited (use `--storage-state`), another page only with `--allow-redirect`.
+page is never audited (use `--storage-state`), another page only with `--allow-redirect`. Without a URL the run
+audits `$APP_URL`. A page on the internet that answers a bot wall or an error page (status 400 or more, a challenge
+title or text) exits 2 without being audited: say so instead of reporting on it; `localhost` and files are not checked.
 
 **Observe-only by default.** The audit hovers, forces `:active` and `:focus-visible`, scrolls and reads.
 It does not click, so it cannot toggle a Follow button, open a menu that opens on `pointerdown`, submit a
@@ -120,7 +122,8 @@ it only against a throwaway environment: a "Save" or "Delete" target is saved or
 - `--click <sel>` records everything that moves for 1.5 s after a real click, including overlays mounted
   into `<body>` on open; `--interrupt` clicks again at 160 ms. Do it for every overlay the screen opens.
 - `--frames <sel>` writes a contact sheet through hover, press and release with the real time of each
-  frame. Look at it: the numbers say *that* it moved, the sheet shows *how*.
+  frame; `--frames` with no selector does it for the `--click` target. Look at it: the numbers say *that* it moved,
+  the sheet shows *how*.
 - `--storage-state <file>` runs logged in (a Playwright storage state); a redirect to a login page exits 2.
 - `--wait-for <sel>` waits for the selector before auditing (apps that hydrate late).
 - `--entrances` also reports sections that appear without an entrance, as info.

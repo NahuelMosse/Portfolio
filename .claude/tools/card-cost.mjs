@@ -12,6 +12,7 @@ import { homedir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { linesOf } from './transcript.mjs';
+import { currentCard } from './card.mjs';
 
 export const PRICE = {
   'claude-opus-5-5': { input: 4, output: 20, write5m: 5.00, write1h: 8.00, read: 0.20 },
@@ -168,7 +169,7 @@ export const closingCost = (cwd = process.cwd(), arg = null, since = null) => {
     if (!from) return 'Cost: could not run: no commit of card.md to date the start of the card';
     const checkouts = checkoutsOf(cwd);
     // With worktrees, several cards can share the session: only what is this card's counts.
-    const folder = existsSync(join(cwd, 'specs', '.current')) ? readFileSync(join(cwd, 'specs', '.current'), 'utf8').trim().split(/[\\/]/).pop() : '';
+    const folder = basename(currentCard(cwd, { named: true }) ?? '');
     const key = folder.match(/^[A-Za-z]\w*-\d+[A-Za-z0-9.]*/)?.[0];
     const card = checkouts.length > 1 ? { own: cwd, names: [folder, key].filter(Boolean) } : null;
     const cost = costOf(file, from, checkouts, card);

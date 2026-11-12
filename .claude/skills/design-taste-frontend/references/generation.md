@@ -230,6 +230,11 @@ join them with `media` on the `<source>` for the phone crop. Then:
   - A background quiet enough for the copy.
   - An end state that differs from the start, and no text.
   - When the page must not open on that still, the still goes as a style reference, not as the first frame.
+- **A clip that sits on the page without a frame** (no card, no rounded box) ends in the page's own background: the
+  prompt names that colour for the edges, and the section's background is set to the colour sampled from the clip's
+  edge, so no seam shows where the footage meets the page.
+- **Check frames at 0, 50 and 100 %** of the clip before it ships: the zone where the copy sits stays empty and quiet
+  in all three, and the subject never crosses under the headline.
 - **Before paying for a clip**, one picture of six panels of the single move pins the look and the camera.
 - **A take off the palette** is generated once more; then the better take is graded toward the palette with ffmpeg.
 - **Never** parallax of generated stills as a hero: it lost to real footage in a blind test.
