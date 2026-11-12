@@ -11,7 +11,7 @@ function RollEntries({ items }: { items: readonly RollItem[] }) {
       {item.logo && (
         // an issuer's logo is scene media for the ASM-10 rule: flat artwork, not a photo that needs a mask
         <span data-scene-media="logo" className="roll-logo">
-          <Image src={item.logo} alt="" width={32} height={32} />
+          <Image src={item.logo} alt="" width={32} height={32} loading="eager" />
         </span>
       )}
       {item.mark && (

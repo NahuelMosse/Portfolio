@@ -1626,7 +1626,8 @@ html:not([data-sound="idle"]) .cover-cue {
   .cover-foot {
     position: relative;
     z-index: 3;
-    padding-top: var(--space-4);
+    /* it holds only the absolutely placed sheet, so it takes no height: the cover is then exactly one screen tall */
+    padding: 0;
   }
 
   /* the ID sheet ends 8px above the fixed hire bar; the sound cue rides right above it */
