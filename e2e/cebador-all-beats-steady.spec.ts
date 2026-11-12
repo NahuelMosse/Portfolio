@@ -55,7 +55,7 @@ function watch(page: Page) {
       w.__pf11 ??= {}
       let mark = w.__pf11[role]
       const first = !mark
-      if (!mark && on) {
+      if (!mark && on && on.readyState >= 2) {
         const entry = { video: on, loads: 0, restarts: 0 }
         let before = 0
         on.addEventListener("loadstart", () => entry.loads++)
@@ -94,7 +94,12 @@ test("on Cebador's three beats at 1440x900 and 390x844 the page and the phone pl
     await jumpToLandings(page)
     for (const beat of [0, 1, 2]) {
       await reachBeat(page, beat)
-      await expect.poll(async () => (await watch(page)).main.ready, { message: `main capture ready on beat ${beat} at ${viewport.width}`, timeout: 20_000 }).toBe(true)
+      await expect
+        .poll(async () => {
+          const now = await watch(page)
+          return now.main.ready && now.second.ready
+        }, { message: `both captures ready on beat ${beat} at ${viewport.width}`, timeout: 20_000 })
+        .toBe(true)
       const seen = await watch(page)
       const label = `beat ${beat} at ${viewport.width}`
       expect(seen.main.src, `${label} page capture`).toContain(`${viewport.page}.webm`)

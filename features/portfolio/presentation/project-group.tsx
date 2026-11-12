@@ -50,8 +50,8 @@ function companion(pieces: readonly Piece[], kind: Piece["frame"], beat: number)
   return { kind, screens: same, active: (screenAt(beat, same.length) + 1) % same.length }
 }
 
-// A browser project whose phone screens are real ones: on a phone the phone is the hero and the page peeks behind it.
-const hasPhoneScreens = (pieces: readonly Piece[]) => pieces.filter((piece) => piece.frame === "phone").length >= 2
+// A browser project with real phone screens (a single live capture counts): on a phone the phone is the hero and the page peeks behind it.
+const hasPhoneScreens = (pieces: readonly Piece[]) => pieces.some((piece) => piece.frame === "phone")
 
 // The stack as plain words and the links as buttons.
 function ProjectMeta({ project }: { project: Project }) {

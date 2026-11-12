@@ -152,10 +152,6 @@ export const projects: readonly Project[] = [
         alt: "The Cebador site scrolling on a phone",
         caption: "Live, on a phone",
       },
-      screen("browser", "cebador-sabor-1280", "The Cebador site's flavor scene, the can over its origin, at desktop width", "Flavor"),
-      screen("browser", "cebador-tienda-1280", "The Cebador site's shop at desktop width", "Shop"),
-      screen("phone", "cebador-sabor-390", "The Cebador site's flavor scene on a phone", "Flavor, on a phone"),
-      screen("phone", "cebador-tienda-390", "The Cebador site's shop on a phone", "Shop, on a phone"),
     ],
   },
   {
