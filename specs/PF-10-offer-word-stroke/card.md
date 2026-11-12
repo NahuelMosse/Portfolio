@@ -35,8 +35,14 @@ lint: npx eslint .
 types: npx tsc --noEmit
 app: node scripts/media-versions.mjs && npx next build --webpack && npx next start
 suite: npx playwright test e2e/offer-word-stroke.spec.ts e2e/offer-word.spec.ts e2e/chapter-arrival.spec.ts
+probe offer: node .claude/tools/app.mjs probe specs/PF-10-offer-word-stroke/steps/offer.json --widths 390,1440,1910 --axe --contrast ".offer-scene .folder-tab,.offer-scene .door" --out .validation/probe/offer
 ```
 
 ## Log
 
 - L1 · Requirement as frozen in .validation/request.md (2026-11-12), verbatim: # Request (verbatim from the requester, in Spanish) / > "offer dependiendo del tamaño de la pantalla, la letra de offer es muy fina" / Attached: `.validation/offer-thin.png`. The screenshot was taken on a desktop about 1668 px wide. The big outlined chapter word "OFFER" in the offer scene reads as a hairline. / ## Context gathered before the card / - `app/globals.css`, `.offer-scene .chapter-word`: `color: transparent; -webkit-text-stroke: var(--rule) var(--bone);`. The outline is a fixed `--rule` width while the word scales with the screen (`--size-word` / `--size-word-phone`), so on larger screens the stroke gets relatively thinner. Boska's thin serifs make it worse. / ## What is asked / On every screen size the outlined "OFFER" reads with a clearly visible, proportional stroke. The outline must scale with the word's size and keep a floor that stays legible on the phone. It stays an outline: the hollow look is the design. Check it at 390x844, 1280, 1440x900, 1668 and 1910x912.
+- L2 · 2026-11-12 · T1 · verify.mjs: lint, types, suite (offer-word-stroke, offer-word, chapter-arrival) passed; axe/contrast/focus could not run (no probe line in the card's Gate); captures in .validation/PF-10/
+- L3 · 2026-11-12 · RED checked at the card's base CSS (474edc2): e2e/offer-word-stroke.spec.ts failed on 'stroke at 390' (1px, ratio 0.0073); with the code both tests pass
+- L4 · 2026-11-12 · measured stroke / font size: 390x844 1.638/136.5px, 1280x720 2.611/217.6px, 1440x900 2.938/244.8px, 1668x904 3.403/283.56px, 1910x912 3.896/324.7px, ratio 0.0120 at each; the 1.5px floor binds only under a 125px word (320 px phones)
+- L5 · 2026-11-12 · Gate gains 'probe offer' (steps/offer.json) so axe, contrast and focus run; they pass
+- L6 · 2026-11-12 · main's: busy fails on the probe's first step (right after goto), the preloader of app/loading.tsx (aria-busy) holding hidden span/svg/p; the same probe on the base build (474edc2 CSS) records the same at 1910; timing-dependent, outside this card, for a person
