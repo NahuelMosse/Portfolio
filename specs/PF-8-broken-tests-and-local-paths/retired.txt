@@ -63,7 +63,6 @@ case-file-layout-contracts.spec.ts › the cold open shows the desk edge to edge
 case-file-layout-contracts.spec.ts › the cold open shows the desk edge to edge, the name and a Hire me door by second 5 at 1280 @PF-1-S8 @PF-1-S19
 case-file-layout-contracts.spec.ts › the four chapters keep their order and the offer sits inside the end credits before the closing @PF-1-ASM-01
 case-file-layout-contracts.spec.ts › the credits roll runs edge to edge in the end credits after the credits sheet and before the footer @PF-1-S22
-case-file-layout-contracts.spec.ts › each project holds at least three real pieces and the pieces outnumber the text fields @PF-1-S26 @PF-1-ASM-22 @PF-1-S16
 case-file-layout-contracts.spec.ts › every piece is clipped, graded and grained, and no bare img sits in a chapter @PF-1-ASM-10
 case-file-layout-contracts.spec.ts › each door opens an email with its own subject and the two door labels read as written @PF-1-ASM-12
 case-file-layout-contracts.spec.ts › the cold open backdrop, NAWI and the identification sheet move at different depths and stay still under reduced motion @PF-1-ASM-24
@@ -287,9 +286,7 @@ phone-390.spec.ts › phone 390 › at 390 only the hire bar is fixed, NAWI sits
 phone-390.spec.ts › phone 390 › at 390 the chapter index opens from the top bar menu, a fixed Hire me bar of at least 48 px sits at the bottom, no text is under 14 px and nothing scrolls sideways @PF-1-ASM-27
 phone-glance.spec.ts › phone glance › at 390 the page is one column, the chapter index opens from the top bar menu, each case's pieces swipe sideways with the next one cut at the edge and a counter, each case says what it is in one line of at most 12 words, a fixed Hire me bar at the bottom is at least 48 px tall, no text is under 14 px and only the piece rows scroll sideways @PF-1-ASM-27
 phone-layout.spec.ts › phone layout › at 390 only the hire bar is fixed, the controls scroll away, the cold open shows the title and the subject in the first screen, no text leaves the viewport outside the piece rows and no asset box is taller than a screen @PF-1-ASM-27 @PF-1-S9
-pieces.spec.ts › each project scene links to its live page or its repository, except Grit, which is private @PF-1-S5
 pieces.spec.ts › the freelance offer and the project scenes show more real pieces than text blocks @PF-1-S26
-pieces.spec.ts › each personal project shows at least three real pieces: Cebador a looping capture of nahuelmosse.github.io/cebador-landing at 390 and 1280 and a link to it, ClubNahuelMosse its four README screens, Guardia captures of nahuelmosse.itch.io/triaje, Grit screens of its app and design lab, the dev kit a real card, its tests and its pull request; the freelance offer in the end credits recalls a strip of them @PF-1-ASM-22
 pieces.spec.ts › the Jüsto scene shows the team presentation photo, treated @PF-1-S12
 pieces.spec.ts › every real screen and photo sits under a mask or clip-path with a grade filter and the grain overlay, never a bare rectangular img @PF-1-ASM-10
 pieces.spec.ts › each project scene has a generated visual reference beside its explanation @PF-1-S16
@@ -319,7 +316,6 @@ project-presentation.spec.ts › the footer › at 1440 the certifications are r
 project-scroll-groups.spec.ts › project groups shown by scrolling › wide, scrolling through a group carries each of its projects across the showcase, no click @PF-1-ASM-26
 project-scroll-groups.spec.ts › project groups shown by scrolling › narrow, the headline comes first and every project is a stacked poster reached by scrolling @PF-1-ASM-26
 project-scroll-groups.spec.ts › project groups shown by scrolling › with reduced motion every width stacks the projects @PF-1-ASM-26
-project-scroll-groups.spec.ts › project groups shown by scrolling › the pages of the live site and the repositories are linked from their project @PF-1-ASM-26
 project-showcase.spec.ts › pinned project showcase › at 390 and 1440 each project is a tall section with a sticky stage whose beats follow the scroll, one caption at a time, and the index marks where the visitor is @PF-1-ASM-26
 project-showcase.spec.ts › pinned project showcase › under reduced motion each showcase is a still: the stage does not stick, every caption is on the page and nothing is tilted or moved @PF-1-ASM-26
 project-title-fit.spec.ts › at 390 every project title is whole, below the strip and clear of the device @PF-1-ASM-26
