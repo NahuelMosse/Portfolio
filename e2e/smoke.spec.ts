@@ -27,10 +27,10 @@ async function open(page: Page) {
 
 // The phone cases also run in WebKit: its page comes from a browser launched here, as the bar test does.
 const webkitPhone = test.extend({
-  page: async ({ baseURL }, use) => {
+  page: async ({ baseURL }, provide) => {
     const launched = await webkit.launch()
     const context = await launched.newContext({ baseURL, viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
-    await use(await context.newPage())
+    await provide(await context.newPage())
     await launched.close()
   },
 })

@@ -29,6 +29,9 @@ mobile-bar-edges.spec.ts › on a phone in webkit every element on the bottom ed
 mobile-memory-far.spec.ts › walking a 390x844 phone, every tall section farther than a screen from the view is skipped and the page height holds @PF-3-S1 @PF-3-ASM-01
 mobile-memory-skip.spec.ts › walking a 390x844 phone, every project group and the experience scene farther than a screen from the view is skipped and the page height holds @PF-3-S1 @PF-3-ASM-01
 
+# retired: Playwright's WebKit on Windows does not decode WebM (a VP8 webm stays at readyState 0, an H.264 mp4 reaches 4); the Chromium case at 390 checks the same media
+smoke.spec.ts › at 390x844 in webkit › at 390x844 in webkit every visible image and video loads and no request answers 404 @PF-8-ASM-04
+
 # retired: PF-1 frozen suite retired by the user; covered by e2e/smoke.spec.ts
 asm35-cold-open-end.spec.ts › 1910x912 the sheet and the corner button are visible at the end of the cold-open pin @PF-1-ASM-35
 asm35-cold-open-end.spec.ts › 1920x1080 the sheet and the corner button are visible at the end of the cold-open pin @PF-1-ASM-35

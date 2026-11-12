@@ -41,6 +41,7 @@ T2 replaced or retired PF-1 tests one by one before the requester's decision of 
 lint: npx eslint .
 types: npx tsc --noEmit
 app: npx next build --webpack && npx next start
+refactor-tests: e2e/smoke.spec.ts names the WebKit fixture's callback `provide` instead of `use`, which eslint's react-hooks/rules-of-hooks reads as a hook call; no assertion changes
 suite [timeout 120 min]: npx playwright test --workers=3 --test-list-invert specs/PF-8-broken-tests-and-local-paths/retired.txt
 ```
 
@@ -92,3 +93,4 @@ suite [timeout 120 min]: npx playwright test --workers=3 --test-list-invert spec
 - L44 · 2026-11-11 · retires: e2e/mobile-memory-skip.spec.ts "walking a 390x844 phone, every project group and the experience scene farther than a screen from the view is skipped and the page height holds @PF-3-S1 @PF-3-ASM-01" · fails on main: the page now has six more tall sections than the list it expects skipped
 - L45 · 2026-11-11 · kit: .claude/tools/required.mjs changed, and the kit tests .claude/tests/*.test.mjs do not exist in this repo, so that check could not run; next build with Turbopack refuses a node_modules junction (npm ci hangs here), so the gate builds with --webpack
 - L46 · 2026-11-11 · S2 · git history keeps the old absolute paths in earlier commits of the seven sessions.md files; removing them needs a history rewrite and a force push, which this card does not do
+- L47 · 2026-11-12 · retires: e2e/smoke.spec.ts "at 390x844 in webkit every visible image and video loads and no request answers 404 @PF-8-ASM-04" · could not run here: Playwright's WebKit on Windows does not decode WebM (probe on this machine: a VP8 webm stays at readyState 0, an H.264 mp4 reaches 4; Chromium plays both), so the Cebador captures never load in it; the Chromium case at 390 checks the same media, and real Safari is not measured
