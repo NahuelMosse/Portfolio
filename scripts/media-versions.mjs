@@ -16,6 +16,7 @@ function filesUnder(dir) {
 
 const keyOf = (path) => path.replace(/^r\/\d+\//, "").replace(/\.[^./]+$/, "")
 
+/** @param {string} root a public/film folder @returns {Record<string, string>} */
 export function mediaVersions(root) {
   const groups = new Map()
   for (const file of filesUnder(root)) {
