@@ -1,0 +1,6 @@
+[
+  { "goto": "/" },
+  { "wait": 3000 },
+  { "scroll": "#cebador" },
+  { "wait": 1500 }
+]

@@ -36,6 +36,7 @@ suite: npx playwright test e2e/cebador-all-beats-steady.spec.ts e2e/cebador-orig
 lint: npx eslint .
 types: npx tsc --noEmit
 app: npx next start
+probe cebador: node .claude/tools/app.mjs probe specs/PF-11-cebador-video-all-beats/probe-cebador.json --widths 390,1280 --axe --contrast "#cebador .show-tab" --out .validation/probe/cebador
 ```
 
 ## Log
