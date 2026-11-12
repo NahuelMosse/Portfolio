@@ -82,8 +82,10 @@ function Glow({ screens, active }: { screens: readonly Piece[]; active: number }
 // A phone more than a second off (its first catch-up) jumps once; a smaller gap is closed by playing a little faster or slower.
 const SEEK_AT = 1
 const SETTLED = 0.02
-const RATE_PER_SECOND = 12
-const RATE_RANGE = 0.4
+const RATE_PER_SECOND = 3
+const RATE_RANGE = 0.2
+const WRAP_ZONE = 0.3
+const HOLD_AT_MOST_MS = 2000
 const CHECK_EVERY_MS = 50
 
 // How far the phone is behind the main one (positive) or ahead (negative), on the loop's circle: a main that just looped back
@@ -107,20 +109,55 @@ function refuseUnlessAutoplay(error: unknown): void {
   if (!(error instanceof DOMException)) throw error
 }
 
+// A video that is starving for data or seeking (the loop's wrap) has a stopped clock that no playbackRate can move.
+function stalled(video: HTMLVideoElement): boolean {
+  if (video.error) return false
+  return video.seeking || video.readyState === HTMLMediaElement.HAVE_CURRENT_DATA || video.currentTime >= video.duration
+}
+
+function nearsWrap(video: HTMLVideoElement): boolean {
+  return Number.isFinite(video.duration) && video.duration - video.currentTime < WRAP_ZONE
+}
+
 function useFollowMain(role: Role) {
   const rig = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (role !== "second") return
+    const held = new Set<HTMLVideoElement>()
+    let holdStart = 0
+    const release = () => {
+      held.forEach((video) => (video.playbackRate = 1))
+      held.clear()
+    }
+    // While one video is frozen the other waits for it, so the pair's drift does not grow with the stall.
+    const holdOther = (lead: HTMLVideoElement, own: HTMLVideoElement): boolean => {
+      const pairs = [[lead, own] as const, [own, lead] as const]
+      const frozen = pairs.find(([video]) => !held.has(video) && stalled(video))
+      if (!frozen) return false
+      const other = frozen[1]
+      if (stalled(other) || nearsWrap(other)) return false
+      if (held.size === 0) holdStart = performance.now()
+      if (performance.now() - holdStart >= HOLD_AT_MOST_MS) return false
+      other.playbackRate = 0
+      held.add(other)
+      return true
+    }
     const timer = window.setInterval(() => {
       const own = rig.current?.querySelector<HTMLVideoElement>(".show-screen[data-on] video")
       const lead = rig.current?.parentElement?.querySelector<HTMLVideoElement>('.show-rig[data-role="main"] .show-screen[data-on] video')
-      if (!own || !lead || own.readyState < 2 || lead.readyState < 2) return
+      if (!own || !lead) return
+      if (holdOther(lead, own)) return
+      release()
+      if (own.readyState < 2 || lead.readyState < 2) return
       if (lead.paused !== own.paused) void (lead.paused ? own.pause() : own.play().catch(refuseUnlessAutoplay))
       const drift = loopDrift(lead, own)
       if (Math.abs(drift) > SEEK_AT) own.currentTime = lead.currentTime
       else own.playbackRate = rateFor(drift)
     }, CHECK_EVERY_MS)
-    return () => window.clearInterval(timer)
+    return () => {
+      window.clearInterval(timer)
+      release()
+    }
   }, [role])
   return rig
 }
