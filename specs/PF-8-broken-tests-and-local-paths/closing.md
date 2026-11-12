@@ -20,15 +20,15 @@ Requirement as given by the user (2026-11-11), verbatim: "arregla las dos primer
 ## Passed
 - 1 · L1 intact — unchanged since 6fd1344ab
 - 2 · every spec has a test — 2 specs, each with a tagged test
-- 3 · every tag is a spec of card.md — 6 tagged files
+- 3 · every tag is a spec of card.md — 7 tagged files
 - 4 · each ASM is tagged or declared uncovered — 4 of 5 tagged; declared uncovered: PF-8-ASM-05
 - 5 · no tagged test touched since RED — declared refactor-tests: e2e/smoke.spec.ts names the WebKit fixture's callback `provide` instead of `use`, which eslint's react-hooks/rules-of-hooks reads as a hook call; no assertion changes; 0 files tagged for PF-8 edited since RED; the frozen tests of earlier cards it edited are listed in ## Needs a person
-- 6 · diff and Tasks agree — 26 files in the diff against 6fd1344ab5819fa2cd210568ee19ef15ea27ba01~1; e2e/mobile-viewport.spec.ts is in Tasks, not in the diff
+- 6 · diff and Tasks agree — 41 files in the diff against 6fd1344ab5819fa2cd210568ee19ef15ea27ba01~1; e2e/mobile-viewport.spec.ts is in Tasks, not in the diff
 - 8 · judge · skipped — risk.json says review: low
 - 9 · required.mjs — mutation, linter and scope ran and passed on this code
 
 ## Failed
-- 7 · gate green — suite: exit 1
+- 7 · gate green — types: ran on other code: run verify.mjs again; suite: exit 1
 
 ## Could not run
 none
@@ -51,6 +51,12 @@ no judge: risk large · low; the gate is the whole review
 ## Kit notes
 - .claude/tools/required.mjs changed, and the kit tests .claude/tests/*.test.mjs do not exist in this repo, so that check could not run; next build with Turbopack refuses a node_modules junction (npm ci hangs here), so the gate builds with --webpack
 
+## Needs a person
+- frozen test edited by the refactor (e2e/smoke.spec.ts names the WebKit fixture's callback `provide` instead of `use`, which eslint's react-hooks/rules-of-hooks reads as a hook call; no assertion changes): e2e/case-file-layout-contracts.spec.ts (+0 −12); confirm no assertion was loosened: `git diff 6fd1344ab..HEAD -- e2e/case-file-layout-contracts.spec.ts`
+- frozen test edited by the refactor (e2e/smoke.spec.ts names the WebKit fixture's callback `provide` instead of `use`, which eslint's react-hooks/rules-of-hooks reads as a hook call; no assertion changes): e2e/pieces.spec.ts (+0 −29); confirm no assertion was loosened: `git diff 6fd1344ab..HEAD -- e2e/pieces.spec.ts`
+- frozen test edited by the refactor (e2e/smoke.spec.ts names the WebKit fixture's callback `provide` instead of `use`, which eslint's react-hooks/rules-of-hooks reads as a hook call; no assertion changes): e2e/project-groups.spec.ts (+0 −32); confirm no assertion was loosened: `git diff 6fd1344ab..HEAD -- e2e/project-groups.spec.ts`
+- frozen test edited by the refactor (e2e/smoke.spec.ts names the WebKit fixture's callback `provide` instead of `use`, which eslint's react-hooks/rules-of-hooks reads as a hook call; no assertion changes): e2e/project-scroll-groups.spec.ts (+0 −19); confirm no assertion was loosened: `git diff 6fd1344ab..HEAD -- e2e/project-scroll-groups.spec.ts`
+
 ## Decisions of the repo
 - modules api, data, infra, observability off by decision: profile backend not chosen at install
 - modules ci, docs off by decision: not chosen at install: no signal found in the repo
@@ -59,8 +65,8 @@ no judge: risk large · low; the gate is the whole review
 - tests renamed by the refactor (e2e/smoke.spec.ts names the WebKit fixture's callback `provide` instead of `use`, which eslint's react-hooks/rules-of-hooks reads as a hook call; no assertion changes): 8 replaced keeping their tags — e2e/retired-tests.spec.ts, e2e/pieces.spec.ts, e2e/project-groups.spec.ts, e2e/project-presentation.spec.ts, e2e/project-scroll-groups.spec.ts, e2e/tools-plain.spec.ts, e2e/retired-list.spec.ts
 - grade: mvp — full design control for the portfolio revamp: design line, component set and screen audit
 
-Cost: USD 24.89 (builder 8.07, card-runner 7.99, oracle 5.57, main 3.27) · the messages of this card
-close.mjs seal: PF-8 sha256:c26f7a9fec7d6d08c48b0851919de0d109a6d3a648b1ac5433a59ecd818b08e3
+Cost: USD 26.95 (card-runner 9.38, builder 8.07, oracle 5.57, main 3.93) · the messages of this card
+close.mjs seal: PF-8 sha256:94d4f2232f20593c9c8b5de1f571524fbef093d58acb6bde8ea8ad2297fcce66
 <!-- close.mjs:end -->
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
