@@ -15,6 +15,7 @@ Requirement as given by the user (2026-11-11), verbatim: "arregla las dos primer
 - the e2e gate of every later card: the tests listed in retired.txt no longer run, the whole PF-1 suite among them; e2e/smoke.spec.ts and the PF-2 to PF-7 tests that pass on main do · every test it lists
 - sessions.md lines name the transcript as `~/.claude/projects/...` instead of an absolute path · specs/*/sessions.md, .claude/tools/required.mjs
 - at 390x844 the cover fits the screen and the credits-roll logos load when they come into view · app/globals.css, features/film/presentation/credits-roll.tsx
+- on a phone the scene heights come from the screen height measured at load (`--screen-h`), re-measured only when the width changes, and ScrollTrigger ignores height-only resizes: the page height holds when the browser bar shows or hides; 1440 and 1910 keep svh · app/globals.css, features/portfolio/presentation/group.css, features/film/presentation/motion-engine.tsx, features/film/presentation/motion-kit.ts, features/portfolio/presentation/experience-motion.tsx, features/portfolio/presentation/project-group.tsx
 
 ## Passed
 - 1 · L1 intact — unchanged since 6fd1344ab
@@ -22,7 +23,7 @@ Requirement as given by the user (2026-11-11), verbatim: "arregla las dos primer
 - 3 · every tag is a spec of card.md — 6 tagged files
 - 4 · each ASM is tagged or declared uncovered — 4 of 5 tagged; declared uncovered: PF-8-ASM-05
 - 5 · no tagged test touched since RED — declared refactor-tests: e2e/smoke.spec.ts names the WebKit fixture's callback `provide` instead of `use`, which eslint's react-hooks/rules-of-hooks reads as a hook call; no assertion changes; 0 files tagged for PF-8 edited since RED; the frozen tests of earlier cards it edited are listed in ## Needs a person
-- 6 · diff and Tasks agree — 21 files in the diff against 6fd1344ab5819fa2cd210568ee19ef15ea27ba01~1
+- 6 · diff and Tasks agree — 26 files in the diff against 6fd1344ab5819fa2cd210568ee19ef15ea27ba01~1; e2e/mobile-viewport.spec.ts is in Tasks, not in the diff
 - 8 · judge · skipped — risk.json says review: low
 - 9 · required.mjs — mutation, linter and scope ran and passed on this code
 
@@ -44,6 +45,7 @@ no judge: risk large · low; the gate is the whole review
 - L51 · 2026-11-12 · the whole PF-1 suite (388 tests) is out of the gate by the requester's decision (ASM-04, L36-L37); six PF-3 to PF-6 tests failing on main are retired with their reason (L39-L44); the WebKit media check at 390 is retired because Playwright's WebKit on Windows decodes no WebM, real Safari not measured (L47)
 - L52 · 2026-11-12 · git history keeps the old absolute paths in earlier commits of the seven sessions.md files; removing them needs a history rewrite and a force push (L46)
 - L53 · 2026-11-12 · after 2bc341c (the cover foot keeps its bottom padding, cover 828 px at 390) the gate still fails only on e2e/mobile-viewport.spec.ts "walking down a phone… the scroll never goes back" (chromium): 227 px against 211; it passes alone (4 of 4) and with 3 workers against its own server. Cause measured: the page height follows the viewport height (svh scenes), so when the phone bar shows at step 30 the scroll is clamped to the new end; a cover 24 px shorter than on main adds 24 px to that step back. Under load ScrollTrigger pin spacers can also lag and clamp mid-page (1249 px). Not fixed: a page height that does not collapse with the bar, or a decision on the limit of that frozen PF-3 test. cebador-playback and project-turn-measured did not fail again (load-sensitive, passed under 3 workers)
+- L54 · 2026-11-12 · after 464d6d2 (phone scene heights from --screen-h measured at load, re-measured only on a width change; ScrollTrigger ignoreMobileResize) e2e/mobile-viewport.spec.ts passes in the gate in both engines (worst back-step 0 px alone and under load). The gate still fails only on e2e/cebador-playback.spec.ts "the phone follows the main capture's clock within 0.2 s…": cyclic drift 0.2288 in the gate and 0.2282 in 1 of 3 runs alone with one worker; the same drift (0.2279) showed on main (L34), so it is the site's phone-to-main video sync, not the test's timing; not fixed in this card, not retired. Real Safari and a real phone bar are not measured: only emulated resizes
 
 ## Kit notes
 - .claude/tools/required.mjs changed, and the kit tests .claude/tests/*.test.mjs do not exist in this repo, so that check could not run; next build with Turbopack refuses a node_modules junction (npm ci hangs here), so the gate builds with --webpack
@@ -56,8 +58,8 @@ no judge: risk large · low; the gate is the whole review
 - tests renamed by the refactor (e2e/smoke.spec.ts names the WebKit fixture's callback `provide` instead of `use`, which eslint's react-hooks/rules-of-hooks reads as a hook call; no assertion changes): 8 replaced keeping their tags — e2e/retired-tests.spec.ts, e2e/pieces.spec.ts, e2e/project-groups.spec.ts, e2e/project-presentation.spec.ts, e2e/project-scroll-groups.spec.ts, e2e/tools-plain.spec.ts, e2e/retired-list.spec.ts
 - grade: mvp — full design control for the portfolio revamp: design line, component set and screen audit
 
-Cost: USD 13.75 (builder 6.39, card-runner 5.28, main 2.08) · the messages of this card
-close.mjs seal: PF-8 sha256:91dce112e75cf496169653fa74016452742ad5c129e5ef0c978a00a35354d3ae
+Cost: USD 16.41 (builder 7.46, card-runner 6.30, main 2.65) · the messages of this card
+close.mjs seal: PF-8 sha256:e22537877304495aecbfa5c6393c2883459177fe1876974296e99148ba9e14a9
 <!-- close.mjs:end -->
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
