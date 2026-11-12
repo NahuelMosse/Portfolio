@@ -81,9 +81,10 @@ function Glow({ screens, active }: { screens: readonly Piece[]; active: number }
 // follows the main one's time, so each section shows on both screens at once whichever video loaded first.
 // A phone more than a second off (its first catch-up) jumps once; a smaller gap is closed by playing a little faster or slower.
 const SEEK_AT = 1
-const SETTLED = 0.04
-const RATE_PER_SECOND = 2
-const RATE_RANGE = 0.1
+const SETTLED = 0.02
+const RATE_PER_SECOND = 12
+const RATE_RANGE = 0.4
+const CHECK_EVERY_MS = 50
 
 // How far the phone is behind the main one (positive) or ahead (negative), on the loop's circle: a main that just looped back
 // to the start is ahead of a phone at the end, not a whole loop behind.
@@ -118,7 +119,7 @@ function useFollowMain(role: Role) {
       const drift = loopDrift(lead, own)
       if (Math.abs(drift) > SEEK_AT) own.currentTime = lead.currentTime
       else own.playbackRate = rateFor(drift)
-    }, 250)
+    }, CHECK_EVERY_MS)
     return () => window.clearInterval(timer)
   }, [role])
   return rig
