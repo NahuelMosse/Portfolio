@@ -46,3 +46,5 @@ probe offer: node .claude/tools/app.mjs probe specs/PF-10-offer-word-stroke/step
 - L4 · 2026-11-12 · measured stroke / font size: 390x844 1.638/136.5px, 1280x720 2.611/217.6px, 1440x900 2.938/244.8px, 1668x904 3.403/283.56px, 1910x912 3.896/324.7px, ratio 0.0120 at each; the 1.5px floor binds only under a 125px word (320 px phones)
 - L5 · 2026-11-12 · Gate gains 'probe offer' (steps/offer.json) so axe, contrast and focus run; they pass
 - L6 · 2026-11-12 · main's: busy fails on the probe's first step (right after goto), the preloader of app/loading.tsx (aria-busy) holding hidden span/svg/p; the same probe on the base build (474edc2 CSS) records the same at 1910; timing-dependent, outside this card, for a person
+- L7 · 2026-11-12 · closing: person · the gate's busy check fails on main's preloader (app/loading.tsx, aria-busy with hidden span/svg/p) at the probe's first step, also on the base build; fixing it is outside this card (OUT), so the PR stays open
+- L8 · 2026-11-12 · kit: wait.mjs ends on any '<tool>: exit N' line already in the log (here an earlier 'probe: exit 0'), so --until never got to match the later line
