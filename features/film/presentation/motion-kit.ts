@@ -2,6 +2,8 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 gsap.registerPlugin(ScrollTrigger)
+// a phone's browser bar showing or hiding resizes only the height: nothing re-measures on it
+ScrollTrigger.config({ ignoreMobileResize: true })
 
 // The motion tokens of the page: eases, scrub smoothing, reveal lengths and staggers (PF-1-ASM-35).
 export const MOTION = {

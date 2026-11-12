@@ -15,6 +15,7 @@
 // A report whose owner still runs (the judge) is listed with PENDING: it is not an action, and the close still waits for it.
 // Exits 0 if nothing is missing, 1 if something is missing, 2 if there is no card in progress.
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import {
@@ -58,13 +59,19 @@ export const sessionRecords = (root, cardDir) => {
       .flatMap((l) => [...l.matchAll(/record: (.+?\.jsonl)\s*$/gm)].map((m) => m[1]))
     : [];
 };
-export const sessionLine = (record) => `${today()} · ${modelsOf(record).join(', ') || '<model>'} · cost not available · ${record}`;
+// A record is published relative to the home folder: an absolute path would carry the user's name into the repo.
+const homeRelative = (record) => {
+  const path = record.replaceAll('\\', '/');
+  const home = homedir().replaceAll('\\', '/');
+  return path.toLowerCase().startsWith(`${home.toLowerCase()}/`) ? `~${path.slice(home.length)}` : path;
+};
+export const sessionLine = (record) => `${today()} · ${modelsOf(record).join(', ') || '<model>'} · cost not available · ${homeRelative(record)}`;
 // Writes the line each of the card's records lacks in sessions.md; close.mjs and verify.mjs both call it. Returns one entry per line written.
 export const writeSessionLines = (root, cardDir) => {
   const sessions = join(cardDir, 'sessions.md');
   const wrote = [];
   for (const record of sessionRecords(root, cardDir)) {
-    if ((existsSync(sessions) ? readFileSync(sessions, 'utf8') : '').includes(record)) continue;
+    if ((existsSync(sessions) ? readFileSync(sessions, 'utf8') : '').includes(homeRelative(record))) continue;
     appendFileSync(sessions, `${sessionLine(record)}\n`);
     wrote.push(sessions);
   }

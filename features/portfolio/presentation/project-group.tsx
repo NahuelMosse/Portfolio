@@ -151,7 +151,7 @@ export function ProjectGroupScene({ id, label, noun, line, composition, items }:
       data-count={count}
       data-composition={composition}
       className="group"
-      style={{ "--count": count, "--beat-step": `${BEAT_RUN}svh`, "--turn-step": `${TURN_RUN}svh`, "--steps": BEATS_PER_PROJECT - 1 } as CSSProperties}
+      style={{ "--count": count, "--beat-step": `calc(${BEAT_RUN} * var(--screen-unit))`, "--turn-step": `calc(${TURN_RUN} * var(--screen-unit))`, "--steps": BEATS_PER_PROJECT - 1 } as CSSProperties}
     >
       <div className="group-pin">
         <header className="group-head">

@@ -14,8 +14,8 @@ export function ExperienceMotion({ count }: { count: number }) {
   useEffect(() => {
     const node = document.querySelector<HTMLElement>(HOST)
     if (!node) return
-    node.style.setProperty("--beat-step", `${BEAT_RUN}svh`)
-    node.style.setProperty("--turn-step", `${TURN_RUN}svh`)
+    node.style.setProperty("--beat-step", `calc(${BEAT_RUN} * var(--screen-unit))`)
+    node.style.setProperty("--turn-step", `calc(${TURN_RUN} * var(--screen-unit))`)
     node.style.setProperty("--steps", String(BEATS_PER_EMPLOYER - 1))
 
     const jump = (event: Event) => {

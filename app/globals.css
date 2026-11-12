@@ -623,7 +623,7 @@ html:not([data-sound="idle"]) .cover-cue {
 }
 
 .scene[data-has-art] {
-  min-height: 80svh;
+  min-height: var(--screen-h, 80svh);
 }
 
 /* the edges fade into the near-black page so each scene runs into the next */
@@ -827,7 +827,7 @@ html:not([data-sound="idle"]) .cover-cue {
 }
 
 .cover-scene[data-has-art] {
-  min-height: 100svh;
+  min-height: var(--screen-h, 100svh);
 }
 
 .cover-scene .scene-copy {
@@ -1598,11 +1598,11 @@ html:not([data-sound="idle"]) .cover-cue {
 
 @media (max-width: 700px) {
   .scene[data-has-art] {
-    min-height: 80svh;
+    min-height: var(--screen-h, 80svh);
   }
 
   .cover-scene[data-has-art] {
-    min-height: calc(100svh - var(--top-bar-height));
+    min-height: calc(var(--screen-h, 100svh) - var(--top-bar-height));
   }
 
   /* the phone cover is portrait: the illustration fills the screen and the lettering lies over its dark top */
@@ -1626,13 +1626,14 @@ html:not([data-sound="idle"]) .cover-cue {
   .cover-foot {
     position: relative;
     z-index: 3;
-    padding-top: var(--space-4);
+    /* the foot keeps only its bottom padding, so the cover (one screen plus the foot) is not taller than the phone */
+    padding-top: 0;
   }
 
   /* the ID sheet ends 8px above the fixed hire bar; the sound cue rides right above it */
   .cover-foot .layer-sheet {
     position: absolute;
-    inset: auto 0 calc(100% + var(--hire-bar-height) + 8px) 0;
+    inset: auto 0 calc(100% + var(--space-4) + var(--hire-bar-height) + 8px) 0;
     padding: var(--space-4) var(--gutter-right) 0 var(--gutter-left);
     background: linear-gradient(to top, var(--ink-85) 62%, transparent);
   }
@@ -2244,7 +2245,7 @@ margin-bottom: 0.2em;
   }
 
   .offer-scene[data-has-art] {
-    min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.6 - 2rem);
+    min-height: calc(var(--screen-h, 100svh) - var(--top-bar-height) - var(--size-word) * 0.6 - 2rem);
   }
 
   .offer-scene .scene-art img {
@@ -2314,12 +2315,12 @@ margin-bottom: 0.2em;
 
   /* the ending fills one screen from its top and grows only when its text needs more: the word, the address, the networks, the roll and the © line share it */
   .contact-scene[data-has-art] {
-    min-height: 100svh;
+    min-height: var(--screen-h, 100svh);
   }
 
   .contact-scene[data-has-art] .scene-copy {
     box-sizing: border-box;
-    min-height: 100svh;
+    min-height: var(--screen-h, 100svh);
     justify-content: flex-start;
     gap: var(--space-2);
     padding-block: calc(var(--top-bar-height) + var(--space-1)) 1px;
@@ -2537,7 +2538,7 @@ margin-bottom: 0.2em;
   .contact-scene .contact-tiles {
     flex: none;
     margin-block: auto;
-    padding-top: clamp(var(--space-0), (100svh - var(--phone-short-height)) * 0.3, var(--space-contact-top-cap));
+    padding-top: clamp(var(--space-0), (var(--screen-h, 100svh) - var(--phone-short-height)) * 0.3, var(--space-contact-top-cap));
     align-content: start;
   }
 
@@ -2598,19 +2599,19 @@ margin-bottom: 0.2em;
 
   .offer-scene .scene-copy {
     box-sizing: border-box;
-    min-height: calc(100svh - var(--top-bar-height) - var(--size-word) * 0.5 - 1.1rem);
+    min-height: calc(var(--screen-h, 100svh) - var(--top-bar-height) - var(--size-word) * 0.5 - 1.1rem);
     justify-content: flex-end;
     padding-bottom: var(--hire-bar-height);
   }
 
   /* the bottom bar takes the last 56px: the ending is one screen above it */
   .contact-scene[data-has-art] {
-    min-height: calc(100svh - var(--hire-bar-height));
+    min-height: calc(var(--screen-h, 100svh) - var(--hire-bar-height));
     margin-bottom: var(--hire-bar-height);
   }
 
   .contact-scene[data-has-art] .scene-copy {
-    min-height: calc(100svh - var(--hire-bar-height));
+    min-height: calc(var(--screen-h, 100svh) - var(--hire-bar-height));
   }
 
   .offer-scene .offer {

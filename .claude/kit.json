@@ -75,14 +75,40 @@
       "reason": "profile backend not chosen at install",
       "by": "person",
       "at": "2026-11-01",
-      "signalsAtDecision": []
+      "signalsAtDecision": [
+        "infrastructure file: vercel.json"
+      ],
+      "confirmed": [
+        {
+          "at": "2026-11-12",
+          "card": "PF-8-broken-tests-and-local-paths",
+          "reason": "vercel.json came from main through the merge (card PF-8-lab-links); this card brings no infrastructure",
+          "signals": [
+            "infrastructure file: vercel.json"
+          ]
+        }
+      ]
     },
     "ci": {
       "state": "off",
       "reason": "not chosen at install: no signal found in the repo",
       "by": "person",
       "at": "2026-11-01",
-      "signalsAtDecision": []
+      "signalsAtDecision": [
+        "pipeline: .github/workflows/ci.yml",
+        "pipeline: .github/workflows/dependabot-automerge.yml"
+      ],
+      "confirmed": [
+        {
+          "at": "2026-11-12",
+          "card": "PF-8-broken-tests-and-local-paths",
+          "reason": "the workflows came from main through the merge (card PF-8-lab-links and dependabot); this card brings no pipeline",
+          "signals": [
+            "pipeline: .github/workflows/ci.yml",
+            "pipeline: .github/workflows/dependabot-automerge.yml"
+          ]
+        }
+      ]
     },
     "observability": {
       "state": "off",

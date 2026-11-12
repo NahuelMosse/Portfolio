@@ -195,8 +195,9 @@
   .group {
     --wx: 1;
     --wy: 0;
+    --screen-unit: calc(var(--screen-h, 100svh) / 100);
     position: relative;
-    height: calc(100svh + var(--count) * var(--steps) * var(--beat-step) + (var(--count) - 1) * var(--turn-step));
+    height: calc(var(--screen-h, 100svh) + var(--count) * var(--steps) * var(--beat-step) + (var(--count) - 1) * var(--turn-step));
   }
 
   .group-pin {
@@ -331,7 +332,7 @@
      The section only: the credits marquee carries a utility class of the same name */
   section.group {
     content-visibility: auto;
-    contain-intrinsic-size: auto 100svh;
+    contain-intrinsic-size: auto var(--screen-h, 100svh);
   }
 
   .group-head {

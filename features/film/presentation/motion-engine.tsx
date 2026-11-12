@@ -15,9 +15,29 @@ export function smoothScroll() {
   return engine
 }
 
+const PHONE_MAX_WIDTH = 700
+
+// --screen-h is the screen height measured at load; it follows only a width or orientation change, so the browser bar showing or
+// hiding never resizes the scenes. Above the phone width it is unset and the scenes keep their svh.
+function pinScreenHeight() {
+  const root = document.documentElement
+  let width = 0
+  const measure = () => {
+    if (window.innerWidth === width) return
+    width = window.innerWidth
+    if (width > PHONE_MAX_WIDTH) root.style.removeProperty("--screen-h")
+    else root.style.setProperty("--screen-h", `${window.innerHeight}px`)
+  }
+  measure()
+  window.addEventListener("resize", measure)
+  return () => window.removeEventListener("resize", measure)
+}
+
 // The scroll engine: Lenis smooths the wheel on desktop and is driven by the GSAP ticker; the position stays the native one, so
 // every scroll reader keeps working. Reduced motion has no engine at all, and touch keeps its native scroll.
 export function MotionEngine() {
+  useEffect(pinScreenHeight, [])
+
   useEffect(() => {
     if (!motionAllowed()) return
     const root = document.documentElement
